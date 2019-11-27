@@ -1,0 +1,118 @@
+.form-row{
+  margin: 10px 0;
+}
+
+.form-row,.form-column{
+  position: relative;
+  .row-label,.column-label{
+    position: absolute;
+    left: 0;
+    top: -10px;
+    font-weight: bold;
+    color: #73a1ef;
+  }
+}
+
+.form-item{
+  .form-label{
+    display: inline-block;
+    width: 90px;
+    text-align: right;
+  }
+  .form-content{
+    position: relative;
+    display: inline-block;
+    >* {
+      display: inline-block;
+    }
+    .form-unit{
+      font-size: 0.7em;
+      padding-left: 2px;
+    }
+    .form-message{
+      // 因为不需要显示error message，所以隐藏
+      display: none;
+      position: absolute;
+      left:0;
+      top: 20px;
+      font-size: 0.5em;
+      font-weight: bold;
+    }
+  }
+  
+
+  .is-not-empty{
+    select, input, .ant-select-selection{
+      font-size: 16px;
+      border-radius: 0;
+      border: none;
+      border-bottom: 1px solid #cccccc;
+      background: none;
+    }
+    .inputxxx{
+      border: none;
+    }
+  }
+}
+
+.form-error{
+  input {
+    // color: #ff3300;
+    border: 1px solid #ff3300 !important;
+  }
+}
+.form-warn {
+  input {
+    font-weight: 600;
+    color: #ff3300 !important;
+    // border-color: #ff3300;
+  }
+}
+
+/* 二级多行目录，指定父级样式名称：parentLabel  */
+.parentLabel {
+  position: relative;
+  background: #f8fbfe;
+}
+.form-row.parentLabel > div:first-child , 
+.form-column.parentLabel > div:first-child > div:first-child {
+  position: absolute;
+  top: -2px;
+  left: 3px;
+  font-size: 0.7em;
+  color: #5d79af;
+  text-align: left;
+}
+// 隐藏“：”的样式
+.form-column.parentLabel > div:first-child > div:first-child >span >span:first-child +span {
+  color: transparent;
+}
+// 子级字体放不下，缩小子级
+.parentLabel .childLabel > div > div:first-child {
+  font-size: 75%;
+}
+// 子级字体放不下，继续处理，把父级宽度写死
+.Two_characters.form-row.parentLabel > div:first-child , 
+.Two_characters.form-column.parentLabel > div:first-child > div:first-child {
+  width: 2.6em;
+}
+/* -- end --- 二级多行目录，指定父级样式名称：parentLabel  */
+
+
+.inputxxx{
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  >*{
+    display: inline-block;
+    select, input, .ant-select-selection{
+      border-radius: 0;
+      border: none;
+      border-bottom: 1px solid #cccccc;
+      background: none;
+      padding: 0;
+      margin: 2px;
+      height: 22px;
+    }
+  }
+}

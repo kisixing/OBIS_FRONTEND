@@ -1,0 +1,5 @@
+/node_modules
+dist/
+.vscode/
+
+stats_inner.json

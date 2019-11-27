@@ -1,0 +1,209 @@
+@font-face {
+	font-family: "SpecialForNum";
+	src: local("Helvetica Neue"), local("Monaco"), local("Verdana"), local("Consolas"), local("Menlo");
+	unicode-range: U+30-39;
+}
+body {
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	font-family: SpecialForNum, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Lantinghei SC", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Microsoft YaHei", "Microsoft Sans Serif", sans-serif;
+	font-size: 18px;
+}
+html, body {
+	background-color: #ebf1f6;
+}
+.font-12{
+  font-size: 0.75rem;
+}
+.font-14{
+  font-size: 0.875rem;
+}
+.font-16{
+  font-size: 1rem;
+}
+.font-18{
+  font-size: 1.125rem;
+}
+.text-center {
+  text-align: center;
+}
+.text-right  {
+	text-align: right;
+}
+.a-btn{
+	padding:3px 6px;
+}
+.danger-btn {
+	color:#ffffff;
+	background-color: #f5222d;
+	&:hover {
+		background-color: #ff4d4f;
+	}
+}
+.view-btn{
+	color:#ffffff;
+	background-color: #f5a623;
+	&:hover {
+		background-color: #f7b84f;
+	}
+}
+.edit-btn{
+	color:#ffffff;
+	background-color: #009688;
+	&:hover {
+		background-color: #87d068;
+	}
+}
+.primary-btn {
+	color:#ffffff;
+	background-color: #1890ff;
+	&:hover {
+		background-color: #40a9ff;
+	}
+}
+.blue-btn {
+	color:#1890ff;
+	background-color: #ebf2fb;
+	&:hover {
+		background-color: #d8e5f7;
+	}
+}
+.clearfix:after {
+	content: "";
+	clear: both;
+	display: block;
+	height: 0;
+	font-size: 0;
+	visibility: hidden;
+}
+::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	outline-offset: -1px;
+	background-color: rgba(0, 0, 0, 0.3);
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+}
+::-webkit-scrollbar-track {
+	background-color: rgba(0, 0, 0, 0.1);
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+}
+::-webkit-scrollbar-track-piece {
+	background-color: transparent;
+}
+.margin-TB-mid {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+.margin-R-3 {
+	margin-right: 3em;
+}
+.margin-R-2 {
+	margin-right: 2em;
+}
+.margin-R-1 {
+	margin-right: 1em;
+}
+.pad-LR-mid {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+.pad-T-mid {
+	padding-top: 1rem;
+}
+.pad-small {
+	padding: 5px;
+}
+.pad-mid {
+	padding: 15px;
+}
+.pad-L-0 {
+	padding-left: 0;
+}
+.main-pad-small{
+	padding: 1rem 5px 5px;
+}
+.bottom-btn {
+	position: absolute;
+	right: 1px;
+	bottom: 1px;
+	min-width: 6em;
+}
+.dis-table {
+	display: table-cell;
+}
+.colorDarkPurple {
+	color: #561b7e;
+}
+.colorDarkRed {
+	color: #9d2932;
+}
+.colorRed {
+	color: #ff3300;
+}
+.colorLightRed {
+	color: #ed5736;
+}
+.colorYellow {
+	color: #dbb512;
+}
+.colorGray {
+	color: #8d9bba;
+}
+.colorWhite {
+	color: #fff;
+}
+.bgWhite {
+	background: #fff;
+}
+.bgLightBlue{
+	background: #f4f9ff;
+}
+
+/* bug */ 
+.modal-withoutBTN {
+	.ant-confirm-btns {
+		display: none !important;
+	}
+}
+.ant-modal {
+	.ant-btn-lg {
+		font-size: 0.9rem;
+	}
+}
+.ant-select-selection__rendered .ant-select-search__field {
+	width: 100%;
+}
+.ant-input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0px 1000px rgb(255, 255, 255) inset;
+	-webkit-text-fill-color: #333;
+}
+/* ie8
+ */
+.ant-select-selection, 
+.ant-select-show-search {
+	z-index: 1\9;
+}
+ 
+.ant-select-dropdown {
+  padding-top: 2em\9;
+  z-index: 0\9;
+}
+:root .ant-select-dropdown {
+	padding-top: 0;
+}
+
+.pad_ie {
+	padding-bottom: 4em\9;
+}
+:root .pad_ie {
+	padding-bottom: 5px;
+}
+

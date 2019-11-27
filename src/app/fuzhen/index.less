@@ -1,0 +1,165 @@
+@colorWhite: #fff;
+@colorGray : #dfe1ee;
+
+.bgDOM {
+  position: fixed;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  width: 20.833%;
+  height: 2200px;
+  background-image: url("../../assets/static-img/blueBG.png");
+  background-repeat: repeat-x;
+  background-color: #44c5e3;
+}
+
+.fuzhen-left {
+  padding: 0.3rem 0.4rem 1rem;
+  color: @colorWhite;
+  .ant-collapse {
+    background: transparent;
+    border-color: transparent;
+    .ant-collapse-content {
+      background: transparent;
+      padding: 0;
+    }
+    .ant-collapse-header,
+    .ant-collapse-header .arrow ,
+    .ant-collapse-content-box {
+      color: @colorWhite;
+      font-size: 1rem;
+    }
+    .ant-collapse-header {
+      font-weight: bold;
+      text-align: center;
+      padding-left: 0;
+      font-size: 1.1rem;
+      text-shadow: 3px 3px 3px #5c7aad;
+      .arrow {
+        display: none !important;
+      }
+    }
+    
+    .ant-collapse-content-box {
+      border-top: 1px dotted #dfe1ee;
+    }
+    .ant-collapse-item {
+      border-width: 2px;
+    }
+  }
+  
+  .fuzhen-left-title {
+    text-align: center;
+    padding: 0.8rem 0 0.5rem;
+  }
+  .fuzhen-left-zd ol {
+    margin-bottom: 5px;
+    li {
+      position: relative;
+      padding-top: 2px;
+      padding-right: 30px;
+      padding-bottom: 2px;
+      line-height: 1.4em;
+      margin-bottom: 5px;
+      .delBTN{
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-weight: bold;
+        border-color: #89c4f9;
+        background-color: #78bcf9;
+      }
+      .character7 {
+        display: inline-block;
+        width: 8em;
+        overflow: hidden;
+        white-space: nowrap;
+        -o-text-overflow: ellipsis; /* for Opera */
+        text-overflow: ellipsis; /* for IE */
+      }
+    }
+  }
+  .fuzhen-left-input {
+    padding-top: 10px;
+    > * {
+      display: inline-block;
+    }
+  }
+  .fuzhen-left-button{
+    width: 100%;
+    color: @colorWhite;
+  }
+  .fuzhen-left-report, .fuzhen-left-plan {
+    border-top: 2px solid #4090ff;
+    min-height: 5rem;
+  }
+}
+
+
+.fuzhen-right {
+  position: relative;
+  
+  .form-item .label{
+    min-width: 60px;
+    text-align: right;
+    margin-bottom: 6px;
+  }
+
+  .is-not-empty{
+    select, input, .ant-select-selection{
+      font-size: 16px;
+      border-radius: 0;
+      border: none;
+      border-bottom: 1px solid #cccccc;
+      background: none;
+    }
+  }
+
+  .valid-error{
+    input {
+      color: red;
+      border: 1px solid orange;
+    }
+    .message {
+      color:red;
+      font-size: 0.5em;
+    }
+  }
+  .fuzhen-form {
+    position: relative;
+    background: @colorWhite;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
+    padding: 0.8em 0.5em 0.5em;
+    .fuzhen-form-TIT {
+      position: absolute;
+      color: #5c7aad;
+      top: -0.8rem;
+      text-shadow: 3px 3px 3px #ddd;
+    }
+  }
+}
+
+.fuzhenTable {
+  table {
+    padding: 0 !important;
+  }
+  .ant-table-tbody tr:first-child, .ant-table-tbody tr:first-child +tr {
+    background: #e1e2ee !important;
+  }
+  .ant-table-tbody tr:first-child td, .ant-table-tbody tr:first-child +tr td {   
+    border-color: #c9d1d7;
+    padding: 2px 8px;
+  }
+  .ant-table-tbody td {
+    text-align: center;
+  }
+}
+.delBModal {
+  .ant-btn {
+    font-size: 1rem;
+  }
+}
+
+
+
