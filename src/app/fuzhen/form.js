@@ -7,6 +7,7 @@ import * as baseData from './data';
 import formRender from '../../render/form';
 import {valid} from '../../render/common';
 import service from '../../service';
+import modal from '../../utils/modal';
 
 export default class FuzhenForm extends Component {
   constructor(props) {
@@ -58,7 +59,7 @@ export default class FuzhenForm extends Component {
         },
         {   
           columns:[
-            { name: 'ckzijzhz[自觉症状]', type: 'select', span: 12, showSearch:true,showArrow:false, options: baseData.ckzijzhzOptions }
+            { name: 'ckzijzhz[自觉症状]', type: 'combobox', span: 12, options: baseData.ckzijzhzOptions }
           ]
         },
         {
@@ -66,7 +67,7 @@ export default class FuzhenForm extends Component {
             { 
               span: 6, columns:[
                 { name: 'ckgongg(cm)[宫高]', type: 'input', span: 18 },
-                { type:  'button', span: 6, text: '曲线', color:'#1890ff', size:'small', onClick:(e,value,resolve)=>this.setState({openQX:resolve})}
+                { type:  'button', span: 6, text: '曲线', color:'#1890ff', size:'small', onClick:(e,value,resolve)=>modal({...this.renderQX(), onCancel:resolve})}
               ] 
             },
             {
@@ -260,15 +261,13 @@ export default class FuzhenForm extends Component {
    * 曲线
    */
   renderQX(){
-    const { openQX } = this.state;
-    const handelClick = () => {
-      this.setState({openQX:false},()=>openQX&&openQX());
+    return {
+      title:'曲线图',
+      content:'此功能还没有完成，正在努力开发中...',
+      footer:'',
+      width:1100,
+      maskClosable:true
     }
-    return (
-        <Modal title="曲线图" visible={openQX} width={1100} footer='' maskClosable={true} onCancel={() => handelClick()}>
-          此功能还没有完成，正在努力开发中...
-        </Modal>
-    )
   }
 
   /**
@@ -310,7 +309,7 @@ export default class FuzhenForm extends Component {
         <strong className="fuzhen-form-TIT">本次产检记录</strong>
         {formRender(entity, this.formConfig(), this.handleChange.bind(this))}
         <Button className="pull-right blue-btn bottom-btn" type="ghost" onClick={() => this.handleSave()}>保存</Button>
-        {this.renderQX()}
+        {/*this.renderQX()*/}
         {this.renderTreatment()}
         {this.renderYCQ()}
       </div>

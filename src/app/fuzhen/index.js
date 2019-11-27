@@ -53,7 +53,9 @@ export default class Patient extends Component {
         }
       ]
     };
+  }
 
+  componentDidMount(){
     Promise.all([service.fuzhen.userId().then(res => this.setState({
       info: res
     })),
@@ -69,10 +71,9 @@ export default class Patient extends Component {
     })).then(() => this.setState({ loadingTable: false }));
 
     /* service.fuzhen.getPlanList().then(res => this.setState({
-       zhenliaoPlan: res
-     }));
+        zhenliaoPlan: res
+    }));
      */
-
   }
 
   adddiagnosis() {
@@ -206,7 +207,7 @@ saveForm(entity) {
           ))}
         </ol>
         <div className="fuzhen-left-input font-16">
-          <Select size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
+          <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
             {baseData.diagnosis.map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
           </Select>
         </div>
@@ -251,7 +252,7 @@ saveForm(entity) {
     const initTable = (data, props) => tableRender(baseData.tableKey(), data, { editable: true, onChange: this.handelTableChange.bind(this), ...props });
     return (
       <div className="fuzhen-table">
-        {initTable(recentRvisit&&recentRvisit.slice(0, 2), { width: 1100, size: "small", pagination: false, className: "fuzhenTable", scroll: { x: 1600, y: 190 } })}
+        {initTable(recentRvisit&&recentRvisit.slice(0, 2), { width: 1100, size: "small", pagination: false, className: "fuzhenTable", scroll: { x: 1600, y: 220 } })}
         {!recentRvisit?<div style={{ height: '4em' }}><Spin />&nbsp;...</div>:null}
         <Modal title="产检记录" visible={recentRvisitShow} width={1100} footer='' maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           {initTable(recentRvisitAll, { width: 1100, className: "fuzhenTable" })}
