@@ -26,7 +26,7 @@ export default class extends Component {
           columns: [
             { name: 'jl[经量]', type: 'checkinput', span: 5, valid: 'required', options: baseData.slOptions },
             { span: 1 },
-            { name: 'tj[痛经]', type: 'checkinput', span: 5, valid: 'required', options: baseData.plOptions },
+            { name: 'tj[痛经]', type: 'checkinput', span: 7, valid: 'required', options: baseData.plOptions },
           ]
         },
         {
@@ -46,7 +46,7 @@ export default class extends Component {
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div className="guoqishi">
+      <div className="">
         {formRender(entity, this.config(), onChange)}
       </div>
     )

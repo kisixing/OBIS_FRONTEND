@@ -27,7 +27,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'id8[乙肝两对半]', type:'checkinput', options: baseData.ygOptions,span:8}
+            {name:'id8[乙肝两对半]', type:'checkinput', options: baseData.ygOptions,span:12}
           ]
         },
         {
@@ -57,7 +57,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'id8[女方地贫]', type:'checkinput', options: baseData.dpOptions,span:18}
+            {name:'id8[女方地贫]', type:'checkinput', options: baseData.dpOptions,span:16}
           ]
         },
         {
@@ -101,7 +101,7 @@ export default class extends Component{
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div className="guoqishi">
+      <div className="width_7">
         {formRender(entity, this.config(), onChange)}
       </div>
     )

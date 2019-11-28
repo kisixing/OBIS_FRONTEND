@@ -21,7 +21,7 @@ export default class extends Component{
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div className="guoqishi">
+      <div className="">
         {formRender(entity, this.config(), onChange)}
       </div>
     )
