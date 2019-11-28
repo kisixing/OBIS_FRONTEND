@@ -7,6 +7,9 @@ export default class extends Component {
   static Title = '本孕情况';
   constructor(props) {
     super(props);
+    this.state = {
+      entity: {}
+    };
   }
 
   config() {
@@ -31,25 +34,31 @@ export default class extends Component {
         {
           columns: [
             { name: 'rcbgsj[报告时间]', type: 'date', span: 5 },
-            { name: 'rctj[停经]', type: 'input', span: 5 },
+            { name: 'rctj(周)[停经]', type: 'input', span: 5 },
           ]
         },
         '早孕B超',
         {
           columns: [
             { name: 'zybgsj[报告时间]', type: 'date', span: 5 },
-            { name: 'zytj[停经]', type: 'input', span: 5 },
+            { name: 'zytj(周)[停经]', type: 'input', span: 5 },
           ]
         },
       ]
     };
   }
 
+  handleChange(e, { name, value, valid }) {
+    this.setState({
+      [name]: value
+    });
+  }
+
   render() {
-    const { entity, onChaneg } = this.props;
+    const { entity } = this.state;
     return (
       <div className="bingyunqingkuang">
-        {formRender(entity, this.config(), onChaneg)}
+        {formRender(entity, this.config(), this.handleChange.bind(this))}
       </div>
     )
   }

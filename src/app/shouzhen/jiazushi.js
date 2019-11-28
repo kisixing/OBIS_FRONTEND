@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import formRender from '../../render/form';
+import * as baseData from './data';
 
 export default class extends Component{
   static Title = '个人史家族史';
@@ -15,34 +16,26 @@ export default class extends Component{
     return {
       step: 1,
       rows: [
-        {name:'id1(kg)[ID1]', type:'input', valid: 'required|number|rang(10,100)'},
-        {
-          columns:[
-            {name:'id2[ID2]', type:'input', span:10, valid: 'number'},
-            {span:4},
-            {name:'id3[ID3]', type:'date', span:6},
-          ]
-        },
-        {
-          columns:[
-            {name:'id4[ID7]', type:'date', span:10},
-            {span:4},
-            {name:'id5[ID5]', type:'input', span:6, valid: 'number'},
-          ]
-        },
-        {name:'id6[ID6]', type:'input', valid: 'number'},
-        {name:'id7[ID7]', type:'input', valid: 'number'},
-        {name:'id8[ID8]', type:'checkinput', options:'A,B,C'.split(',')},
-        {name:'id8[ID8]', type: ['input','input']}
+        {name:'jbs[药物或食物过敏史]', type:'checkinput', valid: 'required',options:baseData.ywgmOptions},
+        {name:'wss[个人史]', type:'checkinput', valid: 'required',options:baseData.grsOptions},
+        {name:'sss[家族史]', type:'checkinput', valid: 'required',options:baseData.jzsOptions},
+        {name:'gjtp[遗传病（男方）]', type:'checkinput',options:baseData.ychOptions},
+        {name:'xzp[遗传病（女方）]', type:'checkinput', valid: 'required',options:baseData.ychOptions}
       ]
     };
   }
 
+  handleChange(e, {name,value,valid}){
+    this.setState({
+      [name]: value
+    });
+  }
+
   render(){
-    const { entity, onChaneg } = this.props;
+    const { entity } = this.state;
     return (
       <div>
-        {formRender(entity, this.config(), onChaneg)}
+        {formRender(entity, this.config(), this.handleChange.bind(this))}
       </div>
     )
   }
