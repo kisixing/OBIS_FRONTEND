@@ -44,6 +44,7 @@ myAxios.interceptors.response.use(response => {
         return response.data;
     }
 }, error => {
+    error.response = error.response || {};
     const status = error.response.status;
     const message = error.response.data ? error.response.data : '网络错误，请刷新重试';
     if (status && (status > 400  &&  status < 500)) {
