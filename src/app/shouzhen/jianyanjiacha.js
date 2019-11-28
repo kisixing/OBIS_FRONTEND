@@ -7,9 +7,6 @@ export default class extends Component{
   static Title = '检验检查';
   constructor(props) {
     super(props);
-    this.state = {
-      entity: {}
-    };
   }
 
   config(){
@@ -101,17 +98,11 @@ export default class extends Component{
     };
   }
 
-  handleChange(e, {name,value,valid}){
-    this.setState({
-      [name]: value
-    });
-  }
-
   render(){
-    const { entity } = this.state;
+    const { entity, onChaneg } = this.props;
     return (
-      <div>
-        {formRender(entity, this.config(), this.handleChange.bind(this))}
+      <div className="guoqishi">
+        {formRender(entity, this.config(), onChaneg)}
       </div>
     )
   }
