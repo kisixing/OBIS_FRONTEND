@@ -252,9 +252,7 @@ export default function(entity, config, onChange, {children, ...props}={}){
 export function fireForm(parentNode, type){
   return new Promise(resolve=>{
     Promise.all(Array.prototype.map.call(parentNode.querySelectorAll('.form-item'), el=>el.fireReact(type))).then(function(){
-      if(!parentNode.querySelector('.form-error')){
-        resolve();
-      }
+      resolve(!parentNode.querySelector('.form-error'));
     })
   });
 }

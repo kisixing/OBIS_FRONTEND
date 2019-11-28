@@ -38,17 +38,12 @@ export default class extends Component{
     };
   }
 
-  handleChange(e, {name,value,valid}){
-    this.setState({
-      [name]: value
-    });
-  }
 
   render(){
-    const { entity } = this.state;
+    const { entity, onChaneg } = this.props;
     return (
       <div>
-        {formRender(entity, this.config(), this.handleChange.bind(this))}
+        {formRender(entity, this.config(), onChaneg)}
       </div>
     )
   }

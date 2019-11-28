@@ -1,12 +1,6 @@
 import myAxios from '../utils/myAxios';
 
 export default {
-    /**
-     * 获取复诊页面数据
-     */
-    fuzhen: function(){
-        return this.userId().then(r => myAxios.get('/fuzhen.json?id=' + r.id));
-    },
 
     /**
      * 右侧诊断列表

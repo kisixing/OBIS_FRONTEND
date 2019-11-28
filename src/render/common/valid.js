@@ -9,15 +9,15 @@ const validationFns = {
     }
   },
   number: function (value){
-      if(!/^\d+$/.test(value)){
+      if(value && !/^\d+$/.test(value)){
           return '*只能输入数字';
       }
   },
   rang: function(min, max, value){
-      if(min && value<+min){
+      if(value && min && value<+min){
           return '不能小于' + min;
       }
-      if(max && value>+max){
+      if(value && max && value>+max){
           return '不能大于' + max;
       }
   },

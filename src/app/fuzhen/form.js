@@ -229,11 +229,13 @@ export default class FuzhenForm extends Component {
   handleSave(form) {
     const { onSave } = this.props;
     const { entity } = this.state;
-    fireForm(form,'valid').then(()=>{
-      onSave(entity).then(() => this.setState({
-        entity: { ...baseData.formEntity },
-        error: {}
-      }));
+    fireForm(form,'valid').then((valid)=>{
+      if(valid){
+        onSave(entity).then(() => this.setState({
+          entity: { ...baseData.formEntity },
+          error: {}
+        }));
+      }
     });
   }
 
