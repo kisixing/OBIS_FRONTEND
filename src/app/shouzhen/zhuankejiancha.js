@@ -15,25 +15,49 @@ export default class extends Component{
     return {
       step: 1,
       rows: [
-        {name:'id1(kg)[ID1]', type:'input', valid: 'required|number|rang(10,100)'},
         {
           columns:[
-            {name:'id2[ID2]', type:'input', span:10, valid: 'number'},
-            {span:4},
-            {name:'id3[ID3]', type:'date', span:6},
+            {name:'id2[外阴]', type:'input', span:5, valid: 'number'},
+            {span:1},
+            {name:'id3[阴道]', type:'date', span:5},
           ]
         },
         {
           columns:[
-            {name:'id4[ID7]', type:'date', span:10},
-            {span:4},
-            {name:'id5[ID5]', type:'input', span:6, valid: 'number'},
+            {name:'id2[宫颈]', type:'input', span:5},
+            {span:1},
+            {name:'id3[子宫]', type:'input', span:5},
+            {span:1},
+            {name:'id3[附件]', type:'input', span:5},
           ]
         },
-        {name:'id6[ID6]', type:'input', valid: 'number'},
-        {name:'id7[ID7]', type:'input', valid: 'number'},
-        {name:'id8[ID8]', type:'checkinput', options:'A,B,C'.split(',')},
-        {name:'id8[ID8]', type: ['input','input']}
+        {
+          columns:[
+            {name:'id4(cm)[宫高]', type:'date', span:5, valid: 'number'},
+            {span:1},
+            {name:'id5(cm)[腹围]', type:'input', span:5, valid: 'number'},
+          ]
+        },
+        {
+          columns:[
+            {name:'id4(次/分)[胎心]', type:'date', span:5},
+            {span:1},
+            {name:'id5[先露]', type:'input', span:5},
+            {span:1},
+            {name:'id5[胎位]', type:'input', span:5},
+          ]
+        },
+        {
+          columns:[
+        {name:'id6(cm)[髂前上棘间径]', type:'input', span:5},
+        {span:1},
+        {name:'id7(cm)[髂棘间径]', type:'input', span:5},
+        {span:1},
+        {name:'id8(cm)[骶耻外径]', type:'input', span:5 },
+        {span:1},
+        {name:'id8(cm)[坐骨结节间径]', type: 'input', span:5}
+      ]
+    },
       ]
     };
   }

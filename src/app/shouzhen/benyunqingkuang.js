@@ -34,14 +34,14 @@ export default class extends Component {
         {
           columns: [
             { name: 'rcbgsj[报告时间]', type: 'date', span: 5 },
-            { name: 'rctj[停经]', type: 'input', span: 5 },
+            { name: 'rctj(周)[停经]', type: 'input', span: 5 },
           ]
         },
         '早孕B超',
         {
           columns: [
             { name: 'zybgsj[报告时间]', type: 'date', span: 5 },
-            { name: 'zytj[停经]', type: 'input', span: 5 },
+            { name: 'zytj(周)[停经]', type: 'input', span: 5 },
           ]
         },
       ]

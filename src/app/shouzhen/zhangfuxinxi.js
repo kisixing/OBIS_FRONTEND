@@ -20,15 +20,15 @@ export default class extends Component {
             { name: 'zfxm[丈夫姓名]', type: 'input', span: 5 },
             { span: 1 },
             { name: 'zfnl[年龄]', type: 'input', span: 5 },
-            { span: 1 },
-            { name: 'zfgj[国籍]', type: 'input', span: 6 },
           ]
         },
         {
-          columns: [
+          columns: [           
+            { name: 'zfgj[国籍]', type: 'input', span: 5 },
+            { span: 1 },
             { name: 'zfjg[籍贯]', type: 'input', span: 5 },
             { span: 1 },
-            { name: 'zfmz[民族]', type: 'input', span: 5 },
+            { name: 'zfmz[民族]', type: 'input', span: 4 },
             { span: 1 },
             { name: 'zfzy[职业]', type: 'input', span: 6 },
           ]
@@ -37,26 +37,25 @@ export default class extends Component {
           columns: [
             { name: 'zhsj[手机]', type: 'input', span: 5 },
             { span: 1 },
-            { name: 'zhzhlx[证件类型]', type: 'select', span: 5, options: baseData.zjlxOptions },
+            { name: 'gh[固话]', type: 'input', span: 5, valid: 'number' },
+            { span: 1 },
+            { name: 'zhzhlx[证件类型]', type: 'select', span: 4, options: baseData.zjlxOptions },
             { span: 1 },
             { name: 'zfzjh[证件号]', type: 'input', span: 6 },
           ]
         },
         {
           columns: [
-            { name: 'zhhkdz[户口地址]', type: 'input', span: 18 }
+            { name: 'zhhkdz[户口地址]', type: 'input', span: 11 }
           ]
         },
         {
           columns: [
-            { name: 'zfcy(只/天)[抽烟]', type: 'input', span: 5 },
+            { name: 'zfcy(只/天)[抽烟]', type: 'input', span: 4 },
+            { span: 2 },
+            { name: 'zfhj(ml/天)[喝酒]', type: [{ type: 'select', options: baseData.jiuOptions }, 'input'], span: 5 },
             { span: 1 },
-            { name: 'zfhj(ml/天)[喝酒]', type: [{ type: 'select', options: baseData.jiuOptions }, 'input'], span: 6 }
-          ]
-        },
-        {
-          columns: [
-            { name: 'zfxyhb[现有何病]', type: 'input', span: 18 }
+            { name: 'zfxyhb[现有何病]', type: 'input', span: 11 }
           ]
         },
       ]
