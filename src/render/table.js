@@ -109,7 +109,7 @@ class MTable extends Component{
     return (
       <div>
         {buttons ? <Button.Group>
-          {buttons.map((btn,i)=><Button key={`btn-${i}`} onClick={btn.fn}>{btn.title}</Button>)}
+          {buttons.map((btn,i)=><Button key={`btn-${i}`} size="small" onClick={btn.fn}>{btn.title}</Button>)}
         </Button.Group> : null}
         <Table {...props} onRowClick={row=>this.onRowClick(row)} rowClassName={row=>this.rowClassName(row)} />
       </div>
@@ -160,7 +160,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
           if(item[key] !== value){
             item[key] = value;
             onChange(e,{item,value,key,row,column});
-            onRowChange('modify', item)
+            onRowChange('modify', item, row);
           }
         }
         return <TableItem {...rest} editable={editable} value={value} onChange={handleChange}/>

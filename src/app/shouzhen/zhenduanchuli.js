@@ -55,9 +55,11 @@ export default class extends Component{
 
 
   handleChange(e, {name,value,valid}){
+    const { entity, onChaneg } = this.props;
     this.setState({
       [name]: value
     });
+    onChaneg(e, {name,value,valid}, entity)
   }
 
   render(){
