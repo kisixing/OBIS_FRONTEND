@@ -21,7 +21,7 @@ function modal(type, title) {
   //   style: { left: '-300px', fontSize: '18px' },
   // });
   // setTimeout(() => modal.destroy(), 2000);
-  message[type](title, 2000)
+  message[type](title, 3)
 }
 
 export default class Patient extends Component {
