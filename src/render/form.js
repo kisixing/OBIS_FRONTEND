@@ -12,8 +12,23 @@ function render(type, props){
     return editor(props, /-(.*)$/.test(type)&&/-(.*)$/.exec(type)[1]);
   }
   if(editor === 'table'){
-    const {options, value=[{}], ...rest} = props;
-    return table(options, value, rest);
+    const {options, value=[{}], onChange, ...rest} = props;
+    const onRowChange = (type, item, row) => {
+      let list  = value || [];
+      switch(type){
+        case 'create':
+          list.push(item);
+          break;
+        case 'modify':
+          list[row] = item;
+          break;
+        case 'delete':
+          list = list.filter(i=>i!==item);
+          break;
+      }
+      onChange({}, list);
+    }
+    return table(options, value, {...rest, onChange, onRowChange});
   }
   if(editor){
     if(/^:/.test(editor)){
@@ -116,7 +131,7 @@ class FormItem extends Component{
       this.setState({
         error: error
       }, () => resolve());
-      if(JSON.stringify(entity[name]) !== JSON.stringify(value)){
+      if(onChange && JSON.stringify(entity[name]) !== JSON.stringify(value)){
         onChange(e, {name, value, error})
       }
     });

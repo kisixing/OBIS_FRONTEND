@@ -13,16 +13,16 @@ export default class extends Component{
     return {
       step: 1,
       rows: [
-        {name:'sss', type:'table', valid: 'required',pagination: false,options:baseData.pregnanciesColumns},
+        {name:'sss', type:'table', valid: 'required',pagination: false,editable:true,options:baseData.pregnanciesColumns},
       ]
     };
   }
 
   render(){
-    const { entity, onChaneg } = this.props;
+    const { entity, onChange } = this.props;
     return (
       <div className="guoqishi">
-        {formRender(entity, this.config(), onChaneg)}
+        {formRender(entity, this.config(), onChange)}
       </div>
     )
   }

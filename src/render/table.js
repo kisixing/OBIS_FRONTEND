@@ -105,11 +105,12 @@ class MTable extends Component{
   }
 
   render(){
+    const {selected} = this.state;
     const { buttons, ...props } = this.props;
     return (
       <div>
         {buttons ? <Button.Group>
-          {buttons.map((btn,i)=><Button key={`btn-${i}`} size="small" onClick={btn.fn}>{btn.title}</Button>)}
+          {buttons.map((btn,i)=><Button key={`btn-${i}`} size="small" onClick={()=>btn.fn(selected)}>{btn.title}</Button>)}
         </Button.Group> : null}
         <Table {...props} onRowClick={row=>this.onRowClick(row)} rowClassName={row=>this.rowClassName(row)} />
       </div>
@@ -159,8 +160,8 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
         const handleChange = (e, value) =>{
           if(item[key] !== value){
             item[key] = value;
-            onChange(e,{item,value,key,row,column});
-            onRowChange('modify', item, row);
+            onChange(e,{item,value,key,row:row-rows.length,column});
+            onRowChange('modify', item, row-rows.length);
           }
         }
         return <TableItem {...rest} editable={editable} value={value} onChange={handleChange}/>
@@ -169,7 +170,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
   });
   const extendProps = {
     onRowSave: item=> onRowChange('modify', item),
-    buttons: [{title:'添加',fn:()=>onRowChange('delete', {})},{title:'删除',fn:item=>onRowChange('delete', item)}]
+    buttons: [{title:'添加',fn:()=>onRowChange('create', {})},{title:'删除',fn:item=>onRowChange('delete', item)}]
   }
   return (
     <MTable loading={!data} {...extendProps}  {...events(props)} className={`table-render ${className}`} size="small" bordered={true} dataSource={rows.concat(dataSource)} showHeader={false} columns={columns} />

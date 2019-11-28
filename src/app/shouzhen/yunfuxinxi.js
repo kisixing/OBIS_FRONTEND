@@ -53,10 +53,10 @@ export default class extends Component {
   }
 
   render(){
-    const { entity, onChaneg } = this.props;
+    const { entity, onChange } = this.props;
     return (
       <div className="guoqishi">
-        {formRender(entity, this.config(), onChaneg)}
+        {formRender(entity, this.config(), onChange)}
       </div>
     )
   }
