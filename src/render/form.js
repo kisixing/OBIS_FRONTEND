@@ -43,7 +43,7 @@ const AddResize = (function(fn){
 class FormItem extends Component{
   constructor(props){
     super(props);
-    const { entity, type, name = '' } = props;
+    const { entity, name = '' } = props;
     const field = name.replace(/\(.*\)/,'').replace(/\[.*\]/,'');
     
     this.state = {
@@ -75,6 +75,21 @@ class FormItem extends Component{
 
   componentDidMount(){
     this.componentWillUnmount = AddResize(()=>this.resize())
+    this.refs.formItem.fireReact = (type,...args) => {
+      return new Promise(resolve=>{
+        switch(type){
+          case 'valid': 
+            this.onBlur(...args).then(resolve)
+          break;
+          case 'reset': 
+            this.setState({
+              dirty: false,
+              error: ''
+            },resolve);
+          break;
+        }
+      });
+    }
   }
 
   componentWillReceiveProps(newProps){
@@ -94,15 +109,17 @@ class FormItem extends Component{
   }
 
   onBlur = (e) => {
-    const { entity, valid, onChange } = this.props;
-    const { name, value } = this.state;
-    const error = validFn(valid, value);
-    this.setState({
-      error: error
+    return new Promise(resolve => {
+      const { entity, valid, onChange } = this.props;
+      const { name, value } = this.state;
+      const error = validFn(valid, value);
+      this.setState({
+        error: error
+      }, () => resolve());
+      if(JSON.stringify(entity[name]) !== JSON.stringify(value)){
+        onChange(e, {name, value, error})
+      }
     });
-    if(JSON.stringify(entity[name]) !== JSON.stringify(value)){
-      onChange(e, {name, value, error})
-    }
   }
 
   renderEditor(){
@@ -113,16 +130,20 @@ class FormItem extends Component{
       const span = Math.floor(24/type.length);
       const data = value || [];
       const handleChange = i => (e, v) => {data[i] = v; return this.onChange(e, data);};
+      const types = type.map(t=>({
+        ...t,
+        type: (t.type||t).replace(/\(.*\)/,''),
+        unit: /\(.*\)/.test(t.type||t) && /\((.*)\)/.exec(t.type||t)[1] || t.unit
+      }));
+      const enitorWidth = width - types.filter(i=>i.unit).length * 12;
       return (
         <Row type="flex">
-          {type.map((t,index)=>{
-            const tType = (t.type||t).replace(/\(.*\)/,'');
-            const tUnit = /\(.*\)/.test(t.type||t) && /\((.*)\)/.exec(t.type||t)[1];
-            const tWidth = width*(t.span || span)/24 - ((index+1<type.length||tUnit)?8:0);
+          {types.map((t,index)=>{
+            const tWidth = enitorWidth*(t.span || span)/24;
             return (
               <Col span={t.span || span} key={`col-${name}${index}`}>
-                {render(tType, {...props, ...t, name: `${name}${index}`, value:data[index],style:{width:tWidth}, onChange: handleChange(index), onBlur: this.onBlur.bind(this)})}
-                {tUnit?tUnit:null}
+                {render(t.type, {...props, ...t, name: `${name}${index}`, value:data[index],style:{width:tWidth}, onChange: handleChange(index), onBlur: this.onBlur.bind(this)})}
+                {t.unit?t.unit:null}
               </Col>
           )})}
         </Row>
@@ -226,4 +247,14 @@ export default function(entity, config, onChange, {children, ...props}={}){
     }
     return null;
   }
+}
+
+export function fireForm(parentNode, type){
+  return new Promise(resolve=>{
+    Promise.all(Array.prototype.map.call(parentNode.querySelectorAll('.form-item'), el=>el.fireReact(type))).then(function(){
+      if(!parentNode.querySelector('.form-error')){
+        resolve();
+      }
+    })
+  });
 }

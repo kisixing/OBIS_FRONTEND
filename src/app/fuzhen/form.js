@@ -4,7 +4,7 @@ import { Row, Col, Input, Button, message, Table, Modal, Spin, Tree, DatePicker 
 
 import * as util from './util';
 import * as baseData from './data';
-import formRender from '../../render/form';
+import formRender, {fireForm} from '../../render/form';
 import {valid} from '../../render/common';
 import service from '../../service';
 import modal from '../../utils/modal';
@@ -226,13 +226,15 @@ export default class FuzhenForm extends Component {
     })
   }
 
-  handleSave() {
+  handleSave(form) {
     const { onSave } = this.props;
     const { entity } = this.state;
-    onSave(entity).then(() => this.setState({
-      entity: { ...baseData.formEntity },
-      error: {}
-    }));
+    fireForm(form,'valid').then(()=>{
+      onSave(entity).then(() => this.setState({
+        entity: { ...baseData.formEntity },
+        error: {}
+      }));
+    });
   }
 
   /**
@@ -308,7 +310,7 @@ export default class FuzhenForm extends Component {
       <div className="fuzhen-form">
         <strong className="fuzhen-form-TIT">本次产检记录</strong>
         {formRender(entity, this.formConfig(), this.handleChange.bind(this))}
-        <Button className="pull-right blue-btn bottom-btn" type="ghost" onClick={() => this.handleSave()}>保存</Button>
+        <Button className="pull-right blue-btn bottom-btn" type="ghost" onClick={() => this.handleSave(document.querySelector('.fuzhen-form'))}>保存</Button>
         {/*this.renderQX()*/}
         {this.renderTreatment()}
         {this.renderYCQ()}

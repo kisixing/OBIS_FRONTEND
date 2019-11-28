@@ -273,10 +273,7 @@ saveForm(entity) {
         {this.renderLeft()}
         <div className="fuzhen-right ant-col-19 main-pad-small">
           {this.renderTable()}
-          {loading ? 
-          <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : 
           <FuzhenForm info={info} diagnosis={diagnosis} onSave={data => this.saveForm(data)} onChangeInfo={this.onChangeInfo.bind(this)} />
-          }
           <p className="pad_ie">&nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span></p>
         </div>
       </Page>

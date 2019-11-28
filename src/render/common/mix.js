@@ -12,7 +12,7 @@ export function mix({value, options, width, ...props}){
 
 export function checkinput(props){
   const { name, options = [], onChange, onBlur, value = [], ...rest } = props;
-  const span = Math.max(4, 24 / (options.length || 1));
+  const span = Math.max(6, 24 / (options.length || 1));
   
   const handleCheck = (e,index) => {
     value[index][0] = e.target.checked;
