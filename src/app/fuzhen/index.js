@@ -115,15 +115,23 @@ export default class Patient extends Component {
     })
   }
 
-  handelTableChange(...args) {
-    console.log('change table :', ...args);
+  handelTableChange(type, row) {
+    service.fuzhen.recentRvisit(row).then(()=>{
+      // service.fuzhen.getRecentRvisit().then(res => this.setState({
+      //   recentRvisit: res.list
+      // }));
+  
+      // service.fuzhen.getRvisitPage().then(res => this.setState({
+      //   recentRvisitAll: res.list
+      // }));
+    });
   }
 
   onChangeInfo(info) {
     this.setState({ info: info }, () => service.fuzhen.fireWatch(info));
   }
 
-saveForm(entity) {
+  saveForm(entity) {
     this.setState({ loading: true });
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then(() => {
@@ -249,7 +257,7 @@ saveForm(entity) {
   renderTable() {
     const { recentRvisit, recentRvisitAll, recentRvisitShow } = this.state;
 
-    const initTable = (data, props) => tableRender(baseData.tableKey(), data, { editable: true, onChange: this.handelTableChange.bind(this), ...props });
+    const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons:null, editable: true, onRowChange: this.handelTableChange.bind(this), ...props });
     return (
       <div className="fuzhen-table">
         {initTable(recentRvisit&&recentRvisit.slice(0, 2), { width: 1100, size: "small", pagination: false, className: "fuzhenTable", scroll: { x: 1600, y: 220 } })}

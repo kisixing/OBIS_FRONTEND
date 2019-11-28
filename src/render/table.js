@@ -82,6 +82,41 @@ class TableItem extends Component{
 }
 
 
+class MTable extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      selected: null
+    }
+  }
+
+  onRowClick(record){
+    const { onRowSave } = this.props;
+    const {selected} = this.state;
+    if(selected && record !== selected){
+      onRowSave(selected);
+    }
+    this.setState({selected: record});
+  }
+
+  rowClassName(record){
+    const {selected} = this.state;
+    return selected===record ? 'row-selected' : '';
+  }
+
+  render(){
+    const { buttons, ...props } = this.props;
+    return (
+      <div>
+        {buttons ? <Button.Group>
+          {buttons.map((btn,i)=><Button key={`btn-${i}`} onClick={btn.fn}>{btn.title}</Button>)}
+        </Button.Group> : null}
+        <Table {...props} onRowClick={row=>this.onRowClick(row)} rowClassName={row=>this.rowClassName(row)} />
+      </div>
+    )
+  }
+}
+
 function getheades(columns, level = 0){
   const nextColumns = Array.prototype.concat.apply([], columns.map(k=>k.children||[k]));
   const childrenCount = column =>{
@@ -100,7 +135,8 @@ function getheades(columns, level = 0){
   return [columns]
 }
 
-export default function(keys, data, {onChange, className, editable, ...props}){
+let changeItemTimeout = null;
+export default function(keys, data, {onChange = ()=>{}, onRowChange, className, editable, ...props}){
   const dataSource = data ? data : [];
   const rows = getheades(keys);
   const columns = rows[rows.length-1].map(({key, title, width, ...rest}, column)=>{
@@ -121,15 +157,22 @@ export default function(keys, data, {onChange, className, editable, ...props}){
           }
         }
         const handleChange = (e, value) =>{
-          item[key] = value;
-          onChange(e,{item,value,key,row,column});
+          if(item[key] !== value){
+            item[key] = value;
+            onChange(e,{item,value,key,row,column});
+            onRowChange('modify', item)
+          }
         }
         return <TableItem {...rest} editable={editable} value={value} onChange={handleChange}/>
       }
     }
   });
+  const extendProps = {
+    onRowSave: item=> onRowChange('modify', item),
+    buttons: [{title:'添加',fn:()=>onRowChange('delete', {})},{title:'删除',fn:item=>onRowChange('delete', item)}]
+  }
   return (
-    <Table {...events(props)} className={`table-render ${className}`} size="small" bordered={true} dataSource={rows.concat(dataSource)} showHeader={false} columns={columns} />
+    <MTable loading={!data} {...extendProps}  {...events(props)} className={`table-render ${className}`} size="small" bordered={true} dataSource={rows.concat(dataSource)} showHeader={false} columns={columns} />
   );
 }
 

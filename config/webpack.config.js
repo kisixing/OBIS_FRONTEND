@@ -119,6 +119,10 @@ const commonConfig = {
             name: "runtime",
             minChunks: Infinity,
         }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "runtime",
+            minChunks: Infinity,
+        }),
         new HtmlWebpackPlugin({
             filename: "index.html",
             template: dir("src/index.html"),

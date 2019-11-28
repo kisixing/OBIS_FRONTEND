@@ -48,6 +48,13 @@ export default {
         return myAxios.get('/Obcloud/treatTemp/list.json' + location.search);
     },
 
+    
+    /**
+     * 修改表格数据
+     */
+    recentRvisit: function(entity){
+        return this.userId().then(r => myAxios.post('/Obcloud/outpatient/recentRvisit.json?id=' + r.id, entity));
+    },
     /**
      * 提交数据
      */

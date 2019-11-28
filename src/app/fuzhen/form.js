@@ -299,9 +299,18 @@ export default class FuzhenForm extends Component {
       })
     };
 
+    const treeNodes = initTree(0);
+
     return (
-      <Modal title="处理模板" closable visible={openTemplate} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked))}>
-        <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{initTree(0)}</Tree>
+      <Modal title="处理模板" closable visible={openTemplate} width={800} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked))}>
+        <Row>
+          <Col span={12}>
+            <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
+          </Col>
+          <Col span={12}>
+            <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes.slice(treeNodes.length/2)}</Tree>
+          </Col>
+        </Row>
       </Modal>
     )
   }
