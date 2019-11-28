@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Select, Button, Popover, Modal, Spin, Timeline, Collapse } from 'antd';
+import { Select, Button, Popover, Modal, Spin, Timeline, Collapse, message } from 'antd';
 
 import tableRender from '../../render/table';
 import FuzhenForm from './form';
@@ -11,16 +11,17 @@ import "./index.less";
 
 const Panel = Collapse.Panel;
 
-function modal(type, title, content = null) {
-  const modal = Modal[type]({
-    title,
-    content,
-    className: 'modal-withoutBTN',
-    closable: false,
-    width: '260',
-    style: { left: '-300px', fontSize: '18px' },
-  });
-  setTimeout(() => modal.destroy(), 2000);
+function modal(type, title) {
+  // const modal = Modal[type]({
+  //   title,
+  //   content,
+  //   className: 'modal-withoutBTN',
+  //   closable: false,
+  //   width: '260',
+  //   style: { left: '-300px', fontSize: '18px' },
+  // });
+  // setTimeout(() => modal.destroy(), 2000);
+  message[type](title, 2000)
 }
 
 export default class Patient extends Component {
