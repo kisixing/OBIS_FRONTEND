@@ -110,5 +110,6 @@ export const shoushushiColumns = [
   {
 		title: '术后病理',
 		key: 'shbl',
+		type: 'input'
 	},
 ]
