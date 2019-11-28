@@ -126,7 +126,7 @@ const commonConfig = {
         new HtmlWebpackPlugin({
             filename: "index.html",
             template: dir("src/index.html"),
-            title: "中山1院",
+            title: "中山大学附属第一医院",
             chunks: ["runtime", "shim", "vendor", "index"],
             chunksSortMode: "manual",
             inject: true,
