@@ -185,6 +185,18 @@ html, body {
 	-webkit-box-shadow: 0 0 0px 1000px rgb(255, 255, 255) inset;
 	-webkit-text-fill-color: #333;
 }
+.ant-checkbox .ant-checkbox-inner {
+	// 设置 checkbox 的大小
+	width: 20px;
+	height: 20px;
+	// 设置对勾的 大小 和 位置
+	&::after{
+			top: 0px;
+			left: 6px;
+			width: 8px;
+			height: 14px;
+	}
+}
 /* ie8
  */
 .ant-select-selection, 
