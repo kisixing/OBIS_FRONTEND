@@ -60,6 +60,7 @@ export default class App extends Component {
           <div><strong>孕产:</strong>1孕2产</div>
           <div><strong>预产期:</strong>{gesmoc}</div>
           <div><strong>就诊卡:</strong>{usermcno}</div>
+          <div><strong>产检编号:</strong>{usermcno}</div>
         </div>
         <p className="patient-Info_tab">
           {routers.map((item, i) => <Button key={"mune" + i}

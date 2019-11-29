@@ -7,6 +7,7 @@ import Page from '../../render/page';
 import service from '../../service';
 import * as baseData from './data';
 
+import "../index.less";
 import "./index.less";
 
 const Panel = Collapse.Panel;
@@ -56,7 +57,7 @@ export default class Patient extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     Promise.all([service.getuserDoc().then(res => this.setState({
       info: res
     })),
@@ -117,11 +118,11 @@ export default class Patient extends Component {
   }
 
   handelTableChange(type, row) {
-    service.fuzhen.recentRvisit(row).then(()=>{
+    service.fuzhen.recentRvisit(row).then(() => {
       // service.fuzhen.getRecentRvisit().then(res => this.setState({
       //   recentRvisit: res.list
       // }));
-  
+
       // service.fuzhen.getRvisitPage().then(res => this.setState({
       //   recentRvisitAll: res.list
       // }));
@@ -143,7 +144,7 @@ export default class Patient extends Component {
         // }));
 
         // 使用mock时候才用这个
-        const {recentRvisit,recentRvisitAll} = this.state;
+        const { recentRvisit, recentRvisitAll } = this.state;
         this.setState({
           loading: false,
           recentRvisit: [entity].concat(recentRvisit),
@@ -152,7 +153,7 @@ export default class Patient extends Component {
         //使用mock时候才用这个
 
         resolve();
-      }, () => this.setState({loading: false}));
+      }, () => this.setState({ loading: false }));
     })
 
   }
@@ -208,8 +209,10 @@ export default class Patient extends Component {
           {diagnosis.map((item, i) => (
             <li key={`diagnos-${item.id}-${Date.now()}`}>
               <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
-                <span title={title(item)}><span>{i + 1}、</span>
-                <span className={item.highriskmark ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span></span>
+                <div title={title(item)}>
+                  <span className="font-12">{i + 1}、</span>
+                  <span className={item.highriskmark ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
+                </div>
               </Popover>
               <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => delConfirm(item)} />
             </li>
@@ -233,7 +236,7 @@ export default class Patient extends Component {
         <Collapse defaultActiveKey={collapseActiveKey}>
           <Panel header="诊 断" key="1">
             {loading ?
-              <div style={{ height: '2em',background: '#bbddfc' }}><Spin />&nbsp;...</div> : this.renderZD()
+              <div style={{ height: '2em', background: '#bbddfc' }}><Spin />&nbsp;...</div> : this.renderZD()
             }
           </Panel>
           <Panel header="缺 少 检 验 报 告" key="2">
@@ -247,7 +250,7 @@ export default class Patient extends Component {
                   <p className="font-16">{item.main}</p>
                 </Timeline.Item>
               ))
-              : '无'}
+                : '无'}
             </Timeline>
           </Panel>
         </Collapse>
@@ -258,16 +261,16 @@ export default class Patient extends Component {
   renderTable() {
     const { recentRvisit, recentRvisitAll, recentRvisitShow } = this.state;
 
-    const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons:null, editable: true, onRowChange: this.handelTableChange.bind(this), ...props });
+    const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this), ...props });
     return (
       <div className="fuzhen-table">
-        {initTable(recentRvisit&&recentRvisit.slice(0, 2), { width: 1100, size: "small", pagination: false, className: "fuzhenTable", scroll: { x: 2000, y: 220 } })}
-        {!recentRvisit?<div style={{ height: '4em' }}><Spin />&nbsp;...</div>:null}
+        {initTable(recentRvisit && recentRvisit.slice(0, 2), { width: 1100, size: "small", pagination: false, className: "fuzhenTable", scroll: { x: 2000, y: 220 } })}
+        {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" visible={recentRvisitShow} width="100%" footer='' maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 2000 } })}
         </Modal>
         <div className="clearfix">
-          {recentRvisitAll&&recentRvisitAll.length > 2 ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={() => this.setState({ recentRvisitShow: true })}>更多产检记录</Button> : <br />}
+          {recentRvisitAll && recentRvisitAll.length > 2 ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={() => this.setState({ recentRvisitShow: true })}>更多产检记录</Button> : <br />}
         </div>
       </div>
     );

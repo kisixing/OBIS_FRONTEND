@@ -1,12 +1,13 @@
 @colorWhite: #fff;
 @colorGray : #dfe1ee;
+@widthLeft : 220px;
 
 .bgDOM {
   position: fixed;
   z-index: 0;
   left: 0;
   top: 0;
-  width: 20.833%;
+  width: @widthLeft;
   height: 2200px;
   background-image: url("../../assets/static-img/blueBG.png");
   background-repeat: repeat-x;
@@ -14,6 +15,7 @@
 }
 
 .fuzhen-left {
+  width: @widthLeft;
   padding: 0.3rem 0.4rem 1rem;
   color: @colorWhite;
   .ant-collapse {
@@ -61,6 +63,9 @@
       padding-bottom: 2px;
       line-height: 1.4em;
       margin-bottom: 5px;
+      &>div > span {
+        vertical-align: top;
+      }
       .delBTN{
         position: absolute;
         top: 0;
@@ -98,6 +103,7 @@
 
 .fuzhen-right {
   position: relative;
+  width:calc(100% - @widthLeft);
   
   .form-item .label{
     min-width: 60px;
@@ -145,7 +151,7 @@
     padding: 0 !important;
   }
   .ant-table-tbody tr:first-child, .ant-table-tbody tr:first-child +tr {
-    background: #e1e2ee !important;
+    background: #F1F9FE !important;
   }
   .ant-table-tbody tr:first-child td, .ant-table-tbody tr:first-child +tr td {   
     border-color: #c9d1d7;
