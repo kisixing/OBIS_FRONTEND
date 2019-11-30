@@ -27,7 +27,6 @@ const commonConfig = {
             "media-match", // 支持 antd 所必须
         ],
         lib: ['axios', 'antd', 'react', 'react-dom', 'react-router-dom', 'history'],
-        vendor: ['react', 'react-dom', 'react-router-dom', 'history']
     },
     output: {
         path: dir("dist"),
@@ -115,12 +114,9 @@ const commonConfig = {
             }
         ]),
         new webpack.optimize.CommonsChunkPlugin({
-            name: "vendor",
-            minChunks: Infinity,
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: "runtime",
-            minChunks: Infinity,
+            name: "baseChunk",//
+            minChunks: 2,
+            chunks: ["index", "lib"]
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: "runtime",
@@ -130,7 +126,7 @@ const commonConfig = {
             filename: "index.html",
             template: dir("src/index.html"),
             title: "中山大学附属第一医院",
-            chunks: ["runtime", "shim", "vendor", "index"],
+            chunks: ["runtime", "shim", "baseChunk","index"],
             chunksSortMode: "manual",
             inject: true,
             xhtml: true,
