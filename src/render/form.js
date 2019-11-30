@@ -12,7 +12,7 @@ function render(type, props){
     return editor(props, /-(.*)$/.test(type)&&/-(.*)$/.exec(type)[1]);
   }
   if(editor === 'table'){
-    const {options, value=[{}], onChange, ...rest} = props;
+    const {options, value=[{}], onChange, onBlur, ...rest} = props;
     const onRowChange = (type, item, row) => {
       let list  = value || [];
       switch(type){
@@ -26,9 +26,10 @@ function render(type, props){
           list = list.filter(i=>i!==item);
           break;
       }
-      onChange({}, list);
+      onChange({}, list).then(()=>onBlur({}));
     }
-    return table(options, value, {...rest, onChange, onRowChange});
+    const headleChange = (e,{item,row}) => onRowChange('modify',item, row);
+    return table(options, value, {...rest, onChange:headleChange, onRowChange});
   }
   if(editor){
     if(/^:/.test(editor)){

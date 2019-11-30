@@ -53,9 +53,11 @@ export default class Patient extends Component {
         const next = tabs[tabs.indexOf(tab) + 1] || {key: step}
         fireForm(form,'valid').then((valid)=>{
             if(valid){
-                //service.shouzhen.saveForm(tab.key, tab.entity).then(() => {
+                service.shouzhen.saveForm(tab.key, tab.entity).then(() => {
                     this.setState({step:key || next.key});
-                //});
+                }, ()=>{ // TODO: 仅仅在mock时候用
+                    this.setState({step:key || next.key});
+                });
             }else{
                 tab.error = true;
                 if(key){

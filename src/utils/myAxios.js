@@ -10,6 +10,26 @@ const getUrl = function (url){
     }
 };
 
+/**
+ * 移除所有以$开头的属性,用来模拟
+ */
+const remove$Property = function (obj){
+    if(obj && typeof obj === 'object'){
+        for(var p in obj){
+            if(/^\$/.test(p)){
+                try{
+                    delete obj[p];
+                }catch(e){
+                    obj[p] = undefined;
+                }
+            }else{
+                remove$Property(obj[p]);
+            }
+        }
+    }
+    return obj;
+}
+
 const myAxios = axios.create({
     //若地址带有子路径，需要配置此项，否则网址后面加/，以便寻找正确的相对目录'./'，如sdafs.cn/qqaa/
     // baseURL:'/peas',
@@ -21,6 +41,7 @@ const myAxios = axios.create({
 
 myAxios.interceptors.request.use(config => {
     if (config.method === 'post' || config.method === 'put') {
+        config.data = remove$Property(config.data);
         //后台接受的参数Content-Type
         // 默认application/x-www-form-urlencode;charset=utf-8,对应spring注解：@RequestParam,又字段__isFormType标明
         // application/json;对应spring注解：@RequestBody

@@ -5,6 +5,7 @@ import {events, types, editors, valid as validFn} from './common';
 
 import './table.less';
 
+const dateType = {CREATE:'CREATE',MODIFY:'MODIFY'};
 
 class TableItem extends Component{
   constructor(props){
@@ -71,13 +72,13 @@ class TableItem extends Component{
   }
 
   render(){
-    const { type, format = i=>i, editable, ...props } = this.props;
+    const { type, format = i=>i, isEditor, editable, ...props } = this.props;
     const { value, error, force } = this.state;
     const editor = editors[type] || type;
     return (
       <span ref="tableItem" title={error} onDoubleClick={this.onDbClick.bind(this)} className={`table-item ${(force&&'table-force') || (error&&'table-error') || ''}`}>
         {
-          editable && (typeof editor === 'function') && force?editor({...props, value, onChange: this.onChange.bind(this), onBlur: this.onBlur.bind(this)}):this.format()
+          editable && (typeof editor === 'function') && (force || isEditor)?editor({...props, value, onChange: this.onChange.bind(this), onBlur: this.onBlur.bind(this)}):this.format()
         }
       </span>
     );
@@ -163,17 +164,20 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
         const handleChange = (e, value) =>{
           if(item[key] !== value){
             item[key] = value;
+            item.$type = item.$type || dateType.MODIFY;
             onChange(e,{item,value,key,row:row-rows.length,column});
-            onRowChange('modify', item, row-rows.length);
+            if(item.$type === dateType.MODIFY){
+              onRowChange('modify', item, row-rows.length);
+            }
           }
         }
-        return <TableItem {...rest} entity={item} name={key} editable={editable} value={value} onChange={handleChange}/>
+        return <TableItem {...rest} entity={item} name={key} editable={editable} value={value} isEditor={item.$type===dateType.CREATE} onChange={handleChange}/>
       }
     }
   });
   const extendProps = {
-    onRowSave: item=> onRowChange('modify', item),
-    buttons: [{title:'添加',fn:()=>onRowChange('create', {})},{title:'删除',fn:item=>onRowChange('delete', item)}]
+    onRowSave: item=> onRowChange('modify', item, dataSource.indexOf(item)),
+    buttons: [{title:'添加',fn:()=>onRowChange('create', {$type:dateType.CREATE})},{title:'删除',fn:item=>onRowChange('delete', item)}]
   }
   return (
     <MTable loading={!data} {...extendProps}  {...events(props)} className={`table-render ${className}`} size="small" bordered={true} dataSource={rows.concat(dataSource)} showHeader={false} columns={columns} />

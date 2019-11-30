@@ -7,7 +7,7 @@ function toOptions(data, vfn = ()=>({})){
 		return data.map((v,i) => ({ label: v, value: v, ...vfn(v,i) }))
 	}
 	if(data && typeof data === 'object'){
-		return Object.keys(data).map(i => ({ label: data[i], value: i }))
+		return Object.keys(data).map(i => ({ label: data[i], value: i, ...vfn(v,i) }))
 	}
 	return [];
 }
@@ -217,7 +217,10 @@ export const tableKey = () => [
 	},
 ].map(i=>({type:'input',...i}));
 
-export const diagnosis = toOptions(['妊娠期糖尿病','高血压','冠心病','双胎妊娠','多胎妊娠','梅毒']);
+/**
+ * 诊断输入框的联想数据，当没有输入的时候显示top为true的数据
+ */
+export const diagnosis = toOptions('瘢痕子宫,妊娠期糖尿病,妊娠高血压,双胎妊娠,子宫平滑肌瘤'.split(','),v=>({top:true})).concat(toOptions(['高血压','冠心病','多胎妊娠','梅毒']));
 
 /**
  * 先露
