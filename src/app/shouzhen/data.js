@@ -24,7 +24,7 @@ export const zjlxOptions = toOptions('身份证,护照,驾驶证');
 /**
  * 酒的类型
  */
-export const jiuOptions = toOptions('白酒,啤酒,红酒,其他');
+export const jiuOptions = toOptions('没有,白酒,啤酒,红酒,其他');
 
 /**
  * 血型O,A,B,AB

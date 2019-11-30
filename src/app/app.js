@@ -26,7 +26,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       loading: true,
-      muneIndex: 0
+      muneIndex: 1
     };
     
     service.getuserDoc().then(res => this.setState({
