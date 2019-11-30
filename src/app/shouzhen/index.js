@@ -5,8 +5,6 @@ import Page from '../../render/page';
 import {fireForm} from '../../render/form';
 import service from '../../service';
 
-import "./index.less";
-
 import Yfxx from './yunfuxinxi';
 import Zfxx from './zhangfuxinxi';
 import Byqk from './benyunqingkuang';
@@ -18,6 +16,9 @@ import Jyjc from './jianyanjiacha';
 import Tgjc from './tigejiancha';
 import Zkjc from './zhuankejiancha';
 import Zdcl from './zhenduanchuli';
+
+import editors from './editors';
+import "./index.less";
 
 const tabConetnts = [Yfxx, Zfxx, Byqk, Gqs, Yjs, Jzs, Ycs, Jyjc, Tgjc, Zkjc, Zdcl];
 
@@ -36,6 +37,8 @@ export default class Patient extends Component {
             step: tabs[2].key
         }
 
+        this.componentWillUnmount = editors();
+
         service.getuserDoc().then(res => this.setState({
             info: res
         }))
@@ -43,6 +46,7 @@ export default class Patient extends Component {
 
     handleChange(e, { name, value, valid }, entity) {
         entity[name] = value
+        this.change = true;
         this.forceUpdate();
     }
     
@@ -53,11 +57,16 @@ export default class Patient extends Component {
         const next = tabs[tabs.indexOf(tab) + 1] || {key: step}
         fireForm(form,'valid').then((valid)=>{
             if(valid){
-                service.shouzhen.saveForm(tab.key, tab.entity).then(() => {
+                if(this.change){
+                    service.shouzhen.saveForm(tab.key, tab.entity).then(() => {
+                        this.setState({step:key || next.key});
+                    }, ()=>{ // TODO: 仅仅在mock时候用
+                        this.setState({step:key || next.key});
+                    });
+                }else{
                     this.setState({step:key || next.key});
-                }, ()=>{ // TODO: 仅仅在mock时候用
-                    this.setState({step:key || next.key});
-                });
+                }
+                this.change = false;
             }else{
                 tab.error = true;
                 if(key){

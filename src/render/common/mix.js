@@ -39,8 +39,8 @@ export function checkinput(props, count, FormItemComponent){
     onChange(e,value);
   }
 
-  const renderEditor = (data,op, change) => {
-    const props = {type:'input',...rest,...op,name:'value'};
+  const renderEditor = (data, op, change) => {
+    const props = {type:'input',...rest,...op,name:op.unit?`value(${op.unit})`:'value'};
 
     return <FormItemComponent {...props} entity={data} onChange={change} />;
   }
@@ -62,7 +62,7 @@ export function checkinput(props, count, FormItemComponent){
         return (
           <Col span={op.span||span} key={`checkinput-${name}-${index}`}>
             <Checkbox value={op.value||op} checked={data.checked} onChange={e=>handleCheck(e,index)}>{label}</Checkbox>
-            {data.checked && type ? renderEditor(data, {...op,type} , handleInput(index)):null}
+            {data.checked && type ? renderEditor(data, {...op,type, unit} , handleInput(index)):null}
           </Col>
         )
       })}

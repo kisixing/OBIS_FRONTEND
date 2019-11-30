@@ -19,8 +19,8 @@ export default class extends Component{
         {columns:[
           {span:4},
           {rows:[
-            {name:'gjtp[遗传病（男方）]', type:'checkinput',options:baseData.ychOptions},
-            {name:'xzp[遗传病（女方）]', type:'checkinput', valid: 'required',options:baseData.ychOptions}
+            {name:'gjtp[遗传病（男方）]', icon:'man', type:'checkinput',options:baseData.ychOptions},
+            {name:'xzp[遗传病（女方）]', icon:'woman', type:'checkinput', valid: 'required',options:baseData.ychOptions}
           ]}
         ]}
       ]

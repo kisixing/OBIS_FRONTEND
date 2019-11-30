@@ -67,9 +67,9 @@ export const ccOptions = toOptions('8,9,10,11,12,13,14,15,16,17,18');
 export const slOptions = toOptions('多,中,少');
 
 /**
- * 不孕病史
+ * 不孕病史 shouzhenyy-x这个是当前模块的编辑组件
  */
-export const bybsOptions = toOptions('输卵管因素,丈夫精弱精畸精,PCO（多囊卵巢）,原因不明,其他,不清楚');
+export const bybsOptions = toOptions('输卵管因素,丈夫精弱精畸精,PCO（多囊卵巢）,原因不明]'.split(',').map(i=>`${i}(shouzhenyy-发现时间&date,治疗&input)`).concat(['其他(input)','不清楚(input)']));
 
 /**
  * 频率
@@ -89,12 +89,12 @@ export const yesOptions = toOptions('是,否');
 /**
  *皮肤黏膜
 */
-export const pfOptions = toOptions('正常,苍白,皮下出血,其他');
+export const pfOptions = toOptions('正常,苍白,皮下出血(input),其他(input)');
 
 /**
  *正常、异常
 */
-export const neOptions = toOptions('正常,异常');
+export const neOptions = toOptions('正常,异常(input)');
 
 /**
  *正常、畸形
@@ -114,7 +114,7 @@ export const rtOptions = toOptions('凸起,凹陷');
 /**
  *心率
 */
-export const xlOptions = toOptions('齐,不齐');
+export const xlOptions = toOptions('齐,不齐(input)');
 
 /**
  *触及
@@ -139,7 +139,7 @@ export const sxfOptions = toOptions('存在,亢起,消失,引不起');
 /**
  *乙肝两对半
 */
-export const ygOptions = toOptions('正常,小三阳,大三阳,慢活肝,未查,其他');
+export const ygOptions = toOptions('小三阳,大三阳,慢活肝,未查,其他(input)');
 
 /**
  *阴阳未查
@@ -152,14 +152,19 @@ export const yywOptions = toOptions('阴性,阳性,未查');
 export const yyw2Options = toOptions('阴性,阳性,未查,其他');
 
 /**
+ *梅毒
+*/
+export const mdOptions = toOptions(['阴性','阳性(shouzhenyy-TPPA滴度,TRUST滴度)','未查(input)','其他']);
+
+/**
  *OGTT
 */
-export const ogttOptions = toOptions('正常,GDM,未查');
+export const ogttOptions = toOptions(['正常','GDM(shouzhenyy-空腹血糖,餐后1H血糖,餐后2H血糖)','未查']);
 
 /**
  *地贫
 */
-export const dpOptions = toOptions('正常,甲型,乙型,未查,其他');
+export const dpOptions = toOptions('正常,甲型(input),乙型(input),未查,其他(input)');
 
 /**
  *尿蛋白
@@ -169,17 +174,17 @@ export const dbnOptions = toOptions('阴性,弱阳性,阳性,未查,其他');
 /**
  *药物或食物过敏史
 */
-export const ywgmOptions = toOptions('青霉素,头孢,磺胺类,酒精,食物过敏,其他');
+export const ywgmOptions = toOptions('青霉素,头孢,磺胺类,酒精,食物过敏(input),其他(input)');
 
 /**
  *个人史
 */
-export const grsOptions = toOptions('孕前或孕期服用叶酸,吸烟,饮酒,接触有害物质,服用药物,接触射线,其他');
+export const grsOptions = toOptions('孕前或孕期服用叶酸,吸烟(input)[只/天],饮酒(input)[ml/天],接触有害物质(input),服用药物(input-4),接触射线,其他');
 
 /**
  *家族史
 */
-export const jzsOptions = toOptions('多胎,死胎,死产,先天畸形,精神病,痴呆,先天智力低下,糖尿病,高血压,肿瘤,其他');
+export const jzsOptions = toOptions('多胎,死胎,死产,先天畸形,精神病,痴呆,先天智力低下,糖尿病,高血压,肿瘤,其他(input)');
 
 /**
  *遗传病
@@ -223,7 +228,7 @@ export const pregnanciesColumns = [
 	{
 		title: '孕次',
 		key: 'checkdate',
-		type: 'input'
+		format: (v,{row})=>row+1
 	},
 	{
 		title: '年',

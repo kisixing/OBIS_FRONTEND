@@ -27,57 +27,57 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'id8[乙肝两对半]', type:'checkinput', options: baseData.ygOptions,span:12}
+            {name:'id8[乙肝两对半]', type:'checkinput', options: baseData.ygOptions,unselect:'正常', span:12}
           ]
         },
         {
           columns:[
-            {name:'id8[乙肝DNA]', type:'checkinput', options: baseData.yywOptions,span:8}
+            {name:'id8[乙肝DNA]', type:'checkinput', options: baseData.yywOptions,radio:true,span:8}
           ]
         },
         {
           columns:[
-            {name:'id8[丙肝抗体]', type:'checkinput', options: baseData.yywOptions,span:8}
+            {name:'id8[丙肝抗体]', type:'checkinput', options: baseData.yywOptions,radio:true,span:8}
           ]
         },
         {
           columns:[
-            {name:'id8[丙肝RNA]', type:'checkinput', options: baseData.yywOptions,span:8}
+            {name:'id8[丙肝RNA]', type:'checkinput', options: baseData.yywOptions,radio:true,span:8}
           ]
         },
         {
           columns:[
-            {name:'id8[梅毒]', type:'checkinput', options: baseData.yyw2Options,span:9}
+            {name:'id8[梅毒]', type:'checkinput',radio:true, options: baseData.mdOptions,span:9}
           ]
         },
         {
           columns:[
-            {name:'id8[OGTT]', type:'checkinput', options: baseData.ogttOptions,span:8}
+            {name:'id8[OGTT]', type:'checkinput',radio:true, options: baseData.ogttOptions,span:8}
           ]
         },
         {
           columns:[
-            {name:'id8[女方地贫]', type:'checkinput', options: baseData.dpOptions,span:16}
+            {name:'id8[女方地贫]', type:'checkinput',radio:true, options: baseData.dpOptions,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[男方地贫]', type:'checkinput', options: baseData.dpOptions,span:16}
+            {name:'id8[男方地贫]', type:'checkinput',radio:true, options: baseData.dpOptions,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[尿蛋白]', type:'checkinput', options: baseData.dbnOptions,span:16}
+            {name:'id8[尿蛋白]', type:'checkinput',radio:true, options: baseData.dbnOptions,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[HIV]', type:'checkinput', options: baseData.yywOptions,span:8}
+            {name:'id8[HIV]', type:'checkinput',radio:true, options: baseData.yywOptions,span:8}
           ]
         },
         {
           columns:[
-            {name:'id8[GBS]', type:'checkinput', options: baseData.yywOptions,span:8}
+            {name:'id8[GBS]', type:'checkinput',radio:true, options: baseData.yywOptions,span:8}
           ]
         },
         {

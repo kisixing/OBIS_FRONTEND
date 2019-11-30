@@ -57,7 +57,7 @@ class TableItem extends Component{
   }
 
   format(){
-    const { format = i=>i, entity, name, options } = this.props;
+    const { format = i=>i, entity, name, row, options } = this.props;
     const { value } = this.state;
     const getLabel = (ls, v)=>{
       let result = '';
@@ -68,7 +68,7 @@ class TableItem extends Component{
       return result;
     }
 
-    return format(getLabel(options) || value, {entity, name, lookup: getLabel});
+    return format(getLabel(options) || value, {row, entity, name, lookup: getLabel});
   }
 
   render(){
@@ -171,7 +171,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
             }
           }
         }
-        return <TableItem {...rest} entity={item} name={key} editable={editable} value={value} isEditor={item.$type===dateType.CREATE} onChange={handleChange}/>
+        return <TableItem {...rest} row={row-rows.length} entity={item} name={key} editable={editable} value={value} isEditor={item.$type===dateType.CREATE} onChange={handleChange}/>
       }
     }
   });

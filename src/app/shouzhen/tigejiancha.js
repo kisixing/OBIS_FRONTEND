@@ -50,19 +50,19 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'id8[甲状腺]', type:'checkinput', options: baseData.neOptions,span:7},
-            {name:'id8[血管杂音]', type:'checkinput', options: baseData.hnOptions,span:8},
+            {name:'id8[甲状腺]', type:'checkinput', options: baseData.neOptions,radio:true,span:7},
+            {name:'id8[血管杂音]', type:'checkinput', options: baseData.hnOptions,radio:true,span:8},
             {name:'id3[其他]', type:'input', span:6},
           ]
         },
         {
           columns:[
-            {name:'id8[乳头]', type:'checkinput', options: baseData.rtOptions,span:7}
+            {name:'id8[乳头]', type:'checkinput', options: baseData.rtOptions,radio:true,span:7}
           ]
         },
         {
           columns:[
-            {name:'id8[呼吸音]', type:'checkinput', options: baseData.neOptions,span:7},
+            {name:'id8[呼吸音]', type:'checkinput', options: baseData.neOptions,radio:true,span:7},
             {name:'id3[啰音]', type:'input', span:5},
           ]
         },
@@ -70,22 +70,22 @@ export default class extends Component{
           columns:[
             {name:'id3(次/分)[心率]', type:'input', span:6},
             {span:1},
-            {name:'id8[心率]', type:'checkinput', options: baseData.xlOptions,span:8},
-            {name:'id8[杂音]', type:'checkinput', options: baseData.hnOptions,span:9},
+            {name:'id8[心率]', type:'checkinput', options: baseData.xlOptions,radio:true,span:8},
+            {name:'id8[杂音]', type:'checkinput', options: baseData.hnOptions,radio:true,span:9},
           ]
         },
         {
           columns:[
-            {name:'id8[肝]', type:'checkinput', options: baseData.cjOptions,span:7},
-            {name:'id8[脾]', type:'checkinput', options: baseData.cjOptions,span:8},
+            {name:'id8[肝]', type:'checkinput', options: baseData.cjOptions,radio:true,span:7},
+            {name:'id8[脾]', type:'checkinput', options: baseData.cjOptions,radio:true,span:8},
             {name:'id3[肾区叩痛]', type:'checkinput', options: baseData.sktOptions,span:9},
           ]
         },
         {
           columns:[
-            {name:'id8[脊柱]', type:'checkinput', options: baseData.jxOptions,span:7},
-            {name:'id8[下肢浮肿]', type:'checkinput', options: baseData.xzfOptions,span:8},
-            {name:'id3[双膝反射]', type:'checkinput', options: baseData.sxfOptions,span:9},
+            {name:'id8[脊柱]', type:'checkinput', options: baseData.jxOptions,radio:true,span:7},
+            {name:'id8[下肢浮肿]', type:'checkinput', options: baseData.xzfOptions,radio:true,span:8},
+            {name:'id3[双膝反射]', type:'checkinput', options: baseData.sxfOptions,radio:true,span:9},
           ]
         },
       ]

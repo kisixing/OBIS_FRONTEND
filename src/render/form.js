@@ -59,7 +59,7 @@ const AddResize = (function(fn){
 class FormItem extends Component{
   constructor(props){
     super(props);
-    const { entity, name = '' } = props;
+    const { entity, name = '', label, unit } = props;
     const field = name.replace(/\(.*\)/,'').replace(/\[.*\]/,'');
     
     this.state = {
@@ -170,11 +170,12 @@ class FormItem extends Component{
 
   render(){
     const { valid } = this.props;
-    const { name, label, unit, value, error } = this.state;
+    const { name, label, unit, value, error, icon } = this.state;
     
       return (
         <div ref="formItem" className={`form-item ${name} ${error&&/\*/.test(error)?'form-error':`${error&&'form-warn'||''} ${value&&'is-not-empty' ||''}`}`}>
           {label?<div ref="formItemlabel" className="form-label">
+            {icon?<i className={`icon ${icon}`}></i>:null}
             {/required/.test(valid)?<span className="colorRed">*</span>:null}
             <span>{label}:&nbsp;</span>
           </div>:null}
@@ -206,6 +207,10 @@ class FormItem extends Component{
  * 这里所有的其他属性会传递到 FormItem 里面
  * onChange 数据修改的处理
  * 第四个参数是附加到form表单的属性
+ * 每一项的数据 {
+ *        name: name(unit)[label],
+ *        icon: 显示在label前面的图表，以样式的方式呈现
+ * }
  */
 export default function(entity, config, onChange, {children, ...props}={}){
   return (
@@ -265,10 +270,21 @@ export default function(entity, config, onChange, {children, ...props}={}){
   }
 }
 
+/**
+ * 触发当前dom下的所有验证/重置等操作
+ */
 export function fireForm(parentNode, type){
   return new Promise(resolve=>{
     Promise.all(Array.prototype.map.call(parentNode.querySelectorAll('.form-item'), el=>el.fireReact(type))).then(function(){
       resolve(!parentNode.querySelector('.form-error'));
     })
   });
+}
+
+/**
+ * 添加当前模块的编辑器,返回卸载器
+ */
+export function manageEditor(type, editor){
+  editors[type] = editor;
+  return () => editors[type]=null; 
 }

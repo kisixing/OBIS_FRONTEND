@@ -38,7 +38,7 @@ export default class extends Component {
             { name: 'jqjh[近亲结婚]', type: 'checkinput', span: 5,radio:true, valid: 'required', options: baseData.yesOptions },
           ]
         },
-        { name: 'bybs[不孕病史]', type: 'checkinput', options: baseData.bybsOptions },
+        { name: 'bybs[不孕病史]', type: 'checkinput', options: baseData.bybsOptions.map(v=>({...v,span:24})) },
       ]
     };
   }
