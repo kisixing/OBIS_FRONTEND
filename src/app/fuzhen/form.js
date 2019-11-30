@@ -113,7 +113,7 @@ export default class FuzhenForm extends Component {
         {
           filter:()=>check('hypertension'), columns: [
             {
-              label: '尿蛋白', span: 12, className: 'bgLightBlue', columns: [
+              label: '尿蛋白', span: 12, columns: [
                 { name: 'upState[定性]', type: 'input', span: 12 },
                 { name: 'upDosage24h[24H定量]', type: 'input', span: 11 },
               ]
