@@ -9,10 +9,9 @@ const Es3ifyPlugin = require("es3ify-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-
-const currentConfig = require(isProd ? "./webpack.cfg" : "./webpack.cfg.dev");
-
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 const {debugIE,chunkStats,bundleAnalyzerPlugin} = require("./my-dev-config");
+const currentConfig = require(isProd ? "./webpack.cfg" : "./webpack.cfg.dev");
 const fileHash = isProd ? "[chunkhash:5]" : "[hash:5]";
 
 const commonConfig = {
@@ -64,6 +63,10 @@ const commonConfig = {
         ],
     },
     plugins: [
+        new CleanWebpackPlugin(['dist'], { 
+            root: path.resolve(__dirname, '..'),
+            dry: false // 启用删除文件
+          }),
         //本地打包分析配置
         !!bundleAnalyzerPlugin?new BundleAnalyzerPlugin({
             analyzerMode: 'server',
