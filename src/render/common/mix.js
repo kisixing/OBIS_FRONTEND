@@ -45,7 +45,7 @@ export function checkinput(props, count, FormItemComponent){
     return <FormItemComponent {...props} entity={data} onChange={change} />;
   }
 
-  options.forEach((v,i)=>value[v]=value[i]||{});
+  options.forEach((v,i)=>value[i]=value[i]||{});
 
   return (
     <Row>
