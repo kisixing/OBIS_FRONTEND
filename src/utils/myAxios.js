@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Qs from 'qs';
 import {Modal} from 'antd';
+import modal from './modal';
 
 const getUrl = function (url){
     if(location.search){
@@ -69,7 +70,11 @@ myAxios.interceptors.response.use(response => {
     const status = error.response.status;
     const message = error.response.data ? error.response.data : '网络错误，请刷新重试';
     if (status && (status > 400  &&  status < 500)) {
-        Modal.warning({title: '提示', content: message})
+        if(status === 404){
+            modal(message);
+        }else{
+            Modal.warning({title: '提示', content: message})
+        }
     }
     return Promise.reject(error.response.data);
 });
