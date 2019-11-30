@@ -24,18 +24,18 @@ export default class extends Component {
         },
         {
           columns: [
-            { name: 'jl[经量]', type: 'checkinput', span: 5, valid: 'required', options: baseData.slOptions },
+            { name: 'jl[经量]', type: 'checkinput', span: 5, valid: 'required', radio:true, options: baseData.slOptions },
             { span: 1 },
-            { name: 'tj[痛经]', type: 'checkinput', span: 7, valid: 'required', options: baseData.plOptions },
+            { name: 'tj[痛经]', type: 'checkinput', span: 7, valid: 'required', radio:true, options: baseData.plOptions },
           ]
         },
         {
           columns: [
-            { name: 'hys[婚姻史]', type: 'select', span: 5, showSearch: false, options: baseData.hysOptions },
+            { name: 'hys[婚姻史]', type: 'checkinput', span: 5,radio:true, options: baseData.hysOptions },
             { span: 1 },
             { name: 'jhnl[结婚年龄]', type: 'input', span: 5, valid: 'number' },
             { span: 1 },
-            { name: 'jqjh[近亲结婚]', type: 'checkinput', span: 5, valid: 'required', options: baseData.yesOptions },
+            { name: 'jqjh[近亲结婚]', type: 'checkinput', span: 5,radio:true, valid: 'required', options: baseData.yesOptions },
           ]
         },
         { name: 'bybs[不孕病史]', type: 'checkinput', options: baseData.bybsOptions },

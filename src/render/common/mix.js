@@ -10,33 +10,64 @@ export function mix({value, options, width, ...props}){
   )
 }
 
-export function checkinput(props){
-  const { name, options = [], onChange, onBlur, value = [], ...rest } = props;
-  const span = Math.max(6, 24 / (options.length || 1));
+/**
+ * 
+ * options里面的每一项可以有type,unit
+ * 或者在label里面label(input)[unit]
+ */
+export function checkinput(props, count, FormItemComponent){
+  const { name, options = [], onChange, onBlur, value = [], unselect, radio, ...rest } = props;
+  const span = Math.max(6, 24 / ((options.length + !!unselect) || 1));
   
   const handleCheck = (e,index) => {
-    value[index][0] = e.target.checked;
+    if(radio){
+      value.forEach(i=>i.checked=false)
+    }
+    value.unselect = false;
+    value[index].checked = e.target.checked;
     onChange(e,value).then(()=>onBlur());
   }
 
-  const handleInput = (e,index) => {
-    value[index][1] = e.target.value;
+  const handleInput = index => (e,{value:v}) => {
+    value[index].value = v;
+    onChange(e,value).then(()=>onBlur());
+  }
+
+  const handleUnselect = (e) => {
+    value.unselect = e.target.checked;
+    value.forEach(i=>i.checked=false)
     onChange(e,value);
   }
 
-  options.forEach((v,i)=>value[i]=value[i]||[]);
+  const renderEditor = (data,op, change) => {
+    const props = {type:'input',...rest,...op,name:'value'};
+
+    return <FormItemComponent {...props} entity={data} onChange={change} />;
+  }
+
+  options.forEach((v,i)=>value[v]=value[i]||{});
 
   return (
     <Row>
+      {unselect?(
+      <Col span={span} key={`checkinput-${name}-unselect`}>
+        <Checkbox checked={value.unselect} onChange={e=>handleUnselect(e)}>{unselect}</Checkbox>
+      </Col>
+      ):null}
       {options.map((op,index)=>{
-        var data = value[index] || [];
+        const data = value[index] || {};
+        const label = (op.label||op).replace(/\((.*)\)/,'').replace(/\[.*\]/,'');
+        const type = op.type || (/\((.*)\)/.test(op.label||op) && /\((.*)\)/.exec(op.label||op)[1]);
+        const unit = op.unit || (/\[(.*)\]/.test(op.label||op) && /\[(.*)\]/.exec(op.label||op)[1]);
         return (
           <Col span={op.span||span} key={`checkinput-${name}-${index}`}>
-            <Checkbox value={op.value||op} checked={!!data[0]} onChange={e=>handleCheck(e,index)}>{op.label||op}</Checkbox>
-            {data[0]?<Input {...rest} style={{width:60}} value={data[1]} onChange={e=>handleInput(e,index)} onBlur={onBlur}/>:null}
+            <Checkbox value={op.value||op} checked={data.checked} onChange={e=>handleCheck(e,index)}>{label}</Checkbox>
+            {data.checked && type ? renderEditor(data, {...op,type} , handleInput(index)):null}
           </Col>
         )
       })}
     </Row>
   )
 }
+
+

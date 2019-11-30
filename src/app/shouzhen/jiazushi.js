@@ -16,8 +16,13 @@ export default class extends Component{
         {name:'jbs[药物或食物过敏史]', type:'checkinput', valid: 'required',options:baseData.ywgmOptions},
         {name:'wss[个人史]', type:'checkinput', valid: 'required',options:baseData.grsOptions},
         {name:'sss[家族史]', type:'checkinput', valid: 'required',options:baseData.jzsOptions},
-        {name:'gjtp[遗传病（男方）]', type:'checkinput',options:baseData.ychOptions},
-        {name:'xzp[遗传病（女方）]', type:'checkinput', valid: 'required',options:baseData.ychOptions}
+        {columns:[
+          {span:4},
+          {rows:[
+            {name:'gjtp[遗传病（男方）]', type:'checkinput',options:baseData.ychOptions},
+            {name:'xzp[遗传病（女方）]', type:'checkinput', valid: 'required',options:baseData.ychOptions}
+          ]}
+        ]}
       ]
     };
   }

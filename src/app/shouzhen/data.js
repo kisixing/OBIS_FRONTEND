@@ -1,13 +1,13 @@
 
-function toOptions(data){
+function toOptions(data, vfn =()=>({})){
 	if(data instanceof Array){
-		return data.map(i => ({ label: i, value: i }))
+		return data.map((v,i) => ({ label: v, value: v, ...vfn(v,i) }))
 	}
 	if(data && typeof data === 'object'){
-		return Object.keys(data).map(i => ({ label: data[i], value: i }))
+		return Object.keys(data).map((v,i) => ({ label: data[v], value: v, ...vfn(data[v],v,i) }))
   }
   if(typeof data === 'string'){
-    return data.split(/[,;]/).map(i => ({ label: i, value: i }))
+    return data.split(/[,;]/).map((v,i) => ({ label: v, value: v, ...vfn(v,i) }))
   }
 	return [];
 }
@@ -39,12 +39,12 @@ export const xuexing2Options = toOptions('RH(+),RH(-)');
 /**
  * 一般症状
  */
-export const ybzzOptions = toOptions('无,头晕,头痛,呕吐,胸闷,浮肿,便秘,白带,增多,腰酸,肚痛,抽筋,流血,其他');
+export const ybzzOptions = toOptions('头晕,头痛,呕吐,胸闷,浮肿,便秘,白带,增多,腰酸,肚痛,抽筋,流血,其他');
 
 /**
  * 疾病
  */
-export const jibOptions = toOptions('无,高血压,糖尿病,心脏病,肾脏疾病,甲亢,G6BP,地中海贫血,肺结核,贫血,肾炎,肝炎,风湿,癫痫,其他');
+export const jibOptions = toOptions('高血压,糖尿病,心脏病,肾脏疾病,甲亢,G6BP,地中海贫血,肺结核,贫血,肾炎,肝炎,风湿,癫痫,其他');
 
 /**
  * 宫颈涂片
@@ -54,7 +54,7 @@ export const gjtpOptions = toOptions('正常,异常,未有检查,不清楚');
 /**
  * 血制品
  */
-export const xzpOptions = toOptions('无,红细胞,血小板,血浆,全血,白蛋白,其他,不清楚');
+export const xzpOptions = toOptions('红细胞,血小板,血浆,全血,白蛋白,其他,不清楚');
 
 /**
  * 初潮
@@ -69,12 +69,12 @@ export const slOptions = toOptions('多,中,少');
 /**
  * 不孕病史
  */
-export const bybsOptions = toOptions('无,输卵管因素,丈夫精弱精畸精,PCO（多囊卵巢）,原因不明,其他,不清楚');
+export const bybsOptions = toOptions('输卵管因素,丈夫精弱精畸精,PCO（多囊卵巢）,原因不明,其他,不清楚');
 
 /**
  * 频率
  */
-export const plOptions = toOptions('偶尔,经常,无');
+export const plOptions = toOptions('偶尔,经常');
 
 /**
  * 婚姻史
@@ -104,7 +104,7 @@ export const jxOptions = toOptions('正常,正常、畸形');
 /**
  *无、有
 */
-export const hnOptions = toOptions('无,有');
+export const hnOptions = toOptions('有');
 
 /**
  *乳头
@@ -124,12 +124,12 @@ export const cjOptions = toOptions('未触及,可触及');
 /**
  *肾区叩痛
 */
-export const sktOptions = toOptions('无,有(左),有(右)');
+export const sktOptions = toOptions('有(左),有(右)');
 
 /**
  *下肢浮肿
 */
-export const xzfOptions = toOptions('无,+,+-,++,+++');
+export const xzfOptions = toOptions('+,+-,++,+++');
 
 /**
  *双膝反射
@@ -169,22 +169,22 @@ export const dbnOptions = toOptions('阴性,弱阳性,阳性,未查,其他');
 /**
  *药物或食物过敏史
 */
-export const ywgmOptions = toOptions('无,青霉素,头孢,磺胺类,酒精,食物过敏,其他');
+export const ywgmOptions = toOptions('青霉素,头孢,磺胺类,酒精,食物过敏,其他');
 
 /**
  *个人史
 */
-export const grsOptions = toOptions('无,孕前或孕期服用叶酸,吸烟,饮酒,接触有害物质,服用药物,接触射线,其他');
+export const grsOptions = toOptions('孕前或孕期服用叶酸,吸烟,饮酒,接触有害物质,服用药物,接触射线,其他');
 
 /**
  *家族史
 */
-export const jzsOptions = toOptions('无,多胎,死胎,死产,先天畸形,精神病,痴呆,先天智力低下,糖尿病,高血压,肿瘤,其他');
+export const jzsOptions = toOptions('多胎,死胎,死产,先天畸形,精神病,痴呆,先天智力低下,糖尿病,高血压,肿瘤,其他');
 
 /**
  *遗传病
 */
-export const ychOptions = toOptions('无,G6PD缺乏症,地贫,肿瘤,先天畸形,先天聋哑,先天智力低下,白化病,血友病,原发高血压,先天心脏病');
+export const ychOptions = toOptions('G6PD缺乏症,地贫,肿瘤,先天畸形,先天聋哑,先天智力低下,白化病,血友病,原发高血压,先天心脏病');
 
 /**
  *尿蛋白
