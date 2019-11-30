@@ -150,7 +150,7 @@ class FormItem extends Component{
         type: (t.type||t).replace(/\(.*\)/,''),
         unit: /\(.*\)/.test(t.type||t) && /\((.*)\)/.exec(t.type||t)[1] || t.unit
       }));
-      const enitorWidth = width - types.filter(i=>i.unit).length * 12;
+      const enitorWidth = width - types.filter(i=>i.unit).length * 16;
       return (
         <Row type="flex">
           {types.map((t,index)=>{

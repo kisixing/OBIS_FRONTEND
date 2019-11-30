@@ -2,9 +2,9 @@
 import * as util from './util';
 
 
-function toOptions(data){
+function toOptions(data, vfn = ()=>({})){
 	if(data instanceof Array){
-		return data.map(i => ({ label: i, value: i }))
+		return data.map((v,i) => ({ label: v, value: v, ...vfn(v,i) }))
 	}
 	if(data && typeof data === 'object'){
 		return Object.keys(data).map(i => ({ label: data[i], value: i }))
@@ -111,7 +111,7 @@ export const tableKey = () => [
 		key: 'ckgongg',
 	},
 	{
-		title: '浮肿',
+		title: '下肢水肿',
 		key: 'ckfuzh',
 		type:'select',
 		options: ckfuzhOptions
@@ -209,27 +209,12 @@ export const tableKey = () => [
 			}
 		]
 	},
+	{ title: '处理措施', key: 'dispose', width: 150 },
 	{
-		title: '下次复诊',
-		children: [
-			{
-				title: '下次复诊11',
-				key: 'visit1_1',
-				width: 120,
-			},
-			{
-				title: '下次复诊12',
-				key: 'visit1_2',
-				width: 120,
-			},
-			{ 
-				title: '下次复诊13', 
-				key: 'visit1_3', 
-				width: 120 
-			}
-		]
+		title: '下次复诊', key: 'visit1_1',width: 140, format: (value, {lookup}) => {
+			return `${lookup(ckappointmentAreaOptions,1)} ${lookup(nextRvisitWeekOptions,'1,周')} ${lookup(rvisitOsTypeOptions,1)}`
+		}
 	},
-	{ title: '处理措施', key: 'dispose', width: 150 }
 ].map(i=>({type:'input',...i}));
 
 export const diagnosis = toOptions(['妊娠期糖尿病','高血压','冠心病','双胎妊娠','多胎妊娠','梅毒']);
@@ -240,7 +225,9 @@ export const diagnosis = toOptions(['妊娠期糖尿病','高血压','冠心病'
 export const xlOptions = [
 	{ label: '头', value: '1' },
 	{ label: '臀', value: '2' },
+	{ label: '肩', value: '3' },
 	{ label: '其他', value: '5' },
+	{ label: '不清', value: '6' },
 ];
 
 /**
@@ -272,12 +259,12 @@ export const nextRvisitWeekOptions = [
 /**
  * 门诊
  */
-export const rvisitOsTypeOptions = toOptions(['产科普通门诊', '高危产科门诊', '教授门诊']);
+export const rvisitOsTypeOptions = toOptions(['产科普通门诊', '高危产科门诊', '教授门诊'], (v,i)=>({value:i,describe:v.slice(0,1)}));
 
 /**
  * 上午/下午
  */
 export const ckappointmentAreaOptions = [
-	{ label: '上午', value: '1' },
-	{ label: '下午', value: '2' },
+	{ label: '上午', describe:'上', value: '1' },
+	{ label: '下午', describe:'下', value: '2' },
 ];

@@ -76,7 +76,7 @@ export default class FuzhenForm extends Component {
                   label: (check('dtrz')||check('strz'))?'胎1':'', columns: [
                     { name: 'tx1(bmp)[胎心]', type: 'input', span: 8 },
                     { name: 'xl1[先露]', type: 'select', span: 8, showSearch:true, options: baseData.xlOptions },
-                    { name: 'ckfuzh[浮肿]', type: 'select', span: 8, showSearch:true, options: baseData.ckfuzhOptions}
+                    { name: 'ckfuzh[下肢水肿]', type: 'select', span: 8, showSearch:true, options: baseData.ckfuzhOptions}
                   ]
                 },
                 {

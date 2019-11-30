@@ -56,15 +56,18 @@ class TableItem extends Component{
   }
 
   format(){
-    const { format = i=>i, options } = this.props;
+    const { format = i=>i, entity, name, options } = this.props;
     const { value } = this.state;
-    let result = '';
-    if(options instanceof Array){
-      const option = options.filter(op=>(op.value||op)==value).pop();
-      result = option ? (option.label || option) : '';
+    const getLabel = (ls, v)=>{
+      let result = '';
+      if(ls instanceof Array){
+        const option = ls.filter(op=>(op.value||op)==v).pop();
+        result = option ? (option.describe || option.label || option) : '';
+      }
+      return result;
     }
 
-    return format(result || value);
+    return format(getLabel(options) || value, {entity, name, lookup: getLabel});
   }
 
   render(){
@@ -164,7 +167,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
             onRowChange('modify', item, row-rows.length);
           }
         }
-        return <TableItem {...rest} editable={editable} value={value} onChange={handleChange}/>
+        return <TableItem {...rest} entity={item} name={key} editable={editable} value={value} onChange={handleChange}/>
       }
     }
   });
