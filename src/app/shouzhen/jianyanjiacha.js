@@ -15,13 +15,13 @@ export default class extends Component{
       rows: [
         {
           columns:[
-            {name:'vfxx[女方血型]', icon:'environment-o', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
+            {name:'vfxx[女方血型]', icon:'female-Gender', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
             {name:'vfxx2[]', type: 'select',span:3, valid: 'required', options: baseData.xuexingOptions},
           ]
         },      
         {
           columns:[
-            {name:'nfxx[男方血型]', icon:'environment', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
+            {name:'nfxx[男方血型]', icon:'male-Gender', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
             {name:'nfxx2[]', type: 'select',span:3, valid: 'required', options: baseData.xuexingOptions},
           ]
         },

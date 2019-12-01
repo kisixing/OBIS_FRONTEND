@@ -48,7 +48,7 @@ export default class extends Component {
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div className="width_160">
+      <div className="width_6">
         {formRender(entity, this.config(), onChange)}
       </div>
     )

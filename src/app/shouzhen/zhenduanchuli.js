@@ -146,7 +146,7 @@ export default class extends Component{
 
     return (
       <div className="fuzhen-left-zd">
-        <div>
+        <div className="pad-LR-mid">
           {diagnosis.map((item, i) => (
             <Row key={`diagnos-${item.id}-${Date.now()}`}>
               <Col span={8}>
@@ -167,14 +167,14 @@ export default class extends Component{
         </div>
         <br/>
         <Row className="fuzhen-left-input font-16">
-          <Col span={1}><span className="font-12">{diagnosis.length + 1}、</span></Col>
+          <Col span={1}><span style={{marginLeft:'1rem'}} className="font-12">{diagnosis.length + 1}、</span></Col>
           <Col span={18}>
             <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
               {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
             </Select>
           </Col>
           <Col span={4}>
-            <Button className="fuzhen-left-button margin-TB-mid" type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>
+            <Button className="fuzhen-left-button" style={{marginLeft: '0.5em'}} type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>
           </Col>
         </Row>
         
