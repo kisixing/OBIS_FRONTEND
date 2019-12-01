@@ -171,13 +171,13 @@ class FormItem extends Component{
   }
 
   render(){
-    const { valid } = this.props;
-    const { name, label, unit, value, error, icon } = this.state;
+    const { valid, icon } = this.props;
+    const { name, label, unit, value, error } = this.state;
     
       return (
         <div ref="formItem" className={`form-item ${name} ${error&&/\*/.test(error)?'form-error':`${error&&'form-warn'||''} ${value&&'is-not-empty' ||''}`}`}>
           {label?<div ref="formItemlabel" className="form-label">
-            {icon?<i className={`icon ${icon}`}></i>:null}
+            {icon?<i className={`anticon anticon-${icon}`}>&nbsp;</i>:null}
             {/required/.test(valid)?<span className="colorRed">*</span>:null}
             <span>{label}:&nbsp;</span>
           </div>:null}
@@ -212,6 +212,7 @@ class FormItem extends Component{
  * 每一项的数据 {
  *        name: name(unit)[label],
  *        icon: 显示在label前面的图表，以样式的方式呈现
+ *        type：***为没有编辑器，其他为具体编辑器名称，可以是数组，方法或者字符串
  * }
  */
 export default function(entity, config, onChange, {children, ...props}={}){

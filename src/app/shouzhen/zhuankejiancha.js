@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import formRender from '../../render/form';
 import * as baseData from './data';
+import * as baseData2 from './../fuzhen/data';
 
 export default class extends Component{
   static Title = '专科检查';
@@ -14,7 +15,7 @@ export default class extends Component{
       step: 1,
       rows: [
         {
-          columns:[
+          className:'zhuanke-group', columns:[
             {name:'fkjc[妇科检查]', type:'checkinput',radio:true,options:baseData.wjjOptions,span:8}
           ]
         },
@@ -37,7 +38,7 @@ export default class extends Component{
           ]
         },
         {
-          columns:[
+          className:'zhuanke-group', columns:[
             {name:'ckjc[参科检查]',type:'**', span:8},
           ]
         },
@@ -54,13 +55,13 @@ export default class extends Component{
             {span:1},
             {name:'id4(次/分)[胎心]', type:'input', span:5},
             {span:1},
-            {name:'id5[先露]', type:'input', span:5},
+            {name:'id5[先露]', type:'select', span:5, options: baseData2.xlOptions},
             {span:1},
             {name:'id5[胎位]', type:'input', span:5},
           ]
         },
         {
-          columns:[
+          className:'zhuanke-group', columns:[
             {name:'gpwcl[骨盆外测量]', type:'checkinput',radio:true,options:baseData.wjjOptions,span:8},
           ]
         },

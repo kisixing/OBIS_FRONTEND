@@ -357,3 +357,23 @@ export const pregnanciesColumns = [
 		type: 'input'
 	}
 ]
+
+
+export const lisiColumns = [
+	{
+		title: '编号',
+		key: 'no',
+	},
+	{
+		title: '修改时间',
+		key: 'date',
+	},
+	{
+		title: '修改人',
+		key: 'by',
+	},
+	{
+		title: '修改字段',
+		key: 'field',
+	}
+]
