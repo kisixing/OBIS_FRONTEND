@@ -17,10 +17,10 @@ function shouzhenyy({value, onChange, onBlur}, count, FormItemComponent){
     onChange(e, data).then(()=>onBlur())
   }
   return (
-    <Row>
+    <Row type="flex" style={{width:300*options.length}}>
       {options.map(([label,type='input'],index)=>{
         return (
-          <Col span={Math.floor(24/options.length)}>
+          <Col span={Math.floor(23/options.length)}>
             <FormItemComponent type={type} entity={data} name={`${type}${index}${index===options.length-1?'())':''}[${index?'':'('}${label}]'`} onChange={handleChange}/>
           </Col>
         )

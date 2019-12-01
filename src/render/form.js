@@ -83,6 +83,7 @@ class FormItem extends Component{
       setTimeout(()=>{
         const panelWidth = Math.min(formItem.offsetWidth, width || formItem.offsetWidth);
         const editorWidth = panelWidth - (formItemlabel.offsetWidth||0) - (formItemUnit.offsetWidth||0) - 4;
+        
         formItemEditor.style.width = editorWidth +'px';
         this.setState({
           width: editorWidth
