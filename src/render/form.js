@@ -9,7 +9,7 @@ import './form.less';
 function render(type, props){
   const editor = editors[type] || editors[type.replace(/(-.*)?$/,'$x')] || type;
   if(typeof editor === 'function' ){
-    return editor(props, /-(.*)$/.test(type)&&/-(.*)$/.exec(type)[1], FormItem);
+    return editor(props, /-(.*)$/.test(type)&&/-(.*)$/.exec(type)[1], FormItem, AddResize);
   }
   if(editor === 'table'){
     const {options, value=[{}], onChange, onBlur, ...rest} = props;

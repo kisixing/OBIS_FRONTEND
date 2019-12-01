@@ -7,7 +7,7 @@ const getUrl = function (url){
     if(location.search){
         return 'http://120.77.46.176:8080/' + url;
     }else{
-        return 'assets/mock/' + url;
+        return 'assets/mock/' + url.split('?').map((v,i)=>v+(!i?'.json':'')).join('?');
     }
 };
 
