@@ -111,6 +111,7 @@ export default class extends Component{
   }
 
   renderZD(){
+    const {info} = this.props;
     const { diagnosi, diagnosis } = this.state;
     const delConfirm = (item) => {
       Modal.confirm({
@@ -143,36 +144,40 @@ export default class extends Component{
       );
     }
 
-    const title = item => {
-      const data = {
-        "诊断时间": item.createdate,
-        "诊断全称": item.data,
-        "诊断医生": item.doctor,
-      }
-      return JSON.stringify(data, null, 4)
-    }
-
     return (
       <div className="fuzhen-left-zd">
-        <ol>
+        <div>
           {diagnosis.map((item, i) => (
-            <li key={`diagnos-${item.id}-${Date.now()}`}>
-              <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
-                <div title={title(item)}>
-                  <span className="font-12">{i + 1}、</span>
-                  <span className={item.highriskmark ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
-                </div>
-              </Popover>
-              <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => delConfirm(item)} />
-            </li>
+            <Row key={`diagnos-${item.id}-${Date.now()}`}>
+              <Col span={8}>
+                <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
+                  <div title={item.data}>
+                    <span className="font-12">{i + 1}、</span>
+                    <span className={item.highriskmark ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
+                  </div>
+                </Popover>
+              </Col>
+              <Col span={6}>{item.createdate}</Col>
+              <Col span={6}>{item.doctor||info.doctor}</Col>
+              <Col span={4}>
+                {diagnosis.length>1?<Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => delConfirm(item)} />:null}
+              </Col>
+            </Row>
           ))}
-        </ol>
-        <div className="fuzhen-left-input font-16">
-          <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
-            {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
-          </Select>
         </div>
-        <Button className="fuzhen-left-button margin-TB-mid" type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>
+        <br/>
+        <Row className="fuzhen-left-input font-16">
+          <Col span={1}><span className="font-12">{diagnosis.length + 1}、</span></Col>
+          <Col span={18}>
+            <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
+              {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
+            </Select>
+          </Col>
+          <Col span={4}>
+            <Button className="fuzhen-left-button margin-TB-mid" type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>
+          </Col>
+        </Row>
+        
       </div>
     )
   }
