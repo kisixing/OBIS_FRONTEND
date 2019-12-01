@@ -15,83 +15,83 @@ export default class extends Component{
       rows: [
         {
           columns:[
-            {name:'id2[女方血型]', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
-            {name:'id3[]', type: 'select',span:3, valid: 'required', options: baseData.xuexingOptions},
+            {name:'vfxx[女方血型]', icon:'environment-o', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
+            {name:'vfxx2[]', type: 'select',span:3, valid: 'required', options: baseData.xuexingOptions},
           ]
         },      
         {
           columns:[
-            {name:'id2[男方血型]', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
-            {name:'id3[]', type: 'select',span:3, valid: 'required', options: baseData.xuexingOptions},
+            {name:'nfxx[男方血型]', icon:'environment', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
+            {name:'nfxx2[]', type: 'select',span:3, valid: 'required', options: baseData.xuexingOptions},
           ]
         },
         {
           columns:[
-            {name:'id8[乙肝两对半]', type:'checkinput-4', options: baseData.ygOptions,unselect:'正常', span:16}
+            {name:'ygldb[乙肝两对半]', type:'checkinput-4', options: baseData.ygOptions,unselect:'正常', span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[乙肝DNA]', type:'checkinput-4', options: baseData.yywOptions,radio:true,span:16}
+            {name:'ygdna[乙肝DNA]', type:'checkinput-4', options: baseData.yywOptions,radio:true,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[丙肝抗体]', type:'checkinput-4', options: baseData.yywOptions,radio:true,span:16}
+            {name:'bggt[丙肝抗体]', type:'checkinput-4', options: baseData.yywOptions,radio:true,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[丙肝RNA]', type:'checkinput-4', options: baseData.yywOptions,radio:true,span:16}
+            {name:'bgrna[丙肝RNA]', type:'checkinput-4', options: baseData.yywOptions,radio:true,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[梅毒]', type:'checkinput-4',radio:true, options: baseData.mdOptions,span:16}
+            {name:'md[梅毒]', type:'checkinput-4',radio:true, options: baseData.mdOptions,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[OGTT]', type:'checkinput-4',radio:true, options: baseData.ogttOptions,span:16}
+            {name:'ogtt[OGTT]', type:'checkinput-4',radio:true, options: baseData.ogttOptions,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[女方地贫]', type:'checkinput-4',radio:true, options: baseData.dpOptions,span:16}
+            {name:'vfdp[女方地贫]', icon:'environment-o', type:'checkinput-4',radio:true, options: baseData.dpOptions,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[男方地贫]', type:'checkinput-4',radio:true, options: baseData.dpOptions,span:16}
+            {name:'nfdp[男方地贫]', icon:'environment', type:'checkinput-4',radio:true, options: baseData.dpOptions,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[尿蛋白]', type:'checkinput-4',radio:true, options: baseData.dbnOptions,span:16}
+            {name:'ndb[尿蛋白]', type:'checkinput-4',radio:true, options: baseData.dbnOptions,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[HIV]', type:'checkinput-4',radio:true, options: baseData.yywOptions,span:16}
+            {name:'hiv[HIV]', type:'checkinput-4',radio:true, options: baseData.yywOptions,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8[GBS]', type:'checkinput-4',radio:true, options: baseData.yywOptions,span:16}
+            {name:'gbs[GBS]', type:'checkinput-4',radio:true, options: baseData.yywOptions,span:16}
           ]
         },
         {
           columns:[
-            {name:'id8(g/L)[Hb]', type:'input', span:5},
+            {name:'hb(g/L)[Hb]', type:'input', span:5},
             {span:1},
-            {name:'id8(fL)[MCV]',type:'input', span:5},
+            {name:'mcv(fL)[MCV]',type:'input', span:5},
             {span:1},
-            {name:'id3(x10^9L)[PLT]', type:'input', span:5},
+            {name:'plt(x10^9L)[PLT]', type:'input', span:5},
           ]
         },
         {
           columns:[
-            {name:'id8[其他]', type:'input', span:11},
+            {name:'other[其他]', type:'input', span:11},
           ]
         },
       ]
