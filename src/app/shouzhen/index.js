@@ -87,12 +87,14 @@ export default class Patient extends Component {
                     {tabs.map(({key,title,entity,error,Content}) => (
                         <Tabs.TabPane key={key} tab={<span style={error&&{color:'red'}}>{title}</span>}>
                             <div className="bgWhite pad-mid ">
-                                {step === key ? <Content info={info} entity={entity} onChange={(e,item)=>this.handleChange(e,item,entity)}/> : null}
+                                {step === key ? <Content info={info} entity={{...entity}} onChange={(e,item)=>this.handleChange(e,item,entity)}/> : null}
                             </div>
                         </Tabs.TabPane>
                     ))}
                 </Tabs>
-                <Row><Col span={20}/><Col><Button icon = "save" type = "primary" onClick={()=>this.handleSave()}>下一页</Button></Col></Row>>
+                <Row><Col span={20}/><Col>
+                    <Button icon = "save" type = "primary" onClick={()=>this.handleSave()}>{step!==tabs[tabs.length-1]?'下一页':'保存'}</Button>
+                </Col></Row>>
             </Page>
         )
     }

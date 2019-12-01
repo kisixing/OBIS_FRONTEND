@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
 import formRender from '../../render/form';
+import * as baseData from './data';
+import * as baseData2 from './../fuzhen/data';
 
 export default class extends Component{
   static Title = '专科检查';
@@ -13,48 +15,72 @@ export default class extends Component{
       step: 1,
       rows: [
         {
-          columns:[
-            {name:'id2[外阴]', type:'input', span:5, valid: 'number'},
-            {span:1},
-            {name:'id3[阴道]', type:'date', span:5},
+          className:'zhuanke-group', columns:[
+            {name:'fkjc[妇科检查]', type:'checkinput',radio:true,options:baseData.wjjOptions,span:8}
           ]
         },
         {
           columns:[
-            {name:'id2[宫颈]', type:'input', span:5},
             {span:1},
-            {name:'id3[子宫]', type:'input', span:5},
+            {name:'wy[外阴]', type:'input', span:5},
             {span:1},
-            {name:'id3[附件]', type:'input', span:5},
+            {name:'yd[阴道]', type:'input', span:5},
           ]
         },
         {
           columns:[
-            {name:'id4(cm)[宫高]', type:'date', span:5, valid: 'number'},
             {span:1},
-            {name:'id5(cm)[腹围]', type:'input', span:5, valid: 'number'},
+            {name:'gj[宫颈]', type:'input', span:5},
+            {span:1},
+            {name:'zg[子宫]', type:'input', span:5},
+            {span:1},
+            {name:'fj[附件]', type:'input', span:5},
+          ]
+        },
+        {
+          className:'zhuanke-group', columns:[
+            {name:'ckjc[参科检查]',type:'**', span:8},
           ]
         },
         {
           columns:[
-            {name:'id4(次/分)[胎心]', type:'date', span:5},
             {span:1},
-            {name:'id5[先露]', type:'input', span:5},
+            {name:'gg(cm)[宫高]', type:'input', span:5, valid: 'number'},
             {span:1},
-            {name:'id5[胎位]', type:'input', span:5},
+            {name:'fw(cm)[腹围]', type:'input', span:5, valid: 'number'},
           ]
         },
         {
           columns:[
-        {name:'id6(cm)[髂前上棘间径]', type:'input', span:5},
-        {span:1},
-        {name:'id7(cm)[髂棘间径]', type:'input', span:5},
-        {span:1},
-        {name:'id8(cm)[骶耻外径]', type:'input', span:5 },
-        {span:1},
-        {name:'id8(cm)[坐骨结节间径]', type: 'input', span:5}
-      ]
-    },
+            {span:1},
+            {name:'tx(次/分)[胎心]', type:'input', span:5},
+            {span:1},
+            {name:'xl[先露]', type:'select', span:5, options: baseData2.xlOptions},
+            {span:1},
+            {name:'tw[胎位]', type:'input', span:5},
+          ]
+        },
+        {
+          className:'zhuanke-group', columns:[
+            {name:'gpwcl[骨盆外测量]', type:'checkinput',radio:true,options:baseData.wjjOptions,span:8},
+          ]
+        },
+        {
+          columns:[
+            {span:1},
+            {name:'sjjj(cm)[髂前上棘间径]', type:'input', span:5},
+            {span:1},
+            {name:'gsjj(cm)[髂棘间径]', type:'input', span:5},
+          ]
+        },
+        {
+          columns:[
+            {span:1},
+            {name:'dcwj(cm)[骶耻外径]', type:'input', span:5 },
+            {span:1},
+            {name:'zgjj(cm)[坐骨结节间径]', type: 'input', span:5}
+          ]
+        },
       ]
     };
   }
