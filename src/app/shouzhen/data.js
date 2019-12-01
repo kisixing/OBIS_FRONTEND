@@ -99,7 +99,7 @@ export const neOptions = toOptions('正常,异常(input)');
 /**
  *正常、畸形
 */
-export const jxOptions = toOptions('正常,正常、畸形');
+export const jxOptions = toOptions('正常,畸形');
 
 /**
  *无、有

@@ -26,7 +26,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       loading: true,
-      muneIndex: 1
+      muneIndex: 0 // 从0开始
     };
     
     service.getuserDoc().then(res => this.setState({
