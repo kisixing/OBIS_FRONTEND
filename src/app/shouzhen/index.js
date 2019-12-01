@@ -93,7 +93,7 @@ export default class Patient extends Component {
                     ))}
                 </Tabs>
                 <Row><Col span={20}/><Col>
-                    <Button icon = "save" type = "primary" onClick={()=>this.handleSave()}>{step!==tabs[tabs.length-1]?'下一页':'保存'}</Button>
+                    <Button icon = "save" type = "primary" onClick={()=>this.handleSave()}>{step!==tabs[tabs.length-1].key?'下一页':'保存'}</Button>
                 </Col></Row>>
             </Page>
         )
