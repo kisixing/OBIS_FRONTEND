@@ -11,13 +11,13 @@ export function mix({value, options, width, ...props}){
 }
 
 /**
- * 
+ * count表示每一行最多可以排几个
  * options里面的每一项可以有type,unit
  * 或者在label里面label(input)[unit]
  */
-export function checkinput(props, count, FormItemComponent){
+export function checkinput$x(props, count, FormItemComponent){
   const { name, options = [], onChange, onBlur, value = [], unselect, radio, ...rest } = props;
-  const span = Math.max(6, 24 / ((options.length + !!unselect) || 1));
+  const span = Math.floor(count ? (24/count) : Math.max(6, 24 / ((options.length + !!unselect) || 1)));
   
   const handleCheck = (e,index) => {
     if(radio){

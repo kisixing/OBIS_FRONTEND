@@ -7,7 +7,7 @@ import table from './table';
 import './form.less';
 
 function render(type, props){
-  const editor = editors[type] || editors[type.replace(/-.*$/,'$x')] || type;
+  const editor = editors[type] || editors[type.replace(/(-.*)?$/,'$x')] || type;
   if(typeof editor === 'function' ){
     return editor(props, /-(.*)$/.test(type)&&/-(.*)$/.exec(type)[1], FormItem);
   }
@@ -35,7 +35,9 @@ function render(type, props){
     if(/^:/.test(editor)){
       return editor.replace(/^:/,'');
     }
-    console.log('没有找到可用的编辑组件：' + editor);
+    if(!/^\**$/.test(editor)){
+      console.log('没有找到可用的编辑组件：' + editor);
+    }
   }
   return null;
 }

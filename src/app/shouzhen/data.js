@@ -104,7 +104,7 @@ export const jxOptions = toOptions('正常,正常、畸形');
 /**
  *无、有
 */
-export const hnOptions = toOptions('有');
+export const hnOptions = toOptions('无,有');
 
 /**
  *乳头
@@ -124,7 +124,7 @@ export const cjOptions = toOptions('未触及,可触及');
 /**
  *肾区叩痛
 */
-export const sktOptions = toOptions('有(左),有(右)');
+export const sktOptions = toOptions('有（左）,有（右）');
 
 /**
  *下肢浮肿
@@ -195,6 +195,12 @@ export const ychOptions = toOptions('G6PD缺乏症,地贫,肿瘤,先天畸形,�
  *尿蛋白
 */
 export const xOptions = toOptions('阴性,弱阳性,阳性,未查,其他');
+
+/**
+ * 未做检查,拒绝检查
+ */
+export const wjjOptions = toOptions('未做检查,拒绝检查');
+
 /**
  * 手术史表头
  */
