@@ -1,6 +1,6 @@
 module.exports = {
     debugIE:false,//是否在开发环境进行ie8调试
-    devPort:8899,//开发环境服务器端口
+    devPort:8888,//开发环境服务器端口
     //反向代理配置
     proxyConfig: {
         "/api/*": {

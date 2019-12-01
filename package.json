@@ -1,14 +1,14 @@
 {
-	"name": "react-antd-ie8",
+	"name": "peas-front",
 	"version": "0.0.1",
 	"license": "MIT",
-	"main": "src/app/index.js",
-	"author": "XXX",
+	"main": "index.js",
+	"author": "ma_chao",
 	"description": "react antd ie8",
 	"scripts": {
-		"build": "cross-env NODE_ENV=production webpack --cache --colors --profile --progress --hide-modules --config config/webpack.config.js",
-		"start": "cross-env NODE_ENV=development webpack-dev-server --cache --colors --profile --progress -d --config config/webpack.config.js",
-		"dll": "webpack -p --progress --config config/webpack.cfg.dll.js"
+		"build": "cross-env NODE_ENV=production webpack --cache --colors --profile --progress --hide-modules",
+		"start": "cross-env NODE_ENV=development webpack-dev-server --cache --colors --profile --progress -d",
+		"dll": "webpack -p --progress --config webpack.cfg.dll.js"
 	},
 	"browserslist": [
 		"last 2 versions",
@@ -65,6 +65,7 @@
 		"html5shiv": "^3.7.3",
 		"jquery": "^1.12.4",
 		"jquery-ui-dist": "^1.12.1",
+		"js-cookie": "^2.2.0",
 		"media-match": "^2.0.3",
 		"moment": "^2.21.0",
 		"normalize.css": "^8.0.0",

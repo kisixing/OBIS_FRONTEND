@@ -11,6 +11,10 @@ export default {
     /**
      * 获取个人信息
      */
+    getuserInfo: function(){
+        userInfo = myAxios.get('/Obcloud/doc/getuserInfo' + location.search);
+        return userInfo;
+    },
     getuserDoc: function(){
         userId = myAxios.get('/Obcloud/doc/getuserDoc' + location.search);
         return userId;

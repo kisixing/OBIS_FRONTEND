@@ -1,0 +1,38 @@
+.main-body .main-header {
+    position: relative;
+    z-index: 1;
+    height: 5.5rem;
+    background: #fff;
+    padding: 0.5rem 1rem;
+  }
+  .main-body .main-content{
+    position: relative;
+    min-height: 10px;
+    background-image: url("../assets/static-img/borderBG.png");
+    background-repeat: repeat-x;
+    background-size: 100% 10px;
+  }
+  .patient-Info_title div {
+    display: table-cell;
+    padding-right: 2rem;
+  }
+  .patient-Info_title strong {
+    padding: 0 0.5rem 0 0.6rem;
+  }
+  .patient-Info_tab button {
+    margin: 0.5rem 0 0 0.5rem;
+  }
+  .patient-Info_btnList {
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    right: 0;
+  }
+  .patient-Info_btnList  button {
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  

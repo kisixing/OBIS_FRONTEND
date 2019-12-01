@@ -1,5 +1,5 @@
 const path = require("path");
-const dir = path.join.bind(path, __dirname, '../');
+const dir = path.join.bind(path, __dirname);
 const isProd = process.env.NODE_ENV === "production";
 
 const webpack = require("webpack");
@@ -9,15 +9,14 @@ const Es3ifyPlugin = require("es3ify-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const {debugIE,chunkStats,bundleAnalyzerPlugin} = require("./my-dev-config");
+
 const currentConfig = require(isProd ? "./webpack.cfg" : "./webpack.cfg.dev");
+
+const {debugIE,chunkStats,bundleAnalyzerPlugin} = require("./my-dev-config");
 const fileHash = isProd ? "[chunkhash:5]" : "[hash:5]";
 
 const commonConfig = {
-    devtool: 'source-map',
     entry: {
-        index: dir("src/app/index.js"),
         shim: [
             "es5-shim", // 支持 IE8 所必须,且顺序在babel-polyfill前
             "es5-shim/es5-sham",
@@ -26,7 +25,11 @@ const commonConfig = {
             "babel-polyfill",
             "media-match", // 支持 antd 所必须
         ],
-        lib: ['axios', 'antd', 'react', 'react-dom', 'react-router-dom', 'history'],
+        vendorChunk: ['react', 'react-dom', 'axios', 'react-router-dom', "js-cookie"],
+        /* public: [
+            dir("src/utils/public.js"),
+         ],*/
+        // jquery_chunk:[] //
     },
     output: {
         path: dir("dist"),
@@ -52,7 +55,7 @@ const commonConfig = {
             },
             {
                 test: /\.(jpe?g|png|gif|bmp|ico)(\?.*)?$/i,
-                loader: "url-loader?limit=8048&name=assets/url-img/[name].[hash:5].[ext]&publicPath=../../",
+                loader: "url-loader?limit=1024&name=assets/static-img/[name].[hash:5].[ext]&publicPath=../../",
             },
             {
                 test: /\.(woff2?|svg|ttf|otf|eot)(\?.*)?$/i,
@@ -62,10 +65,6 @@ const commonConfig = {
         ],
     },
     plugins: [
-        new CleanWebpackPlugin(['dist'], { 
-            root: path.resolve(__dirname, '..'),
-            dry: false // 启用删除文件
-          }),
         //本地打包分析配置
         !!bundleAnalyzerPlugin?new BundleAnalyzerPlugin({
             analyzerMode: 'server',
@@ -114,25 +113,18 @@ const commonConfig = {
             }
         ]),
         new webpack.optimize.CommonsChunkPlugin({
+            name: "appChunk",
+            minChunks: 2,
+            chunks: ["index", "home", "docs", "doc-react", "antd-demos", "demo-select"]
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
             name: "baseChunk",//
             minChunks: 2,
-            chunks: ["index", "lib"]
+            chunks: ["appChunk", "vendorChunk"]
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: "runtime",
             minChunks: Infinity,
-        }),
-        new HtmlWebpackPlugin({
-            filename: "index.html",
-            template: dir("src/index.html"),
-            title: "中山大学附属第一医院",
-            chunks: ["runtime", "shim", "baseChunk","index"],
-            chunksSortMode: "manual",
-            inject: true,
-            xhtml: true,
-            hash: true,
-            //模板文件index.html静态资源路径前缀,暂时无用
-            staticPath: '/peas',
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/i, /moment$/i),
         (debugIE || isProd) ? new Es3ifyPlugin():()=>{},
@@ -160,7 +152,30 @@ const commonConfig = {
     },
     performance: {
         hints: false,
-    }
+    },
 };
+const addPagePlugin = name => {
+    const app = name ? name + "/index" : "index";
+    commonConfig.entry[app] = [
+        dir("src/views/" + app + ".js"),
+    ];
+    commonConfig.plugins.push(
+        new HtmlWebpackPlugin({
+            filename: app + ".html",
+            template: dir("src/index.html"),
+            title: "中山大学附属第一医院",
+            chunks: ["runtime", "shim", "baseChunk", "appChunk", app],//
+            chunksSortMode: "manual",
+            inject: true,
+            xhtml: true,
+            hash: true,
+            //模板文件index.html静态资源路径前缀,暂时无用
+            staticPath: '/peas',
+        })
+    );
+};
+const pageList = [""]; // 多页面打包
+pageList.forEach(v => addPagePlugin(v));
+// commonConfig.output.publicPath = pageList.length > 1 ? "/" : "./";
 
 module.exports = merge(commonConfig, currentConfig);
