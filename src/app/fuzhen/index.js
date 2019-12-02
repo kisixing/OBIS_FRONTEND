@@ -236,14 +236,14 @@ export default class Patient extends Component {
         <Collapse defaultActiveKey={collapseActiveKey}>
           <Panel header="诊 断" key="1">
             {loading ?
-              <div style={{ height: '2em', background: '#bbddfc' }}><Spin />&nbsp;...</div> : this.renderZD()
+              <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
             }
           </Panel>
           <Panel header="缺 少 检 验 报 告" key="2">
             <p className="pad-small">{jianyanReport || '无'}</p>
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
-            <Timeline className="pad-small" pending={<Button className="colorWhite" type="ghost" size="small" onClick={() => alert('功能未开通')}>管理</Button>}>
+            <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => alert('功能未开通')}>管理</Button>}>
               {zhenliaoPlan.length ? zhenliaoPlan.map((item, index) => (
                 <Timeline.Item key={`zhenliaoPlan-${item.id || index}-${Date.now()}`}>
                   <p className="font-16">{item.date} - {item.week}</p>
