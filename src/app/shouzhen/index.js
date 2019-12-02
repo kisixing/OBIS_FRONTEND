@@ -52,7 +52,7 @@ export default class Patient extends Component {
             service.shouzhen.getForm(tab.key).then(res => {
                 tab.init = true;
                 tab.entity = res;
-                this.forceUpdate();
+                this.setState({step});
             });
         }else{
             this.setState({step});

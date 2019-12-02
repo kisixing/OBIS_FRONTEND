@@ -7,8 +7,8 @@ export default {
      */
     getForm : function(tab){
         // TODO:这是示例 所以这样写的
-        if(tab === 'tab-8'){
-            return this.userId().then(r => myAxios.get(`/Obcloud/shouzhen?id=${r.id}&type=${tab}`));
+        if(/tab\-[38]/.test(tab)){
+            return this.userId().then(r => myAxios.get(`/Obcloud/shouzhen/${tab}?id=${r.id}`));
         } else {
             return Promise.resolve({});
         }
@@ -17,7 +17,7 @@ export default {
      * 保存表单数据 tab对应首诊下面的tab菜单，从tab-0开始
      */
     saveForm : function(tab, entity){
-        return this.userId().then(r => myAxios.post(`/Obcloud/shouzhen?id=${r.id}&type=${tab}`, entity));
+        return this.userId().then(r => myAxios.post(`/Obcloud/shouzhen/${tab}?id=${r.id}`, entity));
     },
     /**
      * 诊断处理的诊断列表
