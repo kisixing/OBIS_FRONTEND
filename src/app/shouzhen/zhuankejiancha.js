@@ -39,7 +39,7 @@ export default class extends Component{
         },
         {
           className:'zhuanke-group', columns:[
-            {name:'ckjc[参科检查]',type:'**', span:8},
+            {name:'ckjc[产科检查]',type:'**', span:8},
           ]
         },
         {

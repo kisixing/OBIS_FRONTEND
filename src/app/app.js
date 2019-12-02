@@ -72,10 +72,8 @@ export default class App extends Component {
         </p>
         <div className="patient-Info_btnList">
           <ButtonGroup>
-            <Button className="danger-btn">梅毒</Button>
-            <Button className="view-btn">梅毒</Button>
-            <Button>HTV</Button>
-            <Button>乙肝</Button>
+            <Button className="danger-btn-4">IV 级</Button>
+            <Button className="danger-btn-infectin">梅毒，乙肝，HIV</Button>
           </ButtonGroup>
         </div>
       </div>
