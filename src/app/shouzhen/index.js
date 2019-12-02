@@ -42,6 +42,21 @@ export default class Patient extends Component {
         service.getuserDoc().then(res => this.setState({
             info: res
         }))
+        this.activeTab(this.state.step);
+    }
+
+    activeTab(step){
+        const { tabs } = this.state;
+        const tab = tabs.filter(t=>t.key===step).pop() || {};
+        if(!tab.init){
+            service.shouzhen.getForm(tab.key).then(res => {
+                tab.init = true;
+                tab.entity = res;
+                this.forceUpdate();
+            });
+        }else{
+            this.setState({step});
+        }
     }
 
     handleChange(e, { name, value, valid }, entity) {
@@ -59,18 +74,18 @@ export default class Patient extends Component {
             if(valid){
                 if(this.change){
                     service.shouzhen.saveForm(tab.key, tab.entity).then(() => {
-                        this.setState({step:key || next.key});
+                        this.activeTab(key || next.key);
                     }, ()=>{ // TODO: 仅仅在mock时候用
-                        this.setState({step:key || next.key});
+                        this.activeTab(key || next.key);
                     });
                 }else{
-                    this.setState({step:key || next.key});
+                    this.activeTab(key || next.key);
                 }
                 this.change = false;
             }else{
                 tab.error = true;
                 if(key){
-                    this.setState({step:key});
+                    this.activeTab(key);
                 }else{
                     this.forceUpdate();
                 }

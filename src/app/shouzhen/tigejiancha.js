@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import {valid} from '../../render/common';
 import formRender from '../../render/form';
 import * as baseData from './data';
 

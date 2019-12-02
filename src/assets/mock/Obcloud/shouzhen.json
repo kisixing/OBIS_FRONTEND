@@ -1,0 +1,118 @@
+{
+  "xtz": "60",
+  "yqtz": "45",
+  "ckpressure": [
+    "80",
+    "130"
+  ],
+  "mb": "100",
+  "bmi": "20",
+  "sg": "170",
+  "pflm": [
+    {
+      "checked": true
+    },
+    {
+      "checked": true
+    },
+    {
+      "checked": false
+    },
+    {}
+  ],
+  "jzx": [
+    {
+      "checked": false
+    },
+    {
+      "checked": true,
+      "value": "1111"
+    }
+  ],
+  "rt": [
+    {
+      "checked": false
+    },
+    {
+      "checked": true
+    }
+  ],
+  "hxy": [
+    {
+      "checked": false
+    },
+    {
+      "checked": true,
+      "value": "22222"
+    }
+  ],
+  "ly": "3333",
+  "xl": "120",
+  "xl2": [
+    {
+      "checked": true
+    },
+    {
+      "checked": false
+    }
+  ],
+  "xlzy": [
+    {
+      "checked": true
+    },
+    {
+      "checked": false
+    }
+  ],
+  "sqt": [
+    {
+      "checked": true
+    },
+    {}
+  ],
+  "xzfz": [
+    {
+      "checked": false
+    },
+    {
+      "checked": false
+    },
+    {
+      "checked": true
+    },
+    {
+      "checked": false
+    }
+  ],
+  "jz": [
+    {
+      "checked": false
+    },
+    {
+      "checked": true
+    }
+  ],
+  "sqfs": [
+    {
+      "checked": false
+    },
+    {
+      "checked": true
+    },
+    {
+      "checked": false
+    },
+    {
+      "checked": false
+    }
+  ],
+  "xgzy": [
+    {
+      "checked": true
+    },
+    {
+      "checked": false
+    }
+  ],
+  "id3": "wwww1"
+}
