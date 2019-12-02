@@ -25,8 +25,7 @@ const commonConfig = {
             "console-polyfill",
             "babel-polyfill",
             "media-match", // 支持 antd 所必须
-        ],
-        lib: ['axios', 'antd', 'react', 'react-dom', 'react-router-dom', 'history'],
+        ]
     },
     output: {
         path: dir("dist"),
@@ -65,7 +64,7 @@ const commonConfig = {
         new CleanWebpackPlugin(['dist'], { 
             root: path.resolve(__dirname, '..'),
             dry: false // 启用删除文件
-          }),
+        }),
         //本地打包分析配置
         !!bundleAnalyzerPlugin?new BundleAnalyzerPlugin({
             analyzerMode: 'server',
@@ -114,9 +113,14 @@ const commonConfig = {
             }
         ]),
         new webpack.optimize.CommonsChunkPlugin({
-            name: "baseChunk",//
+            name: "antd",
             minChunks: 2,
-            chunks: ["index", "lib"]
+            chunks: ["fuzhen", "shouzhen"]
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "vendor",
+            minChunks: 2,
+            chunks: ["antd", "index"]
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: "runtime",
@@ -126,7 +130,7 @@ const commonConfig = {
             filename: "index.html",
             template: dir("src/index.html"),
             title: "中山大学附属第一医院",
-            chunks: ["runtime", "shim", "baseChunk","index"],
+            chunks: ["runtime", "shim", "antd", "vendor", "index"],
             chunksSortMode: "manual",
             inject: true,
             xhtml: true,

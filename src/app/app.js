@@ -2,18 +2,19 @@ import React, { Component } from "react";
 import { Button } from 'antd';
 
 import router from "../utils/router";
+import bundle from "../utils/bundle";
 import service from '../service';
 
-import Shouzhen from './shouzhen';
-import Fuzhen from './fuzhen';
+import Shouzhen from 'bundle-loader?lazy&name=shouzhen!./shouzhen';
+import Fuzhen from 'bundle-loader?lazy&name=fuzhen!./fuzhen';
 
 import "./app.less";
 
 const ButtonGroup = Button.Group;
 
 const routers = [
-  { name: '首检信息', path: '/sz', component: Shouzhen },
-  { name: '复诊记录', path: '/fz', component: Fuzhen },
+  { name: '首检信息', path: '/sz', component: bundle(Shouzhen) },
+  { name: '复诊记录', path: '/fz', component: bundle(Fuzhen) },
   { name: '孕期曲线', path: '/yq', component: null },
   { name: '血糖记录', path: '/xt', component: null },
   { name: '影像报告', path: '/yx', component: null },
