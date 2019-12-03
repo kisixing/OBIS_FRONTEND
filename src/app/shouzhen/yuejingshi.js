@@ -15,30 +15,34 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'cc(岁)[初潮]', type: 'select', span: 5, showSearch: true, options: baseData.ccOptions },
+            { name: 'cc(岁)[初潮]', type: 'select', span: 4, showSearch: true, options: baseData.ccOptions },
+            { span: 2 },
+            { name: 'zq(天)[周期]', type: 'input', span: 4, valid: 'number' },
+            { span: 2 },
+            { name: 'cxts[持续天数]', className: 'width_7', type: 'input', span: 5, valid: 'number' },
             { span: 1 },
-            { name: 'zq(天)[周期]', type: 'input', span: 5, valid: 'number' },
-            { span: 1 },
-            { name: 'cxts[持续天数]', type: 'input', span: 5, valid: 'number' },
-            { span: 1 },
-            { name: 'tj[痛经]', type: 'checkinput', span: 6, valid: 'required', radio:true, options: baseData.plOptions },
+            { name: 'tj[痛经]', type: 'checkinput', span: 6, valid: 'required', radio: true, options: baseData.plOptions },
           ]
         },
         {
           columns: [
-            { name: 'hys[婚姻史]', type: 'checkinput-4', span: 11,radio:true, options: baseData.hysOptions },
+            { name: 'hys[婚姻史]', type: 'checkinput-4', span: 11, radio: true, options: baseData.hysOptions },
             { span: 1 },
-            { name: 'jhnl[本次结婚年龄]', type: 'input', span: 5, valid: 'number' },
+            { name: 'jhnl[本次结婚年龄]', className: 'width_7', type: 'input', span: 5, valid: 'number' },
             { span: 1 },
-            { name: 'jqjh[近亲结婚]', type: 'checkinput', span: 5,radio:true, valid: 'required', options: baseData.yesOptions },
+            { name: 'jqjh[近亲结婚]', className:'col-yjs-sp', type: 'checkinput', span: 5, radio: true, valid: 'required', options: baseData.yesOptions },
           ]
         },
-        { name: 'bybs[不孕病史]', type: 'checkinput-1',unselect:'无',  options: baseData.bybsOptions.map(v=>({...v,span:24})) },
+        {
+          columns: [
+            { name: 'bybs[不孕病史]',className:'col-yjs-sp', type: 'checkinput-1', unselect: '无', options: baseData.bybsOptions.map(v => ({ ...v, span: 8 })) },
+          ]
+        }
       ]
     };
   }
 
-  render(){
+  render() {
     const { entity, onChange } = this.props;
     return (
       <div className="">

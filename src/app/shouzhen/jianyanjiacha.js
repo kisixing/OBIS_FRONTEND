@@ -29,7 +29,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ygdna[乙肝DNA]', type:'checkinput-3', options: baseData.yywOptions,radio:true,span:9},
+            {name:'ygdna[乙肝DNA]', className:'col-8-sp', type:'checkinput-3', options: baseData.yywOptions,radio:true,span:9},
             {name:'alt(U/L)[ALT]', type:'input', span:4},
             {span:1},
             {name:'ast(UL)[AST]',type:'input', span:4}
@@ -47,7 +47,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'md[梅毒]', type:'checkinput-5',radio:true, options: baseData.mdOptions,span:15}
+            {name:'md[梅毒]', type:'checkinput-5',radio:true, options: baseData.mdOptions,span: 24}
           ]
         },
         {

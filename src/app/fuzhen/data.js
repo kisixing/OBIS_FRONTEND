@@ -83,22 +83,40 @@ export const tableKey = () => [
 		key: 'ckweek',
 	},
 	{
-		title: '体重 (kg)',
-		key: 'kg',
+		title: '体重',
+		key: 'kg',	
+		children:[
+			{
+				title: '(kg)',
+				key: 'kg',
+			},
+		]
 	},
 	{
-		title: '血压  (mmHg)',
+		title: '血压',
 		key: 'mmhg',
-		width: 150,
+		width: 160,	
+		children:[
+			{
+				title: '(mmHg)',
+				key: 'mmhg',
+			},
+		]
 	},
 	{
 		title: '自觉症状',
 		key: 'disease',
 	},
 	{
-		title: '胎心 (BMP)',
+		title: '胎心',
 		key: 'bmp',
 		width: 130,
+		children:[
+			{
+				title: '(BMP)',
+				key: 'bmp',
+			},
+		]
 	},
 	{
 		title: '先露',
@@ -107,8 +125,14 @@ export const tableKey = () => [
 		options: xlOptions
 	},
 	{
-		title: '宫高 (cm)',
+		title: '宫高',
 		key: 'ckgongg',
+		children:[
+			{
+				title: '(cm)',
+				key: 'ckgongg',
+			},
+		]
 	},
 	{
 		title: '下肢水肿',
