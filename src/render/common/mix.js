@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import { Row, Col, Checkbox, Input, Table, Select, DatePicker } from 'antd';
 
-const getrealy = str => str.replace(/\((.*)\)/,'').replace(/\[.*\]/,'').replace(/\((.*)\)/,'');
+const getrealy = str => str.replace(/\((.*)\)/,'').replace(/\[.*\]/,'').replace(/\<(.*)\>/,'').replace(/\{(.*)\}/,'');
 
 class MMix extends Component{
   constructor(props){
     super(props);
-    const {option} = props;
+    const {option,baseColor} = props;
     const $label = option.label||option;
     const label = getrealy($label);
     const type = option.type || (/\((.*)\)/.test($label) && /\((.*)\)/.exec($label)[1]);
     const unit = option.unit || (/\[(.*)\]/.test($label) && /\[(.*)\]/.exec($label)[1]);
+    const color = option.unit || (/\{(.*)\}/.test($label) && /\{(.*)\}/.exec($label)[1]);
     const field = getrealy(option.value || option);
     this.state = {
-      label,type,unit,field,width:0
+      label,type,unit,field,width:0,color:color || baseColor
     };
   }
 
@@ -47,13 +48,14 @@ class MMix extends Component{
   }
 
   render(){
-    const {args, data, option, onCheck, onChange, span, addspan, ...rest} = this.props;
-    const {label,type,field} = this.state; 
+    const {args, data, option, onCheck, onChange, span, baseColor, ...rest} = this.props;
+    const {label,type,field,color} = this.state; 
     const showEditor = type && data.hasOwnProperty(field);
-        
+    const fontColor = data.hasOwnProperty(field) && (color || baseColor) || '';
+
     return (
-      <Col {...rest} span={span * (1 + (/^\d+$/.test(addspan) ? addspan : !!showEditor))}>
-        <Checkbox value={field} checked={data.hasOwnProperty(field)} onChange={e=>onCheck(e,{checked:e.target.checked,name:field,option})}>{label}</Checkbox>
+      <Col {...rest} span={span * (1 + (showEditor?(/^\d+$/.test(option.addspan) ? option.addspan : 1):0))}>
+        <Checkbox style={{color: fontColor}} value={field} checked={data.hasOwnProperty(field)} onChange={e=>onCheck(e,{checked:e.target.checked,name:field,option})}>{label}</Checkbox>
         <div ref="checkboxInput" style={{display:showEditor?'inline-block':'none'}}>
           {showEditor ? this.renderEditor(args):null}
         </div>
@@ -69,7 +71,7 @@ class MMix extends Component{
  * wrap这个属性告诉编辑器是否编辑器不受限在一行
  * addspan 表示当前选项，当编辑框出来后增加的占位
  */
-export function checkinput$x({ name, options = [], onChange, onBlur, value:data = {}, unselect, radio, ...rest }, count, ...args){
+export function checkinput$x({ name, options = [], onChange, onBlur, value:data = {}, unselect, radio, baseColor = '#333333', ...rest }, count, ...args){
   const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
   const span = Math.floor(count ? (24/count) : Math.max(6, 24 / (optionList.length || 1)));
   
@@ -108,13 +110,13 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data 
   const handleInput = (e,{value, name}) => {
     data[`$${name}`] = value;
     data[name] = value;
-    onChange(e,value).then(()=>onBlur());
+    onChange(e,data).then(()=>onBlur());
   }
 
   return (
     <Row className="checkinput">
     {optionList.map((op,index)=>(
-        <MMix {...rest} args={args} key={`checkinput-${name}-${index}`} 
+        <MMix {...rest} args={args} key={`checkinput-${name}-${index}`} baseColor={baseColor}
           span={op.span||span} data={{...data}} option={op} 
           onCheck={handleCheck} onChange={handleInput}/>
     ))}

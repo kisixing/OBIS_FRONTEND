@@ -26,14 +26,14 @@ export default class extends Component {
         },
         {
           columns: [
-            { name: 'hys[婚姻史]', type: 'checkinput', span: 11,radio:true, options: baseData.hysOptions },
+            { name: 'hys[婚姻史]', type: 'checkinput-4', span: 11,radio:true, options: baseData.hysOptions },
             { span: 1 },
             { name: 'jhnl[本次结婚年龄]', type: 'input', span: 5, valid: 'number' },
             { span: 1 },
             { name: 'jqjh[近亲结婚]', type: 'checkinput', span: 5,radio:true, valid: 'required', options: baseData.yesOptions },
           ]
         },
-        { name: 'bybs[不孕病史]', type: 'checkinput',unselect:'无',  options: baseData.bybsOptions.map(v=>({...v,span:24})) },
+        { name: 'bybs[不孕病史]', type: 'checkinput-1',unselect:'无',  options: baseData.bybsOptions.map(v=>({...v,span:24})) },
       ]
     };
   }

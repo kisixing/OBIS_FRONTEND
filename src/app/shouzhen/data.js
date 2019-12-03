@@ -100,7 +100,7 @@ export const pfOptions = toOptions('正常,苍白,皮下出血(input),其他(inp
 /**
  *正常、异常
 */
-export const neOptions = toOptions('正常,异常(input)');
+export const neOptions = toOptions('正常,异常(input){#999900}');
 
 /**
  *正常、畸形

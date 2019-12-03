@@ -46,25 +46,25 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'pflm[皮肤黏膜]', type:'checkinput', options: baseData.pfOptions,span:12}
+            {name:'pflm[皮肤黏膜]', type:'checkinput-6', options: baseData.pfOptions,span:13}
           ]
         },
         {
           columns:[
-            {name:'jzx[甲状腺]', type:'checkinput', options: baseData.neOptions,radio:true,span:7},
-            {name:'xgzy[血管杂音]', type:'checkinput', options: baseData.hnOptions,radio:true,span:7},
+            {name:'jzx[甲状腺]', type:'checkinput-3', options: baseData.neOptions,radio:true,span:7},
+            {name:'xgzy[血管杂音]', type:'checkinput-3', options: baseData.hnOptions,radio:true,span:7},
             {span:1},
             {name:'id3[其他]', type:'input', span:6},
           ]
         },
         {
           columns:[
-            {name:'rt[乳头]', type:'checkinput', options: baseData.rtOptions,radio:true,span:7}
+            {name:'rt[乳头]', type:'checkinput-3', options: baseData.rtOptions,radio:true,span:7}
           ]
         },
         {
           columns:[
-            {name:'hxy[呼吸音]', type:'checkinput', options: baseData.neOptions,radio:true,span:7},
+            {name:'hxy[呼吸音]', type:'checkinput-3', options: baseData.neOptions,radio:true,span:7},
             {name:'ly[啰音]', type:'input', span:6},
           ]
         },
@@ -72,22 +72,22 @@ export default class extends Component{
           columns:[
             {name:'xl(次/分)[心率]', type:'input', span:6},
             {span:1},
-            {name:'xl2[心率]', type:'checkinput', options: baseData.xlOptions,radio:true,span:7},
+            {name:'xl2[心率]', type:'checkinput-3', options: baseData.xlOptions,radio:true,span:7},
             {span:1},
-            {name:'xlzy[杂音]', type:'checkinput', options: baseData.hnOptions,radio:true,span:7},
+            {name:'xlzy[杂音]', type:'checkinput-3', options: baseData.hnOptions,radio:true,span:9},
           ]
         },
         {
           columns:[
-            {name:'gan[肝]', type:'checkinput', options: baseData.cjOptions,radio:true,span:7},
-            {name:'pi[脾]', type:'checkinput', options: baseData.cjOptions,radio:true,span:7},
+            {name:'gan[肝]', type:'checkinput-3', options: baseData.cjOptions,radio:true,span:7},
+            {name:'pi[脾]', type:'checkinput-3', options: baseData.cjOptions,radio:true,span:7},
             {span:1},
-            {name:'sqt[肾区叩痛]', type:'checkinput', options: baseData.sktOptions,span:7},
+            {name:'sqt[肾区叩痛]', type:'checkinput-3', options: baseData.sktOptions,span:9},
           ]
         },
         {
           columns:[
-            {name:'jz[脊柱]', type:'checkinput', options: baseData.jxOptions,radio:true,span:7},
+            {name:'jz[脊柱]', type:'checkinput-3', options: baseData.jxOptions,radio:true,span:7},
             {name:'xzfz[下肢浮肿]', type:'checkinput', options: baseData.xzfOptions,radio:true,span:11},
             {name:'sqfs[双膝反射]', type:'checkinput', options: baseData.sxfOptions,radio:true,span:12},
           ]

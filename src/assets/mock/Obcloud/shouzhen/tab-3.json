@@ -11,85 +11,8 @@
       "shbl": "2222"
     }
   ],
-  "wss": [
-    {
-      "checked": true
-    },
-    {
-      "checked": false
-    }
-  ],
-  "xzp": [
-    {
-      "checked": true,
-      "value": "11"
-    },
-    {},
-    {},
-    {},
-    {
-      "checked": true,
-      "value": "222222"
-    },
-    {},
-    {}
-  ],
-  "jbs": [
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    }
-  ],
-  "gjtp": [
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    },
-    {
-      "checked": false
-    }
-  ]
+  "wss": {},
+  "xzp": {},
+  "jbs": {},
+  "gjtp": {}
 }

@@ -17,7 +17,7 @@ function shouzhenyy({value, onChange, onBlur}, count, FormItemComponent){
     onChange(e, data).then(()=>onBlur())
   }
   return (
-    <Row type="flex" style={{width:300*options.length}}>
+    <Row type="flex" style={{width:300*options.length}} className="shouzhenyy-yy">
       {options.map(([label,type='input'],index)=>{
         return (
           <Col span={Math.floor(23/options.length)}>

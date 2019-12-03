@@ -179,7 +179,7 @@ class FormItem extends Component{
     const { name, label, unit, value, error } = this.state;
     
       return (
-        <div ref="formItem" className={`form-item ${name} ${error&&/\*/.test(error)?'form-error':`${error&&'form-warn'||''} ${value&&'is-not-empty' ||''}`}`}>
+        <div ref="formItem" className={`form-item ${name} ${error&&/\*/.test(error)?'form-error':`${error&&'form-warn'||''} ${!validFn('required',value)&&'is-not-empty' ||''}`}`}>
           {label?<div ref="formItemlabel" className="form-label">
             {icon?<i className={`anticon anticon-${icon}`}>&nbsp;</i>:null}
             {/required/.test(valid)?<span className="colorRed">*</span>:null}

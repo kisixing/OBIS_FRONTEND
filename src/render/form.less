@@ -39,19 +39,22 @@
       font-weight: bold;
     }
   }
-  
 
-  .is-not-empty{
-    select, input, .ant-select-selection{
-      font-size: 16px;
-      border-radius: 0;
-      border: none;
-      border-bottom: 1px solid #cccccc;
-      background: none;
-    }
-    .inputxxx{
-      border: none;
-    }
+}
+
+.is-not-empty{
+  select, input, .ant-select-selection{
+    font-size: 16px;
+    border-radius: 0;
+    border: none ;
+    border-bottom: 1px solid #cccccc;
+    background: none ;
+  }
+  .inputxxx{
+    border: none ;
+  }
+  .ant-checkbox-wrapper{
+    color: #d3d3d3;
   }
 }
 
@@ -117,6 +120,11 @@
   }
 }
 
-.checkinput .ant-checkbox-wrapper{
-  height: 30px;
+.checkinput {
+  >*{
+    white-space:nowrap
+  }
+  .ant-checkbox-wrapper{
+    height: 30px;
+  }
 }

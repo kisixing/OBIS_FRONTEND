@@ -100,7 +100,7 @@ export default class Patient extends Component {
                 <div className="bgWhite" style={{ position: 'fixed', top: '9em', left: '0', right: '0',bottom:'0' }}></div>
                 <Tabs type="card" activeKey={step} onChange={key => this.handleSave(key)}>
                     {tabs.map(({key,title,entity,error,Content}) => (
-                        <Tabs.TabPane key={key} tab={<span style={error&&{color:'red'}}>{title}</span>}>
+                        <Tabs.TabPane key={key} tab={<span style={error&&{color:'red'}}>{error?<i className="anticon anticon-exclamation-circle"/>:null}{title}</span>}>
                             <div className="bgWhite pad-mid ">
                                 {step === key ? <Content info={info} entity={{...entity}} onChange={(e,item)=>this.handleChange(e,item,entity)}/> : null}
                             </div>
