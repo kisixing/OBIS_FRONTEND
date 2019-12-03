@@ -1,7 +1,13 @@
 
+/**
+ * 如果不想在value里面使用label的数据，可以换成用index作为value
+ */
 function toOptions(data, vfn =()=>({})){
 	if(data instanceof Array){
-		return data.map((v,i) => ({ label: v, value: v, ...vfn(v,i) }))
+		return data.map((v,i) => {
+			const { k, ...rest } = v;
+			return { ...rest, label: k || v, value: k || v, ...vfn(k || v,i) }
+		})
 	}
 	if(data && typeof data === 'object'){
 		return Object.keys(data).map((v,i) => ({ label: data[v], value: v, ...vfn(data[v],v,i) }))
@@ -154,12 +160,12 @@ export const yyw2Options = toOptions('阴性,阳性,未查,其他');
 /**
  *梅毒
 */
-export const mdOptions = toOptions(['阴性','阳性(shouzhenyy-TPPA滴度,TRUST滴度)','未查(input)','其他']);
+export const mdOptions = toOptions(['阴性',{k:'阳性(shouzhenyy-TPPA滴度,TRUST滴度)',addspan:4},'未查(input)','其他']);
 
 /**
  *OGTT
 */
-export const ogttOptions = toOptions(['正常','GDM(shouzhenyy-空腹血糖,餐后1H血糖,餐后2H血糖)','未查']);
+export const ogttOptions = toOptions(['正常',{k:'GDM(shouzhenyy-空腹血糖,餐后1H血糖,餐后2H血糖)',addspan:4},'未查']);
 
 /**
  *地贫
@@ -242,15 +248,15 @@ export const pregnanciesColumns = [
 	},
 	{
 		title: '年',
-    	key: 'ckweek',
-    	type: 'date'
+    key: 'ckweek',
+    type: 'date'
 	},
 	{
 		title: '月',
-    	key: 'kg',
-    	type: 'input'
-  	},
-  	{
+		key: 'kg',
+		type: 'input'
+	},
+	{
 		title: '流产',
 		children:[
 			{
@@ -269,7 +275,7 @@ export const pregnanciesColumns = [
 				type: 'input'
 			}
 		]
-  	},
+  },
 	{
 		title: '引产',
 		key: 'yc',

@@ -67,8 +67,8 @@ class FormItem extends Component{
     this.state = {
       name: field,
       width: 0,
-      label: /\[.*\]/.test(name) && /\[(.*)\]/.exec(name)[1],
-      unit: /\(.*\)/.test(name) && /\((.*)\)/.exec(name)[1],
+      label: /\[.*\]/.test(name.replace(/\(.*\)/,'')) && /\[(.*)\]/.exec(name.replace(/\(.*\)/,''))[1],
+      unit: /\(.*\)/.test(name.replace(/\[.*\]/,'')) && /\((.*)\)/.exec(name.replace(/\[.*\]/,''))[1],
       value: entity[field],
       dirty: false,
       error: ''
@@ -116,6 +116,9 @@ class FormItem extends Component{
     if(this.props.entity[name] !== newProps.entity[name]){
       this.state.value = newProps.entity[name];
       this.state.error = validFn(newProps.valid, newProps.entity[name]);
+    }
+    if(this.props.width !== newProps.width) {
+      this.resize();
     }
   }
 

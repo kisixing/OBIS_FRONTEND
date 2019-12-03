@@ -24,12 +24,12 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ygldb[乙肝两对半]', type:'checkinput-4', options: baseData.ygOptions,unselect:'正常', span:16}
+            {name:'ygldb[乙肝两对半]', type:'checkinput-5', options: baseData.ygOptions,unselect:'正常', span:15}
           ]
         },
         {
           columns:[
-            {name:'ygdna[乙肝DNA]', type:'checkinput-4', options: baseData.yywOptions,radio:true,span:10},
+            {name:'ygdna[乙肝DNA]', type:'checkinput-3', options: baseData.yywOptions,radio:true,span:9},
             {name:'alt(U/L)[ALT]', type:'input', span:4},
             {span:1},
             {name:'ast(UL)[AST]',type:'input', span:4}
@@ -37,52 +37,52 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'bggt[丙肝抗体]', type:'checkinput-4', options: baseData.yywOptions,radio:true,span:16}
+            {name:'bggt[丙肝抗体]', type:'checkinput-5', options: baseData.yywOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
-            {name:'bgrna[丙肝RNA]', type:'checkinput-4', options: baseData.yywOptions,radio:true,span:16}
+            {name:'bgrna[丙肝RNA]', type:'checkinput-5', options: baseData.yywOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
-            {name:'md[梅毒]', type:'checkinput-4',radio:true, options: baseData.mdOptions,span:16}
+            {name:'md[梅毒]', type:'checkinput-5',radio:true, options: baseData.mdOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'hiv[HIV]', type:'checkinput-4',radio:true, options: baseData.ogttOptions,span:16}
+            {name:'hiv[HIV]', type:'checkinput-5',radio:true, options: baseData.ogttOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'ogtt[OGTT]', type:'checkinput-4',radio:true, options: baseData.ogttOptions,span:16}
+            {name:'ogtt[OGTT]', type:'checkinput-5',radio:true, options: baseData.ogttOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'vfdp[女方地贫]', icon:'environment-o', type:'checkinput-4',radio:true, options: baseData.dpOptions,span:16}
+            {name:'vfdp[女方地贫]', icon:'environment-o', type:'checkinput-5',radio:true, options: baseData.dpOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'nfdp[男方地贫]', icon:'environment', type:'checkinput-4',radio:true, options: baseData.dpOptions,span:16}
+            {name:'nfdp[男方地贫]', icon:'environment', type:'checkinput-5',radio:true, options: baseData.dpOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'ndb[尿蛋白]', type:'checkinput-4',radio:true, options: baseData.dbnOptions,span:16}
+            {name:'ndb[尿蛋白]', type:'checkinput-5',radio:true, options: baseData.dbnOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'hiv[HIV]', type:'checkinput-4',radio:true, options: baseData.yywOptions,span:16}
+            {name:'hiv[HIV]', type:'checkinput-5',radio:true, options: baseData.yywOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'gbs[GBS]', type:'checkinput-4',radio:true, options: baseData.yywOptions,span:16}
+            {name:'gbs[GBS]', type:'checkinput-5',radio:true, options: baseData.yywOptions,span:15}
           ]
         },
         {

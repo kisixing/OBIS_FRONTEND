@@ -20,7 +20,7 @@ export default class extends Component {
             { name: 'xdycq[修订预产期]', type: 'date', span: 5, valid: 'required' },
           ]
         },
-        { name: 'ybzz[一般症状]', type: 'checkinput', valid: 'required', unselect:'无', options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
+        { name: 'ybzz[一般症状]', type: 'checkinput-4', valid: 'required', unselect:'无', options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
         {
           columns: [
             { name: 'tdks(周)[胎动开始]', type: 'input', span: 5, valid: 'required,number' },
