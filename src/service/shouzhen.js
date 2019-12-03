@@ -8,7 +8,7 @@ export default {
     getForm : function(tab){
         // TODO:这是示例 所以这样写的
         if(/tab\-[38]/.test(tab)){
-            return this.userId().then(r => myAxios.get(`/Obcloud/shouzhen/${tab}?id=${r.id}`));
+            return this.userId().then(r => myAxios.get(`/outpatientRestful/ivisitInfo?id=${r.object.userid}`));
         } else {
             return Promise.resolve({});
         }

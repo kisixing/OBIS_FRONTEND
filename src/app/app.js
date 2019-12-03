@@ -30,8 +30,9 @@ export default class App extends Component {
       muneIndex: 0 // 从0开始
     };
     
-    service.getuserDoc().then(res => this.setState({
-      ...res, loading: false
+    service.getuserDoc().then(
+      res => this.setState({
+      ...res.object, loading: false
     }));
   }
 
@@ -41,7 +42,7 @@ export default class App extends Component {
     if(location.pathname !== routers[muneIndex].path){
       this.props.history.push(routers[muneIndex].path);
     }
-    this.componentWillUnmount = service.watchInfo((info)=>this.setState(info));
+    this.componentWillUnmount = service.watchInfo((info)=>this.setState(info.object));
   }
 
   onClick(item) {
@@ -51,17 +52,17 @@ export default class App extends Component {
   }
 
   renderHeader() {
-    const { username, userhage, gesweek,gesmoc,usermcno } =this.state;
+    const { username, userage, tuserweek,tuseryunchan,gesexpect,usermcno,chanjno,risklevel,infectious } =this.state;
     return (
       <div className="main-header">
         <div className="patient-Info_title font-16">
           <div><strong>姓名:</strong>{username}</div>
-          <div><strong>年龄:</strong>{userhage}</div>
-          <div><strong>孕周:</strong>{gesweek}</div>
-          <div><strong>孕产:</strong>1孕2产</div>
-          <div><strong>预产期:</strong>{gesmoc}</div>
+          <div><strong>年龄:</strong>{userage}</div>
+          <div><strong>孕周:</strong>{tuserweek}</div>
+          <div><strong>孕产:</strong>{tuseryunchan}</div>
+          <div><strong>预产期:</strong>{gesexpect}</div>
           <div><strong>就诊卡:</strong>{usermcno}</div>
-          <div><strong>产检编号:</strong>{usermcno}</div>
+          <div><strong>产检编号:</strong>{chanjno}</div>
         </div>
         <p className="patient-Info_tab">
           {routers.map((item, i) => <Button key={"mune" + i}
@@ -73,8 +74,8 @@ export default class App extends Component {
         </p>
         <div className="patient-Info_btnList">
           <ButtonGroup>
-            <Button className="danger-btn-4">IV 级</Button>
-            <Button className="danger-btn-infectin">梅毒，乙肝，HIV</Button>
+            <Button className="danger-btn-5">{risklevel}</Button>
+            <Button className="danger-btn-infectin">{infectious}</Button>
           </ButtonGroup>
         </div>
       </div>

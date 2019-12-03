@@ -4,12 +4,12 @@ module.exports = {
     //反向代理配置
     proxyConfig: {
         "/api/*": {
-            target: "http://localhost:8989",
+            target: "http://120.77.46.176:8080/Obcloud/",
             secure: false,
-            changeOrigin: false,
+            changeOrigin: true,
         },
-        "/druid": {
-            target: "http://localhost:8989",
+        "/Obcloud/*": {
+            target: "http://120.77.46.176:8080/",
             secure: false,
             changeOrigin: false,
         },
