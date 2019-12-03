@@ -15,16 +15,11 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'jdrq[建档日期]', type: 'date', span: 5 },
-            { span: 1 },        
-            { name: 'cjbh[产检编号]', type: 'input', span: 5, valid: 'number' },
-          ]
-        },
-        {
-          columns: [
+            { name: 'nl[年龄]', type: 'input', span: 5, valid: 'number' },
+            { span: 1 }, 
             { name: 'csrq[出生日期]', type: 'date', span: 5 },
             { span: 1 },
-            { name: 'nl[年龄]', type: 'input', span: 5, valid: 'number' },
+            { name: 'jdrq[建档日期]', type: 'date', span: 5 },
           ]
         },
         {
@@ -46,6 +41,13 @@ export default class extends Component {
             { name: 'zjlx[证件类型]', type: 'select', span: 4, showSearch: false, options: baseData.sfzOptions },
             { span: 1 },
             { name: 'zfzh[身份证号]', type: 'input', span: 6 }
+          ]
+        }, {
+          columns: [
+            { name: 'sj[户口地址]', type: 'input', span: 11, valid: 'number' },
+            { span: 1 },
+            { name: 'gh[现住地址]', type: 'input', span: 11, valid: 'number' },
+            { span: 1 },
           ]
         }
       ]

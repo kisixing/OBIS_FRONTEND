@@ -16,7 +16,7 @@ export default class extends Component {
         { name: 'jbs[疾病史]', type: 'checkinput', valid: 'required', unselect:'无', options: baseData.jibOptions.map(v=>({...v, label:`${v.label}(input)`})) },
         { name: 'wss[外伤史]', type: 'checkinput', valid: 'required', span:12, radio:true, options: ['无', '有[input]'] },
         { name: 'sss[手术史]', type: 'table', valid: 'required', pagination: false, editable: true, options: baseData.shoushushiColumns },
-        { name: 'gjtp[既往宫颈涂片结果]', type: 'checkinput', unselect:'无', options: baseData.gjtpOptions.map(v=>({...v, label:`${v.label}(input)`})) },
+        {name:'jbs[药物或食物过敏史]', type:'checkinput', valid: 'required',options:baseData.ywgmOptions},
         { name: 'xzp[输血及血制品史]', type: 'checkinput', valid: 'required', unselect:'无', options: baseData.xzpOptions.map(v=>({...v, label:`${v.label}(input)`})) },
       ]
     };

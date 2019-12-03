@@ -12,7 +12,7 @@ export default {
      * 获取个人信息
      */
     getuserDoc: function(){
-        userId = myAxios.get('/Obcloud/doc/getuserDoc' + location.search);
+        userId = myAxios.get('/outpatientRestful/getuserDoc' + location.search);
         return userId;
     },
     watchInfo: function(fn){

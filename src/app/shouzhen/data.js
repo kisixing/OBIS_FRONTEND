@@ -39,12 +39,12 @@ export const xuexing2Options = toOptions('RH(+),RH(-)');
 /**
  * 一般症状
  */
-export const ybzzOptions = toOptions('头晕,头痛,呕吐,胸闷,浮肿,便秘,白带,增多,腰酸,肚痛,抽筋,流血,其他');
+export const ybzzOptions = toOptions('头晕,头痛,呕吐,胸闷,肚痛,腰酸,流血,白带增多,便秘,抽筋,浮肿,其他');
 
 /**
  * 疾病
  */
-export const jibOptions = toOptions('高血压,糖尿病,心脏病,肾脏疾病,甲亢,G6BP,地中海贫血,肺结核,贫血,肾炎,肝炎,风湿,癫痫,其他');
+export const jibOptions = toOptions('高血压,心脏病,癫痫,甲亢,甲减,糖尿病,肾脏疾病,风湿,肝脏疾病,肺结核,血栓疾病,地中海贫血,G6PD,其他');
 
 /**
  * 宫颈涂片
@@ -54,7 +54,7 @@ export const gjtpOptions = toOptions('正常,异常,未有检查,不清楚');
 /**
  * 血制品
  */
-export const xzpOptions = toOptions('红细胞,血小板,血浆,全血,白蛋白,其他,不清楚');
+export const xzpOptions = toOptions('红细胞,血小板,血浆,全血,白蛋白,免疫球蛋白,其他,不清楚');
 
 /**
  * 初潮
@@ -69,17 +69,17 @@ export const slOptions = toOptions('多,中,少');
 /**
  * 不孕病史 shouzhenyy-x这个是当前模块的编辑组件
  */
-export const bybsOptions = toOptions('输卵管因素,丈夫精弱精畸精,PCO（多囊卵巢）,原因不明]'.split(',').map(i=>`${i}(shouzhenyy-发现时间&date,治疗&input)`).concat(['其他(input)','不清楚(input)']));
+export const bybsOptions = toOptions('输卵管因素,丈夫少精弱精畸精,PCO（多囊卵巢）,原因不明'.split(',').map(i=>`${i}(shouzhenyy-发现时间&date,治疗&input)`).concat(['其他(input)','不清楚(input)']));
 
 /**
  * 频率
  */
-export const plOptions = toOptions('偶尔,经常');
+export const plOptions = toOptions('无,偶尔,经常');
 
 /**
  * 婚姻史
  */
-export const hysOptions = toOptions('未婚,已婚,再婚');
+export const hysOptions = toOptions('未婚,已婚,离异,再婚');
 
 /**
  * 是否
@@ -174,22 +174,26 @@ export const dbnOptions = toOptions('阴性,弱阳性,阳性,未查,其他');
 /**
  *药物或食物过敏史
 */
-export const ywgmOptions = toOptions('青霉素,头孢,磺胺类,酒精,食物过敏(input),其他(input)');
+export const ywgmOptions = toOptions('青霉素,头孢,酒精,食物过敏(input),其他(input)');
 
 /**
  *个人史
 */
-export const grsOptions = toOptions('孕前或孕期服用叶酸,吸烟(input)[只/天],饮酒(input)[ml/天],接触有害物质(input),服用药物(input-4),接触射线,其他');
+export const grsOptions = toOptions('吸烟(input)[只/天],饮酒(input)[ml/天],接触有害物质(input),接触射线,服用药物(input-4),其他');
 
+/**
+ *叶酸
+*/
+export const ysOptions = toOptions('孕前服用,孕期服用');
 /**
  *家族史
 */
-export const jzsOptions = toOptions('多胎,死胎,死产,先天畸形,精神病,痴呆,先天智力低下,糖尿病,高血压,肿瘤,其他(input)');
+export const jzsOptions = toOptions('多胎,死胎/死产,先天畸形,精神病,痴呆,先天智力低下,肿瘤,心脏病,高血压,糖尿病,其他(input)');
 
 /**
  *遗传病
 */
-export const ychOptions = toOptions('G6PD缺乏症,地贫,肿瘤,先天畸形,先天聋哑,先天智力低下,白化病,血友病,原发高血压,先天心脏病');
+export const ychOptions = toOptions('先天畸形,先天性聋哑,先天智力低下,先天心脏病,G6PD缺乏症,地中海贫血,血友病,白化病,原发高血压,糖尿病,肿瘤,其他');
 
 /**
  *尿蛋白

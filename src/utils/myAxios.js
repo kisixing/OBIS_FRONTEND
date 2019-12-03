@@ -5,7 +5,7 @@ import modal from './modal';
 
 const getUrl = function (url){
     if(location.search){
-        return 'http://120.77.46.176:8080/' + url;
+        return 'http://120.77.46.176:8080/Obcloud' + url;
     }else{
         return 'assets/mock/' + url.split('?').map((v,i)=>v+(!i?'.json':'')).join('?');
     }
@@ -36,7 +36,7 @@ const myAxios = axios.create({
     // baseURL:'/peas',
     timeout: 10000,
     headers: {'X-Requested-With': 'XMLHttpRequest'},
-    // headers: {'Content-Type': 'application/json;charset=utf-8'},
+    headers: {'Content-Type': 'application/json;charset=utf-8'},
     // headers: {'Content-Type': 'application/x-www-form-urlencode;charset=utf-8'},
 });
 

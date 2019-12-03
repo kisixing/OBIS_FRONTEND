@@ -20,7 +20,7 @@ import Zdcl from './zhenduanchuli';
 import editors from './editors';
 import "./index.less";
 
-const tabConetnts = [Yfxx, Zfxx, Byqk, Gqs, Yjs, Jzs, Ycs, Jyjc, Tgjc, Zkjc, Zdcl];
+const tabConetnts = [Yfxx, Zfxx, Byqk, Gqs, Yjs, Ycs,Jzs,Jyjc, Tgjc, Zkjc, Zdcl];
 
 export default class Patient extends Component {
     constructor(props) {

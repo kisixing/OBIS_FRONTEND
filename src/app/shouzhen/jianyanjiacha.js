@@ -16,13 +16,10 @@ export default class extends Component{
         {
           columns:[
             {name:'vfxx[女方血型]', icon:'female-Gender', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
-            {name:'vfxx2[]', type: 'select',span:3, valid: 'required', options: baseData.xuexingOptions},
-          ]
-        },      
-        {
-          columns:[
+            {name:'vfxx2[]', type: 'select',span:2, valid: 'required', options: baseData.xuexing2Options},
+            {span:2},
             {name:'nfxx[男方血型]', icon:'male-Gender', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
-            {name:'nfxx2[]', type: 'select',span:3, valid: 'required', options: baseData.xuexingOptions},
+            {name:'nfxx2[]', type: 'select',span:2, valid: 'required', options: baseData.xuexing2Options},
           ]
         },
         {
@@ -32,7 +29,10 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ygdna[乙肝DNA]', type:'checkinput-4', options: baseData.yywOptions,radio:true,span:16}
+            {name:'ygdna[乙肝DNA]', type:'checkinput-4', options: baseData.yywOptions,radio:true,span:10},
+            {name:'alt(U/L)[ALT]', type:'input', span:4},
+            {span:1},
+            {name:'ast(UL)[AST]',type:'input', span:4}
           ]
         },
         {
@@ -48,6 +48,11 @@ export default class extends Component{
         {
           columns:[
             {name:'md[梅毒]', type:'checkinput-4',radio:true, options: baseData.mdOptions,span:16}
+          ]
+        },
+        {
+          columns:[
+            {name:'hiv[HIV]', type:'checkinput-4',radio:true, options: baseData.ogttOptions,span:16}
           ]
         },
         {
