@@ -6,7 +6,7 @@ export default {
      * 右侧诊断列表
      */
     getdiagnosis: function(){
-        return this.userId().then(r => myAxios.get('/Obcloud/diagnosis/getdiagnosis?id=' + r.id));
+        return this.userId().then(r => myAxios.get('/outpatientRestful/getdiagnosis?type=rvisitDiag&relatedid=2292&userid=' + r.object.userid));
     },
     /**
      * 添加诊断列表的数据
@@ -38,7 +38,7 @@ export default {
      * 右侧表格数据
      */
     getRecentRvisit: function(){
-        return this.userId().then(r => myAxios.get('/Obcloud/outpatient/getRecentRvisit?id=' + r.id));
+        return this.userId().then(r => myAxios.get('/outpatientRestful/getRvisit?dataType=1&pageCurrent=1&pageSize=10&userid=' + r.object.userid));
     },
 
     /**
