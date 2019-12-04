@@ -61,7 +61,7 @@ const AddResize = (function(fn){
 class FormItem extends Component{
   constructor(props){
     super(props);
-    const { entity, name = '', label, unit } = props;
+    const { entity = {}, name = '', label, unit } = props;
     const field = name.replace(/\(.*\)/,'').replace(/\[.*\]/,'');
     
     this.state = {
@@ -138,7 +138,7 @@ class FormItem extends Component{
       this.setState({
         error: error
       }, () => resolve());
-      if(onChange && JSON.stringify(entity[name]) !== JSON.stringify(value)){
+      if(onChange && JSON.stringify(entity && entity[name]) !== JSON.stringify(value)){
         onChange(e, {name, value, error})
       }
     });
@@ -221,14 +221,17 @@ class FormItem extends Component{
  * }
  */
 export default function(entity, config, onChange, {children, ...props}={}){
+  if(!entity){
+    console.warn('entity最好不为空,否则可能导致保存不上');
+  }
   return (
     <form {...events(props)}>
-        {render(config)}
+        {render(entity, onChange, config)}
         {children}
     </form>
   );
   
-  function foreach(list, type, path){
+  function foreach(data, change, list, type, path){
     return list.map((rc, index) => {
       if(!rc ||(rc.filter&&!rc.filter(entity))){return null;}
       const { span, label, className, ...rest } = (typeof rc === 'object' ? rc : {});
@@ -260,22 +263,33 @@ export default function(entity, config, onChange, {children, ...props}={}){
         <Wapper {...props}>
           {!rest.type&&label?<label className={`${type}-label`}>{label||''}</label>:null}
           {!rest.type&&rest.text?<div className={`${type}-text`}>{rest.text||''}</div>:null}
-          {render(rest, key)}
+          {render(data, change, rest, key)}
           <div style={{clear:'both'}}></div>
         </Wapper>
       );
     });
   }
 
-  function render(option, path = 'entity') {
+  function render(data, change, option, path = 'entity') {
     if(option.rows){
-      return foreach(option.rows, 'row', path)
+      return foreach(data, change, option.rows, 'row', path)
     }
     if(option.columns){
-      return foreach(option.columns, 'column', path)
+      return foreach(data, change, option.columns, 'column', path)
+    }
+    if(option.groups){
+      const field = option.name.replace(/\(.*\)/,'').replace(/\[.*\]/,'');
+      const list = data[field] || [{}];
+      return list.map((group, index)=>{
+        const handleChange = (e, {name,value,...rest}) => {
+          list[index][name] = value;
+          return change(e,{name:field,value:list,...rest})
+        }
+        return render(group, handleChange, option.groups(index), `${path}-group${index}`)
+      });
     }
     if(option.type){
-      return <FormItem entity={entity} onChange={onChange} {...option}/>
+      return <FormItem entity={data} onChange={change} {...option}/>
     }
     return null;
   }

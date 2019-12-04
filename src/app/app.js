@@ -3,6 +3,7 @@ import { Button } from 'antd';
 
 import router from "../utils/router";
 import bundle from "../utils/bundle";
+import modal from "../utils/modal";
 import service from '../service';
 
 import Shouzhen from 'bundle-loader?lazy&name=shouzhen!./shouzhen';
@@ -73,7 +74,7 @@ export default class App extends Component {
           )}
         </p>
         <div className="patient-Info_btnList">
-          <ButtonGroup>
+          <ButtonGroup onClick={()=>this.renderDanger()}>
             <Button className="danger-btn-5">{risklevel}</Button>
             <Button className="danger-btn-infectin">{infectious}</Button>
           </ButtonGroup>
@@ -81,6 +82,12 @@ export default class App extends Component {
       </div>
     );
   }
+
+renderDanger() {
+  modal({title:'高危选择',content:'此功能还在开发中...',onOk: ()=>{
+    console.log('你点击了Ok');
+  }})
+}
 
   render() {
     return (

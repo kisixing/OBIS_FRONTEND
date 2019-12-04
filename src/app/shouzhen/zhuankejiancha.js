@@ -40,25 +40,35 @@ export default class extends Component{
         {
           className:'zhuanke-group', columns:[
             {name:'ckjc[产科检查]',type:'**', span:8},
+            {span:8},
+            {name:'ckjcbtn',type:'button', text:'添加', span:1, size:'small', onClick:(e,text,resolve)=>this.handleChange(e, resolve)},
           ]
         },
         {
-          columns:[
-            {span:1},
-            {name:'ckgongg(cm)[宫高]', type:'input', span:5, valid: 'number'},
-            {span:1},
-            {name:'ckfuw(cm)[腹围]', type:'input', span:5, valid: 'number'},
-          ]
-        },
-        {
-          columns:[
-            {span:1},
-            {name:'tx(bpm)[胎心]', type:'input', span:5},
-            {span:1},
-            {name:'xl[先露]', type:'select', span:5, options: baseData2.xlOptions},
-            {span:1},
-            {name:'tw[胎位]', type:'input', span:5},
-          ]
+          name:'ckjc', groups: index => ({
+            rows:[
+              {
+                columns:[
+                  {span:1, name: `[胎${index}]`, type:'**'},
+                  {name:'ckgongg(cm)[宫高]', type:'input', span:5, valid: 'number'},
+                  {span:1},
+                  {name:'ckfuw(cm)[腹围]', type:'input', span:5, valid: 'number'},
+                  {span:4},
+                  {name:'ckjcbtn1',type:'button', text:'删除', span:1, size:'small', onClick:(e,text,resolve)=>this.handleChange(e, resolve, index)},
+                ]
+              },
+              {
+                columns:[
+                  {span:1},
+                  {name:'tx(bpm)[胎心]', type:'input', span:5},
+                  {span:1},
+                  {name:'xl[先露]', type:'select', span:5, options: baseData2.xlOptions},
+                  {span:1},
+                  {name:'tw[胎位]', type:'input', span:5},
+                ]
+              },
+            ]
+          })
         },
         {
           className:'zhuanke-group', columns:[
@@ -85,11 +95,24 @@ export default class extends Component{
     };
   }
 
+  handleChange(e, resolve, index){
+    const { entity, onChange } = this.props;
+    let ckjc = entity.ckjc || [{}];
+    if(/^\d$/.test(index)){
+      ckjc = ckjc.filter((v,i)=>i!==index);
+    }else{
+      ckjc.push({});
+    }
+    onChange(e, {name:'ckjc', value: ckjc});
+    resolve();
+  }
+
   render(){
     const { entity, onChange } = this.props;
     return (
       <div className="width_7">
-        {formRender(entity.specialityCheckUp, this.config(), onChange)}
+        {/** TODO：这里的数据需要统一结构，最好是直接entity传入表单 */}
+        {formRender({ckjc:entity.ckjc || [{}], ...(entity.specialityCheckUp || {})}, this.config(), onChange)}
       </div>
     )
   }
