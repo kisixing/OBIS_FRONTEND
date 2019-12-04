@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Select, Button, Popover, Modal, Col, Row, message, Tree } from 'antd';
+import { Select, Button, Popover, Modal, Col, Row, message, Tree, Input } from 'antd';
 
 import modal from '../../utils/modal'
 import formRender from '../../render/form';
@@ -147,12 +147,23 @@ export default class extends Component{
     return (
       <div className="fuzhen-left-zd">
         <div className="pad-LR-mid">
+          <Row className="fuzhen-left-default">
+            <Col span={8}>
+              <span className="font-12">1、</span>
+              <Input value={info.yunc}/>&nbsp;孕&nbsp;
+              <Input value={info.chanc}/>&nbsp;胎
+            </Col>
+            <Col span={6}>
+              宫内妊娠&nbsp;<Input value={info.gesweek}/>&nbsp;周
+            </Col>
+            <Col span={6}>{info.doctor}</Col>
+          </Row>
           {diagnosis.map((item, i) => (
             <Row key={`diagnos-${item.id}-${Date.now()}`}>
               <Col span={8}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                   <div title={item.data}>
-                    <span className="font-12">{i + 1}、</span>
+                    <span className="font-12">{i + 2}、</span>
                     <span className={item.highriskmark ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
                   </div>
                 </Popover>
@@ -160,14 +171,14 @@ export default class extends Component{
               <Col span={6}>{item.createdate}</Col>
               <Col span={6}>{item.doctor||info.doctor}</Col>
               <Col span={4}>
-                {diagnosis.length>1?<Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => delConfirm(item)} />:null}
+                <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => delConfirm(item)} />
               </Col>
             </Row>
           ))}
         </div>
         <br/>
         <Row className="fuzhen-left-input font-16">
-          <Col span={1}><span style={{marginLeft:'1rem'}} className="font-12">{diagnosis.length + 1}、</span></Col>
+          <Col span={1}><span style={{marginLeft:'1rem'}} className="font-12">{diagnosis.length + 2}、</span></Col>
           <Col span={18}>
             <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
               {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
