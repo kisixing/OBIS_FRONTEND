@@ -14,39 +14,39 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'zfxm[丈夫姓名]', type: 'input', span: 5 },
+            { name: 'userhname[丈夫姓名]', type: 'input', span: 5 },
             { span: 1 },
-            { name: 'zfnl[年龄]', type: 'input', span: 4 },
+            { name: 'userhage[年龄]', type: 'input', span: 4 },
           ]
         },
         {
           columns: [           
-            { name: 'zfgj[国籍]', type: 'input', span: 5 },
+            { name: 'userhnation[国籍]', type: 'input', span: 5 },
             { span: 1 },
-            { name: 'zfjg[籍贯]', type: 'input', span: 4 },
+            { name: 'add_FIELD_husband_userroots[籍贯]', type: 'input', span: 4 },
             { span: 1 },
-            { name: 'zfmz[民族]', type: 'input', span: 6 },
+            { name: 'userhpeople[民族]', type: 'input', span: 6 },
             { span: 1 },
-            { name: 'zfzy[职业]', type: 'input', span:  6},
+            { name: 'userhoccupation[职业]', type: 'input', span:  6},
           ]
         },
         {
           columns: [
-            { name: 'zhsj[手机]', type: 'input', span: 5 },
+            { name: 'userhmobile[手机]', type: 'input', span: 5 },
             { span: 1 },
-            { name: 'zhzhlx[证件类型]', type: 'select', span: 4, options: baseData.zjlxOptions },
+            { name: 'add_FIELD_husband_useridtype[证件类型]', type: 'select', span: 4, options: baseData.zjlxOptions },
             { span: 1 },
-            { name: 'zfzjh[证件号]', type: 'input', span: 6 },
+            { name: 'userhidno[证件号]', type: 'input', span: 6 },
             { span: 1 },
-            { name: 'zhhkdz[户口属地]', type: 'input', span: 6 }
+            { name: 'userhconstant[户口属地]', type: 'input', span: 6 }
           ]
         },
         {
           columns: [
-            { name: 'zfcy(只/天)[抽烟]', type: 'input', span: 4 },
+            { name: 'add_FIELD_husband_smoking(支/天)[抽烟]', type: 'input', span: 4 },
             { span: 2 },
-            { name: 'zfhj(ml/天)[喝酒]', type: [{ type: 'select', options: baseData.jiuOptions }, 'input'], span: 5 },
-            { name: 'zfxyhb[现有何病]', type: 'input', span: 13 }
+            { name: 'add_FIELD_husband_drink(ml/天)[喝酒]', type: [{ type: 'select', options: baseData.jiuOptions }, 'input'], span: 5 },
+            { name: 'userhjib[现有何病]', type: 'input', span: 13 }
           ]
         },
       ]
@@ -57,7 +57,7 @@ export default class extends Component {
     const { entity, onChange } = this.props;
     return (
       <div className="">
-        {formRender(entity, this.config(), onChange)}
+        {formRender(entity.husbandInfo, this.config(), onChange)}
       </div>
     )
   }

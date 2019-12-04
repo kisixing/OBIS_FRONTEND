@@ -150,7 +150,7 @@ export const ygOptions = toOptions('小三阳,大三阳,慢活肝,未查,其他(
 /**
  *阴阳未查
 */
-export const yywOptions = toOptions('阴性,阳性,未查');
+export const yywOptions = toOptions('阴性,阳性(input),未查');
 
 /**
  *阴阳未查、其他
@@ -185,7 +185,7 @@ export const ywgmOptions = toOptions('青霉素,头孢,酒精,食物过敏(input
 /**
  *个人史
 */
-export const grsOptions = toOptions('吸烟(input)[支/天],饮酒(input)[ml/天],接触有害物质(input),接触放射线,服用药物(input-4),其他');
+export const grsOptions = toOptions('吸烟(input)[支/天],饮酒(input)[ml/天],接触有害物质(input),接触放射线(input),服用药物(input-4),其他');
 
 /**
  *叶酸

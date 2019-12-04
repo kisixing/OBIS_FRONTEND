@@ -154,10 +154,6 @@ export const tableKey = () => [
             {
                 title: '上午/下午',
                 key: 'ultrasound1_2',
-            },
-            {
-                title: '门诊类型',
-                key: 'ultrasound1_3',
             }
         ]
     },

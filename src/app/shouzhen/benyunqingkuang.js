@@ -14,31 +14,31 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'mcyj[末次月经]', type: 'date', span: 5, valid: 'required' },
-            { name: 'ycq[预产期]', type: 'date', span: 5, valid: 'required' },
+            { name: 'gesmoc[末次月经]', type: 'date', span: 5, valid: 'required' },
+            { name: 'gesexpect[预产期]', type: 'date', span: 5, valid: 'required' },
             { span: 1 },
-            { name: 'xdycq[修订预产期]', type: 'date', span: 5, valid: 'required' },
+            { name: 'gesexpectrv[修订预产期]', type: 'date', span: 5, valid: 'required' },
           ]
         },
-        { name: 'ybzz[一般症状]', type: 'checkinput-4', valid: 'required', unselect:'无', options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
+        { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required', unselect:'无', options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
         {
           columns: [
-            { name: 'tdks(周)[胎动开始]', type: 'input', span: 5, valid: 'required,number' },
+            { name: 'ckyibzhzhtd(周)[胎动开始]', type: 'input', span: 5, valid: 'required,number' },
           ]
         },
         
         '尿妊娠试验阳性',
         {
           columns: [
-            { name: 'rcbgsj[报告时间]', type: 'date', span: 5 },
-            { name: 'rctj(周)[停经]', type: 'input', span: 5 },
+            { name: 'dopupt[报告时间]', type: 'date', span: 5 },
+            { name: 'pupttm(周)[停经]', type: 'input', span: 5 },
           ]
         },
         '早孕B超',
         {
           columns: [
-            { name: 'zybgsj[报告时间]', type: 'date', span: 5 },
-            { name: 'zytj(周)[停经]', type: 'input', span: 5 },
+            { name: 'ckzdate[报告时间]', type: 'date', span: 5 },
+            { name: 'ckztingj(周)[停经]', type: 'input', span: 5 },
           ]
         },
       ]
@@ -49,7 +49,7 @@ export default class extends Component {
     const { entity, onChange } = this.props;
     return (
       <div className="width_6">
-        {formRender(entity, this.config(), onChange)}
+        {formRender(entity.pregnantInfo, this.config(), onChange)}
       </div>
     )
   }

@@ -36,7 +36,7 @@ export default class extends Component {
           columns: [
             { name: 'usermobile[手机]', type: 'input', span: 5, valid: 'number' },
             { span: 1 },
-            { name: 'phone[固话]', type: 'input', span: 5, valid: 'number' },
+            { name: 'phone[固话]', type: 'input', span: 5},
             { span: 1 },
             { name: 'useridtype[证件类型]', type: 'select', span: 4, showSearch: false, options: baseData.sfzOptions },
             { span: 1 },
@@ -44,9 +44,9 @@ export default class extends Component {
           ]
         }, {
           columns: [
-            { name: 'constant[户口地址]', type: 'input', span: 11, valid: 'number' },
+            { name: 'constant[户口地址]', type: 'input', span: 11},
             { span: 1 },
-            { name: 'address[现住地址]', type: 'input', span: 11, valid: 'number' },
+            { name: 'address[现住地址]', type: 'input', span: 11},
             { span: 1 },
           ]
         }
@@ -58,7 +58,7 @@ export default class extends Component {
     const { entity, onChange } = this.props;
     return (
       <div className="">
-        {formRender(entity, this.config(), onChange)}
+        {formRender(entity.gravidaInfo, this.config(), onChange)}
       </div>
     )
   }

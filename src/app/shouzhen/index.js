@@ -50,8 +50,9 @@ export default class Patient extends Component {
         const tab = tabs.filter(t=>t.key===step).pop() || {};
         if(!tab.init){
             service.shouzhen.getForm(tab.key).then(res => {
+                console.log(tab.key,res.object);
                 tab.init = true;
-                tab.entity = res;
+                tab.entity = res.object;
                 this.setState({step});
             });
         }else{
