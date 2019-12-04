@@ -212,6 +212,11 @@ export const xOptions = toOptions('阴性,弱阳性,阳性,未查,其他');
 export const wjjOptions = toOptions('未做检查,拒绝检查');
 
 /**
+ * 骨外盆未做检查
+ */
+export const gwwjjOptions = toOptions('未做检查');
+
+/**
  * 手术史表头
  */
 export const shoushushiColumns = [

@@ -25,10 +25,10 @@ export default class extends Component{
 
   componentDidMount(){
     service.fuzhen.treatTemp().then(res => this.setState({
-      treatTemp: res
+      treatTemp: res.object
     }));
     service.shouzhen.getdiagnosis().then(res => this.setState({
-      diagnosis: res.list
+      diagnosis: res.object.list
     }))
 
   }
@@ -143,18 +143,24 @@ export default class extends Component{
         </div>
       );
     }
-
+    let yunc = ''
+    let chanc = ''
+    let ycarray = info.tuseryunchan.split("/");
+    if(ycarray.length>1){
+      yunc = ycarray[0];
+      chanc = ycarray[1];
+    }
     return (
       <div className="fuzhen-left-zd">
         <div className="pad-LR-mid">
           <Row className="fuzhen-left-default">
             <Col span={8}>
               <span className="font-12">1、</span>
-              <Input value={info.yunc}/>&nbsp;孕&nbsp;
-              <Input value={info.chanc}/>&nbsp;胎
+              <Input value={yunc}/>&nbsp;孕&nbsp;
+              <Input value={chanc}/>&nbsp;胎
             </Col>
             <Col span={6}>
-              宫内妊娠&nbsp;<Input value={info.gesweek}/>&nbsp;周
+              宫内妊娠&nbsp;<Input value={info.tuserweek}/>&nbsp;周
             </Col>
             <Col span={6}>{info.doctor}</Col>
           </Row>
@@ -178,7 +184,6 @@ export default class extends Component{
         </div>
         <br/>
         <Row className="fuzhen-left-input font-16">
-          <Col span={1}><span style={{marginLeft:'1rem'}} className="font-12">{diagnosis.length + 2}、</span></Col>
           <Col span={18}>
             <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
               {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}

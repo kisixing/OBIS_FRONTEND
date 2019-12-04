@@ -16,10 +16,10 @@ export default class extends Component{
       rows: [
         {
           columns:[
-            {name:'xtz(kg)[现体重]', type:'input', span:6, valid: 'required|number|rang(10,100)'},
+            {name:'ckcurtizh(kg)[现体重]', type:'input', span:6, valid: 'required|number|rang(10,100)'},
             {span:1},
             { 
-              name: 'ckpressure(mmHg)[血压]', type: ['input(/)','input'], span: 6, valid: (value)=>{
+              name: 'ckshrinkpressure(mmHg)[血压]', type: ['input(/)','input'], span: 6, valid: (value)=>{
               let message = '';
               if(value){
                 if(value[0] && valid('number|rang(0,140)',value[0])){
@@ -39,9 +39,9 @@ export default class extends Component{
           columns:[
             {name:'yqtz(kg)[孕前体重]', type:'input', span:6, valid: 'required|number|rang(10,100)'},
             {span:1},
-            {name:'sg(cm)[身高]', type:'input', span:6, valid: 'required|number'},
+            {name:'cksheng(cm)[身高]', type:'input', span:6, valid: 'required|number'},
             {span:2},
-            {name:'bmi(kg/㎡)[孕前BMI]', type:'input', span:6, valid: 'required|number'},
+            {name:'ckbmi(kg/㎡)[孕前BMI]', type:'input', span:6, valid: 'required|number'},
           ]
         },
         {

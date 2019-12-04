@@ -22,19 +22,19 @@ export default class extends Component{
         {
           columns:[
             {span:1},
-            {name:'wy[外阴]', type:'input', span:5},
+            {name:'ckwaiy[外阴]', type:'input', span:5},
             {span:1},
-            {name:'yd[阴道]', type:'input', span:5},
+            {name:'ckyind[阴道]', type:'input', span:5},
           ]
         },
         {
           columns:[
             {span:1},
-            {name:'gj[宫颈]', type:'input', span:5},
+            {name:'ckgongj[宫颈]', type:'input', span:5},
             {span:1},
             {name:'zg[子宫]', type:'input', span:5},
             {span:1},
-            {name:'fj[附件]', type:'input', span:5},
+            {name:'ckfuj[附件]', type:'input', span:5},
           ]
         },
         {
@@ -45,15 +45,15 @@ export default class extends Component{
         {
           columns:[
             {span:1},
-            {name:'gg(cm)[宫高]', type:'input', span:5, valid: 'number'},
+            {name:'ckgongg(cm)[宫高]', type:'input', span:5, valid: 'number'},
             {span:1},
-            {name:'fw(cm)[腹围]', type:'input', span:5, valid: 'number'},
+            {name:'ckfuw(cm)[腹围]', type:'input', span:5, valid: 'number'},
           ]
         },
         {
           columns:[
             {span:1},
-            {name:'tx(次/分)[胎心]', type:'input', span:5},
+            {name:'tx(bpm)[胎心]', type:'input', span:5},
             {span:1},
             {name:'xl[先露]', type:'select', span:5, options: baseData2.xlOptions},
             {span:1},
@@ -62,7 +62,7 @@ export default class extends Component{
         },
         {
           className:'zhuanke-group', columns:[
-            {name:'gpwcl[骨盆外测量]', type:'checkinput',radio:true,options:baseData.wjjOptions,span:8},
+            {name:'gpwcl[骨盆外测量]', type:'checkinput',radio:true,options:baseData.gwwjjOptions,span:8},
           ]
         },
         {
@@ -89,7 +89,7 @@ export default class extends Component{
     const { entity, onChange } = this.props;
     return (
       <div className="width_7">
-        {formRender(entity, this.config(), onChange)}
+        {formRender(entity.specialityCheckUp, this.config(), onChange)}
       </div>
     )
   }

@@ -87,7 +87,7 @@ export default class FuzhenForm extends Component {
                 },
                 {
                   label: '胎3', filter:()=>check('strz'), columns: [
-                    { name: 'tx3(bmp)[胎心]', type: 'input', span: 8 },
+                    { name: 'tx3(bpm)[胎心]', type: 'input', span: 8 },
                     { name: 'xl3[先露]', type: 'select', span: 8, showSearch:true, options: baseData.xlOptions }
                   ]
                 }

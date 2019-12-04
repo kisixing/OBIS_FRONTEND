@@ -6,19 +6,20 @@ export default {
      * 右侧诊断列表
      */
     getdiagnosis: function(){
-        return this.userId().then(r => myAxios.get('/outpatientRestful/getdiagnosis?type=rvisitDiag&relatedid=2292&userid=' + r.object.userid));
+        return this.userId().then(r => myAxios.get('/outpatientRestful/getdiagnosis?userid=' + r.object.userid));
     },
     /**
      * 添加诊断列表的数据
      */
     adddiagnosis: function(text){
-        return this.userId().then(r => myAxios.get('/Obcloud/diagnosis/adddiagnosis?type=diag&useid=' + r.id + '&data=' + text));
+        let data = {'data':text};
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/adddiagnosis?' + r.object.userid,data));
     },
     /**
      * 删除诊断列表的数据
      */
     deldiagnosis: function(id){
-        return myAxios.get('/Obcloud/diagnosis/deldiagnosis?id=' + id);
+        return myAxios.get('/outpatientWriteRestful/deldiagnosis?id=' + id);
     },
 
     /**
