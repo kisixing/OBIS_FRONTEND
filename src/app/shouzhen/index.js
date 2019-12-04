@@ -54,6 +54,9 @@ export default class Patient extends Component {
                 tab.init = true;
                 tab.entity = res.object;
                 this.setState({step});
+            },()=>{ // TODO: 仅仅在mock时候用
+                tab.init = true;
+                this.setState({step});
             });
         }else{
             this.setState({step});

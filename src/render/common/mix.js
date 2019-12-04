@@ -11,7 +11,7 @@ class MMix extends Component{
     const label = getrealy($label);
     const type = option.type || (/\((.*)\)/.test($label) && /\((.*)\)/.exec($label)[1]);
     const unit = option.unit || (/\[(.*)\]/.test($label) && /\[(.*)\]/.exec($label)[1]);
-    const color = option.unit || (/\{(.*)\}/.test($label) && /\{(.*)\}/.exec($label)[1]);
+    const color = option.color || (/\{(.*)\}/.test($label) && /\{(.*)\}/.exec($label)[1]);
     const field = getrealy(option.value || option);
     this.state = {
       label,type,unit,field,width:0,color:color || baseColor
@@ -39,6 +39,20 @@ class MMix extends Component{
     });
   }
 
+  handleCheck(e){
+    const {option, onCheck} = this.props;
+    const {field} = this.state; 
+    const {checkboxInput} = this.refs;
+    onCheck(e,{checked:e.target.checked,name:field,option}).then(()=>{
+      if(checkboxInput){
+        var editor = checkboxInput.querySelector('input,select');
+        if(editor){
+          editor.focus();
+        }
+      }
+    })
+  }
+
   renderEditor([FormItemComponent, ]) {
     const { data, option, onChange } = this.props;
     const {field,type,unit,width} = this.state; 
@@ -55,7 +69,7 @@ class MMix extends Component{
 
     return (
       <Col {...rest} span={span * (1 + (showEditor?(/^\d+$/.test(option.addspan) ? option.addspan : 1):0))}>
-        <Checkbox style={{color: fontColor}} value={field} checked={data.hasOwnProperty(field)} onChange={e=>onCheck(e,{checked:e.target.checked,name:field,option})}>{label}</Checkbox>
+        <Checkbox style={{color: fontColor}} value={field} checked={data.hasOwnProperty(field)} onChange={e=>this.handleCheck(e)}>{label}</Checkbox>
         <div ref="checkboxInput" style={{display:showEditor?'inline-block':'none'}}>
           {showEditor ? this.renderEditor(args):null}
         </div>
@@ -104,7 +118,7 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data 
     }else{
       delete data[name];
     }
-    onChange(e,data).then(()=>onBlur());
+    return onChange(e,data).then(()=>onBlur());
   }
 
   const handleInput = (e,{value, name}) => {

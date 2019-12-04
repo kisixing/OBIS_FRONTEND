@@ -161,7 +161,8 @@ class FormItem extends Component{
       return (
         <Row type="flex">
           {types.map((t,index)=>{
-            const tWidth = enitorWidth*(t.span || span)/24;
+            const zoom = (t.span && t.span<1) ? t.span : (t.span || span)/24
+            const tWidth = enitorWidth * zoom;
             return (
               <Col span={t.span || span} key={`col-${name}${index}`}>
                 {render(t.type, {...props, ...t, name: `${name}${index}`, value:data[index],style:{width:tWidth}, onChange: handleChange(index), onBlur: this.onBlur.bind(this)})}
@@ -241,6 +242,9 @@ export default function(entity, config, onChange, {children, ...props}={}){
         props.type = type || 'flex';
         Wapper = Row;
       }else{
+        if(span && span<1){
+          props.width = (span * 100).t + '%';
+        }
         props.span = span || 24;
         Wapper = Col;
       }
