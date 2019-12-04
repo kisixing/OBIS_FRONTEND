@@ -40,7 +40,7 @@ export default class Patient extends Component {
         this.componentWillUnmount = editors();
 
         service.getuserDoc().then(res => this.setState({
-            info: res
+            info: res.object
         }))
         this.activeTab(this.state.step);
     }
