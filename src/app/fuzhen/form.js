@@ -22,7 +22,7 @@ export default class FuzhenForm extends Component {
     }
 
     service.fuzhen.treatTemp().then(res => this.setState({
-      treatTemp: res
+      treatTemp: res.object
     }));
   }
 
@@ -30,7 +30,7 @@ export default class FuzhenForm extends Component {
   checkDiagnosisHighrisk(type) {
     const { diagnosis } = this.props;
     const types = { gdm: '妊娠期糖尿病', hypertension: '高血压', chd: '冠心病', dtrz: '双胎妊娠', strz: '多胎妊娠' };
-    return diagnosis.filter(i => type.split(',').filter(t=>types[t] === i.data.toString()).length).length;
+    return diagnosis.filter(i => type.split(',').filter(t=>types[t] === i.data).length).length;
   }
 
   formConfig() {

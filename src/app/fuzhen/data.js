@@ -113,8 +113,8 @@ export const tableKey = () => [
 		width: 130,
 		children:[
 			{
-				title: '(BMP)',
-				key: 'bmp',
+				title: '(bpm)',
+				key: 'bpm',
 			},
 		]
 	},
@@ -145,100 +145,23 @@ export const tableKey = () => [
 		key: 'other',
 	},
 	{
-		title: '超声1',
-		children:[
-			{
-				title: '超声11',
-				key: 'ultrasound1_1',
-			},
-			{
-				title: '超声12',
-				key: 'ultrasound1_2',
-			},
-			{
-				title: '超声13',
-				key: 'ultrasound1_3',
-			}
-		]
-	},
-	{
-		title: '超声2',
-		children:[
-			{
-				title: '超声21',
-				key: 'ultrasound2_1',
-			},
-			{
-				title: '超声22',
-				key: 'ultrasound2_2',
-			},
-			{
-				title: '超声23',
-				key: 'ultrasound2_3',
-			}
-		]
-	},
-	{
-		title: '心率',
-		key: 'heart',
-	},
-	{
-		title: '药物',
-		children: [
-			{
-				title: '药物11',
-				key: 'medicine1_1',
-			},
-			{
-				title: '药物12',
-				key: 'medicine1_2',
-			},
-			{
-				title: '化验',
-				key: 'assay',
-			}
-		]
-	},
-	{
-		title: '尿蛋白',
-		children: [
-			{
-				title: '尿蛋白11',
-				key: 'pro1_1',
-			},
-			{
-				title: '尿蛋白12',
-				key: 'pro1_2',
-			}
-		]
-	},
-	{
-		title: '胰岛素',
-		children: [
-			{
-				title: '胰岛素11',
-				key: 'insulin1_1',
-			},
-			{
-				title: '胰岛素12',
-				key: 'insulin1_2',
-			},
-			{
-				title: '胰岛素13',
-				key: 'insulin1_3',
-			},
-			{
-				title: '胰岛素14',
-				key: 'insulin1_4',
-			}
-		]
-	},
-	{ title: '处理措施', key: 'dispose', width: 150 },
-	{
-		title: '下次复诊', key: 'visit1_1',width: 140, format: (value, {lookup}) => {
-			return `${lookup(ckappointmentAreaOptions,1)} ${lookup(nextRvisitWeekOptions,'1,周')} ${lookup(rvisitOsTypeOptions,1)}`
-		}
-	},
+        title: '下次复诊',
+        children:[
+            {
+                title: '预约日期',
+                key: 'ultrasound1_1',
+            },
+            {
+                title: '上午/下午',
+                key: 'ultrasound1_2',
+            },
+            {
+                title: '门诊类型',
+                key: 'ultrasound1_3',
+            }
+        ]
+    },
+	{ title: '处理措施', key: 'dispose', width: 150 }
 ].map(i=>({type:'input',...i}));
 
 /**

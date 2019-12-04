@@ -23,7 +23,7 @@ export default {
      * 诊断处理的诊断列表
      */
     getdiagnosis: function(){
-        return this.userId().then(r => myAxios.get('/Obcloud/diagnosis/getdiagnosis?id=' + r.id));
+        return this.userId().then(r => myAxios.get('/outpatientRestful/getdiagnosis?type=ivisitDiag&userid' + r.object.id));
     },
     /**
      * 添加诊断列表的数据
