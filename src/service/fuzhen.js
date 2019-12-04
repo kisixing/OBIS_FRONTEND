@@ -45,7 +45,7 @@ export default {
      * 模板
      */
     treatTemp: function(){
-        return myAxios.get('/Obcloud/treatTemp/list' + location.search);
+        return myAxios.get('/outpatientRestful/list' + location.search);
     },
 
     

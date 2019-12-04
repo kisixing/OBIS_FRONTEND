@@ -59,16 +59,16 @@ export default class Patient extends Component {
 
   componentDidMount() {
     Promise.all([
+    service.getuserDoc().then(res => this.setState({
+      info: res
+    })),
     service.fuzhen.getdiagnosis().then(res => this.setState({
-      diagnosis: res.object
+      diagnosis: res.object.list
     })),
     service.fuzhen.getRecentRvisit().then(res => this.setState({
       recentRvisit: res.object
     }))]).then(() => this.setState({ loading: false }));
     /* 
-    service.getuserDoc().then(res => this.setState({
-      info: res
-    })),
     service.fuzhen.getRvisitPage().then(res => this.setState({
       recentRvisitAll: res.list
     })).then(() => this.setState({ loadingTable: false }));

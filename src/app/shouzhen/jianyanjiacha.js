@@ -52,11 +52,6 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'hiv[HIV]', type:'checkinput-5',radio:true, options: baseData.ogttOptions,span:15}
-          ]
-        },
-        {
-          columns:[
             {name:'ogtt[OGTT]', type:'checkinput-5',radio:true, options: baseData.ogttOptions,span:15}
           ]
         },

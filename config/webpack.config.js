@@ -68,8 +68,8 @@ const commonConfig = {
         //本地打包分析配置
         !!bundleAnalyzerPlugin?new BundleAnalyzerPlugin({
             analyzerMode: 'server',
-            analyzerHost: '120.77.46.176',
-            analyzerPort: '8080',
+            analyzerHost: '127.0.0.1',
+            analyzerPort: '9998',
             reportFilename: 'report.html',
             defaultSizes: 'parsed',
             openAnalyzer: false,
