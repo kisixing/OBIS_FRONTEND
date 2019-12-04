@@ -18,11 +18,25 @@ class MMix extends Component{
     };
   }
 
+  componentDidMount(){
+    const { field } = this.state;
+    const {args:[,AddResize], option, data} = this.props;
+    if(!option.wrap && !this.componentWillUnmount && data.hasOwnProperty(field)){
+      setTimeout(()=>{
+        this.componentWillUnmount = AddResize(()=>this.resize())
+      })
+    }
+  }
+
   componentWillReceiveProps(newProps){
     const { field } = this.state;
     const {args:[,AddResize], option, data} = this.props;
-    if(!option.wrap && !this.componentWillUnmount && !data.hasOwnProperty(field) && newProps.data.hasOwnProperty(field)){
-      this.componentWillUnmount = AddResize(()=>this.resize())
+    if(!option.wrap && !data.hasOwnProperty(field) && newProps.data.hasOwnProperty(field)){
+      if(!this.componentWillUnmount){
+        this.componentWillUnmount = AddResize(()=>this.resize())
+      } else {
+        this.resize();
+      }
     }
   }
 
