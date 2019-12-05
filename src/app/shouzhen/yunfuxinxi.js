@@ -58,7 +58,7 @@ export default class extends Component {
     const { entity, onChange } = this.props;
     return (
       <div className="">
-        {formRender(entity.gravidaInfo, this.config(), onChange)}
+        {formRender(entity, this.config(), onChange)}
       </div>
     )
   }

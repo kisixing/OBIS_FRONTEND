@@ -21,8 +21,9 @@ export default {
         let data = {};
         if(tab === 'tab-0'){
             type='gravidaInfo'
-            data = entity.gravidaInfo
         }
+        data = entity
+        console.log(entity)
         return this.userId().then(r => myAxios.post(`/Obcloud/shouzhen?id=${r.object.userid}&style=${type}`, data));
     },
     /**

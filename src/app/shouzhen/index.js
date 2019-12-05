@@ -50,9 +50,18 @@ export default class Patient extends Component {
         const tab = tabs.filter(t=>t.key===step).pop() || {};
         if(!tab.init){
             service.shouzhen.getForm(tab.key).then(res => {
-                console.log(tab.key,res.object);
                 tab.init = true;
-                tab.entity = res.object;
+                if(tab.key === 'tab-0'){
+                    tab.entity = res.object.gravidaInfo
+                }else if(tab.key === 'tab-2'){
+                    tab.entity = res.object.pregnantInfo
+                    tab.entity['ckyibzhzh'] = {"头晕":",,,,","头痛":'www','呕吐':',白带增多,胸闷,腰酸,流血'}
+                }
+                else
+                {
+                    tab.entity = res.object;
+                }
+                console.log(tab.key,tab.entity);
                 this.setState({step});
             },()=>{ // TODO: 仅仅在mock时候用
                 tab.init = true;
@@ -64,6 +73,7 @@ export default class Patient extends Component {
     }
 
     handleChange(e, { name, value, valid }, entity) {
+        console.log(name,entity);
         entity[name] = value
         this.change = true;
         this.forceUpdate();
@@ -74,10 +84,12 @@ export default class Patient extends Component {
         const tab = tabs.filter(t=>t.key===step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || {key: step}
+        console.log('handleSave',key,step);
         fireForm(form,'valid').then((valid)=>{
             tab.error = !valid;
             if(valid){
                 if(this.change){
+                    console.log('handleSave',key);
                     service.shouzhen.saveForm(tab.key, tab.entity).then(() => {
                         this.activeTab(key || next.key);
                     }, ()=>{ // TODO: 仅仅在mock时候用
