@@ -175,7 +175,7 @@ export const dpOptions = toOptions('正常,甲型(input),乙型(input),未查,�
 /**
  *尿蛋白
 */
-export const dbnOptions = toOptions('阴性,弱阳性,阳性,未查,其他');
+export const dbnOptions = toOptions('阴性,弱阳性,阳性(input),未查,其他');
 
 /**
  *药物或食物过敏史
@@ -253,8 +253,8 @@ export const pregnanciesColumns = [
 	},
 	{
 		title: '年',
-    key: 'ckweek',
-    type: 'date'
+		key: 'ckweek',
+		type: 'date'
 	},
 	{
 		title: '月',
@@ -280,7 +280,7 @@ export const pregnanciesColumns = [
 				type: 'input'
 			}
 		]
-  },
+    },
 	{
 		title: '引产',
 		key: 'yc',
@@ -289,7 +289,7 @@ export const pregnanciesColumns = [
 	{
 		title: '死胎',
 		key: 'st',
-		type: 'input'
+		type: 'checkbox'
 	},
 	{
 		title: '早产',

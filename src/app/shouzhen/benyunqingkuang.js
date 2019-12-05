@@ -20,7 +20,7 @@ export default class extends Component {
             { name: 'gesexpectrv[修订预产期]', type: 'date', span: 5, valid: 'required' },
           ]
         },
-        { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required', unselect:'无', options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
+        { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required',options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
         {
           columns: [
             { name: 'ckyibzhzhtd(周)[胎动开始]', type: 'input', span: 5, valid: 'required,number' },
@@ -49,7 +49,7 @@ export default class extends Component {
     const { entity, onChange } = this.props;
     return (
       <div className="width_6">
-        {formRender(entity.pregnantInfo, this.config(), onChange)}
+        {formRender(entity, this.config(), onChange)}
       </div>
     )
   }

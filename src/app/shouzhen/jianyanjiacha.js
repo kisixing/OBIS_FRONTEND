@@ -52,6 +52,11 @@ export default class extends Component{
         },
         {
           columns:[
+            {name:'hiv[HIV]', type:'checkinput-5',radio:true, options: baseData.yywOptions,span:15}
+          ]
+        },
+        {
+          columns:[
             {name:'ogtt[OGTT]', type:'checkinput-5',radio:true, options: baseData.ogttOptions,span:15}
           ]
         },
@@ -68,11 +73,6 @@ export default class extends Component{
         {
           columns:[
             {name:'ndb[尿蛋白]', type:'checkinput-5',radio:true, options: baseData.dbnOptions,span:15}
-          ]
-        },
-        {
-          columns:[
-            {name:'hiv[HIV]', type:'checkinput-5',radio:true, options: baseData.yywOptions,span:15}
           ]
         },
         {
