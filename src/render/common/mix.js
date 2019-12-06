@@ -95,16 +95,20 @@ class MMix extends Component{
 /**
  * count表示每一行最多可以排几个
  * options里面的每一项可以有type,unit
- * 或者在label里面label(input)[unit]
+ * 或者在label里面label(input)[unit]<flag>{color}
  * wrap这个属性告诉编辑器是否编辑器不受限在一行
  * addspan 表示当前选项，当编辑框出来后增加的占位
+ * flag 1.所有的!为互斥，2.!x与x为互斥，3.flag可以为多个以逗号分隔
  */
 export function checkinput$x({ name, options = [], onChange, onBlur, value:data = {}, unselect, radio, baseColor = '#333333', ...rest }, count, ...args){
   const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
   const span = Math.floor(count ? (24/count) : Math.max(6, 24 / (optionList.length || 1)));
   
   const findWC = (op, fn) => {
-    const getflag = o => o.flag || (/\((.*)\)/.test(o.label||o) && /\((.*)\)/.exec(o.label||o)[1]) || '';
+    const getflag = o => (o.flag || (/\((.*)\)/.test(o.label||o) && /\((.*)\)/.exec(o.label||o)[1]) || '').split(',');
+    const bijiao = (aList, bList) => {
+      return aList.filter(a => bList.filter(b => a === `!${b}` || a === `!${b}`.replace(/^!!/,'')).length).length;
+    }
     const flag = getflag(op);
 
     // 为了兼容唯一反选 unselect
@@ -112,13 +116,13 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data 
       if(op.unselect){
         optionList.filter(o=>o!==op).forEach(o => fn(getrealy(o.value || o)));
       }else{
-        fn(unselect);
+        fn(optionList[0].value);
       }
     } else {
       optionList.filter(o=>o!==op).forEach(o=>{
-        if((flag === '!' && getflag(onBlur) === '!') || radio){
+        if((flag.indexOf('!') !== -1 && getflag(onBlur).indexOf('!') !== -1) || radio){
           fn(getrealy(o.value || o));
-        } else if(getflag(o) === `!${flag}` || getflag(o) === `!${flag}`.replace(/^!!/,'')){
+        } else if(bijiao(getflag(o), flag)){
           fn(getrealy(o.value || o));
         }
       });
