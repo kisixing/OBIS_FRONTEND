@@ -11,10 +11,12 @@ export default function(){
 
 function shouzhenyy({value, onChange, onBlur}, count, FormItemComponent){
   const data = value || {};
+  console.log(value);
   const options = count.split(',').map(i=>i.split('&'));
   const handleChange = (e, {name, value}) => {
     data[name] = value;
     onChange(e, data).then(()=>onBlur())
+    console.log(data[name]);
   }
   return (
     <Row type="flex" style={{width:300*options.length}} className="shouzhenyy-yy">

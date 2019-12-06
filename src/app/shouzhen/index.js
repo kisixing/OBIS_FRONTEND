@@ -4,6 +4,7 @@ import { Tabs, Button, Row, Col } from 'antd';
 import Page from '../../render/page';
 import {fireForm} from '../../render/form';
 import service from '../../service';
+import * as common from '../../utils/common';
 
 import Yfxx from './yunfuxinxi';
 import Zfxx from './zhangfuxinxi';
@@ -56,6 +57,10 @@ export default class Patient extends Component {
                 }else if(tab.key === 'tab-2'){
                     tab.entity = res.object.pregnantInfo
                     tab.entity['ckyibzhzh'] = {"头晕":",,,,","头痛":'www','呕吐':',白带增多,胸闷,腰酸,流血'}
+                }else if(tab.key === 'tab-7'){
+                    tab.entity = res.object.lis
+                    tab.entity['ogtt'] = {'GDM': {'input0': "1", 'input1': "2", 'input3': "3"}}
+                    tab.entity['vfdp'] = {"未查":{}}
                 }
                 else
                 {
@@ -75,6 +80,16 @@ export default class Patient extends Component {
     handleChange(e, { name, value, valid }, entity) {
         console.log(name,entity);
         entity[name] = value
+        
+        const data = { [name]: value };
+        switch (name) {
+            case 'dopupt':
+                entity['pupttm'] = common.countWeek(value);
+                break;
+            case 'ckweek':
+                this.state.openYCQ = ()=>{};
+                break;
+          }
         this.change = true;
         this.forceUpdate();
     }
@@ -84,7 +99,7 @@ export default class Patient extends Component {
         const tab = tabs.filter(t=>t.key===step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || {key: step}
-        console.log('handleSave',key,step);
+        console.log('handleSave',key,step,tab.entity);
         fireForm(form,'valid').then((valid)=>{
             tab.error = !valid;
             if(valid){

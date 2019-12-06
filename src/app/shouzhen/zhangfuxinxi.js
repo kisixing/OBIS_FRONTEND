@@ -17,6 +17,8 @@ export default class extends Component {
             { name: 'userhname[丈夫姓名]', type: 'input', span: 5 },
             { span: 1 },
             { name: 'userhage[年龄]', type: 'input', span: 4 },
+            { span: 1 },
+            { name: 'userhmcno[门诊号]', type: 'input', span: 6 },
           ]
         },
         {

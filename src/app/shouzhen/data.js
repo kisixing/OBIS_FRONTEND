@@ -50,7 +50,7 @@ export const ybzzOptions = toOptions('头晕,头痛,呕吐,胸闷,肚痛,腰酸,
 /**
  * 疾病
  */
-export const jibOptions = toOptions('高血压,心脏病,癫痫,甲亢,甲减,糖尿病,肾脏疾病,风湿,肝脏疾病,肺结核,血栓疾病,地中海贫血,G6PD,其他');
+export const jibOptions = toOptions('高血压{#FF3300},心脏病{#FF3300},癫痫{#FF3300},甲亢{#FF3300},甲减{#FF3300},糖尿病{#FF3300},肾脏疾病{#FF3300},风湿{#FF3300},肝脏疾病{#FF3300},肺结核{#FF3300},血栓疾病{#FF3300},地中海贫血{#FF3300},G6PD缺乏症{#FF3300},其他');
 
 /**
  * 宫颈涂片
@@ -60,7 +60,7 @@ export const gjtpOptions = toOptions('正常,异常,未有检查,不清楚');
 /**
  * 血制品
  */
-export const xzpOptions = toOptions('红细胞,血小板,血浆,全血,白蛋白,免疫球蛋白,其他,不清楚');
+export const xzpOptions = toOptions([{k:'红细胞(shouzhenyy-时间,机构,原因)',addspan:2},{k:'血小板(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'血浆(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'全血(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'白蛋白(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'免疫球蛋白(shouzhenyy2-时间,机构,原因)',addspan:2},'其他','不清楚']);
 
 /**
  * 初潮
@@ -160,7 +160,7 @@ export const yyw2Options = toOptions('阴性,阳性,未查,其他');
 /**
  *梅毒
 */
-export const mdOptions = toOptions(['阴性',{k:'阳性(shouzhenyy-TPPA滴度,TRUST滴度)',addspan:4},'未查(input)','其他']);
+export const mdOptions = toOptions(['阴性',{k:'阳性(shouzhenyy1-TPPA滴度,TRUST滴度)',addspan:4},'未查','其他(input)']);
 
 /**
  *OGTT
@@ -254,7 +254,7 @@ export const pregnanciesColumns = [
 	{
 		title: '年',
 		key: 'ckweek',
-		type: 'date'
+		type: 'date',
 	},
 	{
 		title: '月',

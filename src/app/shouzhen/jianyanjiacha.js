@@ -24,7 +24,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ygldb[乙肝两对半]', type:'checkinput-5', options: baseData.ygOptions,unselect:'正常', span:15}
+            {name:'ygldb[乙肝两对半]', type:'checkinput-5', options: baseData.ygOptions,radio:true,span:15}
           ]
         },
         {
@@ -52,7 +52,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'hiv[HIV]', type:'checkinput-5',radio:true, options: baseData.yywOptions,span:15}
+            {name:'aids[HIV]', type:'checkinput-5',radio:true, options: baseData.yywOptions,span:15}
           ]
         },
         {

@@ -39,7 +39,7 @@ export default class extends Component{
           columns:[
             {name:'yqtz(kg)[孕前体重]', type:'input', span:6, valid: 'required|number|rang(10,100)'},
             {span:1},
-            {name:'cksheng(cm)[身高]', type:'input', span:6, valid: 'required|number'},
+            {name:'cksheng(cm)[身高]', type:'input', span:6, valid: 'required|number|rang(150,250)'},
             {span:2},
             {name:'ckbmi(kg/㎡)[孕前BMI]', type:'input', span:6, valid: 'required|number'},
           ]
