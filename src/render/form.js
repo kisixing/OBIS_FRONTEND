@@ -141,7 +141,7 @@ class FormItem extends Component {
         error: error
       }, () => resolve());
       if (onChange && JSON.stringify(entity && entity[name]) !== JSON.stringify(value)) {
-        onChange(e, { name, value, error })
+        onChange(e, { name, value, error, entity })
       }
     });
   }
@@ -292,7 +292,11 @@ export default function (entity, config, onChange, { children, ...props } = {}) 
       });
     }
     if (option.type) {
-      return <FormItem entity={data} onChange={change} {...option} />
+      const hanldChange = (...args) => Promise.resolve(change(...args)).then(()=>{
+        console.log('************************');
+        return option.onChange && option.onChange(...args);
+      });
+      return <FormItem {...option} entity={data} onChange={hanldChange} />
     }
     return null;
   }

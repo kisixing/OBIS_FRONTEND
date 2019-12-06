@@ -81,17 +81,16 @@ export default class Patient extends Component {
         console.log(name,entity);
         entity[name] = value
         
-        const data = { [name]: value };
         switch (name) {
             case 'dopupt':
                 entity['pupttm'] = common.countWeek(value);
                 break;
-            case 'ckweek':
-                this.state.openYCQ = ()=>{};
-                break;
           }
         this.change = true;
-        this.forceUpdate();
+
+        // 避免200ms内界面渲染多次
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(()=>this.forceUpdate(), 200);
     }
     
     handleSave(key) {
