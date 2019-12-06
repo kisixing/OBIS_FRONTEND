@@ -1,3 +1,18 @@
+/**
+ * form 表单可以自己定制编辑器，
+ * 
+ * function input$x(props, count, FormItem, AddResize){
+ *    props.onChange 这个用来改变编辑器里面的数据
+ *    props.onBlur 这个用于把数据更新到form表单外部
+ * 
+ *    在一个编辑器里面必须先调用onChange之后再调用onBlur，至于这个之后就有编辑器自己决定
+ *  return Conponment;
+ * }
+ * 
+ * 不带$x的编辑器， count为不可用
+ * 带$x的编辑器使用时 为input-xx此时xx就是count的值，也可以input使用不带后缀,count为空
+ */
+
 import React, { Component } from "react";
 import { Row, Col, Button, message, Table, Modal, Spin, Tree } from 'antd';
 
