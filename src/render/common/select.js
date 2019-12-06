@@ -12,3 +12,4 @@ export function select({ name, options, width, onChange, ...props }){
 export function combobox(props){
   return select({...props, showSearch:true, combobox:true, showArrow:false})
 }
+

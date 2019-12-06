@@ -20,6 +20,15 @@ export function textarea(prop){
   return input({...prop,type:'textarea',rows:3})
 }
 
+export function checkbox({onChange, value, ...props}){
+  const handleChange = (e,value) => {
+    onChange(e,value).then(()=>onBlur())
+  };
+  return (
+    <Checkbox {...props} value={value} checked={!!value} onChange={e=>handleChange(e, e.target.checked)}>{label}</Checkbox>
+  )
+}
+
 export function input$x({name, onChange, value, width, ...props}, count){
   const data = value || [];
   const childWidth = (width-4)/(+count) -5;
