@@ -223,17 +223,18 @@ export const shoushushiColumns = [
   {
 		title: '手术名称',
 		key: 'checkdate',
-		type: 'input'
+		type: 'input',
+		holdeditor: true
 	},
 	{
 		title: '手术日期',
-    key: 'ckweek',
-    type: 'date'
+		key: 'ckweek',
+		type: 'date'
 	},
 	{
 		title: '手术医院',
-    key: 'kg',
-    type: 'input'
+		key: 'kg',
+		type: 'input'
   },
   {
 		title: '术后病理',

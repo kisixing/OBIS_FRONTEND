@@ -144,7 +144,7 @@ let changeItemTimeout = null;
 export default function(keys, data, {onChange = ()=>{}, onRowChange, className, editable, ...props}){
   const dataSource = data ? data : [];
   const rows = getheades(keys);
-  const columns = rows[rows.length-1].map(({key, title, width, ...rest}, column)=>{
+  const columns = rows[rows.length-1].map(({key, title, width, holdeditor, ...rest}, column)=>{
     return {
       key: key,
       dataIndex: key,
@@ -171,7 +171,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
             }
           }
         }
-        return <TableItem {...rest} row={row-rows.length} entity={item} name={key} editable={editable} value={value} isEditor={item.$type===dateType.CREATE} onChange={handleChange}/>
+        return <TableItem {...rest} row={row-rows.length} entity={item} name={key} editable={editable} value={value} isEditor={holdeditor || item.$type===dateType.CREATE} onChange={handleChange}/>
       }
     }
   });

@@ -12,7 +12,7 @@ export function input({onChange, value, ...props}){
     }
   }
   return (
-    <Input {...props} value={value} onChange={handleChange}/>
+    <Input {...props} title={value} value={value} onChange={handleChange}/>
   )
 }
 
@@ -30,7 +30,7 @@ export function input$x({name, onChange, value, width, ...props}, count){
   return (
     <div className="inputxxx">
       {Array(+count).fill(null).map((v,index)=>(
-        <Input {...props} key={`inputxxx-${name}-${index}`} style={{width:childWidth}} value={data[index]} onChange={e=>handleChange(e,index)}/>
+        <Input {...props} key={`inputxxx-${name}-${index}`} style={{width:childWidth}} value={data[index]} value={data[index]} onChange={e=>handleChange(e,index)}/>
       ))}
     </div>
   )
