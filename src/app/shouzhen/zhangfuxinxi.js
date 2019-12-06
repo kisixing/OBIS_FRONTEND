@@ -15,7 +15,6 @@ export default class extends Component {
         {
           columns: [
             { name: 'userhname[丈夫姓名]', type: 'input', span: 5 },
-            { span: 1 },
             { name: 'userhage[年龄]', type: 'input', span: 4 },
             { span: 1 },
             { name: 'userhmcno[门诊号]', type: 'input', span: 6 },
@@ -24,9 +23,8 @@ export default class extends Component {
         {
           columns: [           
             { name: 'userhnation[国籍]', type: 'input', span: 5 },
-            { span: 1 },
             { name: 'add_FIELD_husband_userroots[籍贯]', type: 'input', span: 4 },
-            { span: 1 },
+            { span: 2 },
             { name: 'userhpeople[民族]', type: 'input', span: 6 },
             { span: 1 },
             { name: 'userhoccupation[职业]', type: 'input', span:  6},
@@ -35,9 +33,8 @@ export default class extends Component {
         {
           columns: [
             { name: 'userhmobile[手机]', type: 'input', span: 5 },
-            { span: 1 },
             { name: 'add_FIELD_husband_useridtype[证件类型]', type: 'select', span: 4, options: baseData.zjlxOptions },
-            { span: 1 },
+            { span: 2 },
             { name: 'userhidno[证件号]', type: 'input', span: 6 },
             { span: 1 },
             { name: 'userhconstant[户口属地]', type: 'input', span: 6 }
@@ -45,10 +42,9 @@ export default class extends Component {
         },
         {
           columns: [
-            { name: 'add_FIELD_husband_smoking(支/天)[抽烟]', type: 'input', span: 4 },
-            { span: 2 },
-            { name: 'add_FIELD_husband_drink(ml/天)[喝酒]', type: [{ type: 'select', options: baseData.jiuOptions }, 'input'], span: 5 },
-            { name: 'userhjib[现有何病]', type: 'input', span: 13 }
+            { name: 'add_FIELD_husband_smoking(支/天)[抽烟]', type: 'input', span: 5 },
+            { name: 'add_FIELD_husband_drink(ml/天)[喝酒]', className:'h_26', type: [{ type: 'select', options: baseData.jiuOptions }, 'input'], span: 6 },
+            { name: 'userhjib[现有何病]', type: 'input', span: 12 }
           ]
         },
       ]

@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 import { Row, Col, Button, message, Table, Modal, Spin, Tree } from 'antd';
 
-import {events, editors, valid as validFn} from './common';
+import { events, editors, valid as validFn } from './common';
 import table from './table';
 
 import './form.less';
 
-function render(type, props){
-  const editor = editors[type] || editors[type.replace(/(-.*)?$/,'$x')] || type;
-  if(typeof editor === 'function' ){
-    return editor(props, /-(.*)$/.test(type)&&/-(.*)$/.exec(type)[1], FormItem, AddResize);
+function render(type, props) {
+  const editor = editors[type] || editors[type.replace(/(-.*)?$/, '$x')] || type;
+  if (typeof editor === 'function') {
+    return editor(props, /-(.*)$/.test(type) && /-(.*)$/.exec(type)[1], FormItem, AddResize);
   }
-  if(editor === 'table'){
-    const {options, value=[{}], onChange, onBlur, ...rest} = props;
+  if (editor === 'table') {
+    const { options, value = [{}], onChange, onBlur, ...rest } = props;
     const onRowChange = (type, item, row) => {
-      let list  = value || [];
-      switch(type){
+      let list = value || [];
+      switch (type) {
         case 'create':
           list.push(item);
           break;
@@ -23,68 +23,68 @@ function render(type, props){
           list[row] = item;
           break;
         case 'delete':
-          list = list.filter(i=>i!==item);
+          list = list.filter(i => i !== item);
           break;
       }
-      onChange({}, list).then(()=>onBlur({}));
+      onChange({}, list).then(() => onBlur({}));
     }
-    const headleChange = (e,{item,row}) => onRowChange('modify',item, row);
-    return table(options, value, {...rest, onChange:headleChange, onRowChange});
+    const headleChange = (e, { item, row }) => onRowChange('modify', item, row);
+    return table(options, value, { ...rest, onChange: headleChange, onRowChange });
   }
-  if(editor){
-    if(/^:/.test(editor)){
-      return editor.replace(/^:/,'');
+  if (editor) {
+    if (/^:/.test(editor)) {
+      return editor.replace(/^:/, '');
     }
-    if(!/^\**$/.test(editor)){
+    if (!/^\**$/.test(editor)) {
       console.log('没有找到可用的编辑组件：' + editor);
     }
   }
   return null;
 }
 
-const AddResize = (function(fn){
+const AddResize = (function (fn) {
   var fnList = [];
-  window.onresize = function() {
-    fnList.forEach(fn=>fn());
+  window.onresize = function () {
+    fnList.forEach(fn => fn());
   };
-  return function(fn){
+  return function (fn) {
     fn();
     fnList.push(fn);
-    return function(){
-      fnList = fnList.filter(f=>f!==fn);
+    return function () {
+      fnList = fnList.filter(f => f !== fn);
     };
   };
 })();
 
 
 
-class FormItem extends Component{
-  constructor(props){
+class FormItem extends Component {
+  constructor(props) {
     super(props);
     const { entity = {}, name = '', label, unit } = props;
-    const field = name.replace(/\(.*\)/,'').replace(/\[.*\]/,'');
-    
+    const field = name.replace(/\(.*\)/, '').replace(/\[.*\]/, '');
+
     this.state = {
       name: field,
       width: 0,
-      label: /\[.*\]/.test(name.replace(/\(.*\)/,'')) && /\[(.*)\]/.exec(name.replace(/\(.*\)/,''))[1],
-      unit: /\(.*\)/.test(name.replace(/\[.*\]/,'')) && /\((.*)\)/.exec(name.replace(/\[.*\]/,''))[1],
+      label: /\[.*\]/.test(name.replace(/\(.*\)/, '')) && /\[(.*)\]/.exec(name.replace(/\(.*\)/, ''))[1],
+      unit: /\(.*\)/.test(name.replace(/\[.*\]/, '')) && /\((.*)\)/.exec(name.replace(/\[.*\]/, ''))[1],
       value: entity[field],
       dirty: false,
       error: ''
     }
   }
 
-  resize(){
+  resize() {
     const { width } = this.props;
-    const { formItem, formItemlabel = {}, formItemEditor, formItemUnit = {}} = this.refs;
-    
-    if(formItemEditor){
-      setTimeout(()=>{
+    const { formItem, formItemlabel = {}, formItemEditor, formItemUnit = {} } = this.refs;
+
+    if (formItemEditor) {
+      setTimeout(() => {
         const panelWidth = Math.min(formItem.offsetWidth, width || formItem.offsetWidth);
-        const editorWidth = panelWidth - (formItemlabel.offsetWidth||0) - (formItemUnit.offsetWidth||0) - 4;
-        
-        formItemEditor.style.width = editorWidth +'px';
+        const editorWidth = panelWidth - (formItemlabel.offsetWidth || 0) - (formItemUnit.offsetWidth || 0) - 4;
+
+        formItemEditor.style.width = editorWidth + 'px';
         this.setState({
           width: editorWidth
         });
@@ -92,41 +92,43 @@ class FormItem extends Component{
     }
   }
 
-  componentDidMount(){
-    this.componentWillUnmount = AddResize(()=>this.resize())
-    this.refs.formItem.fireReact = (type,...args) => {
-      return new Promise(resolve=>{
-        switch(type){
-          case 'valid': 
+  componentDidMount() {
+    this.componentWillUnmount = AddResize(() => this.resize())
+    this.refs.formItem.fireReact = (type, ...args) => {
+      return new Promise(resolve => {
+        switch (type) {
+          case 'valid':
             this.onBlur(...args).then(resolve)
-          break;
-          case 'reset': 
+            break;
+          case 'reset':
             this.setState({
               dirty: false,
               error: ''
-            },resolve);
-          break;
+            }, resolve);
+            break;
         }
       });
     }
   }
 
-  componentWillReceiveProps(newProps){
+  componentWillReceiveProps(newProps) {
     const { name } = this.state;
-    if(this.props.entity[name] !== newProps.entity[name]){
+    const { entity, width } = this.props;
+
+    if (!entity || (entity[name] !== newProps.entity[name])) {
       this.state.value = newProps.entity[name];
       this.state.error = validFn(newProps.valid, newProps.entity[name]);
     }
-    if(this.props.width !== newProps.width) {
+    if (width !== newProps.width) {
       this.resize();
     }
   }
 
   onChange = (e, value) => {
-    return new Promise(resolve=>{
+    return new Promise(resolve => {
       this.setState({
         value: value
-      },resolve);
+      }, resolve);
     });
   }
 
@@ -138,62 +140,63 @@ class FormItem extends Component{
       this.setState({
         error: error
       }, () => resolve());
-      if(onChange && JSON.stringify(entity && entity[name]) !== JSON.stringify(value)){
-        onChange(e, {name, value, error})
+      if (onChange && JSON.stringify(entity && entity[name]) !== JSON.stringify(value)) {
+        onChange(e, { name, value, error })
       }
     });
   }
 
-  renderEditor(){
-    const { type, valid, onChange, ...props} = this.props;
-    const {  name, value, width } = this.state;
+  renderEditor() {
+    const { type, valid, onChange, ...props } = this.props;
+    const { name, value, width } = this.state;
     this.editor = editors[type] || type;
-    if(type instanceof Array){
-      const span = Math.floor(24/type.length);
+    if (type instanceof Array) {
+      const span = Math.floor(24 / type.length);
       const data = value || [];
-      const handleChange = i => (e, v) => {data[i] = v; return this.onChange(e, data);};
-      const types = type.map(t=>({
+      const handleChange = i => (e, v) => { data[i] = v; return this.onChange(e, data); };
+      const types = type.map(t => ({
         ...t,
-        type: (t.type||t).replace(/\(.*\)/,''),
-        unit: /\(.*\)/.test(t.type||t) && /\((.*)\)/.exec(t.type||t)[1] || t.unit
+        type: (t.type || t).replace(/\(.*\)/, ''),
+        unit: /\(.*\)/.test(t.type || t) && /\((.*)\)/.exec(t.type || t)[1] || t.unit
       }));
-      const enitorWidth = width - types.filter(i=>i.unit).length * 16;
+      const enitorWidth = width - types.filter(i => i.unit).length * 16;
       return (
         <Row type="flex">
-          {types.map((t,index)=>{
-            const zoom = (t.span && t.span<1) ? t.span : (t.span || span)/24
+          {types.map((t, index) => {
+            const zoom = (t.span && t.span < 1) ? t.span : (t.span || span) / 24
             const tWidth = enitorWidth * zoom;
             return (
               <Col span={t.span || span} key={`col-${name}${index}`}>
-                {render(t.type, {...props, ...t, name: `${name}${index}`, value:data[index],style:{width:tWidth}, onChange: handleChange(index), onBlur: this.onBlur.bind(this)})}
-                {t.unit?t.unit:null}
+                {render(t.type, { ...props, ...t, name: `${name}${index}`, value: data[index], style: { width: tWidth }, onChange: handleChange(index), onBlur: this.onBlur.bind(this) })}
+                {t.unit ? t.unit : null}
               </Col>
-          )})}
+            )
+          })}
         </Row>
       )
     }
-    return render(type, {...props, name, value, width, onChange: this.onChange.bind(this), onBlur: this.onBlur.bind(this)});
+    return render(type, { ...props, name, value, width, onChange: this.onChange.bind(this), onBlur: this.onBlur.bind(this) });
   }
 
-  render(){
+  render() {
     const { valid, icon } = this.props;
     const { name, label, unit, value, error } = this.state;
-    
-      return (
-        <div ref="formItem" className={`form-item ${name} ${error&&/\*/.test(error)?'form-error':`${error&&'form-warn'||''} ${!validFn('required',value)&&'is-not-empty' ||''}`}`}>
-          {label?<div ref="formItemlabel" className="form-label">
-            {icon?<i className={`anticon anticon-${icon}`}>&nbsp;</i>:null}
-            {/required/.test(valid)?<span className="colorRed">*</span>:null}
-            <span>{label}:&nbsp;</span>
-          </div>:null}
-          <div className="form-content">
-            <div ref="formItemEditor">{this.renderEditor()}</div>
-            {unit?<div ref="formItemUnit" className="form-unit">{unit}</div>:null}
-            {error?<div className="form-message">{error}</div>:null}
-          </div>
+
+    return (
+      <div ref="formItem" className={`form-item ${name} ${error && /\*/.test(error) ? 'form-error' : `${error && 'form-warn' || ''} ${!validFn('required', value) && 'is-not-empty' || ''}`}`}>
+        {label ? <div ref="formItemlabel" className="form-label">
+          {icon ? <i className={`anticon anticon-${icon}`}>&nbsp;</i> : null}
+          {/required/.test(valid) ? <span className="colorRed">*</span> : null}
+          <span>{label}:&nbsp;</span>
+        </div> : null}
+        <div className="form-content">
+          <div ref="formItemEditor">{this.renderEditor()}</div>
+          {unit ? <div ref="formItemUnit" className="form-unit">{unit}</div> : null}
+          {error ? <div className="form-message">{error}</div> : null}
         </div>
-      );
-    
+      </div>
+    );
+
   }
 }
 
@@ -220,20 +223,20 @@ class FormItem extends Component{
  *        type：***为没有编辑器，其他为具体编辑器名称，可以是数组，方法或者字符串
  * }
  */
-export default function(entity, config, onChange, {children, ...props}={}){
-  if(!entity){
+export default function (entity, config, onChange, { children, ...props } = {}) {
+  if (!entity) {
     console.warn('entity最好不为空,否则可能导致保存不上');
   }
   return (
     <form {...events(props)}>
-        {render(entity, onChange, config)}
-        {children}
+      {render(entity, onChange, config)}
+      {children}
     </form>
   );
-  
-  function foreach(data, change, list, type, path){
+
+  function foreach(data, change, list, type, path) {
     return list.map((rc, index) => {
-      if(!rc ||(rc.filter&&!rc.filter(entity))){return null;}
+      if (!rc || (rc.filter && !rc.filter(entity))) { return null; }
       const { span, label, className, ...rest } = (typeof rc === 'object' ? rc : {});
       const key = `${path}-${type[0]}${index}`;
       const props = {
@@ -241,55 +244,55 @@ export default function(entity, config, onChange, {children, ...props}={}){
         className: `form-${type} ${className} ${key}`
       }
       let Wapper = null;
-      if(type === 'row'){
+      if (type === 'row') {
         props.type = type || 'flex';
         Wapper = Row;
-      }else{
-        if(span && span<1){
+      } else {
+        if (span && span < 1) {
           props.width = (span * 100).t + '%';
         }
         props.span = span || 24;
         Wapper = Col;
       }
-      if(typeof rc !== 'object'){
+      if (typeof rc !== 'object') {
         return (
           <Wapper {...props}>
             <strong>{rc}</strong>
-            <div style={{clear:'both'}}></div>
+            <div style={{ clear: 'both' }}></div>
           </Wapper>
         );
       }
       return (
         <Wapper {...props}>
-          {!rest.type&&label?<label className={`${type}-label`}>{label||''}</label>:null}
-          {!rest.type&&rest.text?<div className={`${type}-text`}>{rest.text||''}</div>:null}
+          {!rest.type && label ? <label className={`${type}-label`}>{label || ''}</label> : null}
+          {!rest.type && rest.text ? <div className={`${type}-text`}>{rest.text || ''}</div> : null}
           {render(data, change, rest, key)}
-          <div style={{clear:'both'}}></div>
+          <div style={{ clear: 'both' }}></div>
         </Wapper>
       );
     });
   }
 
   function render(data, change, option, path = 'entity') {
-    if(option.rows){
+    if (option.rows) {
       return foreach(data, change, option.rows, 'row', path)
     }
-    if(option.columns){
+    if (option.columns) {
       return foreach(data, change, option.columns, 'column', path)
     }
-    if(option.groups){
-      const field = option.name.replace(/\(.*\)/,'').replace(/\[.*\]/,'');
+    if (option.groups) {
+      const field = option.name.replace(/\(.*\)/, '').replace(/\[.*\]/, '');
       const list = data[field] || [{}];
-      return list.map((group, index)=>{
-        const handleChange = (e, {name,value,...rest}) => {
+      return list.map((group, index) => {
+        const handleChange = (e, { name, value, ...rest }) => {
           list[index][name] = value;
-          return change(e,{name:field,value:list,...rest})
+          return change(e, { name: field, value: list, ...rest })
         }
         return render(group, handleChange, option.groups(index), `${path}-group${index}`)
       });
     }
-    if(option.type){
-      return <FormItem entity={data} onChange={change} {...option}/>
+    if (option.type) {
+      return <FormItem entity={data} onChange={change} {...option} />
     }
     return null;
   }
@@ -298,9 +301,9 @@ export default function(entity, config, onChange, {children, ...props}={}){
 /**
  * 触发当前dom下的所有验证/重置等操作
  */
-export function fireForm(parentNode, type){
-  return new Promise(resolve=>{
-    Promise.all(Array.prototype.map.call(parentNode.querySelectorAll('.form-item'), el=>el.fireReact(type))).then(function(){
+export function fireForm(parentNode, type) {
+  return new Promise(resolve => {
+    Promise.all(Array.prototype.map.call(parentNode.querySelectorAll('.form-item'), el => el.fireReact(type))).then(function () {
       resolve(!parentNode.querySelector('.form-error'));
     })
   });
@@ -309,7 +312,7 @@ export function fireForm(parentNode, type){
 /**
  * 添加当前模块的编辑器,返回卸载器
  */
-export function manageEditor(type, editor){
+export function manageEditor(type, editor) {
   editors[type] = editor;
-  return () => editors[type]=null; 
+  return () => editors[type] = null;
 }
