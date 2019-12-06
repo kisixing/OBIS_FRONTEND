@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button, Input, Table, Select, DatePicker } from 'antd';
+import { Row, Col, Button, Input, Checkbox, Select, DatePicker } from 'antd';
 
 export function input({onChange, value, ...props}){
   const handleChange = (e) => {
@@ -20,12 +20,12 @@ export function textarea(prop){
   return input({...prop,type:'textarea',rows:3})
 }
 
-export function checkbox({onChange, value, ...props}){
+export function checkbox({onChange, onBlur, value, ...props}){
   const handleChange = (e,value) => {
     onChange(e,value).then(()=>onBlur())
   };
   return (
-    <Checkbox {...props} value={value} checked={!!value} onChange={e=>handleChange(e, e.target.checked)}>{label}</Checkbox>
+    <Checkbox {...props} value={value} checked={!!value} onChange={e=>handleChange(e, e.target.checked)}></Checkbox>
   )
 }
 
