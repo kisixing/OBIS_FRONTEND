@@ -17,7 +17,7 @@ export default class extends Component {
           columns: [
             { name: 'userhage[年龄]', type: 'input', span: 5, valid: 'number' },
             { span: 1 }, 
-            { name: 'userbirth[出生日期]', type: 'date', span: 5 },
+            { name: 'userbirth[出生日期]', type: 'date', span: 5},
             { span: 1 },
             { name: 'usercuzh[建档日期]', type: 'date', span: 5 },
           ]

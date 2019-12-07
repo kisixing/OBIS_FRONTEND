@@ -177,12 +177,12 @@ class FormItem extends Component {
       const enitorWidth = width - types.filter(i => i.unit).length * 16;
       return (
         <Row type="flex">
-          {types.map((t, index) => {
+          {types.filter(i=>!i.filter || i.filter(data)).map((t, index) => {
             const zoom = (t.span && t.span < 1) ? t.span : (t.span || span) / 24
             const tWidth = enitorWidth * zoom;
             return (
               <Col span={t.span || span} key={`col-${name}${index}`}>
-                {render(t.type, { ...props, ...t, name: `${name}${index}`, value: data[index], style: { width: tWidth }, onChange: handleChange(index), onBlur: this.onBlur.bind(this) })}
+                {render(t.type, { ...props, ...t, name: `${name}${index}`, value: data[index], style: { width: tWidth - (t.unit||'').length * 16 }, onChange: handleChange(index), onBlur: this.onBlur.bind(this) })}
                 {t.unit ? t.unit : null}
               </Col>
             )

@@ -43,7 +43,7 @@ export default class extends Component {
         {
           columns: [
             { name: 'add_FIELD_husband_smoking(支/天)[抽烟]', type: 'input', span: 5 },
-            { name: 'add_FIELD_husband_drink(ml/天)[喝酒]', className:'h_26', type: [{ type: 'select', options: baseData.jiuOptions }, 'input'], span: 6 },
+            { name: 'add_FIELD_husband_drink[喝酒]', className:'h_26', type: [{ type: 'select', options: baseData.jiuOptions }, {type:'input',unit:'(ml/天)',filter: data=>!data||data[0]!=='没有'}], span: 6 },
             { name: 'userhjib[现有何病]', type: 'input', span: 12 }
           ]
         },
