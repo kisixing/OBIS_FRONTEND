@@ -142,7 +142,7 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data 
   const handleInput = (e,{value, name}) => {
     data[`$${name}`] = value;
     data[name] = value;
-    onChange(e,data).then(()=>onBlur());
+    onChange(e,{...data}).then(()=>onBlur());
   }
 
   return (
