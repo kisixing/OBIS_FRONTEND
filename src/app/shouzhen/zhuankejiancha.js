@@ -40,21 +40,18 @@ export default class extends Component{
         {
           className:'zhuanke-group', columns:[
             {name:'ckjc[产科检查]',type:'**', span:8},
-            {span:8},
-            {name:'ckjcbtn',type:'button', text:'添加', span:1, size:'small', onClick:(e,text,resolve)=>this.handleChange(e, resolve)},
           ]
         },
         {
           name:'ckjc', groups: index => ({
             rows:[
               {
+                className:'moreColumns',
                 columns:[
-                  {span:1, name: `[胎${index}]`, type:'**'},
+                  {span:1, className:'noContent', name: `[胎${index}]`, type:'**'},
                   {name:'ckgongg(cm)[宫高]', type:'input', span:5, valid: 'number'},
                   {span:1},
                   {name:'ckfuw(cm)[腹围]', type:'input', span:5, valid: 'number'},
-                  {span:4},
-                  {name:'ckjcbtn1',type:'button', text:'删除', span:1, size:'small', onClick:(e,text,resolve)=>this.handleChange(e, resolve, index)},
                 ]
               },
               {
@@ -65,6 +62,9 @@ export default class extends Component{
                   {name:'xl[先露]', type:'select', span:5, options: baseData2.xlOptions},
                   {span:1},
                   {name:'tw[胎位]', type:'input', span:5},
+                  {span:1},
+                  {name:'ckjcbtn1',type:'button', className: `zhuanke-group-mimusBTN_${index}`, shape:"circle", icon:"minus", span:1, size:'small', onClick:(e,text,resolve)=>this.handleChange(e, resolve, index)},
+                  {name:'ckjcbtn', type:'button', className:'zhuanke-group-addBTN', shape:"circle", icon:"plus", span:1, size:'small', onClick:(e,text,resolve)=>this.handleChange(e, resolve)},
                 ]
               },
             ]
@@ -110,7 +110,7 @@ export default class extends Component{
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div className="width_7">
+      <div className="width_7 zhuanke">
         {/** TODO：这里的数据需要统一结构，最好是直接entity传入表单 */}
         {formRender({ckjc:entity.ckjc || [{}], ...(entity.specialityCheckUp || {})}, this.config(), onChange)}
       </div>

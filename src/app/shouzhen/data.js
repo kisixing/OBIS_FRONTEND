@@ -232,6 +232,24 @@ export const shoushushiColumns = [
 		type: 'date'
 	},
 	{
+		title: 'select测试',
+		key: 'select',
+		type: 'select',
+		showSearch:true, 
+		options: [
+			{ label: '头', value: '1' },
+			{ label: '臀', value: '2' },
+			{ label: '肩', value: '3' },
+			{ label: '其他', value: '5' },
+			{ label: '不清', value: '6' },
+		],		 
+	},
+	{
+		title: 'checkbox测试',
+		key: 'checkbox',
+		type: 'checkbox',		 
+	},
+	{
 		title: '手术医院',
 		key: 'kg',
 		type: 'input'

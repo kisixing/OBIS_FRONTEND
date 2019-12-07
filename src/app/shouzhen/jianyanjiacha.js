@@ -47,7 +47,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'md[梅毒]', type:'checkinput-5',radio:true, options: baseData.mdOptions,span: 24}
+            {name:'md[梅毒]', type:'checkinput-5',radio:true, options: baseData.mdOptions,span: 15}
           ]
         },
         {
