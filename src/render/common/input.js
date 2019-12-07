@@ -29,7 +29,14 @@ export function checkbox({onChange, onBlur, value, ...props}){
   )
 }
 
+/**
+ * input-5 这个表示有5个输入框
+ * input-number 表示有一个number的输入框
+ */
 export function input$x({name, onChange, value, width, ...props}, count){
+  if(!/^\d+$/.test(count)){
+    return input({name, onChange, value, width, ...props, type: count});
+  }
   const data = value || [];
   const childWidth = (width-4)/(+count) -5;
   const handleChange = (e, index) => {

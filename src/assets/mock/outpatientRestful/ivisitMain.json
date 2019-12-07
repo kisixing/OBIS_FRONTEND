@@ -1,4 +1,8 @@
 
 {
-  
+  "object": {
+    "gravidaInfo": {},
+    "pregnantInfo": {},
+    "lis": {}
+  }
 }

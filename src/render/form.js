@@ -324,6 +324,8 @@ export function fireForm(parentNode, type) {
   return new Promise(resolve => {
     Promise.all(Array.prototype.map.call(parentNode.querySelectorAll('.form-item'), el => el.fireReact(type))).then(function () {
       resolve(!parentNode.querySelector('.form-error'));
+    },()=>{
+      resolve(false);
     })
   });
 }

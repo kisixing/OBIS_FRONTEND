@@ -61,14 +61,12 @@ export default class Patient extends Component {
                     tab.entity = res.object.lis
                     tab.entity['ogtt'] = {'GDM': {'input0': "1", 'input1': "2", 'input3': "3"}}
                     tab.entity['vfdp'] = {"未查":{}}
-                }
-                else
-                {
+                }else{
                     tab.entity = res.object;
                 }
                 console.log(tab.key,tab.entity);
                 this.setState({step});
-            },()=>{ // TODO: 仅仅在mock时候用
+            }).catch(()=>{ // TODO: 仅仅在mock时候用
                 tab.init = true;
                 this.setState({step});
             });
