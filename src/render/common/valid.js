@@ -9,7 +9,7 @@ const validationFns = {
     }
   },
   number: function (value){
-      if(value && !/^\d+$/.test(value)){
+      if(value && !/^\d+(\.\d+)$/.test(value)){
           return '*只能输入数字';
       }
   },
