@@ -20,7 +20,7 @@ export default class extends Component{
           ]
         },
         {
-          columns:[
+          filter:entity=>!entity.fkjc || !entity.fkjc.hasOwnProperty('拒绝检查'), columns:[
             {span:1},
             {name:'ckwaiy[外阴]', type:'input', span:5},
             {span:1},
@@ -28,7 +28,7 @@ export default class extends Component{
           ]
         },
         {
-          columns:[
+          filter:entity=>!entity.fkjc || !entity.fkjc.hasOwnProperty('拒绝检查'), columns:[
             {span:1},
             {name:'ckgongj[宫颈]', type:'input', span:5},
             {span:1},
@@ -112,7 +112,7 @@ export default class extends Component{
     return (
       <div className="width_7">
         {/** TODO：这里的数据需要统一结构，最好是直接entity传入表单 */}
-        {formRender({ckjc:entity.ckjc || [{}], ...(entity.specialityCheckUp || {})}, this.config(), onChange)}
+        {formRender({ckjc:entity.ckjc || [{}], ...(entity || {})}, this.config(), onChange)}
       </div>
     )
   }

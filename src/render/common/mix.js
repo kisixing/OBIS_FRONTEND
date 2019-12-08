@@ -136,7 +136,7 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data 
     }else{
       delete data[name];
     }
-    return onChange(e,data).then(()=>onBlur());
+    return onChange(e,{...data}).then(()=>onBlur({checkedChange:true}));
   }
 
   const handleInput = (e,{value, name}) => {

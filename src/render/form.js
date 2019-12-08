@@ -130,9 +130,11 @@ class FormItem extends Component {
     const { name } = this.state;
     const { entity, width } = this.props;
 
-    if (!entity || (entity[name] !== newProps.entity[name])) {
-      this.state.value = newProps.entity[name];
-      this.state.error = validFn(newProps.valid, newProps.entity[name]);
+    if (!entity || (JSON.stringify(entity && entity[name]) !== JSON.stringify(newProps.entity[name]))) {
+      this.setState({
+        value: newProps.entity[name],
+        error: validFn(newProps.valid, newProps.entity[name])
+      })
     }
     if (width !== newProps.width) {
       this.resize();
@@ -147,7 +149,7 @@ class FormItem extends Component {
     });
   }
 
-  onBlur = (e) => {
+  onBlur = ({checkedChange, ...e} = {}) => {
     return new Promise(resolve => {
       const { entity, valid, onChange } = this.props;
       const { name, value } = this.state;
@@ -155,7 +157,7 @@ class FormItem extends Component {
       this.setState({
         error: error
       }, () => resolve());
-      if (onChange && JSON.stringify(entity && entity[name]) !== JSON.stringify(value)) {
+      if (onChange && (JSON.stringify(entity && entity[name]) !== JSON.stringify(value) || checkedChange)) {
         onChange(e, { name, value, error, entity })
       }
     });
