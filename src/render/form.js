@@ -27,7 +27,7 @@ function render(type, props) {
     return editor(props, /-(.*)$/.test(type) && /-(.*)$/.exec(type)[1], FormItem, AddResize);
   }
   if (editor === 'table') {
-    const { options, value = [{}], onChange, onBlur, ...rest } = props;
+    const { options, value = [{$checkbox: true}], onChange, onBlur, ...rest } = props;
     const onRowChange = (type, item, row) => {
       let list = value || [];
       switch (type) {
@@ -253,7 +253,9 @@ export default function (entity, config, onChange, { children, ...props } = {}) 
 
   function foreach(data, change, list, type, path) {
     return list.map((rc, index) => {
-      if (!rc || (rc.filter && !rc.filter(entity))) { return null; }
+      if (!rc || (rc.filter && !rc.filter(entity))) { 
+        return null; 
+      }
       const { span, label, className, ...rest } = (typeof rc === 'object' ? rc : {});
       const key = `${path}-${type[0]}${index}`;
       const props = {
@@ -305,7 +307,12 @@ export default function (entity, config, onChange, { children, ...props } = {}) 
           list[index][name] = value;
           return change(e, { name: field, value: list, ...rest })
         }
-        return render(group, handleChange, option.groups(index), `${path}-group${index}`)
+        const parms = {
+          list, 
+          first: index === 0,
+          last: index + 1 === list.length
+        };
+        return render(group, handleChange, option.groups(index, parms), `${path}-group${index}`)
       });
     }
     if (option.type) {

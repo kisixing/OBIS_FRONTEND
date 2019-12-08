@@ -233,7 +233,7 @@ export const shoushushiColumns = [
 	},
 	{
 		title: 'select测试',
-		key: 'select',
+		key: '$select',
 		type: 'select',
 		showSearch:true, 
 		options: [
@@ -246,8 +246,9 @@ export const shoushushiColumns = [
 	},
 	{
 		title: 'checkbox测试',
-		key: 'checkbox',
-		type: 'checkbox',		 
+		key: '$checkbox',
+		type: 'checkbox',		
+		holdeditor: true 
 	},
 	{
 		title: '手术医院',

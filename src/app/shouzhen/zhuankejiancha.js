@@ -48,7 +48,7 @@ export default class extends Component{
               {
                 className:'moreColumns',
                 columns:[
-                  {span:1, className:'noContent', name: `[胎${index}]`, type:'**'},
+                  {span:1, className:'noContent', name: `[胎${index+1}]`, type:'**'},
                   {name:'ckgongg(cm)[宫高]', type:'input', span:5, valid: 'number'},
                   {span:1},
                   {name:'ckfuw(cm)[腹围]', type:'input', span:5, valid: 'number'},
@@ -64,7 +64,7 @@ export default class extends Component{
                   {name:'tw[胎位]', type:'input', span:5},
                   {span:1},
                   {name:'ckjcbtn1',type:'button', className: `zhuanke-group-mimusBTN_${index}`, shape:"circle", icon:"minus", span:1, size:'small', onClick:(e,text,resolve)=>this.handleChange(e, resolve, index)},
-                  {name:'ckjcbtn', type:'button', className:'zhuanke-group-addBTN', shape:"circle", icon:"plus", span:1, size:'small', onClick:(e,text,resolve)=>this.handleChange(e, resolve)},
+                  {name:'ckjcbtn', type:'button', className:'zhuanke-group-addBTN', shape:"circle", icon:"plus", span:1, size:'small', filter:entity=>entity.ckjc.length===index+1, onClick:(e,text,resolve)=>this.handleChange(e, resolve)},
                 ]
               },
             ]
