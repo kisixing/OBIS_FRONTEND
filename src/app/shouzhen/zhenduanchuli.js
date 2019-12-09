@@ -184,7 +184,10 @@ export default class extends Component{
         </div>
         <br/>
         <Row className="fuzhen-left-input font-16">
-          <Col span={18}>
+          <Col span={4}>
+            <span className="font-12">诊断:</span>
+          </Col>
+          <Col span={16}>
             <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
               {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
             </Select>

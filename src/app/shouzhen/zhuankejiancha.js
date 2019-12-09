@@ -24,15 +24,15 @@ export default class extends Component{
             {span:1},
             {name:'ckwaiy[外阴]', type:'input', span:5},
             {span:1},
-            {name:'ckyind[阴道]', type:'input', span:5},
+            {name:'ckyind[阴道]', type:'input', span:5},           
+            {span:1},
+            {name:'ckgongj[宫颈]', type:'input', span:5},
+            {span:1},
+            {name:'zg[子宫]', type:'input', span:5}
           ]
         },
         {
           filter:entity=>!entity.fkjc || (!entity.fkjc.hasOwnProperty('拒绝检查') && !entity.fkjc.hasOwnProperty('未做检查')), columns:[
-            {span:1},
-            {name:'ckgongj[宫颈]', type:'input', span:5},
-            {span:1},
-            {name:'zg[子宫]', type:'input', span:5},
             {span:1},
             {name:'ckfuj[附件]', type:'input', span:5},
           ]
@@ -81,10 +81,6 @@ export default class extends Component{
             {name:'sjjj(cm)[髂前上棘间径]', type:'input', span:5},
             {span:1},
             {name:'gsjj(cm)[髂棘间径]', type:'input', span:5},
-          ]
-        },
-        {
-          filter:entity=>!entity.gpwcl || !entity.gpwcl.hasOwnProperty('未做检查'), columns:[
             {span:1},
             {name:'dcwj(cm)[骶耻外径]', type:'input', span:5 },
             {span:1},
