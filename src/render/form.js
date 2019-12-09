@@ -204,7 +204,7 @@ class FormItem extends Component {
             const tWidth = enitorWidth * zoom;
             return (
               <Col span={t.span || span} key={`col-${name}${index}`}>
-                {render(t.type, { ...props, ...t, name: `${name}${index}`, value: data[index], style: { width: tWidth - (t.unit||'').length * 16 }, onChange: handleChange(index), onBlur: this.onBlur.bind(this) })}
+                {render(t.type, { ...props, ...t, name: `${name}${index}`, value: data[index], style: { width: tWidth }, onChange: handleChange(index), onBlur: this.onBlur.bind(this) })}
                 {t.unit ? t.unit : null}
               </Col>
             )

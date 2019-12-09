@@ -76,7 +76,7 @@ class TableItem extends Component{
     const { value, error, force } = this.state;
     const editor = editors[type] || type;
     return (
-      <span ref="tableItem" title={error} onDoubleClick={this.onDbClick.bind(this)} className={`table-item ${(force&&'table-force') || (error&&'table-error') || ''}`}>
+      <span ref="tableItem" title={error} onDoubleClick={this.onDbClick.bind(this)} className={`table-item table-item-${type} ${(force&&'table-force') || (error&&'table-error') || ''}`}>
         {
           editable && (typeof editor === 'function') && (force || isEditor)?editor({...props, value, onChange: this.onChange.bind(this), onBlur: this.onBlur.bind(this)}):this.format()
         }
@@ -140,7 +140,6 @@ function getheades(columns, level = 0){
   return [columns]
 }
 
-let changeItemTimeout = null;
 export default function(keys, data, {onChange = ()=>{}, onRowChange, className, editable, ...props}){
   const dataSource = data ? data : [];
   const rows = getheades(keys);

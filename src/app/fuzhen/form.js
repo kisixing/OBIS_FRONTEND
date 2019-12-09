@@ -8,6 +8,7 @@ import formRender, {fireForm} from '../../render/form';
 import {valid} from '../../render/common';
 import service from '../../service';
 import modal from '../../utils/modal';
+import {loadWidget} from '../../utils/common';
 
 export default class FuzhenForm extends Component {
   constructor(props) {
@@ -67,7 +68,7 @@ export default class FuzhenForm extends Component {
             { 
               span: 6, columns:[
                 { name: 'ckgongg(cm)[宫高]', type: 'input', span: 18 },
-                { type:  'button', span: 6, text: '曲线', color:'#1890ff', size:'small', onClick:(e,value,resolve)=>modal({...this.renderQX(), onCancel:resolve})}
+                { type:  'button', span: 6, text: '曲线', color:'#1890ff', size:'small', onClick:this.renderQX.bind(this)}
               ] 
             },
             {
@@ -264,14 +265,21 @@ export default class FuzhenForm extends Component {
   /**
    * 曲线
    */
-  renderQX(){
-    return {
-      title:'曲线图',
-      content:'此功能还没有完成，正在努力开发中...',
-      footer:'',
-      width:1100,
-      maskClosable:true
-    }
+  renderQX(e,text,resolve){
+    loadWidget('echarts').then(()=>{
+      var canvas = `canvas-${Date.now()}`;
+      modal({
+        title: text,
+        content:`<div id="${canvas}"></div>`,
+        footer:'',
+        width:1100,
+        maskClosable:true,
+        onCancel:resolve
+      }).then(()=>{
+        var myChart = echarts.init(document.getElementById(canvas));
+        myChart.setOption(option);
+      })
+    })
   }
 
   /**

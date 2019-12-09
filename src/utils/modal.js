@@ -16,18 +16,20 @@ export default function(props){
     render(<i/>, modal);
   };
   
-  if(typeof props === 'object'){
-    const {content, onCancel, onOk, ...rest} = props;
-    render((
-      <Modal {...rest} visible={true} onCancel={handelClick(onCancel)} onOk={handelClick(onOk)}>
-        {content}
-      </Modal>
-    ), modal);
-  } else {
-    render((
-      <Modal visible={true} onCancel={handelClick()} onOk={handelClick()}>
-        <div dangerouslySetInnerHTML={{__html: props}}></div>
-      </Modal>
-    ), modal);
-  }
+  return new Promise(resolve => {
+    if(typeof props === 'object'){
+      const {content, onCancel, onOk, ...rest} = props;
+      render((
+        <Modal {...rest} visible={true} onCancel={handelClick(onCancel)} onOk={handelClick(onOk)}>
+          {content}
+        </Modal>
+      ), modal, resolve);
+    } else {
+      render((
+        <Modal visible={true} onCancel={handelClick()} onOk={handelClick()}>
+          <div dangerouslySetInnerHTML={{__html: props}}></div>
+        </Modal>
+      ), modal, resolve);
+    }
+  });
 }
