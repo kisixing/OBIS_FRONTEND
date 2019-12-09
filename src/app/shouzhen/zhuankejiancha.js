@@ -76,7 +76,7 @@ export default class extends Component{
           ]
         },
         {
-          columns:[
+          filter:entity=>!entity.gpwcl || !entity.gpwcl.hasOwnProperty('未做检查'), columns:[
             {span:1},
             {name:'sjjj(cm)[髂前上棘间径]', type:'input', span:5},
             {span:1},
@@ -84,7 +84,7 @@ export default class extends Component{
           ]
         },
         {
-          columns:[
+          filter:entity=>!entity.gpwcl || !entity.gpwcl.hasOwnProperty('未做检查'), columns:[
             {span:1},
             {name:'dcwj(cm)[骶耻外径]', type:'input', span:5 },
             {span:1},
