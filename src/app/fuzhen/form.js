@@ -10,6 +10,18 @@ import service from '../../service';
 import modal from '../../utils/modal';
 import {loadWidget} from '../../utils/common';
 
+import chartDemoData from './chart-demo';
+
+const renderChart = function(){
+  var loaded = new Promise(resolve=>setTimeout(()=>loadWidget('echarts').then(resolve), 1000));
+  return (id, option) => {
+    loaded.then(() => {
+      var myChart = echarts.init(document.getElementById(id));
+      myChart.setOption(option);
+    });
+  }
+};
+
 export default class FuzhenForm extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +34,7 @@ export default class FuzhenForm extends Component {
       treatTemp: []
     }
 
+    this.renderChart = renderChart();
     service.fuzhen.treatTemp().then(res => this.setState({
       treatTemp: res.object
     }));
@@ -266,20 +279,15 @@ export default class FuzhenForm extends Component {
    * 曲线
    */
   renderQX(e,text,resolve){
-    loadWidget('echarts').then(()=>{
-      var canvas = `canvas-${Date.now()}`;
-      modal({
-        title: text,
-        content:`<div id="${canvas}"></div>`,
-        footer:'',
-        width:1100,
-        maskClosable:true,
-        onCancel:resolve
-      }).then(()=>{
-        var myChart = echarts.init(document.getElementById(canvas));
-        myChart.setOption(option);
-      })
-    })
+    var canvas = `canvas-${Date.now()}`;
+    modal({
+      title: text,
+      content:<div id={canvas} style={{height: 400, width: 1000}}></div>,
+      footer:'',
+      width:1100,
+      maskClosable:true,
+      onCancel:resolve
+    }).then(() => this.renderChart(canvas, chartDemoData));
   }
 
   /**
