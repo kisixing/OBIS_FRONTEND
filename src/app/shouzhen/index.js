@@ -115,7 +115,9 @@ export default class Patient extends Component {
                 }
                 this.change = false;
             }else{
-                if(key){
+                if(key ==='openPDF'){
+                    window.open("http://www.baidu.com?"+step,tab.entity,'_blank');
+                } else if(key){
                     this.activeTab(key);
                 }else{
                     this.forceUpdate();
@@ -138,9 +140,11 @@ export default class Patient extends Component {
                         </Tabs.TabPane>
                     ))}
                 </Tabs>
-                <Row><Col span={20}/><Col>
-                    <Button icon = "save" type = "primary" onClick={()=>this.handleSave()}>{step!==tabs[tabs.length-1].key?'下一页':'保存'}</Button>
-                </Col></Row>>
+                <Row><Col span={18}/><Col>
+                <Button icon = "save" type = "primary" className="margin-R-1" onClick={()=>this.handleSave()}>{step!==tabs[tabs.length-1].key?'下一页':''}</Button>
+                <Button icon = "save" type = "primary" className="margin-R-1" onClick={()=>this.handleSave()}>保存</Button>
+                <Button icon = "copy" type = "ghost" onClick={()=>this.handleSave('openPDF')}>另存为PDF</Button>
+                </Col></Row>
             </Page>
         )
     }

@@ -117,7 +117,7 @@ export default class extends Component{
       Modal.confirm({
         title: '您是否确认要删除这项诊断',
         width: '300',
-        style: { left: '-300px', fontSize: '18px' },
+        style: { left: '30%', fontSize: '18px' },
         onOk: () => this.deldiagnosis(item.id)
       });
     };
