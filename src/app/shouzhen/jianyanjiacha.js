@@ -15,21 +15,21 @@ export default class extends Component{
       rows: [
         {
           columns:[
-            {name:'vfxx[女方血型]', icon:'female-Gender', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
-            {name:'vfxx2[]', type: 'select',span:2, valid: 'required', options: baseData.xuexing2Options},
+            {name:'vfxx[女方血型]', icon:'female-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
+            {name:'vfxx2[]', type: 'select',span:2, options: baseData.xuexing2Options},
             {span:2},
-            {name:'nfxx[男方血型]', icon:'male-Gender', type: 'select',span:4, valid: 'required', options: baseData.xuexingOptions},
-            {name:'nfxx2[]', type: 'select',span:2, valid: 'required', options: baseData.xuexing2Options},
+            {name:'nfxx[男方血型]', icon:'male-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
+            {name:'nfxx2[]', type: 'select',span:2, options: baseData.xuexing2Options},
           ]
         },
         {
           columns:[
-            {name:'ygldb[乙肝两对半]', type:'checkinput-5', options: baseData.ygOptions,radio:true,span:15}
+            {name:'ygldb[乙肝两对半]', type:'checkinput-5',valid: 'required', options: baseData.ygOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
-            {name:'ygdna[乙肝DNA]', className:'col-8-sp', type:'checkinput-3', options: baseData.yywOptions,radio:true,span:9},
+            {name:'ygdna[乙肝DNA]', className:'col-8-sp', type:'checkinput-3',valid: 'required', options: baseData.yywOptions,radio:true,span:9},
             {name:'alt(U/L)[ALT]', type:'input', span:4},
             {span:1},
             {name:'ast(UL)[AST]',type:'input', span:4}
@@ -37,47 +37,47 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'bggt[丙肝抗体]', type:'checkinput-5', options: baseData.yywOptions,radio:true,span:15}
+            {name:'bggt[丙肝抗体]', type:'checkinput-5',valid: 'required', options: baseData.yywOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
-            {name:'bgrna[丙肝RNA]', type:'checkinput-5', options: baseData.yywOptions,radio:true,span:15}
+            {name:'bgrna[丙肝RNA]', type:'checkinput-5', valid: 'required', options: baseData.yywOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
-            {name:'md[梅毒]', type:'checkinput-5',radio:true, options: baseData.mdOptions,span: 15}
+            {name:'md[梅毒]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.mdOptions,span: 15}
           ]
         },
         {
           columns:[
-            {name:'aids[HIV]', type:'checkinput-5',radio:true, options: baseData.yywOptions,span:15}
+            {name:'aids[HIV]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'ogtt[OGTT]', type:'checkinput-5',radio:true, options: baseData.ogttOptions,span:15}
+            {name:'ogtt[OGTT]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.ogttOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'vfdp[女方地贫]', icon:'environment-o', type:'checkinput-5',radio:true, options: baseData.dpOptions,span:15}
+            {name:'vfdp[女方地贫]', icon:'female-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'nfdp[男方地贫]', icon:'environment', type:'checkinput-5',radio:true, options: baseData.dpOptions,span:15}
+            {name:'nfdp[男方地贫]', icon:'male-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'ndb[尿蛋白]', type:'checkinput-5',radio:true, options: baseData.dbnOptions,span:15}
+            {name:'ndb[尿蛋白]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dbnOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'gbs[GBS]', type:'checkinput-5',radio:true, options: baseData.yywOptions,span:15}
+            {name:'gbs[GBS]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:15}
           ]
         },
         {

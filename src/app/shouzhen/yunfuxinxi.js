@@ -15,38 +15,38 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'userhage[年龄]', type: 'input', span: 5, valid: 'number' },
+            { name: 'userhage[年龄]', type: 'input', span: 5, valid: 'required|number'},
             { span: 1 }, 
-            { name: 'userbirth[出生日期]', type: 'date', span: 5},
+            { name: 'userbirth[出生日期]', type: 'date', span: 5,valid: 'required'},
             { span: 1 },
-            { name: 'usercuzh[建档日期]', type: 'date', span: 5 },
+            { name: 'usercuzh[建档日期]', type: 'date', span: 5 ,valid: 'required'},
           ]
         },
         {
           columns: [
-            { name: 'userhnation[国籍]', type: 'input', span: 5 },
+            { name: 'userhnation[国籍]', type: 'input', span: 5 ,valid: 'required'},
             { span: 1 },
-            { name: 'userroots[籍贯]', type: 'input', span: 5 },
+            { name: 'userroots[籍贯]', type: 'input', span: 5 ,valid: 'required'},
             { span: 1 },
-            { name: 'userpeople[民族]', type: 'input', span: 4 },
+            { name: 'userpeople[民族]', type: 'input', span: 4 ,valid: 'required'},
             { span: 1 },
-            { name: 'useroccupation[职业]', type: 'input', span: 6 },
+            { name: 'useroccupation[职业]', type: 'input', span: 6 ,valid: 'required'},
           ]
         }, {
           columns: [
-            { name: 'usermobile[手机]', type: 'input', span: 5, valid: 'number' },
+            { name: 'usermobile[手机]', type: 'input', span: 5, valid: 'number|required' },
             { span: 1 },
             { name: 'phone[固话]', type: 'input', span: 5},
             { span: 1 },
-            { name: 'useridtype[证件类型]', type: 'select', span: 4, showSearch: false, options: baseData.sfzOptions },
+            { name: 'useridtype[证件类型]', type: 'select', span: 4, showSearch: false, options: baseData.sfzOptions ,valid: 'required'},
             { span: 1 },
-            { name: 'useridno[身份证号]', type: 'input', span: 6 }
+            { name: 'useridno[证件号码]', type: 'input', span: 6 ,valid: 'required'}
           ]
         }, {
           columns: [
-            { name: 'constant[户口地址]', type: 'input', span: 11},
+            { name: 'constant[户口地址]', type: 'input', span: 11,valid: 'required'},
             { span: 1 },
-            { name: 'address[现住地址]', type: 'input', span: 11},
+            { name: 'address[现住地址]', type: 'input', span: 11,valid: 'required'},
             { span: 1 },
           ]
         }

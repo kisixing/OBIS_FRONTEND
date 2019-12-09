@@ -20,7 +20,7 @@ export default class extends Component{
           ]
         },
         {
-          filter:entity=>!entity.fkjc || !entity.fkjc.hasOwnProperty('拒绝检查'), columns:[
+          filter:entity=>!entity.fkjc || (!entity.fkjc.hasOwnProperty('拒绝检查') && !entity.fkjc.hasOwnProperty('未做检查')), columns:[
             {span:1},
             {name:'ckwaiy[外阴]', type:'input', span:5},
             {span:1},
@@ -28,7 +28,7 @@ export default class extends Component{
           ]
         },
         {
-          filter:entity=>!entity.fkjc || !entity.fkjc.hasOwnProperty('拒绝检查'), columns:[
+          filter:entity=>!entity.fkjc || (!entity.fkjc.hasOwnProperty('拒绝检查') && !entity.fkjc.hasOwnProperty('未做检查')), columns:[
             {span:1},
             {name:'ckgongj[宫颈]', type:'input', span:5},
             {span:1},
@@ -48,7 +48,7 @@ export default class extends Component{
               {
                 className:'moreColumns',
                 columns:[
-                  {span:1, className:'noContent', name: `[胎${index+1}]`, type:'**'},
+                  {span:1},
                   {name:'ckgongg(cm)[宫高]', type:'input', span:5, valid: 'number'},
                   {span:1},
                   {name:'ckfuw(cm)[腹围]', type:'input', span:5, valid: 'number'},
@@ -56,7 +56,7 @@ export default class extends Component{
               },
               {
                 columns:[
-                  {span:1},
+                  {span:1, className:'noContent', name: `[胎${index+1}]`, type:'**'},
                   {name:'tx(bpm)[胎心]', type:'input', span:5},
                   {span:1},
                   {name:'xl[先露]', type:'select', span:5, options: baseData2.xlOptions},

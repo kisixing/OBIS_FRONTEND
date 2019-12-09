@@ -57,6 +57,9 @@ export default class Patient extends Component {
                 }else if(tab.key === 'tab-2'){
                     tab.entity = res.object.pregnantInfo
                     tab.entity['ckyibzhzh'] = {"头晕":",,,,","头痛":'www','呕吐':',白带增多,胸闷,腰酸,流血'}
+                }else if(tab.key === 'tab-4'){
+                    tab.entity = res.object.menstruationMarriage
+                    tab.entity['yjtongj'] = {"偶尔":""}
                 }else if(tab.key === 'tab-7'){
                     tab.entity = res.object.lis
                     tab.entity['ogtt'] = {'GDM': {'input0': "1", 'input1': "2", 'input3': "3"}}

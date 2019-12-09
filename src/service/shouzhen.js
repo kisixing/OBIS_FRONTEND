@@ -24,7 +24,7 @@ export default {
         }
         data = entity
         console.log(entity)
-        return this.userId().then(r => myAxios.post(`/Obcloud/shouzhen?id=${r.object.userid}&style=${type}`, data));
+        return this.userId().then(r => myAxios.post(`/outpatienttest/udpateDoc?id=${r.object.userid}&style=${type}`, data));
     },
     /**
      * 诊断处理的诊断列表

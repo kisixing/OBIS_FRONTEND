@@ -22,10 +22,10 @@ export default class extends Component{
               name: 'ckshrinkpressure(mmHg)[血压]', type: ['input(/)','input'], span: 6, valid: (value)=>{
               let message = '';
               if(value){
-                if(value[0] && valid('number|rang(0,140)',value[0])){
-                  message += '第1个值' + valid('number|rang(0,140)',value[0])
+                if(value[0] && valid('number|required|rang(0,140)',value[0])){
+                  message += '第1个值' + valid('number|required|rang(0,140)',value[0])
                 }else if(value[0] && valid('number|rang(0,110)',value[1])){
-                  message += '第2个值' + valid('number|rang(0,140)',value[1])
+                  message += '第2个值' + valid('number|required|rang(0,140)',value[1])
                 }
               }
               
@@ -46,50 +46,50 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'pflm[皮肤黏膜]', type:'checkinput-6', options: baseData.pfOptions,span:13}
+            {name:'pflm[皮肤黏膜]', type:'checkinput-6',valid: 'required', options: baseData.pfOptions,span:13}
           ]
         },
         {
           columns:[
-            {name:'jzx[甲状腺]', type:'checkinput-3', options: baseData.neOptions,radio:true,span:7},
-            {name:'xgzy[血管杂音]', type:'checkinput-3', options: baseData.hnOptions,radio:true,span:7},
+            {name:'jzx[甲状腺]', type:'checkinput-3',valid: 'required', options: baseData.neOptions,radio:true,span:7},
+            {name:'xgzy[血管杂音]', type:'checkinput-3',valid: 'required', options: baseData.hnOptions,radio:true,span:7},
             {span:1},
-            {name:'id3[其他]', type:'input', span:6},
+            {name:'id3[其他]', type:'input',valid: 'required', span:6},
           ]
         },
         {
           columns:[
-            {name:'rt[乳头]', type:'checkinput-3', options: baseData.rtOptions,radio:true,span:7}
+            {name:'rt[乳头]', type:'checkinput-3',valid: 'required', options: baseData.rtOptions,radio:true,span:7}
           ]
         },
         {
           columns:[
-            {name:'hxy[呼吸音]', type:'checkinput-3', options: baseData.neOptions,radio:true,span:7},
-            {name:'ly[啰音]', type:'input', span:6},
+            {name:'hxy[呼吸音]', type:'checkinput-3',valid: 'required', options: baseData.neOptions,radio:true,span:7},
+            {name:'ly[啰音]', type:'input', span:6,valid: 'required'},
           ]
         },
         {
           columns:[
-            {name:'xl(次/分)[心率]', type:'input', span:6},
+            {name:'xl(次/分)[心率]', type:'input',valid: 'required', span:6},
             {span:1},
-            {name:'xl2[心率]', type:'checkinput-3', options: baseData.xlOptions,radio:true,span:7},
+            {name:'xl2[心率]', type:'checkinput-3',valid: 'required', options: baseData.xlOptions,radio:true,span:7},
             {span:1},
-            {name:'xlzy[杂音]', type:'checkinput-3', options: baseData.hnOptions,radio:true,span:9},
+            {name:'xlzy[杂音]', type:'checkinput-3',valid: 'required', options: baseData.hnOptions,radio:true,span:9},
           ]
         },
         {
           columns:[
-            {name:'gan[肝]', type:'checkinput-3', options: baseData.cjOptions,radio:true,span:7},
-            {name:'pi[脾]', type:'checkinput-3', options: baseData.cjOptions,radio:true,span:7},
+            {name:'gan[肝]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:7},
+            {name:'pi[脾]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:7},
             {span:1},
-            {name:'sqt[肾区叩痛]', type:'checkinput-3', options: baseData.sktOptions,span:9},
+            {name:'sqt[肾区叩痛]', type:'checkinput-3',valid: 'required', options: baseData.sktOptions,span:9},
           ]
         },
         {
           columns:[
-            {name:'jz[脊柱]', type:'checkinput-3', options: baseData.jxOptions,radio:true,span:7},
-            {name:'xzfz[下肢浮肿]', type:'checkinput', options: baseData.xzfOptions,radio:true,span:11},
-            {name:'sqfs[双膝反射]', type:'checkinput', options: baseData.sxfOptions,radio:true,span:12},
+            {name:'jz[脊柱]', type:'checkinput-3',valid: 'required', options: baseData.jxOptions,radio:true,span:7},
+            {name:'xzfz[下肢浮肿]', type:'checkinput',valid: 'required', options: baseData.xzfOptions,radio:true,span:11},
+            {name:'sqfs[双膝反射]', type:'checkinput',valid: 'required', options: baseData.sxfOptions,radio:true,span:12},
           ]
         },
       ]
