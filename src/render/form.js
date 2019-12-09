@@ -21,6 +21,18 @@ import table from './table';
 
 import './form.less';
 
+/**
+ * 
+ * 如果这个属性可能是个方法，那就取返回
+ */
+function getValueFn(fn, ...args){
+  if(typeof fn === 'function'){
+    return fn(...args)
+  }else{
+    return fn;
+  }
+}
+
 function render(type, props) {
   const editor = editors[type] || editors[type.replace(/(-.*)?$/, '$x')] || type;
   if (typeof editor === 'function') {
@@ -76,17 +88,23 @@ const AddResize = (function (fn) {
 class FormItem extends Component {
   constructor(props) {
     super(props);
-    const { entity = {}, name = '', label, unit } = props;
-    const field = name.replace(/\(.*\)/, '').replace(/\[.*\]/, '');
-
     this.state = {
-      name: field,
       width: 0,
-      label: /\[.*\]/.test(name.replace(/\(.*\)/, '')) && /\[(.*)\]/.exec(name.replace(/\(.*\)/, ''))[1],
-      unit: /\(.*\)/.test(name.replace(/\[.*\]/, '')) && /\((.*)\)/.exec(name.replace(/\[.*\]/, ''))[1],
-      value: entity[field],
+      ...this.getSplitState(props.name, props.entity),
       dirty: false,
       error: ''
+    }
+  }
+
+  getSplitState(name = '', entity = {}){
+    const $name = getValueFn(name, entity)
+    const field = $name.replace(/\(.*\)/, '').replace(/\[.*\]/, '');
+
+    return {
+      name: field,
+      label: /\[.*\]/.test($name.replace(/\(.*\)/, '')) && /\[(.*)\]/.exec($name.replace(/\(.*\)/, ''))[1],
+      unit:  /\(.*\)/.test($name.replace(/\[.*\]/, '')) && /\((.*)\)/.exec($name.replace(/\[.*\]/, ''))[1],
+      value: entity[field]
     }
   }
 
@@ -132,6 +150,7 @@ class FormItem extends Component {
 
     if (!entity || (JSON.stringify(entity && entity[name]) !== JSON.stringify(newProps.entity[name]))) {
       this.setState({
+        ...this.getSplitState(newProps.name, newProps.entity),
         value: newProps.entity[name],
         error: validFn(newProps.valid, newProps.entity[name])
       })
@@ -159,6 +178,7 @@ class FormItem extends Component {
       }, () => resolve());
       if (onChange && (JSON.stringify(entity && entity[name]) !== JSON.stringify(value) || checkedChange)) {
         onChange(e, { name, value, error, entity })
+        this.setState(this.getSplitState(this.props.name, {...entity,[name]:value }))
       }
     });
   }
@@ -170,7 +190,7 @@ class FormItem extends Component {
     if (type instanceof Array) {
       const span = Math.floor(24 / type.length);
       const data = value || [];
-      const handleChange = i => (e, v) => { data[i] = v; return this.onChange(e, data); };
+      const handleChange = i => (e, v) => { data[i] = v; return this.onChange(e, {...data}); };
       const types = type.map(t => ({
         ...t,
         type: (t.type || t).replace(/\(.*\)/, ''),
@@ -294,13 +314,13 @@ export default function (entity, config, onChange, { children, ...props } = {}) 
 
   function render(data, change, option, path = 'entity') {
     if (option.rows) {
-      return foreach(data, change, option.rows, 'row', path)
+      return foreach(data, change, getValueFn(option.rows, entity), 'row', path)
     }
     if (option.columns) {
-      return foreach(data, change, option.columns, 'column', path)
+      return foreach(data, change, getValueFn(option.columns, entity), 'column', path)
     }
     if (option.groups) {
-      const field = option.name.replace(/\(.*\)/, '').replace(/\[.*\]/, '');
+      const field = getValueFn(option.name, entity).replace(/\(.*\)/, '').replace(/\[.*\]/, '');
       const list = data[field] || [{}];
       return list.map((group, index) => {
         const handleChange = (e, { name, value, ...rest }) => {
@@ -312,14 +332,11 @@ export default function (entity, config, onChange, { children, ...props } = {}) 
           first: index === 0,
           last: index + 1 === list.length
         };
-        return render(group, handleChange, option.groups(index, parms), `${path}-group${index}`)
+        return render(group, handleChange, getValueFn(option.groups, index, parms), `${path}-group${index}`)
       });
     }
     if (option.type) {
-      const hanldChange = (...args) => Promise.resolve(change(...args)).then(()=>{
-        console.log('************************');
-        return option.onChange && option.onChange(...args);
-      });
+      const hanldChange = (...args) => Promise.resolve(change(...args)).then(()=>option.onChange && option.onChange(...args));
       return <FormItem {...option} entity={data} onChange={hanldChange} />
     }
     return null;

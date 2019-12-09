@@ -15,7 +15,7 @@ const getUrl = function (url){
 /**
  * 移除所有以$开头的属性,用来模拟
  */
-const remove$Property = function (obj){
+export const remove$Property = function (obj){
     if(obj && typeof obj === 'object'){
         for(var p in obj){
             if(/^\$/.test(p)){
@@ -42,8 +42,10 @@ const myAxios = axios.create({
 });
 
 myAxios.interceptors.request.use(config => {
-    if (config.method === 'post' || config.method === 'put') {
+    if(config.data){
         config.data = remove$Property(config.data);
+    }
+    if (config.method === 'post' || config.method === 'put') {
         //后台接受的参数Content-Type
         // 默认application/x-www-form-urlencode;charset=utf-8,对应spring注解：@RequestParam,又字段__isFormType标明
         // application/json;对应spring注解：@RequestBody

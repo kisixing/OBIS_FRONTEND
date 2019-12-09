@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { Row, Col, Button, Input, Table, Select, DatePicker } from 'antd';
 
-export function select({ name, options, width, onChange, ...props }){
+export function select({ name, options, width, onChange, onBlur=()=>{}, ...props }){
+  const handleChange = e => {
+    onChange(e, e).then(()=>onBlur({checkedChange:true}));
+  }
   return (
-    <Select {...props} options={options} onChange={e => onChange(e, e)}>
+    <Select {...props} options={options} onChange={handleChange}>
       {options.map(o => <Select.Option key={`${name}-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
     </Select>
   )

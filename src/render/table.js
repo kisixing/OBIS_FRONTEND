@@ -68,7 +68,7 @@ class TableItem extends Component{
       return result;
     }
 
-    return format(getLabel(options) || value, {row, entity, name, lookup: getLabel});
+    return format(getLabel(options, value) || value, {row, entity, name, lookup: getLabel, format:v=>getLabel(options, v)});
   }
 
   render(){

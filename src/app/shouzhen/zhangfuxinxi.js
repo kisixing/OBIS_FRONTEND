@@ -16,7 +16,7 @@ export default class extends Component {
           columns: [
             { name: 'userhname[丈夫姓名]', type: 'input', span: 5 },
             { name: 'userhage[年龄]', type: 'input', span: 4 },
-            { span: 1 },
+            { span: 2 },
             { name: 'userhmcno[门诊号]', type: 'input', span: 6 },
           ]
         },
@@ -43,7 +43,11 @@ export default class extends Component {
         {
           columns: [
             { name: 'add_FIELD_husband_smoking(支/天)[抽烟]', type: 'input', span: 5 },
-            { name: 'add_FIELD_husband_drink[喝酒]', className:'h_26', type: [{ type: 'select', options: baseData.jiuOptions }, {type:'input',unit:'(ml/天)',filter: data=>!data||data[0]!=='没有'}], span: 6 },
+            { name: entity=>'add_FIELD_husband_drink[喝酒]' + (!entity.add_FIELD_husband_drink||entity.add_FIELD_husband_drink[0]!=='没有'?'(ml/天)':''), className:'h_26', span: 6, type: [
+                { type: 'select', options: baseData.jiuOptions },
+                { type:'input',filter: data=>!data||data[0]!=='没有'}
+              ] 
+            },
             { name: 'userhjib[现有何病]', type: 'input', span: 12 }
           ]
         },
@@ -55,7 +59,7 @@ export default class extends Component {
     const { entity, onChange } = this.props;
     return (
       <div className="">
-        {formRender(entity.husbandInfo, this.config(), onChange)}
+        {formRender(entity/*.husbandInfo*/, this.config(), onChange)}
       </div>
     )
   }
