@@ -65,7 +65,7 @@ export default class Patient extends Component {
     service.fuzhen.getdiagnosis().then(res => this.setState({
       diagnosis: res.object.list
     })),
-    service.fuzhen.getRecentRvisit().then(res => this.setState({
+   service.fuzhen.getRecentRvisit().then(res => this.setState({
       recentRvisit: res.object
     }))]).then(() => this.setState({ loading: false }));
     /* 
@@ -260,7 +260,7 @@ export default class Patient extends Component {
   }
 
   renderTable() {
-    const { recentRvisit, recentRvisitAll, recentRvisitShow } = this.state;
+    const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow } = this.state;
 
     const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this), ...props });
     return (

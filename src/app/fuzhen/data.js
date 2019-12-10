@@ -146,14 +146,11 @@ export const tableKey = () => [
 	},
 	{
         title: '下次复诊',
+				key: 'ultrasound1',
         children:[
             {
                 title: '预约日期',
                 key: 'ultrasound1_1',
-            },
-            {
-                title: '上午/下午',
-                key: 'ultrasound1_2',
             }
         ]
     },

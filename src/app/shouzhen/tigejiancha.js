@@ -46,7 +46,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'pflm[皮肤黏膜]', type:'checkinput-6',valid: 'required', options: baseData.pfOptions,span:13}
+            {name:'pflm[皮肤黏膜]', className:'col-94-sp', type:'checkinput-6',valid: 'required', options: baseData.pfOptions,span:13}
           ]
         },
         {
@@ -88,14 +88,11 @@ export default class extends Component{
         {
           columns:[
             {name:'jz[脊柱]', type:'checkinput-3',valid: 'required', options: baseData.jxOptions,radio:true,span:7},
-            {name:'xzfz[下肢浮肿]', type:'checkinput-6',valid: 'required', options: baseData.xzfOptions,radio:true,span:13},
+            {name:'xzfz[下肢浮肿]', type:'checkinput', className:'col-97-sp', valid: 'required', options: baseData.xzfOptions,radio:true,span:9},
+            {span:4},
+            {name:'sqfs[双膝反射]', type:'checkinput', className:'col-97-sp', valid: 'required', options: baseData.sxfOptions,radio:true,span:9},
           ]
         },
-        {
-          columns:[
-            {name:'sqfs[双膝反射]', type:'checkinput-4',valid: 'required', options: baseData.sxfOptions,radio:true,span:9},
-          ]
-        }
       ]
     };
   }
