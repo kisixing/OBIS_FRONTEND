@@ -88,10 +88,14 @@ export default class extends Component{
         {
           columns:[
             {name:'jz[脊柱]', type:'checkinput-3',valid: 'required', options: baseData.jxOptions,radio:true,span:7},
-            {name:'xzfz[下肢浮肿]', type:'checkinput',valid: 'required', options: baseData.xzfOptions,radio:true,span:11},
-            {name:'sqfs[双膝反射]', type:'checkinput',valid: 'required', options: baseData.sxfOptions,radio:true,span:12},
+            {name:'xzfz[下肢浮肿]', type:'checkinput-6',valid: 'required', options: baseData.xzfOptions,radio:true,span:13},
           ]
         },
+        {
+          columns:[
+            {name:'sqfs[双膝反射]', type:'checkinput-4',valid: 'required', options: baseData.sxfOptions,radio:true,span:9},
+          ]
+        }
       ]
     };
   }

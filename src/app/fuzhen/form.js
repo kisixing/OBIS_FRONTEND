@@ -184,7 +184,7 @@ export default class FuzhenForm extends Component {
         {
           columns:[
             { name: 'treatment[处理措施]', type: 'textarea', span: 8 },
-            { name:'treatment[模板]', type: 'buttons',span: 16, text: '(green)[尿常规],(green)[B 超],(green)[胎监],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
+            { name:'treatment[模板]', type: 'buttons',span: 16, text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(green)[入院],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
           ]
         },
         {

@@ -135,7 +135,7 @@ export const sktOptions = toOptions('有（左）,有（右）');
 /**
  *下肢浮肿
 */
-export const xzfOptions = toOptions('+,+-,++,+++');
+export const xzfOptions = toOptions('-,+,+-,++,+++');
 
 /**
  *双膝反射
@@ -145,7 +145,7 @@ export const sxfOptions = toOptions('存在,亢起,消失,引不起');
 /**
  *乙肝两对半
 */
-export const ygOptions = toOptions('小三阳,大三阳,慢活肝,未查,其他(input)');
+export const ygOptions = toOptions('正常,小三阳,大三阳,慢活肝,未查,其他(input)');
 
 /**
  *阴阳未查
@@ -229,7 +229,7 @@ export const shoushushiColumns = [
 	{
 		title: '手术日期',
 		key: 'ckweek',
-		type: 'date'
+		type: 'date',mode:"ym"
 	},
 	{
 		title: 'select测试',
