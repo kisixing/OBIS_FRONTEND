@@ -60,6 +60,23 @@ export default class Patient extends Component {
                 } else if (tab.key === 'tab-4') {
                     tab.entity = res.object.menstruationMarriage
                     tab.entity['yjtongj'] = { "偶尔": "" }
+                } else if (tab.key === 'tab-5') {
+                    tab.entity ={"preghis": [{
+                        "id":1,
+                        "checkdate": "2019-02",
+                        "xiych": "",
+                        "abortion": ""},{
+                            "id":2,
+                            "checkdate": "2018-02",
+                            "xiych": "",
+                            "st":true,
+                            "abortion": ""},{
+                                "id":3,
+                                "checkdate": "本孕",
+                                "xiych": "",
+                                "chux": true,
+                                "abortion": ""}]
+                        }
                 } else if (tab.key === 'tab-7') {
                     tab.entity = res.object.lis
                     tab.entity['ogtt'] = { 'GDM': { 'input0': "1", 'input1': "2", 'input3': "3" } }

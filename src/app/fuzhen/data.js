@@ -206,7 +206,7 @@ export const nextRvisitWeekOptions = [
 /**
  * 门诊
  */
-export const rvisitOsTypeOptions = toOptions(['产科普通门诊', '高危产科门诊', '教授门诊'], (v,i)=>({value:i,describe:v.slice(0,1)}));
+export const rvisitOsTypeOptions = toOptions(['', '高危门诊', '入院'], (v,i)=>({value:i,describe:v.slice(0,1)}));
 
 /**
  * 上午/下午

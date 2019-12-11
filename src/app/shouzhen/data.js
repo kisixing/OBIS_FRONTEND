@@ -223,32 +223,12 @@ export const shoushushiColumns = [
   {
 		title: '手术名称',
 		key: 'checkdate',
-		type: 'input',
-		holdeditor: true
+		type: 'input'
 	},
 	{
 		title: '手术日期',
 		key: 'ckweek',
 		type: 'date',mode:"ym"
-	},
-	{
-		title: 'select测试',
-		key: '$select',
-		type: 'select',
-		showSearch:true, 
-		options: [
-			{ label: '头', value: '1' },
-			{ label: '臀', value: '2' },
-			{ label: '肩', value: '3' },
-			{ label: '其他', value: '5' },
-			{ label: '不清', value: '6' },
-		],		 
-	},
-	{
-		title: 'checkbox测试',
-		key: '$checkbox',
-		type: 'checkbox',		
-		holdeditor: true 
 	},
 	{
 		title: '手术医院',
@@ -268,18 +248,16 @@ export const shoushushiColumns = [
 export const pregnanciesColumns = [
 	{
 		title: '孕次',
-		key: 'checkdate',
+		key: 'index',	
+		width: '50',
 		format: (v,{row})=>row+1
 	},
 	{
-		title: '年',
-		key: 'ckweek',
+		title: '   年-月    ',
+		key: 'checkdate',
 		type: 'date',
-	},
-	{
-		title: '月',
-		key: 'kg',
-		type: 'input'
+		width: '160',
+		mode:"ym",
 	},
 	{
 		title: '流产',
@@ -292,7 +270,7 @@ export const pregnanciesColumns = [
 			{
 				title: '清宫',
 				key: 'ultrasound1_2',
-				type: 'input'
+				type: 'checkbox'
 			},
 			{
 				title: '人工',
@@ -309,7 +287,8 @@ export const pregnanciesColumns = [
 	{
 		title: '死胎',
 		key: 'st',
-		type: 'checkbox'
+		type: 'checkbox',
+		holdeditor: true
 	},
 	{
 		title: '早产',
@@ -327,10 +306,13 @@ export const pregnanciesColumns = [
 			{
 				title: '顺产',
 				key: 'ydc',
+				type: 'checkbox',
+				holdeditor: true
 			},
 			{
 				title: '手术产式',
 				key: 'shshu',
+				type: 'input'
 			}
 		]
 	},
@@ -340,17 +322,22 @@ export const pregnanciesColumns = [
 			{
 				title: '出血',
 				key: 'chux',
+				type: 'checkbox',
+				holdeditor: true
 			},
 			{
 				title: '产褥热',
 				key: 'char',
+				type: 'checkbox',
+				holdeditor: true
 			}
 		]
 	},
 	{
 		title: '并发症',
 		key: 'bfz',
-		type: 'input'
+		type: 'input',
+		width: '200',
 	},
 	{
 		title: '小孩情况',
@@ -358,26 +345,44 @@ export const pregnanciesColumns = [
 			{
 				title: '性别',
 				key: 'xb',
+				type: 'select',
+				showSearch:true, 
+				options: [
+					{ label: '男', value: '1' },
+					{ label: '女', value: '2' },
+					{ label: '未知', value: '3' },
+				],		 
 			},
 			{
 				title: '生存',
 				key: 'sc',
+				type: 'select',
+				showSearch:true, 
+				options: [
+					{ label: '健在', value: '1' },
+					{ label: '死亡', value: '2' },
+					{ label: '未知', value: '3' },
+				],		 
 			},
 			{
 				title: '死亡时间',
 				key: 'sw',
+				type: 'input'
 			},
 			{
 				title: '死亡原因',
 				key: 'swr',
+				type: 'input'
 			},
 			{
 				title: '后遗症',
 				key: 'hyz',
+				type: 'input'
 			},
 			{
-				title: '出生体重',
+				title: '出生体重(kg)',
 				key: 'cstz',
+				type: 'input'
 			}
 		]
 	},

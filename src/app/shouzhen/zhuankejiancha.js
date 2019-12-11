@@ -47,6 +47,14 @@ export default class extends Component {
           name: 'ckjc', groups: index => ({
             rows: [
               {
+                columns:[
+                  { span: 1 },
+                  {name:'gg[宫高](cm)', type:'input',span:5,valid: 'required',},
+                  { span: 1 },
+                  {name:'fw[腹围](cm)', type:'input', span:5,valid: 'required'}
+                ]
+              },
+              {
                 columns: [
                   { span: 1, className: 'noContent', name: `[胎${index + 1}]`, type: '**' },
                   { name: 'tx(bpm)[胎心]', type: 'input', span: 5 },
