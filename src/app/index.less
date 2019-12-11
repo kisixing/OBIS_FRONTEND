@@ -205,8 +205,15 @@ html, body {
 .moreColumns {
 	margin-bottom: 0 !important;
 }
-.noContent .form-content{
-	display: none !important;
+.noContent { 
+	.form-label {
+		font-size: 0.8rem;
+		color: #1890ff;
+		width: 9.5em !important;
+	}
+	.form-content{
+		display: none !important;
+	}
 }
 .anticon-female-Gender {
 	width: 1em;
@@ -227,11 +234,13 @@ html, body {
 		 background: #F1F9FE !important;
 	 }
 }
+
 .modal-withoutBTN {
 	.ant-confirm-btns {
 		display: none !important;
 	}
 }
+
 .ant-table-tbody td {
   text-align: center;
 }
