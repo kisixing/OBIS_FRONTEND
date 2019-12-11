@@ -29,10 +29,13 @@ class TableItem extends Component{
   }
 
   onDbClick = () => {
-    this.setState({force:true}, ()=>{
-      const input = this.refs.tableItem.querySelector(types.join());
-      if(input)input.focus();
-    });
+    const { iseditable = ()=> true, entity, row, name, value } = this.props;
+    if(iseditable({entity, row, name, value})){
+      this.setState({force:true}, ()=>{
+        const input = this.refs.tableItem.querySelector(types.join());
+        if(input)input.focus();
+      });
+    }
   }
 
   onChange = (e, value) => {
@@ -105,7 +108,11 @@ class MTable extends Component{
 
   rowClassName(record){
     const {selected} = this.state;
-    return selected===record ? 'row-selected' : '';
+    if(!record.$head){
+      return `table-content ${selected===record ? 'row-selected' : ''}`
+    }else{
+      return 'table-head';
+    }
   }
 
   render(){
@@ -134,14 +141,14 @@ function getheades(columns, level = 0){
     column.level = column.level !== undefined ? column.level : level;
     column.span = childrenCount(column);
   });
-  if(nextColumns.length !== columns.length){
+  if(columns.filter(i=>i.children && i.children.length).length){
     return [columns, ...getheades(nextColumns, level+1)]
   }
   return [columns]
 }
 
 export default function(keys, data, {onChange = ()=>{}, onRowChange, className, editable, ...props}){
-  const dataSource = data ? data : [];
+  const dataSource = data ? data.filter(i=>i&&typeof i === 'object') : [];
   const rows = getheades(keys);
   const columns = rows[rows.length-1].map(({key, title, width, holdeditor, ...rest}, column)=>{
     return {
@@ -151,9 +158,9 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
       width: width || 80,
       render(value, item, row) {
         if (row < rows.length) {
-          const { title, span,level,children} = item[column] || {};
+          const { title, span,level,children} = rows[row][column] || {};
           return {
-            children: title,
+            children:<span dangerouslySetInnerHTML={{__html: title}}></span>,
             props:{
               colSpan: title?span:0,
               rowSpan: level !== row?0:(children?1:rows.length-row)
@@ -166,20 +173,21 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
             item.$type = item.$type || dateType.MODIFY;
             onChange(e,{item,value,key,row:row-rows.length,column});
             if(item.$type === dateType.MODIFY){
+              item.$type = '';
               onRowChange('modify', item, row-rows.length);
             }
           }
         }
-        return <TableItem {...rest} row={row-rows.length} entity={item} name={key} editable={editable} value={value} isEditor={holdeditor || item.$type===dateType.CREATE} onChange={handleChange}/>
+        return <TableItem {...props} {...rest} row={row-rows.length} entity={item} name={key} editable={editable} value={value} isEditor={holdeditor || item.$type===dateType.CREATE} onChange={handleChange}/>
       }
     }
   });
   const extendProps = {
-    onRowSave: item=> onRowChange('modify', item, dataSource.indexOf(item)),
+    onRowSave: item=> item.$type && onRowChange('modify', item, dataSource.indexOf(item)),
     buttons: [{title:'添加',fn:()=>onRowChange('create', {$type:dateType.CREATE})},{title:'删除',fn:item=>onRowChange('delete', item)}]
   }
   return (
-    <MTable loading={!data} {...extendProps}  {...events(props)} className={`table-render ${className}`} size="small" bordered={true} dataSource={rows.concat(dataSource)} showHeader={false} columns={columns} />
+    <MTable loading={!data} {...extendProps}  {...events(props)} className={`table-render ${className}`} size="small" bordered={true} dataSource={Array(rows.length).fill({$head:true}).concat(dataSource)} showHeader={false} columns={columns} head={rows}/>
   );
 }
 

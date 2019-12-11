@@ -16,7 +16,7 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'gesmoc[末次月经]', type: 'date', span: 5, valid: 'required',format:'YY-MM' },
+            { name: 'gesmoc[末次月经]', type: 'date', span: 5, valid: 'required'},
             { name: 'gesexpect[预产期]', type: 'date', span: 5, valid: 'required' ,format:'YYYY-MM'},
             { span: 1 },
             { name: 'gesexpectrv[修订预产期]', type: 'date', span: 5, valid: 'required' },

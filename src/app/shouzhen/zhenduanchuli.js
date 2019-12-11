@@ -40,15 +40,15 @@ export default class extends Component{
         {
           columns:[
             { name: 'treatment[处理措施]', type: 'textarea', span: 8 },
-            { name:'treatment[模板]', type: 'buttons',span: 16, text: '(green)[产检一套],(green)[B 超],(green)[早唐],(green)[胎监],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
+            { name:'treatment[模板]', type: 'buttons',span: 16, text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(green)[入院],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
           ]
         },
         {
           columns:[
             { 
               name: 'nextRvisit[下次复诊]',span: 15, type: [
-                'date',
                 {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
+                'date',
                 {type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions},
                 {type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions}
               ]
@@ -153,7 +153,7 @@ export default class extends Component{
     return (
       <div className="fuzhen-left-zd">
         <div className="pad-LR-mid">
-          <Row className="fuzhen-left-default">
+          <Row className="fuzhen-left-default margin-TB-mid">
             <Col span={8}>
               <span className="font-12">1、</span>
               <Input value={yunc}/>&nbsp;孕&nbsp;
@@ -185,7 +185,7 @@ export default class extends Component{
         <br/>
         <Row className="fuzhen-left-input font-16">
           <Col span={1} className="text-right" style={{width:'90px',paddingRight:'5px'}}>
-            <span className="font-14">诊断:</span>
+            <span className="font-18">诊断:</span>
           </Col>
           <Col span={17}>
             <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
