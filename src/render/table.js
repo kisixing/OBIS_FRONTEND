@@ -134,14 +134,14 @@ function getheades(columns, level = 0){
     column.level = column.level !== undefined ? column.level : level;
     column.span = childrenCount(column);
   });
-  if(nextColumns.length !== columns.length){
+  if(columns.filter(i=>i.children && i.children.length).length){
     return [columns, ...getheades(nextColumns, level+1)]
   }
   return [columns]
 }
 
 export default function(keys, data, {onChange = ()=>{}, onRowChange, className, editable, ...props}){
-  const dataSource = data ? data : [];
+  const dataSource = data ? data.filter(i=>i&&typeof i === 'object') : [];
   const rows = getheades(keys);
   const columns = rows[rows.length-1].map(({key, title, width, holdeditor, ...rest}, column)=>{
     return {
@@ -151,7 +151,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
       width: width || 80,
       render(value, item, row) {
         if (row < rows.length) {
-          const { title, span,level,children} = item[column] || {};
+          const { title, span,level,children} = rows[row][column] || {};
           return {
             children: title,
             props:{
@@ -179,7 +179,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
     buttons: [{title:'添加',fn:()=>onRowChange('create', {$type:dateType.CREATE})},{title:'删除',fn:item=>onRowChange('delete', item)}]
   }
   return (
-    <MTable loading={!data} {...extendProps}  {...events(props)} className={`table-render ${className}`} size="small" bordered={true} dataSource={rows.concat(dataSource)} showHeader={false} columns={columns} />
+    <MTable loading={!data} {...extendProps}  {...events(props)} className={`table-render ${className}`} size="small" bordered={true} dataSource={Array(rows.length).fill({}).concat(dataSource)} showHeader={false} columns={columns} />
   );
 }
 

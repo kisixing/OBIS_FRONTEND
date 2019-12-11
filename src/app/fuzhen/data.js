@@ -146,7 +146,7 @@ export const tableKey = () => [
 	},
 	{
         title: '下次复诊',
-				key: 'ultrasound1',
+		key: 'ultrasound1',
         children:[
             {
                 title: '预约日期',
@@ -154,7 +154,11 @@ export const tableKey = () => [
             }
         ]
     },
-	{ title: '处理措施', key: 'dispose', width: 150 }
+	{ 
+		title: '处理措施',
+		key: 'dispose',
+		width: 150
+	}
 ].map(i=>({type:'input',...i}));
 
 /**
