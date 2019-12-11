@@ -93,6 +93,7 @@ renderDanger() {
   const {highriskList, highriskShow, highriskEntity} = this.state;
   const searchList = highriskEntity && highriskList.filter(i => !highriskEntity.search || i.name.indexOf(highriskEntity.search) !==-1);
   const handleOk = () => {
+    this.setState({ highriskShow: false });
     console.log('保存高危数据: ', highriskEntity);
   };
   const handleChange = (name, value) => {
