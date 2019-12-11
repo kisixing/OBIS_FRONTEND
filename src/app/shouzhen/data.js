@@ -60,7 +60,7 @@ export const gjtpOptions = toOptions('正常,异常,未有检查,不清楚');
 /**
  * 血制品
  */
-export const xzpOptions = toOptions([{k:'红细胞(shouzhenyy-时间,机构,原因)',addspan:2},{k:'血小板(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'血浆(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'全血(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'白蛋白(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'免疫球蛋白(shouzhenyy2-时间,机构,原因)',addspan:2},'其他','不清楚']);
+export const xzpOptions = toOptions([{k:'红细胞(shouzhenyy-时间,机构,原因)',addspan:2},{k:'血小板(shouzhenyy-时间,机构,原因)',addspan:2},{k:'血浆(shouzhenyy-时间,机构,原因)',addspan:2},{k:'全血(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'白蛋白(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'免疫球蛋白(shouzhenyy2-时间,机构,原因)',addspan:2},'其他','不清楚']);
 
 /**
  * 初潮
