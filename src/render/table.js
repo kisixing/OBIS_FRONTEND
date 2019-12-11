@@ -173,6 +173,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
             item.$type = item.$type || dateType.MODIFY;
             onChange(e,{item,value,key,row:row-rows.length,column});
             if(item.$type === dateType.MODIFY){
+              item.$type = '';
               onRowChange('modify', item, row-rows.length);
             }
           }
@@ -182,7 +183,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
     }
   });
   const extendProps = {
-    onRowSave: item=> onRowChange('modify', item, dataSource.indexOf(item)),
+    onRowSave: item=> item.$type && onRowChange('modify', item, dataSource.indexOf(item)),
     buttons: [{title:'添加',fn:()=>onRowChange('create', {$type:dateType.CREATE})},{title:'删除',fn:item=>onRowChange('delete', item)}]
   }
   return (
