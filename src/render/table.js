@@ -29,10 +29,13 @@ class TableItem extends Component{
   }
 
   onDbClick = () => {
-    this.setState({force:true}, ()=>{
-      const input = this.refs.tableItem.querySelector(types.join());
-      if(input)input.focus();
-    });
+    const { iseditable = ()=> true, entity, row, name, value } = this.props;
+    if(iseditable({entity, row, name, value})){
+      this.setState({force:true}, ()=>{
+        const input = this.refs.tableItem.querySelector(types.join());
+        if(input)input.focus();
+      });
+    }
   }
 
   onChange = (e, value) => {
@@ -170,7 +173,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
             }
           }
         }
-        return <TableItem {...rest} row={row-rows.length} entity={item} name={key} editable={editable} value={value} isEditor={holdeditor || item.$type===dateType.CREATE} onChange={handleChange}/>
+        return <TableItem {...props} {...rest} row={row-rows.length} entity={item} name={key} editable={editable} value={value} isEditor={holdeditor || item.$type===dateType.CREATE} onChange={handleChange}/>
       }
     }
   });
