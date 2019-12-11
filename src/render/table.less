@@ -6,16 +6,25 @@
   td{
     padding: 0 5px;
   }
-  .table-item{
-    display: inline-block;
-    width: 100%;
-    min-height: 26px;
-    &.table-error{
-      border:1px solid #ff3300;
-      color: #ff3300;
+  .table-head{
+    background: #F1F9FE;
+    td{
+      border-color: #c9d1d7;
+      padding: 2px 0;
     }
   }
-  .row-selected{
-    background: #d3d3d3;
+  .table-content{
+    &.row-selected{
+      background: #d3d3d3;
+    }
+    .table-item{
+      display: inline-block;
+      width: 100%;
+      min-height: 26px;
+      &.table-error{
+        border:1px solid #ff3300;
+        color: #ff3300;
+      }
+    }
   }
 }

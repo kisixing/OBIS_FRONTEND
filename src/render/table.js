@@ -108,7 +108,11 @@ class MTable extends Component{
 
   rowClassName(record){
     const {selected} = this.state;
-    return selected===record ? 'row-selected' : '';
+    if(!record.$head){
+      return `table-content ${selected===record ? 'row-selected' : ''}`
+    }else{
+      return 'table-head';
+    }
   }
 
   render(){
@@ -156,7 +160,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
         if (row < rows.length) {
           const { title, span,level,children} = rows[row][column] || {};
           return {
-            children: title,
+            children:<span dangerouslySetInnerHTML={{__html: title}}></span>,
             props:{
               colSpan: title?span:0,
               rowSpan: level !== row?0:(children?1:rows.length-row)
@@ -182,7 +186,7 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
     buttons: [{title:'添加',fn:()=>onRowChange('create', {$type:dateType.CREATE})},{title:'删除',fn:item=>onRowChange('delete', item)}]
   }
   return (
-    <MTable loading={!data} {...extendProps}  {...events(props)} className={`table-render ${className}`} size="small" bordered={true} dataSource={Array(rows.length).fill({}).concat(dataSource)} showHeader={false} columns={columns} />
+    <MTable loading={!data} {...extendProps}  {...events(props)} className={`table-render ${className}`} size="small" bordered={true} dataSource={Array(rows.length).fill({$head:true}).concat(dataSource)} showHeader={false} columns={columns} head={rows}/>
   );
 }
 
