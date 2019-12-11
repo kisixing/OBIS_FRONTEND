@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Select, Button, Popover, Modal, Spin, Timeline, Collapse, message } from 'antd';
+import { Select, Button, Popover, Input, Tabs, Tree, Modal, Icon, Spin, Timeline, Collapse, message } from 'antd';
 
 import tableRender from '../../render/table';
 import FuzhenForm from './form';
@@ -38,6 +38,9 @@ export default class Patient extends Component {
       recentRvisit: null,
       recentRvisitAll: null,
       recentRvisitShow: false,
+      isShowzhenduan: false,
+      isMouseIn: false,
+      visible: false,
       treatTemp: [],
       templateShow: false,
       collapseActiveKey: ['1', '2', '3'],
@@ -53,7 +56,30 @@ export default class Patient extends Component {
           "week": "32孕周",
           "main": "超声"
         }
-      ]
+      ],
+      keshi: [
+        {
+          "title": "并发",
+          "data": ["妊娠期糖尿病1","妊娠期高血压","先兆早产","头大儿"]
+        },
+        {
+          "title": "合并内分泌系统",
+          "data": ["妊娠期糖尿病2","妊娠期高血压","先兆早产","头大儿"]
+        },
+        {
+          "title": "合并心血管系统",
+          "data": ["妊娠期糖尿病3","妊娠期高血压","先兆早产","头大儿"]
+        },
+        {
+          "title": "合并呼吸系统",
+          "data": ["妊娠期糖尿病4","妊娠期高血压","先兆早产","头大儿"]
+        },
+        {
+          "title": "合并消化系统",
+          "data": ["妊娠期糖尿病5","妊娠期高血压","先兆早产","头大儿"]
+        }
+      ],
+      geren: ["妊娠期糖尿病","妊娠期高血压","先兆早产","头大儿"]
     };
   }
 
@@ -63,11 +89,12 @@ export default class Patient extends Component {
       info: res
     })),
     service.fuzhen.getdiagnosis().then(res => this.setState({
-      diagnosis: res.object.list
+      diagnosis: res.list
     })),
-    service.fuzhen.getRecentRvisit().then(res => this.setState({
-      recentRvisit: res.object
-    }))]).then(() => this.setState({ loading: false }));
+    // service.fuzhen.getRecentRvisit().then(res => this.setState({
+    //   recentRvisit: res.object
+    // }))
+  ]).then(() => this.setState({ loading: false }));
     /* 
     service.fuzhen.getRvisitPage().then(res => this.setState({
       recentRvisitAll: res.list
@@ -163,7 +190,7 @@ export default class Patient extends Component {
    * 诊断列表
    */
   renderZD() {
-    const { diagnosi, diagnosis } = this.state;
+    const { diagnosi, diagnosis, keshi, geren, isShowzhenduan, isMouseIn } = this.state;
     const delConfirm = (item) => {
       Modal.confirm({
         title: '您是否确认要删除这项诊断',
@@ -220,9 +247,34 @@ export default class Patient extends Component {
           ))}
         </ol>
         <div className="fuzhen-left-input font-16">
-          <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
+          {/* <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
             {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
-          </Select>
+          </Select> */}
+
+          <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e.target.value })} onFocus={() => this.setState({isShowzhenduan: true})} onBlur={() => this.setState({isShowzhenduan: false})} />
+          { isShowzhenduan || isMouseIn ?
+            <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}> 
+              <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => alert("功能未开通")}></Icon>}>
+                <Tabs.TabPane tab="全部" key="1">
+                  {diagnosis.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => this.setState({diagnosi: item.data, isMouseIn: false})}>{item.data}</p>)}
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="科室" key="2">
+                  <Tree showLine onSelect={(K, e) => this.setState({diagnosi: e.node.props.title, isMouseIn: false})}>
+                    {keshi.map((item, index) => (
+                      <Tree.TreeNode selectable={false} title={item.title} key={`0-${index}`}>
+                        {item.data.map((subItem, subIndex) => (
+                          <Tree.TreeNode title={subItem} key={`0-0-${subIndex}`}></Tree.TreeNode>
+                        ))}
+                      </Tree.TreeNode>
+                    ))}
+                  </Tree>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="个人" key="3">
+                  {geren.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => this.setState({diagnosi: item, isMouseIn: false})}>{item}</p>)}
+                </Tabs.TabPane>
+              </Tabs>
+            </div>  : ""}
+
         </div>
         <Button className="fuzhen-left-button margin-TB-mid" type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>
       </div>
@@ -240,7 +292,7 @@ export default class Patient extends Component {
               <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
             }
           </Panel>
-          <Panel header="缺 少 检 验 报 告" key="2">
+          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={() => alert('功能未开通')}>结果</Button></span>} key="2">
             <p className="pad-small">{jianyanReport || '无'}</p>
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
