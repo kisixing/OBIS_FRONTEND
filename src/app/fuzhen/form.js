@@ -1,6 +1,6 @@
 
 import React, { Component } from "react";
-import { Row, Col, Input, Button, message, Table, Modal, Spin, Tree, DatePicker } from 'antd';
+import { Row, Col, Input, Icon, Select, Button, message, Table, Modal, Spin, Tree, DatePicker } from 'antd';
 
 import * as util from './util';
 import * as baseData from './data';
@@ -9,6 +9,7 @@ import {valid} from '../../render/common';
 import service from '../../service';
 import modal from '../../utils/modal';
 import {loadWidget} from '../../utils/common';
+import './form.less';
 
 import chartDemoData from './chart-demo';
 
@@ -29,9 +30,11 @@ export default class FuzhenForm extends Component {
       openYCQ: false,
       openQX: false,
       openTemplate: false,
+      openYy: false,
       entity: { ...baseData.formEntity },
       error: {},
-      treatTemp: []
+      treatTemp: [],
+      modalState: {}
     }
 
     this.renderChart = renderChart();
@@ -212,7 +215,17 @@ export default class FuzhenForm extends Component {
   }
 
   handleTreatmentClick(e, {text,index},resolve){
-    text==='更多'?this.setState({openTemplate:resolve}):this.addTreatment(e, text)
+    const { modalState } = this.props;
+    text==='更多'?this.setState({openTemplate:resolve}):this.addTreatment(e, text);
+    if(text==='糖尿病日间门诊') {
+      this.setState({modalState: modalState[0]}, () => {
+        this.setState({openYy: true});
+      })
+    }else if (text==='产前诊断') {
+      this.setState({modalState: modalState[1]}, () => {
+        this.setState({openYy: true});
+      })
+    }
   }
 
   handleChange(e, { name, value, valid }) {
@@ -272,6 +285,35 @@ export default class FuzhenForm extends Component {
       <Modal title="修订预产期" width={600} closable visible={!!openYCQ} onCancel={e => handelClick(false)} onOk={e => handelClick(true)}>
         <DatePicker defaultValue={info.gesmoc} value={ycq} onChange={(e,v)=>{this.setState({ycq:v})}}/>
       </Modal>
+    );
+  }
+
+  
+  /**
+   *预约窗口
+   */
+  renderModal() {
+    const { openYy, modalState } = this.state;
+    const handelShow = (isShow) => {
+      this.setState({openYy: false});
+      if(isShow) {
+        console.log("预约成功!")
+      };
+    }
+
+    return (openYy ?
+      <Modal className="yuModal" title={<span><Icon type="info-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
+              visible={openYy} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
+        <span>{modalState.title}: </span>    
+        <Select defaultValue={modalState.options[0]} style={{ width: 120 }}>
+          {modalState.options.map((item) => (
+            <Option value={item}>{item}</Option>
+          ))}
+        </Select>
+        <DatePicker defaultValue={modalState.gesmoc} />
+        {modalState.counts ? <p>（已约：{modalState.counts}）</p> : null}
+      </Modal>
+      : null
     );
   }
 
@@ -340,7 +382,7 @@ export default class FuzhenForm extends Component {
   }
 
   render() {
-    const { entity } = this.state;
+    const { entity, openYy } = this.state;
     return (
       <div className="fuzhen-form">
         <strong className="fuzhen-form-TIT">本次产检记录</strong>
@@ -349,6 +391,7 @@ export default class FuzhenForm extends Component {
         {/*this.renderQX()*/}
         {this.renderTreatment()}
         {this.renderYCQ()}
+        {this.renderModal()}
       </div>
     )
   }

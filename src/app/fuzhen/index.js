@@ -79,7 +79,20 @@ export default class Patient extends Component {
           "data": ["妊娠期糖尿病5","妊娠期高血压","先兆早产","头大儿"]
         }
       ],
-      geren: ["妊娠期糖尿病","妊娠期高血压","先兆早产","头大儿"]
+      geren: ["妊娠期糖尿病","妊娠期高血压","先兆早产","头大儿"],
+      modalState: [
+        {
+          "title": "糖尿病门诊预约",
+          "gesmoc": "2019-07-03",
+          "options": ["本周五", "下周五","下下周五",""]
+        },
+        {
+          "title": "产前诊断预约",
+          "gesmoc": "2019-07-31",
+          "options": ["预约1","预约2","预约3"],
+          "counts": "3"
+        }
+      ]
     };
   }
 
@@ -329,7 +342,7 @@ export default class Patient extends Component {
   }
 
   render() {
-    const { loading, diagnosis, info } = this.state;
+    const { loading, diagnosis, info, modalState } = this.state;
 
     return (
       <Page className='fuzhen font-16 ant-col'>
@@ -337,7 +350,7 @@ export default class Patient extends Component {
         {this.renderLeft()}
         <div className="fuzhen-right ant-col-19 main-pad-small">
           {this.renderTable()}
-          <FuzhenForm info={info} diagnosis={diagnosis} onSave={data => this.saveForm(data)} onChangeInfo={this.onChangeInfo.bind(this)} />
+          <FuzhenForm info={info} diagnosis={diagnosis} modalState={modalState} onSave={data => this.saveForm(data)} onChangeInfo={this.onChangeInfo.bind(this)} />
           <p className="pad_ie">&nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span></p>
         </div>
       </Page>
