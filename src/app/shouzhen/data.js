@@ -45,7 +45,7 @@ export const xuexing2Options = toOptions('RH(+),RH(-)');
 /**
  * 一般症状
  */
-export const ybzzOptions = toOptions('头晕,头痛,呕吐,胸闷,肚痛,腰酸,流血,白带增多,便秘,抽筋,浮肿,其他');
+export const ybzzOptions = toOptions('头晕{#FF3300},头痛{#FF3300},呕吐{#FF3300},胸闷{#FF3300},肚痛{#FF3300},腰酸{#FF3300},流血{#FF3300},白带增多{#FF3300},便秘{#FF3300},抽筋{#FF3300},浮肿{#FF3300},其他{#FF3300}');
 
 /**
  * 疾病
@@ -60,7 +60,7 @@ export const gjtpOptions = toOptions('正常,异常,未有检查,不清楚');
 /**
  * 血制品
  */
-export const xzpOptions = toOptions([{k:'红细胞(shouzhenyy-时间,机构,原因)',addspan:2},{k:'血小板(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'血浆(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'全血(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'白蛋白(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'免疫球蛋白(shouzhenyy2-时间,机构,原因)',addspan:2},'其他','不清楚']);
+export const xzpOptions = toOptions([{k:'红细胞{#FF3300}(shouzhenyy-时间,机构,原因)',addspan:2},{k:'血小板{#FF3300}(shouzhenyy-时间,机构,原因)',addspan:2},{k:'血浆{#FF3300}(shouzhenyy-时间,机构,原因)',addspan:2},{k:'全血{#FF3300}(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'白蛋白{#FF3300}(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'免疫球蛋白{#FF3300}(shouzhenyy2-时间,机构,原因)',addspan:2},'其他{#FF3300}','不清楚']);
 
 /**
  * 初潮
@@ -75,7 +75,7 @@ export const slOptions = toOptions('多,中,少');
 /**
  * 不孕病史 shouzhenyy-x这个是当前模块的编辑组件
  */
-export const bybsOptions = toOptions('输卵管因素,丈夫少精弱精畸精,PCO（多囊卵巢）,原因不明'.split(',').map(i=>`${i}(shouzhenyy-发现时间&date,治疗&input)`).concat(['其他(input)','不清楚(input)']));
+export const bybsOptions = toOptions('输卵管因素{#FF3300},丈夫少精弱精畸精{#FF3300},PCO{#FF3300}（多囊卵巢）,原因不明{#FF3300}'.split(',').map(i=>`${i}(shouzhenyy-发现时间&date,治疗&input)`).concat(['其他{#FF3300}(input)','不清楚{#FF3300}(input)']));
 
 /**
  * 频率
@@ -93,6 +93,11 @@ export const hysOptions = toOptions('未婚,已婚,离异,再婚');
 export const yesOptions = toOptions('是,否');
 
 /**
+ * 近亲
+ */
+export const jinqOptions = toOptions('是{#FF3300},否');
+
+/**
  *皮肤黏膜
 */
 export const pfOptions = toOptions('正常,苍白,皮下出血(input),其他(input)');
@@ -100,7 +105,7 @@ export const pfOptions = toOptions('正常,苍白,皮下出血(input),其他(inp
 /**
  *正常、异常
 */
-export const neOptions = toOptions('正常,异常(input){#999900}');
+export const neOptions = toOptions('正常,异常(input){#FF3300}');
 
 /**
  *正常、畸形
@@ -160,12 +165,12 @@ export const yyw2Options = toOptions('阴性,阳性,未查,其他');
 /**
  *梅毒
 */
-export const mdOptions = toOptions(['阴性',{k:'阳性(shouzhenyy1-TPPA滴度,TRUST滴度)',addspan:4},'未查','其他(input)']);
+export const mdOptions = toOptions(['阴性',{k:'阳性{#FF3300}(shouzhenyy1-TPPA滴度,TRUST滴度)',addspan:4},'未查{#FF3300}','其他(input)']);
 
 /**
  *OGTT
 */
-export const ogttOptions = toOptions(['正常',{k:'GDM(shouzhenyy-空腹血糖,餐后1H血糖,餐后2H血糖)',addspan:4},'未查']);
+export const ogttOptions = toOptions(['正常',{k:'GDM{#FF3300}(shouzhenyy-空腹血糖,餐后1H血糖,餐后2H血糖)',addspan:4},'未查{#FF3300}']);
 
 /**
  *地贫
@@ -175,12 +180,12 @@ export const dpOptions = toOptions('正常,甲型(input),乙型(input),未查,�
 /**
  *尿蛋白
 */
-export const dbnOptions = toOptions('阴性,弱阳性,阳性(input),未查,其他');
+export const dbnOptions = toOptions('阴性{#FF3300},弱阳性{#FF3300},阳性{#FF3300}(input),未查{#FF3300},其他');
 
 /**
  *药物或食物过敏史
 */
-export const ywgmOptions = toOptions('青霉素,头孢,酒精,食物过敏(input),其他(input)');
+export const ywgmOptions = toOptions('青霉素{#FF3300},头孢{#FF3300},酒精{#FF3300},食物过敏{#FF3300}(input),其他{#FF3300}(input)');
 
 /**
  *个人史

@@ -8,6 +8,10 @@ let userId = null;
 let watchInfoList = [];
 
 export default {
+    watchInfo: function(fn){
+        watchInfoList.push(fn);
+        return () => watchInfoList = watchInfoList.filter(f=>f!==fn);
+    },
     /**
      * 获取个人信息
      */
@@ -15,9 +19,11 @@ export default {
         userId = myAxios.get('/outpatientRestful/getuserDoc' + location.search);
         return userId;
     },
-    watchInfo: function(fn){
-        watchInfoList.push(fn);
-        return () => watchInfoList = watchInfoList.filter(f=>f!==fn);
+    /**
+     * 高危数据
+     */
+    highrisk: function(){
+        return myAxios.get('/Obcloud/doc/highrisk')
     },
     /**
      * 复诊所需API

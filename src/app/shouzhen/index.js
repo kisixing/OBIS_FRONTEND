@@ -54,10 +54,19 @@ export default class Patient extends Component {
                 tab.init = true;
                 if (tab.key === 'tab-0') {
                     tab.entity = res.object.gravidaInfo
+                } else if (tab.key === 'tab-1') {
+                    tab.entity['add_FIELD_husband_drink'] = { "0": "没有","1":"29"}
                 } else if (tab.key === 'tab-2') {
                     tab.entity = res.object.pregnantInfo
                     tab.entity['ckyibzhzh'] = { "头晕": ",,,,", "头痛": 'www', '呕吐': ',白带增多,胸闷,腰酸,流血' }
-                } else if (tab.key === 'tab-4') {
+                } else if (tab.key === 'tab-3'){
+                    tab.entity['xzp'] = {
+                        "红细胞": {"input0'": "2019年", "input1'": "广州", "input2'": "测"},
+                        "血小板": {"input0'": "2018", "input1'": "上海", "input2'": "测试2"},
+                        "血浆": {"input0'": "忘记了", "input1'": "未知", "input2'": "未知"}
+                        }                      
+                }
+                else if (tab.key === 'tab-4') {
                     tab.entity = res.object.menstruationMarriage
                     tab.entity['yjtongj'] = { "偶尔": "" }
                 } else if (tab.key === 'tab-5') {

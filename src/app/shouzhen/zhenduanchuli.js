@@ -111,7 +111,7 @@ export default class extends Component{
   }
 
   renderZD(){
-    const {info} = this.props;
+    const {info={}} = this.props;
     const { diagnosi, diagnosis } = this.state;
     const delConfirm = (item) => {
       Modal.confirm({
@@ -145,7 +145,7 @@ export default class extends Component{
     }
     let yunc = ''
     let chanc = ''
-    let ycarray = info.tuseryunchan.split("/");
+    let ycarray = info.tuseryunchan?info.tuseryunchan.split("/"):'';
     if(ycarray.length>1){
       yunc = ycarray[0];
       chanc = ycarray[1];
@@ -154,7 +154,7 @@ export default class extends Component{
       <div className="fuzhen-left-zd">
         <div className="pad-LR-mid">
           <Row className="fuzhen-left-default margin-TB-mid">
-            <Col span={8}>
+            <Col span={6}>
               <span className="font-12">1、</span>
               <Input value={yunc}/>&nbsp;孕&nbsp;
               <Input value={chanc}/>&nbsp;胎

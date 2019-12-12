@@ -1,0 +1,950 @@
+{
+  "object": [
+    {
+      "id": 15,
+      "pId": 0,
+      "name": "胎位异常",
+      "shorthand": "tw,twyc",
+      "open": true
+    },
+    {
+      "id": 153,
+      "pId": 15,
+      "icon": "../Static/img/3.png",
+      "name": "单纯臀位"
+    },
+    {
+      "id": 154,
+      "pId": 15,
+      "icon": "../Static/img/4.png",
+      "name": "臀位（单纯臀位除外）；横位"
+    },
+    {
+      "id": 16,
+      "pId": 0,
+      "name": "胎儿畸形",
+      "shorthand": "jx,tejx"
+    },
+    {
+      "id": 163,
+      "pId": 16,
+      "icon": "../Static/img/3.png",
+      "name": "有胎儿畸形但放弃胎儿"
+    },
+    {
+      "id": 164,
+      "pId": 16,
+      "icon": "../Static/img/4.png",
+      "name": "非致死性畸形需产儿科合作管理者"
+    },
+    {
+      "id": 165,
+      "pId": 16,
+      "icon": "../Static/img/5.png",
+      "name": "非致死性畸形需产时宫外治疗"
+    },
+    {
+      "id": 81,
+      "pId": 0,
+      "name": "胎儿脑室扩张",
+      "shorthand": "ns,nszk,nskz,kz"
+    },
+    {
+      "id": 812,
+      "pId": 81,
+      "icon": "../Static/img/2.png",
+      "name": "轻度脑室增宽（10～12mm）"
+    },
+    {
+      "id": 813,
+      "pId": 81,
+      "icon": "../Static/img/3.png",
+      "name": "轻度脑室增宽（13～15mm）"
+    },
+    {
+      "id": 814,
+      "pId": 81,
+      "icon": "../Static/img/4.png",
+      "name": "脑室增宽>15mm"
+    },
+    {
+      "id": 42,
+      "pId": 0,
+      "name": "彩超异常提示",
+      "shorthand": "ccyc"
+    },
+    {
+      "id": 422,
+      "pId": 42,
+      "icon": "../Static/img/2.png",
+      "name": "心脏强光斑；脐带插入异常"
+    },
+    {
+      "id": 423,
+      "pId": 42,
+      "icon": "../Static/img/3.png",
+      "name": "脐血流异常；子宫动脉血流异常"
+    },
+    {
+      "id": 17,
+      "pId": 0,
+      "name": "先兆早产",
+      "shorthand": "xzzc,zc"
+    },
+    {
+      "id": 173,
+      "pId": 17,
+      "icon": "../Static/img/3.png",
+      "name": "孕周≥34周"
+    },
+    {
+      "id": 174,
+      "pId": 17,
+      "icon": "../Static/img/4.png",
+      "name": "32周≤孕周＜34周"
+    },
+    {
+      "id": 175,
+      "pId": 17,
+      "icon": "../Static/img/5.png",
+      "name": "孕周＜32周"
+    },
+    {
+      "id": 18,
+      "pId": 0,
+      "name": "延期妊娠",
+      "shorthand": "yq,yqrs"
+    },
+    {
+      "id": 181,
+      "pId": 18,
+      "icon": "../Static/img/1.png",
+      "name": "＜41周"
+    },
+    {
+      "id": 183,
+      "pId": 18,
+      "icon": "../Static/img/3.png",
+      "name": "41周≤孕周＜42周"
+    },
+    {
+      "id": 184,
+      "pId": 18,
+      "icon": "../Static/img/4.png",
+      "name": "孕周≥42周"
+    },
+    {
+      "id": 19,
+      "pId": 0,
+      "name": "胎膜早破",
+      "shorthand": "tmzp,prom"
+    },
+    {
+      "id": 191,
+      "pId": 19,
+      "icon": "../Static/img/1.png",
+      "name": "足月胎膜早破"
+    },
+    {
+      "id": 193,
+      "pId": 19,
+      "icon": "../Static/img/3.png",
+      "name": "≥34周胎膜早破"
+    },
+    {
+      "id": 194,
+      "pId": 19,
+      "icon": "../Static/img/4.png",
+      "name": "32周≤孕周＜34周胎膜早破；"
+    },
+    {
+      "id": 195,
+      "pId": 19,
+      "icon": "../Static/img/5.png",
+      "name": "＜32周胎膜早破"
+    },
+    {
+      "id": 20,
+      "pId": 0,
+      "name": "妊娠期高血压疾病",
+      "shorthand": "gxy,zx,pih"
+    },
+    {
+      "id": 203,
+      "pId": 20,
+      "icon": "../Static/img/3.png",
+      "name": "≥34周发生的妊娠期高血压疾病（除外重度子痫前期）"
+    },
+    {
+      "id": 204,
+      "pId": 20,
+      "icon": "../Static/img/4.png",
+      "name": "满足以下任一条件者：1.32-34周之间发生的妊娠期高血压疾病；2.≥34周发生的重度子痫前期"
+    },
+    {
+      "id": 205,
+      "pId": 20,
+      "icon": "../Static/img/5.png",
+      "name": "＜32周发生的妊娠期高血压疾病"
+    },
+    {
+      "id": 71,
+      "pId": 0,
+      "name": "前置胎盘",
+      "shorthand": "qztp,qz,tpqz,tp"
+    },
+    {
+      "id": 713,
+      "pId": 71,
+      "icon": "../Static/img/3.png",
+      "name": "低置胎盘"
+    },
+    {
+      "id": 714,
+      "pId": 71,
+      "icon": "../Static/img/4.png",
+      "name": "前置胎盘（除外凶险性前置胎盘和植入性胎盘）"
+    },
+    {
+      "id": 715,
+      "pId": 71,
+      "icon": "../Static/img/5.png",
+      "name": "凶险性前置胎盘或植入性胎盘"
+    },
+    {
+      "id": 720,
+      "pId": 0,
+      "name": "妊娠糖尿病",
+      "shorthand": "gdm,tnb,rstnb"
+    },
+    {
+      "id": 7203,
+      "pId": 720,
+      "icon": "../Static/img/3.png",
+      "name": "妊娠糖尿病-A1级"
+    },
+    {
+      "id": 7204,
+      "pId": 720,
+      "icon": "../Static/img/4.png",
+      "name": "妊娠糖尿病-A2级"
+    },
+    {
+      "id": 7205,
+      "pId": 720,
+      "icon": "../Static/img/5.png",
+      "name": "妊娠糖尿病B级以上或伴酮症"
+    },
+    {
+      "id": 730,
+      "pId": 0,
+      "name": "妊娠期肝内胆汁淤积症（ICP)",
+      "shorthand": "icp"
+    },
+    {
+      "id": 7303,
+      "pId": 730,
+      "icon": "../Static/img/3.png",
+      "name": "轻度ICP"
+    },
+    {
+      "id": 7304,
+      "pId": 730,
+      "icon": "../Static/img/4.png",
+      "name": "重度ICP"
+    },
+    {
+      "id": 740,
+      "pId": 0,
+      "name": "羊水过多",
+      "shorthand": "ysgd"
+    },
+    {
+      "id": 7403,
+      "pId": 740,
+      "icon": "../Static/img/3.png",
+      "name": "羊水过多"
+    },
+    {
+      "id": 7404,
+      "pId": 740,
+      "icon": "../Static/img/4.png",
+      "name": "羊水过多出现压迫症状"
+    },
+    {
+      "id": 750,
+      "pId": 0,
+      "name": "羊水过少",
+      "shorthand": "ysgs"
+    },
+    {
+      "id": 7504,
+      "pId": 750,
+      "icon": "../Static/img/4.png",
+      "name": "羊水过少"
+    },
+    {
+      "id": 76,
+      "pId": 0,
+      "name": "双（多）胎妊娠",
+      "shorthand": "st,dt,strs,dtrs"
+    },
+    {
+      "id": 764,
+      "pId": 76,
+      "icon": "../Static/img/4.png",
+      "name": "明确为双绒毛膜双羊膜囊双胎妊娠(DCDA)"
+    },
+    {
+      "id": 765,
+      "pId": 76,
+      "icon": "../Static/img/5.png",
+      "name": "满足以下任一条件者：1.双绒毛膜双羊膜囊双胎妊娠（DCDA）有母胎并发症；2.其他双胎妊娠（除外DCDA）；3.≥3胎妊娠"
+    },
+    {
+      "id": 77,
+      "pId": 0,
+      "name": "巨大儿",
+      "shorthand": "jd,jde"
+    },
+    {
+      "id": 773,
+      "pId": 77,
+      "icon": "../Static/img/3.png",
+      "name": "有巨大儿分娩史，但本孕估计无巨大儿"
+    },
+    {
+      "id": 774,
+      "pId": 77,
+      "icon": "../Static/img/4.png",
+      "name": "本孕估计巨大儿（有B超辅助检查支持）"
+    },
+    {
+      "id": 78,
+      "pId": 0,
+      "name": "胎儿生长受限",
+      "shorthand": "fgr,iugr,szsx,teszsx"
+    },
+    {
+      "id": 784,
+      "pId": 78,
+      "icon": "../Static/img/4.png",
+      "name": "胎儿生长受限"
+    },
+    {
+      "id": 79,
+      "pId": 0,
+      "name": "妊娠剧吐",
+      "shorthand": "jt,rsjt"
+    },
+    {
+      "id": 793,
+      "pId": 79,
+      "icon": "../Static/img/3.png",
+      "name": "妊娠剧吐不伴代谢紊乱"
+    },
+    {
+      "id": 794,
+      "pId": 79,
+      "icon": "../Static/img/4.png",
+      "name": "妊娠剧吐伴代谢紊乱"
+    },
+    {
+      "id": 30,
+      "pId": 0,
+      "name": "原因不明发热",
+      "shorthand": "fr"
+    },
+    {
+      "id": 303,
+      "pId": 30,
+      "icon": "../Static/img/3.png",
+      "name": "发热<3天"
+    },
+    {
+      "id": 304,
+      "pId": 30,
+      "icon": "../Static/img/4.png",
+      "name": "发热3-7天"
+    },
+    {
+      "id": 305,
+      "pId": 30,
+      "icon": "../Static/img/5.png",
+      "name": "发热>7天"
+    },
+    {
+      "id": 310,
+      "pId": 0,
+      "name": "心血管系统疾病",
+      "shorthand": "xxg,xxgjb"
+    },
+    {
+      "id": 3104,
+      "pId": 310,
+      "icon": "../Static/img/4.png",
+      "name": "有心血管疾病史,动态临床心功能评估Ⅰ、Ⅱ级,且超声心动图动态评估心功能正常并经过上级综合医院心血管专科医生评估可耐受分娩"
+    },
+    {
+      "id": 3105,
+      "pId": 310,
+      "icon": "../Static/img/5.png",
+      "name": "病情程度超过Ⅳ类"
+    },
+    {
+      "id": 320,
+      "pId": 0,
+      "name": "呼吸系统疾病",
+      "shorthand": "hxdgr,hxd,hxxt,hxxtjb"
+    },
+    {
+      "id": 3202,
+      "pId": 320,
+      "icon": "../Static/img/2.png",
+      "name": "上呼吸道感染治疗3天内好转者"
+    },
+    {
+      "id": 3203,
+      "pId": 320,
+      "icon": "../Static/img/3.png",
+      "name": "上呼吸道感染治疗3-7天内好转者"
+    },
+    {
+      "id": 3204,
+      "pId": 320,
+      "icon": "../Static/img/4.png",
+      "name": "满足以下任一条件者：1.上呼吸道感染治疗7天以上未好转；2.下呼吸道感染治疗3天内好转，且血氧饱和度正常3.妊娠合并其他呼吸系统疾病，如哮喘、气胸、支气管扩张等"
+    },
+    {
+      "id": 3205,
+      "pId": 320,
+      "icon": "../Static/img/5.png",
+      "name": "病情程度超过Ⅳ类"
+    },
+    {
+      "id": 330,
+      "pId": 0,
+      "name": "消化系统疾病",
+      "shorthand": "gy,gyh,xhd,zfg,yxy,cgz,xhxt,xhxtjb"
+    },
+    {
+      "id": 3302,
+      "pId": 330,
+      "icon": "../Static/img/2.png",
+      "name": "肝炎病毒携带（表面抗原阳性、肝功能正常，病毒载量<106copy/ml)"
+    },
+    {
+      "id": 3303,
+      "pId": 330,
+      "icon": "../Static/img/3.png",
+      "name": "转氨酶升高3倍以内，但凝血功能、胆红素正常"
+    },
+    {
+      "id": 3304,
+      "pId": 330,
+      "icon": "../Static/img/4.png",
+      "name": "转氨酶升高大于3倍，但凝血功能、胆红素正常"
+    },
+    {
+      "id": 3305,
+      "pId": 330,
+      "icon": "../Static/img/5.png",
+      "name": "重型肝炎、肝硬化失代偿、消化道出血、急性脂肪肝、急性胰腺炎、肠梗阻等"
+    },
+    {
+      "id": 340,
+      "pId": 0,
+      "name": "泌尿系统疾病",
+      "shorthand": "mnxt,mnxtjb,ndb"
+    },
+    {
+      "id": 3402,
+      "pId": 340,
+      "icon": "../Static/img/2.png",
+      "name": "有泌尿系统疾病史，且目前尿常规、肾功能、血压正常"
+    },
+    {
+      "id": 3403,
+      "pId": 340,
+      "icon": "../Static/img/3.png",
+      "name": "现患急慢性泌尿系统疾病且尿蛋白 (+)，肾功能、血压正常"
+    },
+    {
+      "id": 3404,
+      "pId": 340,
+      "icon": "../Static/img/4.png",
+      "name": "现患泌尿系统疾病且尿蛋白(++)，肾功能、血压正常"
+    },
+    {
+      "id": 3405,
+      "pId": 340,
+      "icon": "../Static/img/5.png",
+      "name": "病情程度超过Ⅳ类"
+    },
+    {
+      "id": 350,
+      "pId": 0,
+      "name": "内分泌系统疾病",
+      "shorthand": "jk,jj,jzx,jzxjb,tnb,nfm,nfmxt,nfmxtjb"
+    },
+    {
+      "id": 3503,
+      "pId": 350,
+      "icon": "../Static/img/3.png",
+      "name": "有甲亢或甲减等甲状腺疾病史但病情稳定且甲状腺功能正常、无需用药"
+    },
+    {
+      "id": 3504,
+      "pId": 350,
+      "icon": "../Static/img/4.png",
+      "name": "甲亢或甲减等甲状腺疾病、糖尿病等内分泌系统疾病用药后控制正常或病情稳定，未出现并发症"
+    },
+    {
+      "id": 3505,
+      "pId": 350,
+      "icon": "../Static/img/5.png",
+      "name": "满足任一条件者：1.甲亢或甲减等甲状腺疾病、糖尿病等内分泌系统疾病用药后病情不稳定；2.出现并发症 3.嗜铬细胞瘤等严重内分泌疾病"
+    },
+    {
+      "id": 360,
+      "pId": 0,
+      "name": "血液系统疾病",
+      "shorthand": "xhdb,px,xyxt,xyxtjb"
+    },
+    {
+      "id": 3602,
+      "pId": 360,
+      "icon": "../Static/img/2.png",
+      "name": "仅有妊娠期贫血，血红蛋白>100g/L"
+    },
+    {
+      "id": 3603,
+      "pId": 360,
+      "icon": "../Static/img/3.png",
+      "name": "仅有妊娠期贫血，血红蛋白70-100 g/L"
+    },
+    {
+      "id": 3604,
+      "pId": 360,
+      "icon": "../Static/img/4.png",
+      "name": "无其他血液系统疾病如再障、白血病等，且满足以下任一条件者：1.血红蛋白60-70g/L；2.血小板80-100×109/L"
+    },
+    {
+      "id": 3605,
+      "pId": 360,
+      "icon": "../Static/img/5.png",
+      "name": "满足任一条件者：1.血红蛋白≤60g/L；2.血小板≤80×10^9/L；3.有其他血液系统疾病如再障、白血病等"
+    },
+    {
+      "id": 530,
+      "pId": 0,
+      "name": "血栓栓塞性疾病",
+      "shorthand": "xsss"
+    },
+    {
+      "id": 5305,
+      "pId": 530,
+      "icon": "../Static/img/5.png",
+      "name": "血栓栓塞性疾病(如下肢深静脉血栓，颅内静脉窦血栓等)"
+    },
+    {
+      "id": 37,
+      "pId": 0,
+      "name": "免疫系统疾病",
+      "shorthand": "hblc,myxt,myjb,myxtjb"
+    },
+    {
+      "id": 374,
+      "pId": 37,
+      "icon": "../Static/img/4.png",
+      "name": "患系统性红斑狼疮等自身免疫性疾病，本孕病情稳定"
+    },
+    {
+      "id": 375,
+      "pId": 37,
+      "icon": "../Static/img/5.png",
+      "name": "病情程度超过Ⅳ类"
+    },
+    {
+      "id": 38,
+      "pId": 0,
+      "name": "神经系统疾病",
+      "shorthand": "dx,sjxtjb,sjxt,jwl,zdjwl"
+    },
+    {
+      "id": 384,
+      "pId": 38,
+      "icon": "../Static/img/4.png",
+      "name": "有癫痫、重度肌无力等神经系统疾病，药物治疗后本孕病情稳定"
+    },
+    {
+      "id": 385,
+      "pId": 38,
+      "icon": "../Static/img/5.png",
+      "name": "满足任一条件者：1.病情程度超过Ⅳ类2. 脑血管畸形及手术史"
+    },
+    {
+      "id": 39,
+      "pId": 0,
+      "name": "肿瘤",
+      "shorthand": "zgjl,zl,lxzl,exzl,jjxzl"
+    },
+    {
+      "id": 392,
+      "pId": 39,
+      "icon": "../Static/img/2.png",
+      "name": "妊娠合并子宫肌瘤（直径<5cm），无并发症"
+    },
+    {
+      "id": 393,
+      "pId": 39,
+      "icon": "../Static/img/3.png",
+      "name": "妊娠合并其它妇科良性肿瘤（直径<5cm），无并发症"
+    },
+    {
+      "id": 394,
+      "pId": 39,
+      "icon": "../Static/img/4.png",
+      "name": "满足以下任一条件者：1.妊娠合并妇科良性肿瘤（直径≥5cm ）；2.妊娠合并妇科良性肿瘤（直径<5cm），有并发症"
+    },
+    {
+      "id": 395,
+      "pId": 39,
+      "icon": "../Static/img/5.png",
+      "name": "妊娠合并恶性肿瘤、交界性肿瘤"
+    },
+    {
+      "id": 40,
+      "pId": 0,
+      "name": "急性外科疾病",
+      "shorthand": "jxlwy,jxdny,js,dsz,jxyxy"
+    },
+    {
+      "id": 404,
+      "pId": 40,
+      "icon": "../Static/img/4.png",
+      "name": "妊娠合并急性阑尾炎、急性胆囊炎、泌尿系结石、胆石症等急性外科疾病，保守治疗后病情控制稳定，无需手术治疗"
+    },
+    {
+      "id": 405,
+      "pId": 40,
+      "icon": "../Static/img/5.png",
+      "name": "病情程度超过Ⅳ类；妊娠合并急性胰腺炎"
+    },
+    {
+      "id": 1,
+      "pId": 0,
+      "name": "年龄",
+      "shorthand": "nl"
+    },
+    {
+      "id": 11,
+      "pId": 1,
+      "icon": "../Static/img/1.png",
+      "name": "18岁<Y<35岁"
+    },
+    {
+      "id": 13,
+      "pId": 1,
+      "icon": "../Static/img/3.png",
+      "name": "35岁≤Y＜40岁或≤18岁"
+    },
+    {
+      "id": 14,
+      "pId": 1,
+      "icon": "../Static/img/4.png",
+      "name": "≥40岁"
+    },
+    {
+      "id": 2,
+      "pId": 0,
+      "name": "孕前BMI"
+    },
+    {
+      "id": 21,
+      "pId": 2,
+      "icon": "../Static/img/1.png",
+      "name": "18.5≤BMI≤25"
+    },
+    {
+      "id": 22,
+      "pId": 2,
+      "icon": "../Static/img/2.png",
+      "name": "25＜BMI<28"
+    },
+    {
+      "id": 23,
+      "pId": 2,
+      "icon": "../Static/img/3.png",
+      "name": "28≤BMI<30或＜18.5"
+    },
+    {
+      "id": 24,
+      "pId": 2,
+      "icon": "../Static/img/4.png",
+      "name": "30≤BMI<35"
+    },
+    {
+      "id": 25,
+      "pId": 2,
+      "icon": "../Static/img/5.png",
+      "name": "BMI≥35"
+    },
+    {
+      "id": 3,
+      "pId": 0,
+      "name": "Rh阴性血型或其他稀有血型",
+      "shorthand": "rh"
+    },
+    {
+      "id": 31,
+      "pId": 3,
+      "icon": "../Static/img/1.png",
+      "name": "非稀有血型"
+    },
+    {
+      "id": 34,
+      "pId": 3,
+      "icon": "../Static/img/4.png",
+      "name": "Rh阴性血型但抗D抗体滴度阴性"
+    },
+    {
+      "id": 35,
+      "pId": 3,
+      "icon": "../Static/img/5.png",
+      "name": "满足任一条件者：1.Rh阴性血型但抗D抗体滴度阳性；2.其他稀有血型"
+    },
+    {
+      "id": 4,
+      "pId": 0,
+      "name": "胸廓及脊柱畸形",
+      "shorthand": "xkjx,jzjx,jz,xk"
+    },
+    {
+      "id": 41,
+      "pId": 4,
+      "icon": "../Static/img/1.png",
+      "name": "无畸形"
+    },
+    {
+      "id": 43,
+      "pId": 4,
+      "icon": "../Static/img/3.png",
+      "name": "有畸形，但心肺功能正常"
+    },
+    {
+      "id": 45,
+      "pId": 4,
+      "icon": "../Static/img/5.png",
+      "name": "有畸形伴心肺功能不全"
+    },
+    {
+      "id": 5,
+      "pId": 0,
+      "name": "精神病",
+      "shorthand": "jsb"
+    },
+    {
+      "id": 53,
+      "pId": 5,
+      "icon": "../Static/img/3.png",
+      "name": "有精神病史，病情控制良好，5年内无发病"
+    },
+    {
+      "id": 54,
+      "pId": 5,
+      "icon": "../Static/img/4.png",
+      "name": "有精神病史，近3-5年内曾发病"
+    },
+    {
+      "id": 55,
+      "pId": 5,
+      "icon": "../Static/img/5.png",
+      "name": "近3年内发病"
+    },
+    {
+      "id": 6,
+      "pId": 0,
+      "name": "智力低下",
+      "shorthand": "zl,zldx"
+    },
+    {
+      "id": 62,
+      "pId": 6,
+      "icon": "../Static/img/2.png",
+      "name": "轻度智力低下"
+    },
+    {
+      "id": 64,
+      "pId": 6,
+      "icon": "../Static/img/4.png",
+      "name": "中度智力低下"
+    },
+    {
+      "id": 65,
+      "pId": 6,
+      "icon": "../Static/img/5.png",
+      "name": "重度智力低下"
+    },
+    {
+      "id": 7,
+      "pId": 0,
+      "name": "遗传病史",
+      "shorthand": "ycbs"
+    },
+    {
+      "id": 72,
+      "pId": 7,
+      "icon": "../Static/img/2.png",
+      "name": "单方或双方及一级亲属有遗传病史，产前筛查无异常"
+    },
+    {
+      "id": 73,
+      "pId": 7,
+      "icon": "../Static/img/3.png",
+      "name": "产前筛查有异常但产前诊断无异常"
+    },
+    {
+      "id": 74,
+      "pId": 7,
+      "icon": "../Static/img/4.png",
+      "name": "产前诊断异常"
+    },
+    {
+      "id": 8,
+      "pId": 0,
+      "name": "产道异常",
+      "shorthand": "szdjx,szd,gp,gpyc"
+    },
+    {
+      "id": 83,
+      "pId": 8,
+      "icon": "../Static/img/3.png",
+      "name": "生殖道畸形；骨盆异常"
+    },
+    {
+      "id": 9,
+      "pId": 0,
+      "name": "瘢痕子宫",
+      "shorthand": "bhzg"
+    },
+    {
+      "id": 93,
+      "pId": 9,
+      "icon": "../Static/img/3.png",
+      "name": "仅一次子宫下段剖宫产术史且要求再次剖宫产，且无其他子宫手术史"
+    },
+    {
+      "id": 94,
+      "pId": 9,
+      "icon": "../Static/img/4.png",
+      "name": "满足以下任一条件者：1.非剖宫产的子宫手术史；2.瘢痕子宫要求阴道试产；3.古典式剖宫产史；4.剖宫产史≥2次"
+    },
+    {
+      "id": 43,
+      "pId": 0,
+      "name": "子宫畸形",
+      "shorthand": "zgjx"
+    },
+    {
+      "id": 433,
+      "pId": 43,
+      "icon": "../Static/img/3.png",
+      "name": "子宫畸形"
+    },
+    {
+      "id": 10,
+      "pId": 0,
+      "name": "盆腔手术史",
+      "shorthand": "pqss,pqsss"
+    },
+    {
+      "id": 102,
+      "pId": 10,
+      "icon": "../Static/img/2.png",
+      "name": "盆腔手术史"
+    },
+    {
+      "id": 11,
+      "pId": 0,
+      "name": "自然流产史"
+    },
+    {
+      "id": 111,
+      "pId": 11,
+      "icon": "../Static/img/1.png",
+      "name": "纳入不良孕产史中"
+    },
+    {
+      "id": 12,
+      "pId": 0,
+      "name": "妊娠方式"
+    },
+    {
+      "id": 121,
+      "pId": 12,
+      "icon": "../Static/img/1.png",
+      "name": "自然妊娠"
+    },
+    {
+      "id": 123,
+      "pId": 12,
+      "icon": "../Static/img/3.png",
+      "name": "辅助生殖技术妊娠"
+    },
+    {
+      "id": 13,
+      "pId": 0,
+      "name": "不良孕产史",
+      "shorthand": "lc,ywrs,ep,gwy,hm,ptt,zyxbzbs,zyxb,ptty,ty"
+    },
+    {
+      "id": 133,
+      "pId": 13,
+      "icon": "../Static/img/3.png",
+      "name": "各类流产2次；异位妊娠史；滋养细胞疾病史等"
+    },
+    {
+      "id": 134,
+      "pId": 13,
+      "icon": "../Static/img/4.png",
+      "name": "各类流产≥3次；胚胎停育史；围产儿死亡史；早产史；出生缺陷儿史；产后出血史"
+    },
+    {
+      "id": 14,
+      "pId": 0,
+      "name": "吸毒",
+      "shorthand": "xd"
+    },
+    {
+      "id": 143,
+      "pId": 14,
+      "icon": "../Static/img/3.png",
+      "name": "吸毒史"
+    },
+    {
+      "id": 144,
+      "pId": 14,
+      "icon": "../Static/img/4.png",
+      "name": "现吸毒"
+    },
+    {
+      "id": 50,
+      "pId": 0,
+      "name": "宫颈机能不全",
+      "shorthand": "gjjnbq"
+    },
+    {
+      "id": 503,
+      "pId": 50,
+      "icon": "../Static/img/3.png",
+      "name": "经阴道宫颈环扎"
+    },
+    {
+      "id": 505,
+      "pId": 50,
+      "icon": "../Static/img/5.png",
+      "name": "经腹腔镜宫颈环扎"
+    }
+  ]
+}
