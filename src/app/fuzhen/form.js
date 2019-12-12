@@ -57,9 +57,9 @@ export default class FuzhenForm extends Component {
         {
           columns: [
             { name: 'checkdate[日期]', type: 'date', span: 6 },
-            { name: 'ckweek(周)[孕周]', type: 'input', span: 6 },
+            { name: 'ckweek(周)[孕周]', type: 'input', span: 4 },
             { 
-              span: 6,
+              span: 8,
               columns:[
                 { name: 'cktizh(kg)[体重]', type: 'input', span: 16, valid: 'number|rang(40,100)' },
                 { type:  'button', span: 8, text: '体重曲线', color:'#1890ff', size:'small', onClick:this.renderQX.bind(this)}
@@ -192,8 +192,8 @@ export default class FuzhenForm extends Component {
         },
         {
           columns:[
-            { name: 'treatment[处理措施]', type: 'textarea', span: 8 },
-            { name:'treatment[模板]', type: 'buttons',span: 16, text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(green)[入院],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
+            { name: 'treatment[处理措施]', type: 'textarea', span: 10 },
+            { name:'treatment[模板]', type: 'buttons',span: 14, text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(green)[入院],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
           ]
         },
         {

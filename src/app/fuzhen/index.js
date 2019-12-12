@@ -38,9 +38,11 @@ export default class Patient extends Component {
       recentRvisit: null,
       recentRvisitAll: null,
       recentRvisitShow: false,
-      isShowzhenduan: false,
+      isShowZhenduan: false,
       isMouseIn: false,
-      visible: false,
+      isShowSetModal: false,
+      isShowResultModal: false,
+      isShowPlanModal: false,
       treatTemp: [],
       templateShow: false,
       collapseActiveKey: ['1', '2', '3'],
@@ -202,7 +204,7 @@ export default class Patient extends Component {
    * 诊断列表
    */
   renderZD() {
-    const { diagnosi, diagnosis, keshi, geren, isShowzhenduan, isMouseIn } = this.state;
+    const { diagnosi, diagnosis, keshi, geren, isShowZhenduan, isMouseIn } = this.state;
     const delConfirm = (item) => {
       Modal.confirm({
         title: '您是否确认要删除这项诊断',
@@ -243,6 +245,31 @@ export default class Patient extends Component {
       return JSON.stringify(data, null, 4)
     }
 
+    /**
+     * 点击填充input
+     */
+    const setIptVal = (item) => {
+      this.setState({
+        isMouseIn: false,
+        diagnosi: item
+      })
+    }
+
+    /**
+     * 诊断设置窗口
+     */
+    const renderSetModal = () => {
+      const { isShowSetModal } = this.state;
+      const handleClick = (item) => {
+        this.setState({isShowSetModal: false})
+      }
+      return (
+        <Modal title="Title" visible={isShowSetModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+          <p>设置页面</p>
+        </Modal>
+      )
+    }
+
     return (
       <div className="fuzhen-left-zd">
         <ol>
@@ -263,15 +290,16 @@ export default class Patient extends Component {
             {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
           </Select> */}
 
-          <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e.target.value })} onFocus={() => this.setState({isShowzhenduan: true})} onBlur={() => this.setState({isShowzhenduan: false})} />
-          { isShowzhenduan || isMouseIn ?
+          <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value)} 
+                 onFocus={() => this.setState({isShowZhenduan: true})} />
+          { isShowZhenduan || isMouseIn ?
             <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}> 
-              <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => alert("功能未开通")}></Icon>}>
+              <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
                 <Tabs.TabPane tab="全部" key="1">
-                  {diagnosis.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => this.setState({diagnosi: item.data, isMouseIn: false})}>{item.data}</p>)}
+                  {diagnosis.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => setIptVal(item.data)}>{item.data}</p>)}
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="科室" key="2">
-                  <Tree showLine onSelect={(K, e) => this.setState({diagnosi: e.node.props.title, isMouseIn: false})}>
+                  <Tree showLine onSelect={(K, e) => setIptVal(e.node.props.title)}>
                     {keshi.map((item, index) => (
                       <Tree.TreeNode selectable={false} title={item.title} key={`0-${index}`}>
                         {item.data.map((subItem, subIndex) => (
@@ -282,11 +310,11 @@ export default class Patient extends Component {
                   </Tree>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="个人" key="3">
-                  {geren.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => this.setState({diagnosi: item, isMouseIn: false})}>{item}</p>)}
+                  {geren.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() =>  setIptVal(item)}>{item}</p>)}
                 </Tabs.TabPane>
               </Tabs>
             </div>  : ""}
-
+          {renderSetModal()}
         </div>
         <Button className="fuzhen-left-button margin-TB-mid" type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>
       </div>
@@ -296,6 +324,36 @@ export default class Patient extends Component {
   renderLeft() {
     const { loading, jianyanReport, zhenliaoPlan = [], collapseActiveKey } = this.state;
 
+    /**
+   * 检验报告结果
+   */
+    const renderReaultModal = () => {
+      const { isShowResultModal } = this.state;
+      const handleClick = (item) => {
+        this.setState({isShowResultModal: false})
+      }
+      return (
+        <Modal title="Title" visible={isShowResultModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+          <p>报告结果</p>
+        </Modal>
+      )
+    }
+
+      /**
+     * 诊疗计划管理
+     */
+    const renderPlanModal = () => {
+      const { isShowPlanModal } = this.state;
+      const handleClick = (item) => {
+        this.setState({isShowPlanModal: false})
+      }
+      return (
+        <Modal title="Title" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+          <p>诊疗计划</p>
+        </Modal>
+      )
+    }
+
     return (
       <div className="fuzhen-left ant-col-5">
         <Collapse defaultActiveKey={collapseActiveKey}>
@@ -304,11 +362,11 @@ export default class Patient extends Component {
               <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
             }
           </Panel>
-          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={() => alert('功能未开通')}>结果</Button></span>} key="2">
+          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={() => this.setState({isShowResultModal: true})}>结果</Button></span>} key="2">
             <p className="pad-small">{jianyanReport || '无'}</p>
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
-            <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => alert('功能未开通')}>管理</Button>}>
+            <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>
               {zhenliaoPlan.length ? zhenliaoPlan.map((item, index) => (
                 <Timeline.Item key={`zhenliaoPlan-${item.id || index}-${Date.now()}`}>
                   <p className="font-16">{item.date} - {item.week}</p>
@@ -319,6 +377,8 @@ export default class Patient extends Component {
             </Timeline>
           </Panel>
         </Collapse>
+        {renderReaultModal()}
+        {renderPlanModal()}
       </div>
     );
   }
@@ -333,6 +393,7 @@ export default class Patient extends Component {
         {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" visible={recentRvisitShow} width="100%" footer='' maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 } })}
+          {/* <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button> */}
         </Modal>
         <div className="clearfix">
           {recentRvisitAll && recentRvisitAll.length > 2 ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={() => this.setState({ recentRvisitShow: true })}>更多产检记录</Button> : <br />}
