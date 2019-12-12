@@ -32,9 +32,10 @@ export function checkbox({onChange, onBlur, value, ...props}){
 /**
  * input-5 这个表示有5个输入框
  * input-number 表示有一个number的输入框
+ * input-s1&s2&s3 表示有3个输入框，placeholder分别为s1,s2,s3
  */
-export function input$x({name, onChange, value, width, ...props}, count){
-  if(!/^\d+$/.test(count)){
+export function input$x({name, onChange, value, width, ...props}, count = ''){
+  if(/^[a-zA-z]+$/.test(count)){
     return input({name, onChange, value, width, ...props, type: count});
   }
   const data = value || [];
@@ -43,10 +44,17 @@ export function input$x({name, onChange, value, width, ...props}, count){
     data[index] = e.target.value;
     onChange(e, data);
   }
+
+  let placeholders = [];
+  if(/^\d+$/.test(count)){
+    placeholders = Array(+count).fill('');
+  } else {
+    placeholders = count.split('&');
+  }
   return (
     <div className="inputxxx">
-      {Array(+count).fill(null).map((v,index)=>(
-        <Input {...props} key={`inputxxx-${name}-${index}`} style={{width:childWidth}} value={data[index]} value={data[index]} onChange={e=>handleChange(e,index)}/>
+      {placeholders.map((v,index)=>(
+        <Input {...props} key={`inputxxx-${name}-${index}`} style={{width:childWidth}} placeholder={v} value={data[index]} onChange={e=>handleChange(e,index)}/>
       ))}
     </div>
   )
