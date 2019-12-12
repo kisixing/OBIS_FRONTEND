@@ -30,7 +30,7 @@ export default class extends Component {
             { span: 1 },
             { name: 'userjiehn[本次结婚年龄]', className: 'width_7', type: 'input', span: 5, valid: 'number|required' },
             { span: 1 },
-            { name: 'userjinqjh[近亲结婚]', className:'col-yjs-sp', type: 'checkinput', span: 5, radio: true, valid: 'required', options: baseData.yesOptions },
+            { name: 'userjinqjh[近亲结婚]', className:'col-yjs-sp', type: 'checkinput', span: 5, radio: true, valid: 'required', options: baseData.jinqOptions },
           ]
         },
         {
