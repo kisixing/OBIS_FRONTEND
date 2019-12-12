@@ -58,7 +58,13 @@ export default class FuzhenForm extends Component {
           columns: [
             { name: 'checkdate[日期]', type: 'date', span: 6 },
             { name: 'ckweek(周)[孕周]', type: 'input', span: 6 },
-            { name: 'cktizh(kg)[体重]', type: 'input', span: 6, valid: 'number|rang(40,100)' },
+            { 
+              span: 6,
+              columns:[
+                { name: 'cktizh(kg)[体重]', type: 'input', span: 16, valid: 'number|rang(40,100)' },
+                { type:  'button', span: 8, text: '体重曲线', color:'#1890ff', size:'small', onClick:this.renderQX.bind(this)}
+              ] 
+            },
             { 
               name: 'ckpressure(mmHg)[血压]', type: ['input(/)','input'], span: 6, valid: (value)=>{
               let message = '';
@@ -83,8 +89,8 @@ export default class FuzhenForm extends Component {
           columns: [
             { 
               span: 6, columns:[
-                { name: 'ckgongg(cm)[宫高]', type: 'input', span: 18 },
-                { type:  'button', span: 6, text: '曲线', color:'#1890ff', size:'small', onClick:this.renderQX.bind(this)}
+                { name: 'ckgongg(cm)[宫高]', type: 'input', span: 16 },
+                { type:  'button', span: 8, text: '生长曲线', color:'#1890ff', size:'small', onClick:this.renderQX.bind(this)}
               ] 
             },
             {
@@ -253,7 +259,7 @@ export default class FuzhenForm extends Component {
     })
   }
 
-  handleSave(form) {
+  handleSave(form, act) {
     const { onSave } = this.props;
     const { entity } = this.state;
     fireForm(form,'valid').then((valid)=>{
@@ -264,6 +270,9 @@ export default class FuzhenForm extends Component {
         }));
       }
     });
+    if(act === "open") {
+      console.log(111);
+    }
   }
 
   /**
@@ -387,7 +396,8 @@ export default class FuzhenForm extends Component {
       <div className="fuzhen-form">
         <strong className="fuzhen-form-TIT">本次产检记录</strong>
         {formRender(entity, this.formConfig(), this.handleChange.bind(this))}
-        <Button className="pull-right blue-btn bottom-btn" type="ghost" onClick={() => this.handleSave(document.querySelector('.fuzhen-form'))}>保存</Button>
+        <Button className="pull-right blue-btn bottom-btn save-btn" type="ghost" onClick={() => this.handleSave(document.querySelector('.fuzhen-form'))}>保存</Button>
+        <Button className="pull-right blue-btn bottom-btn" type="ghost" onClick={() => this.handleSave(document.querySelector('.fuzhen-form'), "open")}>保存并开立医嘱</Button>
         {/*this.renderQX()*/}
         {this.renderTreatment()}
         {this.renderYCQ()}
