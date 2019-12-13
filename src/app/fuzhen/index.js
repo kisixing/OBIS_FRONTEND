@@ -104,7 +104,7 @@ export default class Patient extends Component {
       info: res
     })),
     service.fuzhen.getdiagnosis().then(res => this.setState({
-      diagnosis: res.object.list
+      diagnosis: res.list
     })),
    service.fuzhen.getRecentRvisit().then(res => this.setState({
       recentRvisit: res.object

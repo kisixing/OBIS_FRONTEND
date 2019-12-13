@@ -39,7 +39,7 @@ export default class FuzhenForm extends Component {
 
     this.renderChart = renderChart();
     service.fuzhen.treatTemp().then(res => this.setState({
-      treatTemp: res.object
+      treatTemp: res
     }));
   }
 
