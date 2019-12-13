@@ -1,0 +1,220 @@
+{
+    "count": 6,
+    "data": [
+        {
+            "title": "全部",
+            "list": [
+                {
+                    "createdate": "2019-11-16 20:04",
+                    "data": "妊娠期糖尿病1",
+                    "doctor": "真真测试201908281845",
+                    "highriskmark": true,
+                    "id": 12736,
+                    "isdeleted": "",
+                    "type": "diag",
+                    "userid": 6
+                },
+                {
+                    "createdate": "2019-11-16 20:04",
+                    "data": "高血压1",
+                    "doctor": "真真测试201908281845",
+                    "highriskmark": "",
+                    "id": 12737,
+                    "isdeleted": "",
+                    "type": "diag",
+                    "userid": 6
+                },
+                {
+                    "createdate": "2019-11-16 20:04",
+                    "data": "冠心病1",
+                    "doctor": "真真测试201908281845",
+                    "highriskmark": "",
+                    "id": 12738,
+                    "isdeleted": "",
+                    "type": "diag",
+                    "userid": 6
+                }
+            ]
+        },
+        {
+            "title": "科室",
+            "list": [
+                {
+                    "title": "并发",
+                    "list": [
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "妊娠期糖尿病1",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": true,
+                            "id": 12736,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        },
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "高血压1",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": "",
+                            "id": 12737,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        },
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "冠心病1",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": "",
+                            "id": 12738,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        }
+                    ]
+                },
+                {
+                    "title": "合并内分泌系统",
+                    "list": [
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "妊娠期糖尿病2",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": true,
+                            "id": 12736,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        },
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "高血压2",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": "",
+                            "id": 12737,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        },
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "冠心病2",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": "",
+                            "id": 12738,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        }
+                    ]
+                },
+                {
+                    "title": "合并外分泌系统",
+                    "list": [
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "妊娠期糖尿病3",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": true,
+                            "id": 12736,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        },
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "高血压3",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": "",
+                            "id": 12737,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        },
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "冠心病3",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": "",
+                            "id": 12738,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        }
+                    ]
+                },
+                {
+                    "title": "合并呼吸系统",
+                    "list": [
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "妊娠期糖尿病4",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": true,
+                            "id": 12736,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        },
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "高血压4",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": "",
+                            "id": 12737,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        },
+                        {
+                            "createdate": "2019-11-16 20:04",
+                            "data": "冠心病4",
+                            "doctor": "真真测试201908281845",
+                            "highriskmark": "",
+                            "id": 12738,
+                            "isdeleted": "",
+                            "type": "diag",
+                            "userid": 6
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "个人",
+            "list": [
+                {
+                    "createdate": "2019-11-16 20:04",
+                    "data": "妊娠期糖尿病1",
+                    "doctor": "真真测试201908281845",
+                    "highriskmark": true,
+                    "id": 12736,
+                    "isdeleted": "",
+                    "type": "diag",
+                    "userid": 6
+                },
+                {
+                    "createdate": "2019-11-16 20:04",
+                    "data": "高血压1",
+                    "doctor": "真真测试201908281845",
+                    "highriskmark": "",
+                    "id": 12737,
+                    "isdeleted": "",
+                    "type": "diag",
+                    "userid": 6
+                },
+                {
+                    "createdate": "2019-11-16 20:04",
+                    "data": "冠心病1",
+                    "doctor": "真真测试201908281845",
+                    "highriskmark": "",
+                    "id": 12738,
+                    "isdeleted": "",
+                    "type": "diag",
+                    "userid": 6
+                }
+            ]
+        }
+    ]
+}

@@ -35,6 +35,7 @@ export default class Patient extends Component {
       info: {},
       diagnosi: '',
       diagnosis: [],
+      diagnosislist: [],
       recentRvisit: null,
       recentRvisitAll: null,
       recentRvisitShow: false,
@@ -59,29 +60,6 @@ export default class Patient extends Component {
           "main": "超声"
         }
       ],
-      keshi: [
-        {
-          "title": "并发",
-          "data": ["妊娠期糖尿病1","妊娠期高血压","先兆早产","头大儿"]
-        },
-        {
-          "title": "合并内分泌系统",
-          "data": ["妊娠期糖尿病2","妊娠期高血压","先兆早产","头大儿"]
-        },
-        {
-          "title": "合并心血管系统",
-          "data": ["妊娠期糖尿病3","妊娠期高血压","先兆早产","头大儿"]
-        },
-        {
-          "title": "合并呼吸系统",
-          "data": ["妊娠期糖尿病4","妊娠期高血压","先兆早产","头大儿"]
-        },
-        {
-          "title": "合并消化系统",
-          "data": ["妊娠期糖尿病5","妊娠期高血压","先兆早产","头大儿"]
-        }
-      ],
-      geren: ["妊娠期糖尿病","妊娠期高血压","先兆早产","头大儿"],
       modalState: [
         {
           "title": "糖尿病门诊预约",
@@ -104,7 +82,10 @@ export default class Patient extends Component {
       info: res
     })),
     service.fuzhen.getdiagnosis().then(res => this.setState({
-      diagnosis: res.list
+      diagnosis: res.object.list
+    })),
+    service.fuzhen.getdiagnosislist().then(res => this.setState({
+      diagnosislist: res.data
     })),
    service.fuzhen.getRecentRvisit().then(res => this.setState({
       recentRvisit: res.object
@@ -204,7 +185,7 @@ export default class Patient extends Component {
    * 诊断列表
    */
   renderZD() {
-    const { diagnosi, diagnosis, keshi, geren, isShowZhenduan, isMouseIn } = this.state;
+    const { diagnosi, diagnosis, diagnosislist, isShowZhenduan, isMouseIn } = this.state;
     const delConfirm = (item) => {
       Modal.confirm({
         title: '您是否确认要删除这项诊断',
@@ -296,21 +277,21 @@ export default class Patient extends Component {
             <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}> 
               <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
                 <Tabs.TabPane tab="全部" key="1">
-                  {diagnosis.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => setIptVal(item.data)}>{item.data}</p>)}
+                  {diagnosislist[0].list.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => setIptVal(item.data)}>{item.data}</p>)}
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="科室" key="2">
                   <Tree showLine onSelect={(K, e) => setIptVal(e.node.props.title)}>
-                    {keshi.map((item, index) => (
+                    {diagnosislist[1].list.map((item, index) => (
                       <Tree.TreeNode selectable={false} title={item.title} key={`0-${index}`}>
-                        {item.data.map((subItem, subIndex) => (
-                          <Tree.TreeNode title={subItem} key={`0-0-${subIndex}`}></Tree.TreeNode>
+                        {item.list.map((subItem, subIndex) => (
+                          <Tree.TreeNode title={subItem.data} key={`0-0-${subIndex}`}></Tree.TreeNode>
                         ))}
                       </Tree.TreeNode>
                     ))}
                   </Tree>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="个人" key="3">
-                  {geren.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() =>  setIptVal(item)}>{item}</p>)}
+                  {diagnosislist[2].list.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() =>  setIptVal(item.data)}>{item.data}</p>)}
                 </Tabs.TabPane>
               </Tabs>
             </div>  : ""}
