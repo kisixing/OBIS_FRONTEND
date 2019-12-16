@@ -190,7 +190,7 @@ export const ywgmOptions = toOptions('青霉素{#FF3300},头孢{#FF3300},酒精{
 /**
  *个人史
 */
-export const grsOptions = toOptions('吸烟(input)[支/天],饮酒(input)[ml/天],接触有害物质(input),接触放射线(input),服用药物(input-诊断&用药&剂量&备注),其他');
+export const grsOptions = toOptions(['吸烟(input)[支/天]','饮酒(input)[ml/天]','接触有害物质(input)','接触放射线(input)',{k:'服用药物(input-诊断&用药&剂量&备注)',addspan:2},'其他']);
 
 /**
  *叶酸

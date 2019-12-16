@@ -107,10 +107,17 @@ export default class Patient extends Component {
     handleChange(e, { name, value, valid }, entity) {
         console.log(name, entity);
         entity[name] = value
-
         switch (name) {
             case 'dopupt':
-                entity['pupttm'] = common.countWeek(value);
+                entity['pupttm'] = common.GetWeek(enity['gesexpect'],value);
+                break;
+            case 'ckzdate':
+                entity['ckztingj'] = common.GetWeek(enity['gesexpect'],value);
+                break;
+            case 'gesmoc':
+                console.log(value);
+                entity['gesexpect'] = common.GetExpected(value);
+                entity['gesexpectrv'] = common.GetExpected(value);
                 break;
         }
         this.change = true;
