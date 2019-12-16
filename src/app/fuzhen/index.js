@@ -87,7 +87,7 @@ export default class Patient extends Component {
     service.fuzhen.getdiagnosislist().then(res => this.setState({
       diagnosislist: res.data
     })),
-   service.fuzhen.getRecentRvisit().then(res => this.setState({
+    service.fuzhen.getRecentRvisit().then(res => this.setState({
       recentRvisit: res.object
     }))]).then(() => this.setState({ loading: false }));
     /* 
@@ -114,8 +114,6 @@ export default class Patient extends Component {
           diagnosi: '',
           diagnosis: diagnosis.concat([{ data: diagnosi }])
         });
-        // 使用mock时候才用这个
-
       })
     } else if (diagnosi) {
       modal('warning', '添加数据重复');
@@ -127,7 +125,7 @@ export default class Patient extends Component {
 
       modal('info', '删除诊断信息成功');
       // service.fuzhen.getdiagnosis().then(res => this.setState({
-      //     diagnosis: res.list
+      //     diagnosis: res.object.list
       // }));
 
       // 使用mock时候才用这个
@@ -135,8 +133,6 @@ export default class Patient extends Component {
       this.setState({
         diagnosis: diagnosis.filter(i => i.id !== id)
       });
-      // 使用mock时候才用这个
-
     })
   }
 
@@ -198,12 +194,25 @@ export default class Patient extends Component {
     // 诊断小弹窗操作
     const content = (item, i) => {
       const handleHighriskmark = () => {
+        // let highriskmark = item.highriskmark == 1 ? '' : 1;
+        // service.fuzhen.updateHighriskmark(item.id, highriskmark).then(() => {
+        //   service.fuzhen.getdiagnosis().then(res => this.setState({
+        //     diagnosis: res.object.list
+        //   }))
+        // })
+
         //高危
         item.highriskmark = !item.highriskmark;
         this.setState({ diagnosis: diagnosis });
       }
 
       const handleVisibleChange = fx => () => {
+        // service.fuzhen.updateSort(item.id, fx).then(() => {
+        //   service.fuzhen.getdiagnosis().then(res => this.setState({
+        //     diagnosis: res.object.list
+        //   }))
+        // })
+        
         diagnosis[i] = diagnosis[i + fx];
         diagnosis[i + fx] = item;
         this.setState({ diagnosis: diagnosis });
@@ -277,7 +286,7 @@ export default class Patient extends Component {
             <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}> 
               <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
                 <Tabs.TabPane tab="全部" key="1">
-                  {diagnosislist[0].list.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => setIptVal(item.data)}>{item.data}</p>)}
+                  {diagnosis.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => setIptVal(item.data)}>{item.data}</p>)}
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="科室" key="2">
                   <Tree showLine onSelect={(K, e) => setIptVal(e.node.props.title)}>
@@ -308,7 +317,7 @@ export default class Patient extends Component {
     /**
    * 检验报告结果
    */
-    const renderReaultModal = () => {
+    const renderResultModal = () => {
       const { isShowResultModal } = this.state;
       const handleClick = (item) => {
         this.setState({isShowResultModal: false})
@@ -358,7 +367,7 @@ export default class Patient extends Component {
             </Timeline>
           </Panel>
         </Collapse>
-        {renderReaultModal()}
+        {renderResultModal()}
         {renderPlanModal()}
       </div>
     );

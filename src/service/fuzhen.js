@@ -3,11 +3,25 @@ import myAxios from '../utils/myAxios';
 export default {
 
     /**
-     * 右侧诊断列表
+     * 左侧诊断列表
      */
     getdiagnosis: function(){
         return this.userId().then(r => myAxios.get('/outpatientRestful/getdiagnosis?userid=' + r.object.userid));
     },
+    /**
+     * 标记高危
+     */
+    // updateHighriskmark: function(i, param) {
+    //     let data = {'id':i, "highriskmark": param};
+    //     return this.userId().then(r => myAxios.put('/outpatientWriteRestful/diagnosis/markHighrisk', data));
+    // },
+    /**
+     * 更改排序
+     */
+    // updateSort: function(i, param) {
+    //     let data = {'id':i, "sortType": param};
+    //     return this.userId().then(r => myAxios.put('/outpatientWriteRestful/diagnosis/updateSort', data));
+    // },
     /**
      * 科室列表
      */
