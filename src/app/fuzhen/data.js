@@ -162,6 +162,32 @@ export const tableKey = () => [
 ].map(i=>({type:'input',...i}));
 
 /**
+ * 诊疗计划表头
+ */
+export const planKey = () => [
+	{
+		title: '时间',
+		key: 'time',
+	},
+	{
+		title: '孕周',
+		key: 'gestation',
+	},
+	// {
+	// 	title: '产检项目',
+	// 	key: '',
+	// },
+	{
+		title: '提醒事件',
+		key: 'event',
+	},
+	// {
+	// 	title: '提醒状态',
+	// 	key: '',
+	// },
+].map(i=>({type:'input',...i}));
+
+/**
  * 诊断输入框的联想数据，当没有输入的时候显示top为true的数据
  */
 export const diagnosis = toOptions('瘢痕子宫,妊娠期糖尿病,妊娠高血压,双胎妊娠,子宫平滑肌瘤'.split(','),v=>({top:true})).concat(toOptions(['高血压','冠心病','多胎妊娠','梅毒']));

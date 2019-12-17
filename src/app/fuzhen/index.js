@@ -48,18 +48,26 @@ export default class Patient extends Component {
       templateShow: false,
       collapseActiveKey: ['1', '2', '3'],
       jianyanReport: '血常规、尿常规、肝功、生化、甲功、乙肝、梅毒、艾滋、地贫',
-      zhenliaoPlan: [
+      planList: [
         {
-          "date": "2周后",
-          "week": "32孕周",
-          "main": "B超"
+            "alert": "",
+            "event": "大双方都撒的发生的",
+            "gestation": "555",
+            "id": 11,
+            "item": "2",
+            "time": "4",
+            "userid": 6
         },
         {
-          "date": "4周后",
-          "week": "32孕周",
-          "main": "超声"
+            "alert": "",
+            "event": "关怀呵护",
+            "gestation": "12",
+            "id": 18,
+            "item": "1",
+            "time": "6",
+            "userid": 6
         }
-      ],
+    ],
       modalState: [
         {
           "title": "糖尿病门诊预约",
@@ -90,15 +98,14 @@ export default class Patient extends Component {
     service.fuzhen.getRecentRvisit().then(res => this.setState({
       recentRvisit: res.object
     }))]).then(() => this.setState({ loading: false }));
-    /* 
+    
     service.fuzhen.getRvisitPage().then(res => this.setState({
       recentRvisitAll: res.list
     })).then(() => this.setState({ loadingTable: false }));
 
-    service.fuzhen.getPlanList().then(res => this.setState({
-        zhenliaoPlan: res
-    }));
-     */
+    // service.fuzhen.getRecentRvisitList().then(res => this.setState({
+    //     planList: res.list
+    // }));
   }
 
   adddiagnosis() {
@@ -281,7 +288,7 @@ export default class Patient extends Component {
           </Select> */}
 
           <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value)} 
-                 onFocus={() => this.setState({isShowZhenduan: true})} />
+                 onFocus={() => this.setState({isShowZhenduan: true})} onBlur={() => this.setState({isShowZhenduan: false})} />
           { isShowZhenduan || isMouseIn ?
             <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}> 
               <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
@@ -312,7 +319,10 @@ export default class Patient extends Component {
   }
 
   renderLeft() {
-    const { loading, jianyanReport, zhenliaoPlan = [], collapseActiveKey } = this.state;
+    const { loading, jianyanReport, planList, collapseActiveKey } = this.state;
+
+    console.log(planList, 666);
+    console.log(planList.length, 777);
 
     /**
    * 检验报告结果
@@ -333,13 +343,14 @@ export default class Patient extends Component {
      * 诊疗计划管理
      */
     const renderPlanModal = () => {
-      const { isShowPlanModal } = this.state;
+      const { isShowPlanModal, planList } = this.state;
       const handleClick = (item) => {
         this.setState({isShowPlanModal: false})
       }
+      const initTable = (data) => tableRender(baseData.planKey(), data, { buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this)});
       return (
-        <Modal title="Title" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-          <p>诊疗计划</p>
+        <Modal title="诊疗计划" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+          {initTable(planList)}
         </Modal>
       )
     }
@@ -357,10 +368,10 @@ export default class Patient extends Component {
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
             <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>
-              {zhenliaoPlan.length ? zhenliaoPlan.map((item, index) => (
-                <Timeline.Item key={`zhenliaoPlan-${item.id || index}-${Date.now()}`}>
-                  <p className="font-16">{item.date} - {item.week}</p>
-                  <p className="font-16">{item.main}</p>
+              {planList.length>0 ? planList.map((item, index) => (
+                <Timeline.Item key={`planList-${item.id || index}-${Date.now()}`}>
+                  <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
+                  <p className="font-16">{item.event}</p>
                 </Timeline.Item>
               ))
                 : '无'}
@@ -382,8 +393,10 @@ export default class Patient extends Component {
         {initTable(recentRvisit && recentRvisit.slice(0, 2), { width: 1100, size: "small", pagination: false, className: "fuzhenTable", scroll: { x: 1100, y: 220 }, iseditable:({row})=>!!row })}
         {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" visible={recentRvisitShow} width="100%" footer='' maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
-          {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 } })}
-          {/* <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button> */}
+          <div className="table-content">
+            {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 } })}
+            <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
+          </div>
         </Modal>
         <div className="clearfix">
           {recentRvisitAll && recentRvisitAll.length > 2 ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={() => this.setState({ recentRvisitShow: true })}>更多产检记录</Button> : <br />}

@@ -43,23 +43,24 @@ export default {
     },
 
     /**
-     * 左侧表格列表
-     */
-    getRvisitPage: function(){
-        return this.userId().then(r => myAxios.get('/Obcloud/outpatient/getRvisitPage?id=' + r.id));
-    },
-    /**
      * 左侧 诊断提醒列表
      */
-    getPlanList: function(){
-        return this.userId().then(r => myAxios.get('/Obcloud/outpatient/getPlanList?id=' + r.id));
+    getRecentRvisitList: function(){
+        return this.userId().then(r => myAxios.get('/outpatientRestful/getRecentRvisitList?id=' + r.id));
     },
 
     /**
-     * 右侧表格数据
+     * 右侧产检记录
      */
     getRecentRvisit: function(){
         return this.userId().then(r => myAxios.get('/outpatientRestful/getRvisit?dataType=1&pageCurrent=1&pageSize=10&userid=' + r.object.userid));
+    },
+
+    /**
+     * 右侧更多产检记录
+     */
+    getRvisitPage: function(){
+        return this.userId().then(r => myAxios.get('/Obcloud/outpatient/getRvisitPage?id=' + r.id));
     },
 
     /**
