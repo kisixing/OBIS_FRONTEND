@@ -20,7 +20,10 @@ function toOptions(data, vfn =()=>({})){
 /**
  * 身份证：证件类型
  */
-export const sfzOptions = toOptions('身份证,护照,回乡证,台胞证');
+export const sfzOptions = [{ label: '身份证', value: '身份证' },
+{ label: '护照', value: '护照' },
+{ label: '回乡证', value: '回乡证' },
+{ label: '台胞证', value: '台胞证' }];
 
 /**
  * 证件类型
@@ -100,7 +103,7 @@ export const jinqOptions = toOptions('是{#FF3300},否');
 /**
  *皮肤黏膜
 */
-export const pfOptions = toOptions('正常,苍白,皮下出血(input),其他(input)');
+export const pfOptions = toOptions('正常,苍白{#FF3300},皮下出血{#FF3300}(input),其他{#FF3300}(input)');
 
 /**
  *正常、异常
@@ -110,7 +113,7 @@ export const neOptions = toOptions('正常,异常(input){#FF3300}');
 /**
  *正常、畸形
 */
-export const jxOptions = toOptions('正常,畸形');
+export const jxOptions = toOptions('正常,畸形{#FF3300}');
 
 /**
  *无、有
@@ -125,7 +128,7 @@ export const rtOptions = toOptions('凸起,凹陷');
 /**
  *心率
 */
-export const xlOptions = toOptions('齐,不齐(input)');
+export const xlOptions = toOptions('齐,不齐{#FF3300}(input)');
 
 /**
  *触及
@@ -135,7 +138,7 @@ export const cjOptions = toOptions('未触及,可触及');
 /**
  *肾区叩痛
 */
-export const sktOptions = toOptions('有（左）,有（右）');
+export const sktOptions = toOptions('有（左）{#FF3300},有（右）{#FF3300}');
 
 /**
  *下肢浮肿
@@ -145,27 +148,27 @@ export const xzfOptions = toOptions('-,+,+-,++,+++');
 /**
  *双膝反射
 */
-export const sxfOptions = toOptions('存在,亢起,消失,引不起');
+export const sxfOptions = toOptions('存在,亢起{#FF3300},消失{#FF3300},引不起{#FF3300}');
 
 /**
  *乙肝两对半
 */
-export const ygOptions = toOptions('正常,小三阳,大三阳,慢活肝,未查,其他(input)');
+export const ygOptions = toOptions('正常,小三阳{#FF3300},大三阳{#FF3300},慢活肝{#FF3300},未查{#FF3300},其他{#FF3300}(input)');
 
 /**
  *阴阳未查
 */
-export const yywOptions = toOptions('阴性,阳性(input),未查');
+export const yywOptions = toOptions('阴性,阳性{#FF3300}(input),未查{#FF3300}');
 
 /**
  *阴阳未查、其他
 */
-export const yyw2Options = toOptions('阴性,阳性,未查,其他');
+export const yyw2Options = toOptions('阴性,阳性{#FF3300},未查{#FF3300},其他{#FF3300}(input)');
 
 /**
  *梅毒
 */
-export const mdOptions = toOptions(['阴性',{k:'阳性{#FF3300}(shouzhenyy1-TPPA滴度,TRUST滴度)',addspan:4},'未查{#FF3300}','其他(input)']);
+export const mdOptions = toOptions(['阴性',{k:'阳性{#FF3300}(shouzhenyy1-TPPA滴度,TRUST滴度)',addspan:4},'未查{#FF3300}','其他{#FF3300}(input)']);
 
 /**
  *OGTT
@@ -175,12 +178,12 @@ export const ogttOptions = toOptions(['正常',{k:'GDM{#FF3300}(shouzhenyy-空�
 /**
  *地贫
 */
-export const dpOptions = toOptions('正常,甲型(input),乙型(input),未查,其他(input)');
+export const dpOptions = toOptions('正常,甲型{#FF3300}(input),乙型{#FF3300}(input),未查{#FF3300},其他{#FF3300}(input)');
 
 /**
  *尿蛋白
 */
-export const dbnOptions = toOptions('阴性{#FF3300},弱阳性{#FF3300},阳性{#FF3300}(input),未查{#FF3300},其他');
+export const dbnOptions = toOptions('阴性,弱阳性{#FF3300},阳性{#FF3300}(input),未查{#FF3300},其他{#FF3300}(input)');
 
 /**
  *药物或食物过敏史
@@ -190,7 +193,7 @@ export const ywgmOptions = toOptions('青霉素{#FF3300},头孢{#FF3300},酒精{
 /**
  *个人史
 */
-export const grsOptions = toOptions(['吸烟(input)[支/天]','饮酒(input)[ml/天]','接触有害物质(input)','接触放射线(input)',{k:'服用药物(input-诊断&用药&剂量&备注)',addspan:2},'其他']);
+export const grsOptions = toOptions(['吸烟{#FF3300}(input)[支/天]','饮酒{#FF3300}(input)[ml/天]','接触有害物质{#FF3300}(input)','接触放射线{#FF3300}(input)',{k:'服用药物{#FF3300}(input-诊断&用药&剂量&备注)',addspan:2},'其他{#FF3300}(input)']);
 
 /**
  *叶酸
@@ -199,17 +202,17 @@ export const ysOptions = toOptions('孕前服用,孕期服用');
 /**
  *家族史
 */
-export const jzsOptions = toOptions('多胎,死胎/死产,先天畸形,精神病,痴呆,先天智力低下,肿瘤,心脏病,高血压,糖尿病,其他(input)');
+export const jzsOptions = toOptions('多胎{#FF3300},死胎/死产{#FF3300},先天畸形{#FF3300},精神病{#FF3300},痴呆{#FF3300},先天智力低下{#FF3300},肿瘤{#FF3300},心脏病{#FF3300},高血压{#FF3300},糖尿病{#FF3300},其他{#FF3300}(input)');
 
 /**
  *遗传病
 */
-export const ychOptions = toOptions('先天畸形,先天性聋哑,先天智力低下,先天心脏病,G6PD缺乏症,地中海贫血,血友病,白化病,原发高血压,糖尿病,肿瘤,其他');
+export const ychOptions = toOptions('先天畸形{#FF3300},先天性聋哑{#FF3300},先天智力低下{#FF3300},先天心脏病{#FF3300},G6PD缺乏症{#FF3300},地中海贫血{#FF3300},血友病{#FF3300},白化病{#FF3300},原发高血压{#FF3300},糖尿病{#FF3300},肿瘤{#FF3300},其他{#FF3300}(input)');
 
 /**
  *尿蛋白
 */
-export const xOptions = toOptions('阴性,弱阳性,阳性,未查,其他');
+export const xOptions = toOptions('阴性,弱阳性{#FF3300},阳性{#FF3300},未查{#FF3300},其他{#FF3300}(input)');
 
 /**
  * 未做检查,拒绝检查

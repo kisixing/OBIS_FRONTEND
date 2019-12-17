@@ -23,7 +23,7 @@ export default {
      * 高危数据
      */
     highrisk: function(){
-        return myAxios.get('/Obcloud/doc/highrisk')
+        return myAxios.get('/outpatientRestful/findHighriskTree')
     },
     /**
      * 复诊所需API

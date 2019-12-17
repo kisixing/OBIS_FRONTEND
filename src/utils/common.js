@@ -12,7 +12,7 @@ export function GetExpected(gesmoc) {
   if (new_d < 10) {
       new_d = "0" + "" + new_d
   }
-  newdate = new_y + "-" + new_m + "-" + new_d;
+  var newdate = new_y + "-" + new_m + "-" + new_d;
   return newdate
 };
 
@@ -51,6 +51,16 @@ export function GetWeek(expected, today) {
   }
   return yunzh
 };
+
+export function getBMI(weight,height){
+  if(!weight || !height){
+    return '';
+  }
+  if(weight==''||height==''){
+    return '';
+  }
+  return (weight/(height*height)*10000).toFixed(1)
+}
 
 export const loadWidget = (function (){
   const modules = {

@@ -29,10 +29,11 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ygdna[乙肝DNA]', className:'col-8-sp', type:'checkinput-3',valid: 'required', options: baseData.yywOptions,radio:true,span:9},
-            {name:'alt(U/L)[ALT]', type:'input', span:4},
+            {name:'ygdna(IU/ml)[乙肝DNA]', type:'input', span:5},
             {span:1},
-            {name:'ast(UL)[AST]',type:'input', span:4}
+            {name:'alt(U/L)[ALT]', type:'input', span:5},
+            {span:1},
+            {name:'ast(U/L)[AST]',type:'input', span:5}
           ]
         },
         {
@@ -86,7 +87,7 @@ export default class extends Component{
             {span:1},
             {name:'mcv(fL)[MCV]',type:'input', span:5},
             {span:1},
-            {name:'plt(x10^9L)[PLT]', type:'input', span:5},
+            {name:'plt(x10^9/L)[PLT]', type:'input', span:5},
           ]
         },
         {

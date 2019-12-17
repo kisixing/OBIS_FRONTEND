@@ -43,6 +43,10 @@ export default {
      * 删除诊断列表的数据
      */
     deldiagnosis: function(id){
-        return myAxios.get('/outpatientWriteRestful/deldiagnosis?id=' + id);
+        console.log(id);
+        return myAxios.delete('/outpatientWriteRestful/deldiagnosis',{userid: "6",diagnosiss: [{
+            id: id
+        }]}
+        );
     }
 };
