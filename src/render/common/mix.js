@@ -47,8 +47,10 @@ class MMix extends Component{
         const width = checkboxInput.parentNode.offsetWidth - Array.prototype.map.call(checkboxInput.parentNode.children, el=>{
           return checkboxInput===el?0:el.offsetWidth;
         }).reduce((a,b)=>a+b) - 6;
-        checkboxInput.style.width = width + 'px';
-        this.setState({width});
+        if(width>0){
+          checkboxInput.style.width = width + 'px';
+          this.setState({width});
+        }
       }
     });
   }
