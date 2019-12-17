@@ -1,11 +1,56 @@
-
-export function countWeek(date){
-  if (!date) {
-    return '';
+export function GetExpected(gesmoc) {
+  var tmpdate = new Date(gesmoc).getTime();
+  console.log(tmpdate);
+  tmpdate = tmpdate + 280 * 24 * 60 * 60 * 1000;
+  tmpdate = new Date(tmpdate);
+  var new_y = tmpdate.getFullYear();
+  var new_m = tmpdate.getMonth() + 1;
+  if (new_m < 10) {
+      new_m = "0" + "" + new_m
   }
-  var days = Math.floor(((new Date() - new Date(date)) / (1000 * 3600) + 8) / 24);
-  return `${Math.floor(days / 7)}+${days % 7}`;
-}
+  var new_d = tmpdate.getDate();
+  if (new_d < 10) {
+      new_d = "0" + "" + new_d
+  }
+  newdate = new_y + "-" + new_m + "-" + new_d;
+  return newdate
+};
+
+export function GetWeek(expected, today) {
+  var date3 = new Date(expected).getTime() - new Date(today).getTime();
+  var yunzh = "";
+  var week = "";
+  var day = "";
+  if (date3 > 0) {
+      var days = 280 - Math.floor(date3 / (24 * 3600 * 1000));
+      console.log(days);
+      if (days > 0) {
+          week = Math.floor((days / 7));
+          day = Math.floor((days % 7));
+          if (day == 0) {
+              day = ""
+          } else {
+              day = "+" + day
+          }
+          yunzh = week + day
+      }
+  } else {
+      var days = Math.floor(Math.abs(date3 / (24 * 3600 * 1000)));
+      week = Math.floor((days / 7));
+      if (week >= 2) {
+          yunzh = "42"
+      } else {
+          day = Math.floor((days % 7));
+          if (day == 0) {
+              day = ""
+          }else{
+            day = "+" + day
+          }
+          yunzh = week + 40 + day
+      }
+  }
+  return yunzh
+};
 
 export const loadWidget = (function (){
   const modules = {
