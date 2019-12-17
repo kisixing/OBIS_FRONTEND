@@ -100,9 +100,16 @@ class MMix extends Component{
  * addspan 表示当前选项，当编辑框出来后增加的占位
  * flag 1.所有的!为互斥，2.!x与x为互斥，3.flag可以为多个以逗号分隔
  */
-export function checkinput$x({ name, options = [], onChange, onBlur, value:data = {}, unselect, radio, baseColor = '#333333', ...rest }, count, ...args){
+export function checkinput$x({ name, options = [], onChange, onBlur, value:data1 = [], unselect, radio, baseColor = '#333333', ...rest }, count, ...args){
   const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
   const span = Math.floor(count ? (24/count) : Math.max(6, 24 / (optionList.length || 1)));
+
+  const data = {};
+  const toData = () => Object.keys(data).filter(i => !/^\$/.test(i)).map(i => ({label:i, value: data[i], $value: data[`$${i}`]}))
+  data1.forEach(i => {
+    data[i.label] = i.value;
+    data[`$${i.label}`] = i.$value;
+  });
   
   const findWC = (op, fn) => {
     const getflag = o => (o.flag || (/\((.*)\)/.test(o.label||o) && /\((.*)\)/.exec(o.label||o)[1]) || '').split(',');
@@ -136,13 +143,13 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data 
     }else{
       delete data[name];
     }
-    return onChange(e,{...data}).then(()=>onBlur({checkedChange:true}));
+    return onChange(e, toData()).then(()=>onBlur({checkedChange:true}));
   }
 
   const handleInput = (e,{value, name}) => {
     data[`$${name}`] = value;
     data[name] = value;
-    onChange(e,{...data}).then(()=>onBlur());
+    onChange(e, toData()).then(()=>onBlur());
   }
 
   return (
