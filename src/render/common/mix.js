@@ -104,12 +104,16 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data1
   const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
   const span = Math.floor(count ? (24/count) : Math.max(6, 24 / (optionList.length || 1)));
 
-  const data = {};
-  const toData = () => Object.keys(data).filter(i => !/^\$/.test(i)).map(i => ({label:i, value: data[i], $value: data[`$${i}`]}));
+  const data = data1.$data || {};
+  const toData = () => {
+    var result = Object.keys(data).filter(i => !/^\$/.test(i)).map(i => ({label:i, value: data[i], $value: data[`$${i}`]}));
+    result.$data = data;
+    return result;
+  };
   if(data1 instanceof Array){
     data1.forEach(i => {
       data[i.label] = i.value;
-      data[`$${i.label}`] = i.$value;
+      data[`$${i.label}`] = data[`$${i.label}`] || i.$value;
     });
   }else{
     Object.keys(data1).forEach(k=>data[k] = data1[k]);

@@ -112,8 +112,8 @@ class FormItem extends Component {
     const { width } = this.props;
     const { formItem, formItemlabel = {}, formItemEditor, formItemUnit = {} } = this.refs;
 
-    if (formItemEditor) {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (formItemEditor) {
         const panelWidth = Math.min(formItem.offsetWidth, width || formItem.offsetWidth);
         const editorWidth = panelWidth - (formItemlabel.offsetWidth || 0) - (formItemUnit.offsetWidth || 0) - 4;
 
@@ -121,8 +121,8 @@ class FormItem extends Component {
         this.setState({
           width: editorWidth
         });
-      }, 0);
-    }
+      }
+    }, 0);
   }
 
   componentDidMount() {
