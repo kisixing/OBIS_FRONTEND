@@ -88,8 +88,8 @@ export default class extends Component{
         {
           columns:[
             {name:'jz[脊柱]', type:'checkinput-3',valid: 'required', options: baseData.jxOptions,radio:true,span:7},
-            {name:'xzfz[下肢浮肿]', type:'checkinput', className:'col-97-sp', valid: 'required', options: baseData.xzfOptions,radio:true,span:9},
-            {span:4},
+            {name:'xzfz[下肢浮肿]', type:'checkinput', className:'col-xz-sp', valid: 'required', options: baseData.xzfOptions,radio:true,span:14},
+            {span:1},
             {name:'sqfs[双膝反射]', type:'checkinput', className:'col-97-sp', valid: 'required', options: baseData.sxfOptions,radio:true,span:9},
           ]
         },
