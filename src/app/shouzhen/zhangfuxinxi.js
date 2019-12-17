@@ -10,6 +10,7 @@ export default class extends Component {
   }
 
   config() {
+    const isMY = data => data!=='没有' && data.value!=='没有';
     return {
       rows: [
         {
@@ -43,9 +44,9 @@ export default class extends Component {
         {
           columns: [
             { name: 'add_FIELD_husband_smoking(支/天)[抽烟]', type: 'input', span: 5 },
-            { name: entity=>'add_FIELD_husband_drink[喝酒]' + (!entity.add_FIELD_husband_drink||entity.add_FIELD_husband_drink[0]!=='没有'?'(ml/天)':''), className:'h_26', span: 6, type: [
+            { name: entity=>'add_FIELD_husband_drink[喝酒]' + (!entity.add_FIELD_husband_drink||isMY(entity.add_FIELD_husband_drink[0])?'(ml/天)':''), className:'h_26', span: 6, type: [
                 { type: 'select', options: baseData.jiuOptions },
-                { type:'input',filter: data=>!data||data[0]!=='没有'}
+                { type:'input',filter: data=>!data||isMY(data[0])}
               ] 
             },
             { name: 'userhjib[现有何病]', type: 'input', span: 12 }

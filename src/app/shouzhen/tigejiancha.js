@@ -22,13 +22,10 @@ export default class extends Component{
               name: 'ckshrinkpressure(mmHg)[血压]', type: ['input(/)','input'], span: 6, valid: (value)=>{
               let message = '';
               if(value){
-                if(value[0] && valid('number|required|rang(0,139)',value[0])){
-                  message += '第1个值' + valid('number|required|rang(0,139)',value[0])
-                }else if(value[0] && valid('number|rang(0,109)',value[1])){
-                  message += '第2个值' + valid('number|required|rang(0,109)',value[1])
-                }
+                message = [0,1].map(i=>valid(`number|required|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
+              }else{
+                message = valid('required',value)
               }
-              
               return message;
             }},
             {span:2},

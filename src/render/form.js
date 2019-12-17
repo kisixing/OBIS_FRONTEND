@@ -191,6 +191,7 @@ class FormItem extends Component {
       const span = Math.floor(24 / type.length);
       const data = value || [];
       const handleChange = i => (e, v) => { data[i] = v; return this.onChange(e, {...data}); };
+      const handleBlur = (...args) => { return this.onBlur(...args).then(()=>this.resize());};
       const types = type.map(t => ({
         ...t,
         type: (t.type || t).replace(/\(.*\)/, ''),
@@ -204,7 +205,7 @@ class FormItem extends Component {
             const tWidth = enitorWidth * zoom;
             return (
               <Col span={t.span || span} key={`col-${name}${index}`}>
-                {render(t.type, { ...props, ...t, name: `${name}${index}`, value: data[index], style: { width: tWidth }, onChange: handleChange(index), onBlur: this.onBlur.bind(this) })}
+                {render(t.type, { ...props, ...t, name: `${name}${index}`, value: data[index], style: { width: tWidth }, onChange: handleChange(index), onBlur: handleBlur })}
                 {t.unit ? t.unit : null}
               </Col>
             )
