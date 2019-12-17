@@ -39,7 +39,7 @@ export default {
      * 删除诊断列表的数据
      */
     deldiagnosis: function(id){
-        return myAxios.get('/outpatientRestful/deldiagnosis?id=' + id);
+        return myAxios.delete('/outpatientRestful/deldiagnosis?id=' + id);
     },
 
     /**

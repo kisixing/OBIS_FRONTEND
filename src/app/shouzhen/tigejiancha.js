@@ -16,23 +16,23 @@ export default class extends Component{
       rows: [
         {
           columns:[
-            {name:'ckcurtizh(kg)[现体重]', type:'input', span:6, valid: 'required|number|rang(10,100)'},
+            {name:'ckcurtizh(kg)[现体重]', type:'input', span:6, valid: 'required|number|rang(0,500)'},
             {span:1},
             { 
               name: 'ckshrinkpressure(mmHg)[血压]', type: ['input(/)','input'], span: 6, valid: (value)=>{
               let message = '';
               if(value){
-                if(value[0] && valid('number|required|rang(0,140)',value[0])){
-                  message += '第1个值' + valid('number|required|rang(0,140)',value[0])
-                }else if(value[0] && valid('number|rang(0,110)',value[1])){
-                  message += '第2个值' + valid('number|required|rang(0,140)',value[1])
+                if(value[0] && valid('number|required|rang(0,139)',value[0])){
+                  message += '第1个值' + valid('number|required|rang(0,139)',value[0])
+                }else if(value[0] && valid('number|rang(0,109)',value[1])){
+                  message += '第2个值' + valid('number|required|rang(0,109)',value[1])
                 }
               }
               
               return message;
             }},
             {span:2},
-            {name:'mb(次/分)[脉搏]', type:'input', span:6, valid: 'required|number'},
+            {name:'mb(次/分)[脉搏]', type:'input', span:6, valid: 'required|number|rang(0,100)'},
           ]
         },
         {
@@ -41,7 +41,7 @@ export default class extends Component{
             {span:1},
             {name:'cksheng(cm)[身高]', type:'input', span:6, valid: 'required|number|rang(150,250)'},
             {span:2},
-            {name:'ckbmi(kg/㎡)[孕前BMI]', type:'input', span:6, valid: 'required|number'},
+            {name:'ckbmi(kg/㎡)[孕前BMI]', type:'input', span:6, valid: 'required|number|rang(18.5,24.9)'},
           ]
         },
         {
@@ -54,7 +54,7 @@ export default class extends Component{
             {name:'jzx[甲状腺]', type:'checkinput-3',valid: 'required', options: baseData.neOptions,radio:true,span:7},
             {name:'xgzy[血管杂音]', type:'checkinput-3',valid: 'required', options: baseData.hnOptions,radio:true,span:7},
             {span:1},
-            {name:'id3[其他]', type:'input',valid: 'required', span:6},
+            {name:'id3[其他]', type:'input', span:6},
           ]
         },
         {

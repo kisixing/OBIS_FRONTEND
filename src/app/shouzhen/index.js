@@ -54,11 +54,13 @@ export default class Patient extends Component {
                 tab.init = true;
                 if (tab.key === 'tab-0') {
                     tab.entity = res.object.gravidaInfo
+                    tab.entity['useridtype'] = { label: '身份证', value: '身份证' };
                 } else if (tab.key === 'tab-1') {
                     tab.entity['add_FIELD_husband_drink'] = { "0": "没有","1":"29"}
                 } else if (tab.key === 'tab-2') {
                     tab.entity = res.object.pregnantInfo
-                    tab.entity['ckyibzhzh'] = { "头晕": ",,,,", "头痛": 'www', '呕吐': ',白带增多,胸闷,腰酸,流血' }
+                    tab.entity['ckyibzhzh'] = JSON.parse(res.object.pregnantInfo.ckyibzhzh);
+                    console.log(tab.entity);
                 } else if (tab.key === 'tab-3'){
                     tab.entity['xzp'] = {
                         "红细胞": {"input0'": "2019年", "input1'": "广州", "input2'": "测"},
@@ -105,20 +107,32 @@ export default class Patient extends Component {
     }
 
     handleChange(e, { name, value, valid }, entity) {
-        console.log(name, entity);
+        console.log(name, entity,entity[name]);
         entity[name] = value
         switch (name) {
             case 'dopupt':
-                entity['pupttm'] = common.GetWeek(enity['gesexpect'],value);
+                entity['pupttm'] = common.GetWeek(enity['gesexpectrv'],value);
                 break;
             case 'ckzdate':
-                entity['ckztingj'] = common.GetWeek(enity['gesexpect'],value);
+                entity['ckztingj'] = common.GetWeek(enity['gesexpectrv'],value);
                 break;
             case 'gesmoc':
-                console.log(value);
                 entity['gesexpect'] = common.GetExpected(value);
                 entity['gesexpectrv'] = common.GetExpected(value);
+                entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],entity['dopupt']);
+                entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],entity['ckzdate']);
                 break;
+            case 'gesexpectrv':
+                entity['pupttm'] = common.GetWeek(value,entity['dopupt']);
+                entity['ckztingj'] = common.GetWeek(value,entity['ckzdate']);
+                break;
+            case 'yqtz':
+                entity['ckbmi'] = common.getBMI(entity['yqtz'],entity['cksheng']);
+                break;
+            case 'cksheng':
+                entity['ckbmi'] = common.getBMI(entity['yqtz'],entity['cksheng']);
+                break;
+
         }
         this.change = true;
 
