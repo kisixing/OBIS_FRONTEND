@@ -204,6 +204,16 @@ export const xlOptions = [
 ];
 
 /**
+ * 位置
+ */
+export const wzOptions = [
+	{ label: '左', value: '1' },
+	{ label: '上', value: '2' },
+	{ label: '右下', value: '3' },
+	{ label: '左下', value: '4' },
+];
+
+/**
  * 浮肿
  */
 export const ckfuzhOptions = [
@@ -212,6 +222,20 @@ export const ckfuzhOptions = [
 	{ label: '++', value: '4' },
 	{ label: '+++', value: '5' },
 	{ label: '++++', value: '6' },
+];
+
+/**
+ * 浮肿
+ */
+export const yyfaOptions = [
+	{ label: '一天一次', value: '1' },
+	{ label: '一天两次', value: '2' },
+	{ label: '一天三次', value: '3' },
+	{ label: '一天四次', value: '4' },
+	{ label: '每四小时一次', value: '5' },
+	{ label: '每六小时一次', value: '6' },
+	{ label: '每八小时一次', value: '7' },
+	{ label: '每晚一次', value: '8' },
 ];
 
 /**

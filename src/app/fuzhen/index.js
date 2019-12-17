@@ -48,7 +48,7 @@ export default class Patient extends Component {
       templateShow: false,
       collapseActiveKey: ['1', '2', '3'],
       jianyanReport: '血常规、尿常规、肝功、生化、甲功、乙肝、梅毒、艾滋、地贫',
-      planList: [
+      planData: [
         {
             "alert": "",
             "event": "大双方都撒的发生的",
@@ -92,20 +92,23 @@ export default class Patient extends Component {
     service.fuzhen.getdiagnosis().then(res => this.setState({
       diagnosis: res.object.list
     })),
-    service.fuzhen.getdiagnosislist().then(res => this.setState({
-      diagnosislist: res.data
-    })),
+    // service.fuzhen.getdiagnosislist().then(res => this.setState({
+    //   diagnosislist: res.data
+    // })),
     service.fuzhen.getRecentRvisit().then(res => this.setState({
       recentRvisit: res.object
-    }))]).then(() => this.setState({ loading: false }));
+    }))
+    ]).then(() => this.setState({ loading: false }));
     
     service.fuzhen.getRvisitPage().then(res => this.setState({
-      recentRvisitAll: res.list
+      recentRvisitAll: res.object.list
     })).then(() => this.setState({ loadingTable: false }));
 
-    // service.fuzhen.getRecentRvisitList().then(res => this.setState({
-    //     planList: res.list
-    // }));
+    service.fuzhen.getRecentRvisitList().then(res => 
+      this.setState({
+        planData: res.object
+    })
+    );
   }
 
   adddiagnosis() {
@@ -131,15 +134,15 @@ export default class Patient extends Component {
     service.fuzhen.deldiagnosis(id).then(() => {
 
       modal('info', '删除诊断信息成功');
-      // service.fuzhen.getdiagnosis().then(res => this.setState({
-      //     diagnosis: res.object.list
-      // }));
+      service.fuzhen.getdiagnosis().then(res => this.setState({
+          diagnosis: res.object.list
+      }));
 
       // 使用mock时候才用这个
-      const { diagnosis } = this.state;
-      this.setState({
-        diagnosis: diagnosis.filter(i => i.id !== id)
-      });
+      // const { diagnosis } = this.state;
+      // this.setState({
+      //   diagnosis: diagnosis.filter(i => i.id !== id)
+      // });
     })
   }
 
@@ -201,34 +204,35 @@ export default class Patient extends Component {
     // 诊断小弹窗操作
     const content = (item, i) => {
       const handleHighriskmark = () => {
-        // let highriskmark = item.highriskmark == 1 ? '' : 1;
-        // service.fuzhen.updateHighriskmark(item.id, highriskmark).then(() => {
-        //   service.fuzhen.getdiagnosis().then(res => this.setState({
-        //     diagnosis: res.object.list
-        //   }))
-        // })
+        let highriskmark = item.highriskmark == 1 ? 0 : 1;
+        service.fuzhen.updateHighriskmark(item.id, highriskmark).then(() => {
+          service.fuzhen.getdiagnosis().then(res => this.setState({
+            diagnosis: res.object.list
+          }))
+        })
 
-        //高危
-        item.highriskmark = !item.highriskmark;
-        this.setState({ diagnosis: diagnosis });
+        //mock
+        // item.highriskmark = !item.highriskmark;
+        // this.setState({ diagnosis: diagnosis });
       }
 
       const handleVisibleChange = fx => () => {
-        // service.fuzhen.updateSort(item.id, fx).then(() => {
-        //   service.fuzhen.getdiagnosis().then(res => this.setState({
-        //     diagnosis: res.object.list
-        //   }))
-        // })
+        service.fuzhen.updateSort(item.id, fx).then(() => {
+          service.fuzhen.getdiagnosis().then(res => this.setState({
+            diagnosis: res.object.list
+          }))
+        })
         
-        diagnosis[i] = diagnosis[i + fx];
-        diagnosis[i + fx] = item;
-        this.setState({ diagnosis: diagnosis });
+        //mock
+        // diagnosis[i] = diagnosis[i + fx];
+        // diagnosis[i + fx] = item;
+        // this.setState({ diagnosis: diagnosis });
       }
       return (
         <div>
           <p className="pad-small"><a className="font-16" onClick={handleHighriskmark}>高危诊断</a></p>
-          {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange(-1)}>上 移</a></p> : null}
-          {i + 1 < diagnosis.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange(1)}>下 移</a></p> : null}
+          {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('up')}>上 移</a></p> : null}
+          {i + 1 < diagnosis.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>下 移</a></p> : null}
         </div>
       );
     }
@@ -275,7 +279,7 @@ export default class Patient extends Component {
               <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                 <div title={title(item)}>
                   <span className="font-12">{i + 1}、</span>
-                  <span className={item.highriskmark ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
+                  <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
                 </div>
               </Popover>
               <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => delConfirm(item)} />
@@ -319,11 +323,7 @@ export default class Patient extends Component {
   }
 
   renderLeft() {
-    const { loading, jianyanReport, planList, collapseActiveKey } = this.state;
-
-    console.log(planList, 666);
-    console.log(planList.length, 777);
-
+    const { loading, jianyanReport, planData, collapseActiveKey } = this.state;
     /**
    * 检验报告结果
    */
@@ -343,14 +343,14 @@ export default class Patient extends Component {
      * 诊疗计划管理
      */
     const renderPlanModal = () => {
-      const { isShowPlanModal, planList } = this.state;
+      const { isShowPlanModal, planData } = this.state;
       const handleClick = (item) => {
         this.setState({isShowPlanModal: false})
       }
       const initTable = (data) => tableRender(baseData.planKey(), data, { buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this)});
       return (
         <Modal title="诊疗计划" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-          {initTable(planList)}
+          {initTable(planData)}
         </Modal>
       )
     }
@@ -368,8 +368,8 @@ export default class Patient extends Component {
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
             <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>
-              {planList.length>0 ? planList.map((item, index) => (
-                <Timeline.Item key={`planList-${item.id || index}-${Date.now()}`}>
+              {planData.length>0 ? planData.map((item, index) => (
+                <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
                   <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
                   <p className="font-16">{item.event}</p>
                 </Timeline.Item>
@@ -398,8 +398,10 @@ export default class Patient extends Component {
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
           </div>
         </Modal>
-        <div className="clearfix">
+        <div className="clearfix">   
           {recentRvisitAll && recentRvisitAll.length > 2 ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={() => this.setState({ recentRvisitShow: true })}>更多产检记录</Button> : <br />}
+          {/* <Button size="small" type="dashed" className="margin-TB-mid margin-R-1 pull-right">删除</Button> */}
+          {/* <Button size="small" type="dashed" className="margin-TB-mid margin-R-1 pull-right">添加</Button> */}
         </div>
       </div>
     );

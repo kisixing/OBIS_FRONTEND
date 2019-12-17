@@ -39,7 +39,7 @@ export default class FuzhenForm extends Component {
 
     this.renderChart = renderChart();
     service.fuzhen.treatTemp().then(res => this.setState({
-      treatTemp: res
+      treatTemp: res.object
     }));
   }
 
@@ -97,6 +97,7 @@ export default class FuzhenForm extends Component {
               span: 18, rows: [
                 {
                   label: (check('dtrz')||check('strz'))?'胎1':'', columns: [
+                    { name: 'wz1[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
                     { name: 'tx1(bmp)[胎心]', type: 'input', span: 8 },
                     { name: 'xl1[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
                     { name: 'ckfuzh[下肢水肿]', type: 'select', span: 8, showSearch:true, options: baseData.ckfuzhOptions}
@@ -104,12 +105,14 @@ export default class FuzhenForm extends Component {
                 },
                 {
                   label: '胎2', filter:()=>check('dtrz,strz'), columns: [
+                    { name: 'wz2[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
                     { name: 'tx2(bmp)[胎心]', type: 'input', span: 8 },
                     { name: 'xl2[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
                   ]
                 },
                 {
                   label: '胎3', filter:()=>check('strz'), columns: [
+                    { name: 'wz3[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
                     { name: 'tx3(bpm)[胎心]', type: 'input', span: 8 },
                     { name: 'xl3[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
                   ]
@@ -127,42 +130,52 @@ export default class FuzhenForm extends Component {
         },
         {
           filter:()=>check('gbd'), label:'胰岛素方案', columns:[
-            { name: 'riMo(U)[早]', span: 6, type: [{type:'input',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}]},
-            { name: 'riNo(U)[中]', span: 6,type: [{type:'input',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}] },
-            { name: 'riEv(U)[晚]', span: 6,type: [{type:'input',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}] },
-            { name: 'riSl(U)[睡前]', span: 6,type: [{type:'input',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}] },
+            { name: 'riMo(U)[早]', span: 6, type: [{type:'input( )',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}]},
+            { name: 'riNo(U)[中]', span: 6,type: [{type:'input( )',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}] },
+            { name: 'riEv(U)[晚]', span: 6,type: [{type:'input( )',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}] },
+            { name: 'riSl(U)[睡前]', span: 6,type: [{type:'input( )',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}] },
           ]
         },
         {
           filter:()=>check('hypertension'), columns: [
             {
-              label: '尿蛋白', span: 12, columns: [
+              label: '尿蛋白', span: 10, columns: [
                 { name: 'upState[定性]', type: 'input', span: 12 },
                 { name: 'upDosage24h[24H定量]', type: 'input', span: 11 },
               ]
             },
             {
-              label: '用药方案', span: 12, filter:()=>!check('chd'), columns: [
-                { name: 'medicineId[药物]', type: 'input', span: 12 },
-                { name: 'medicineDosage form-control[剂量]', type: 'input', span: 11 },
+              label: '用药方案', span: 14, filter:()=>!check('chd'), columns: [
+                { name: 'medicineId[药物]', type: 'input', span: 8 },
+                { name: 'medicineTimes[频率]', type: 'select', span: 8, options: baseData.yyfaOptions },
+                { name: 'medicineDosage form-control[剂量]', type: 'input', span: 8 },
               ]
             },
           ]
         },
         {
-          filter:()=>check('chd'), columns: [
-            { name: 'heartRate(次/分)[心率]', type: 'input', span: 6 },
-            { 
-              label: '用药方案', span: 6, rows:[
-                { name: 'upStateName[药物]', type: 'input' },
-                { name: 'upStateCount[剂量]', type: 'input' },
-              ] 
+          filter:()=>check('chd'), rows: [
+            {
+              columns: [
+                { name: 'heartRate(次/分)[心率]', type: 'input', span: 6 },
+                { 
+                  label: '用药方案', span: 18, columns:[
+                    { name: 'upStateName[药物]', span: 6, type: 'input' },
+                    { name: 'medicineTimes[频率]', span: 6, type: 'select', options: baseData.yyfaOptions },
+                    { name: 'upStateCount[剂量]', span: 6, type: 'input' },
+                  ] 
+                }
+              ]
             },
-            { name: 'examination[化验]', type: 'textarea', span: 12 }
+            {
+              columns: [
+                { name: 'examination[化验]', type: 'textarea', span: 12 }
+              ]
+            }
           ]
         },
         {
-          label: '超声胎1', span: 3, filter:()=>check('dtrz,strz'), columns: [
+          label: '胎1超声', span: 3, filter:()=>check('dtrz,strz'), columns: [
             { name: 'tetz1(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teafv1(MM)[AVF]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teqxl1[脐血流]', type: 'input', className: 'childLabel', span: 6 },
@@ -170,7 +183,7 @@ export default class FuzhenForm extends Component {
           ]
         },
         {
-          label: '超声', span: 3, filter:()=>check('dtrz,strz'), columns: [
+          label: '胎2超声', span: 3, filter:()=>check('dtrz,strz'), columns: [
             { name: 'tetz2(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teafv2(MM)[AVF]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teqxl2[脐血流]', type: 'input', className: 'childLabel', span: 6 },
@@ -178,7 +191,7 @@ export default class FuzhenForm extends Component {
           ]
         },
         {
-          label: '超声', span: 3, filter:()=>check('strz'), columns: [
+          label: '胎3超声', span: 3, filter:()=>check('strz'), columns: [
             { name: 'tetz3(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teafv3(MM)[AVF]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teqxl3[脐血流]', type: 'input', className: 'childLabel', span: 6 },
@@ -199,11 +212,11 @@ export default class FuzhenForm extends Component {
         {
           columns:[
             { 
-              name: 'nextRvisit[下次复诊]',span: 16, type: [
-                'date',
-                {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
+              name: 'nextRvisit[下次复诊]',span: 16, type: [          
                 {type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions},
-                {type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions}
+                {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
+                'date',
+                {type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions},
               ]
             }
           ]
