@@ -90,7 +90,7 @@ export default class Patient extends Component {
                         }
                 } else if (tab.key === 'tab-7') {
                     tab.entity = res.object.lis
-                    tab.entity['ogtt'] = { 'GDM': { 'input0': "1", 'input1': "2", 'input3': "3" } }
+                    tab.entity['ogtt'] = { 'GDM': { 'input0': "1", 'input1': "2", 'input2': "3" } }
                     tab.entity['vfdp'] = { "未查": {} }
                 } else {
                     tab.entity = res.object;
