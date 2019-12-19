@@ -49,7 +49,7 @@ export default class Patient extends Component {
     activeTab(step) {
         const { tabs } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
-        if (!tab.init) {
+        // if (!tab.init) {
             service.shouzhen.getForm(tab.key).then(res => {
                 tab.init = true;
                 if (tab.key === 'tab-0') {
@@ -125,6 +125,7 @@ export default class Patient extends Component {
                     //tab.entity['vfdp'] = { "未查": {} }
                 } else if (tab.key === 'tab-8') {
                     tab.entity = res.object.checkUp
+                    tab.entity.ckshrinkpressure = (typeof tab.entity.ckshrinkpressure === 'object') ? tab.entity.ckshrinkpressure : [tab.entity.ckshrinkpressure, tab.entity.ckshrinkpressure];
                 } else if(tab.key === 'tab-9'){
                     tab.entity = res.object.specialityCheckUp
                 }
@@ -132,14 +133,20 @@ export default class Patient extends Component {
                     tab.entity = res.object;
                 }
                 console.log(tab.key, tab.entity);
-                this.setState({ step });
+                this.setState({ step }, () => {
+                    const form = document.querySelector('.shouzhen');
+                    fireForm(form, 'valid');
+                });
             }).catch(() => { // TODO: 仅仅在mock时候用
                 tab.init = true;
-                this.setState({ step });
+                this.setState({ step }, () => {
+                    const form = document.querySelector('.shouzhen');
+                    fireForm(form, 'valid');
+                });
             });
-        } else {
-            this.setState({ step });
-        }
+        // } else {
+        //     this.setState({ step });
+        // }
     }
 
     handleChange(e, { name, value, valid }, entity) {

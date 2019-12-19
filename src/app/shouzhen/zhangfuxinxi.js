@@ -10,7 +10,7 @@ export default class extends Component {
   }
 
   config() {
-    const isMY = data => data!=='没有' && data.value!=='没有';
+    const isMY = data => data && data!=='没有' && data.value!=='没有';
     return {
       rows: [
         {

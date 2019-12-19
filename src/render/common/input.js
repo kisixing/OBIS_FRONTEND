@@ -51,6 +51,11 @@ export function input$x({name, onChange, value, width, ...props}, count = ''){
   } else {
     placeholders = count.split('&');
   }
+  
+  if (typeof data !== 'object') {
+    return <strong>{name} 的数据应该为数组或类数组，而当前是 {data}</strong>;
+  }
+
   return (
     <div className="inputxxx">
       {placeholders.map((v,index)=>(

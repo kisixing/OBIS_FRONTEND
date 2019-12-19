@@ -106,7 +106,7 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data1
   const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
   const span = Math.floor(count ? (24/count) : Math.max(6, 24 / (optionList.length || 1)));
 
-  const data = data1.$data || {};
+  const data = (typeof data1.$data === 'object' ? data1.$data : {}) || {};
   const toData = () => {
     var result = Object.keys(data).filter(i => !/^\$/.test(i)).map(i => ({label:i, value: data[i], $value: data[`$${i}`]}));
     result.$data = data;
