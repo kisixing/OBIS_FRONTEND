@@ -44,13 +44,11 @@ export default {
      * 删除诊断列表的数据
      */
     deldiagnosis: function(id){
-        return myAxios.delete('/outpatientWriteRestful/deldiagnosis',{userid: "6", diagnosiss: [{
-            id: id
-        }]});
+        let data = {"id": id};
+        return myAxios.put('/outpatientWriteRestful/deldiagnosis?id=' + id, {});
     },
-
     /**
-     * 诊疗计划
+     * 诊疗计划（最近两条记录）
      */
     getDiagnosisPlanData: function(){
         return this.userId().then(r => myAxios.get('/outpatientRestful/getDiagnosisPlanData?id=' + r.object.userid));
@@ -123,7 +121,7 @@ export default {
      * 获取pacs胎儿生长曲线数据
      */
     getPacsGrowth: function(){
-        return this.userId().then(r => myAxios.get('outpatientRestful/getPacsGrowth?mcno=05781816'));
+        return this.userId().then(r => myAxios.get('/outpatientRestful/getPacsGrowth?mcno=05781816'));
     },
 
     /**

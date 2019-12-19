@@ -166,6 +166,10 @@ export const tableKey = () => [
  */
 export const planKey = () => [
 	{
+		title: 'No',
+		key: 'id',
+	},
+	{
 		title: '时间',
 		key: 'time',
 	},
@@ -173,18 +177,50 @@ export const planKey = () => [
 		title: '孕周',
 		key: 'gestation',
 	},
-	// {
-	// 	title: '产检项目',
-	// 	key: '',
-	// },
+	{
+		title: '产检项目',
+		key: 'item',
+	},
 	{
 		title: '提醒事件',
 		key: 'event',
+	}
+].map(i=>({type:'input',...i}));
+
+/**
+ * 管理诊疗组表头
+ */
+export const managePlanKey = () => [
+	{
+		title: '编号',
+		key: 'id',
 	},
-	// {
-	// 	title: '提醒状态',
-	// 	key: '',
-	// },
+	{
+		title: '诊疗计划组',
+		key: 'item',
+	},
+	{
+		title: '内容',
+		key: 'content',
+	}
+].map(i=>({type:'input',...i}));
+
+/**
+ * 新建诊疗组表头
+ */
+export const newPlanKey = () => [
+	{
+		title: '编号',
+		key: 'id',
+	},
+	{
+		title: '孕周',
+		key: 'time',
+	},
+	{
+		title: '提醒事件',
+		key: 'event',
+	}
 ].map(i=>({type:'input',...i}));
 
 /**
@@ -265,3 +301,19 @@ export const ckappointmentAreaOptions = [
 	{ label: '上午', describe:'上', value: '1' },
 	{ label: '下午', describe:'下', value: '2' },
 ];
+/**
+ * 产检项目
+ */
+export const cjOptions = [
+	{ label: '胎监', value: '1' },
+	{ label: '尿蛋白', value: '2' },
+];
+/**
+ * 胎监选项
+ */
+export const tjOptions = [
+	{ label: '有反应', value: '1' },
+	{ label: '可疑，复查', value: '2' },
+	{ label: '异常，入院治疗', value: '3' },
+];
+
