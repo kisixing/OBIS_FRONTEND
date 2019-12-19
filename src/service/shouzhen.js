@@ -47,9 +47,9 @@ export default {
      */
     deldiagnosis: function(id){
         console.log(id);
-        return myAxios.delete('/outpatientWriteRestful/deldiagnosis',{userid: "6",diagnosiss: [{
+        return myAxios.delete('/outpatientWriteRestful/deldiagnosis',{data:{userid: "6",diagnosiss: [{
             id: id
-        }]}
+        }]}}
         );
     }
 };

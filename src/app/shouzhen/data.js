@@ -38,12 +38,18 @@ export const jiuOptions = toOptions('没有,白酒,啤酒,红酒,其他');
 /**
  * 血型O,A,B,AB
  */
-export const xuexingOptions = toOptions('O,A,B,AB');
+export const xuexingOptions = [{ label: 'O', value: 'O' },
+{ label: 'A', value: 'A' },
+{ label: 'B', value: 'B' },
+{ label: 'AB', value: 'AB' }];
+//toOptions('O,A,B,AB');
 
 /**
  * 血型RH(+),RH(-)
  */
-export const xuexing2Options = toOptions('RH(+),RH(-)');
+export const xuexing2Options = [{ label: 'RH(+)', value: 'RH(+)' },
+{ label: 'RH(-)', value: 'RH(-)' }];
+//toOptions('RH(+),RH(-)');
 
 /**
  * 一般症状

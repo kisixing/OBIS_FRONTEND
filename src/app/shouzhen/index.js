@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Tabs, Button, Row, Col } from 'antd';
+import { Tabs, Button, Row, Col,message  } from 'antd';
 
 import Page from '../../render/page';
 import { fireForm } from '../../render/form';
@@ -74,9 +74,9 @@ export default class Patient extends Component {
                 else if (tab.key === 'tab-4') {
                     tab.entity = res.object.menstruationMarriage
                     tab.entity['maritalHistory'] = JSON.parse(tab.entity.maritalHistory);
-                    //tab.entity['userjinqjh'] = JSON.parse(tab.entity.userjinqjh);
+                    tab.entity['userjinqjh'] = JSON.parse(tab.entity.userjinqjh);
                     tab.entity['historyOfInfertility'] = JSON.parse(tab.entity.historyOfInfertility);
-                    //tab.entity['yjtongj'] = JSON.parse(tab.entity.yjtongj);
+                    tab.entity['yjtongj'] = JSON.parse(tab.entity.yjtongj);
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-5') {
                     tab.entity ={"preghis": [{
@@ -97,12 +97,27 @@ export default class Patient extends Component {
                         }
                 } else if (tab.key === 'tab-6') {
                     tab.entity = res.object.biography
-                    tab.entity['ogtt'] = { 'GDM': { 'input0': "1", 'input1': "2", 'input2': "3" } }
-                    tab.entity['vfdp'] = { "未查": {} }
+                    //tab.entity['ogtt'] = { 'GDM': { 'input0': "1", 'input1': "2", 'input2': "3" } }
+                    tab.entity['vfdp'] = {}
                 } else if (tab.key === 'tab-7') {
-                    tab.entity = res.object.lis
-                    tab.entity['ogtt'] = { 'GDM': { 'input0': "1", 'input1': "2", 'input2': "3" } }
-                    tab.entity['vfdp'] = { "未查": {} }
+                    tab.entity = res.object.lis;
+                    tab.entity['aids'] = JSON.parse(tab.entity.aids);
+                    tab.entity['ogtt'] = JSON.parse(tab.entity.ogtt);
+                    tab.entity['thalassemia'] = JSON.parse(tab.entity.thalassemia);
+                    tab.entity['husbandThalassemia'] = JSON.parse(tab.entity.husbandThalassemia);
+                    tab.entity['husbandCkxuex'] = {};//JSON.parse(tab.entity.husbandCkxuex);
+                    tab.entity['husbandRh'] = {};//JSON.parse(tab.entity.husbandRh);
+                    tab.entity['ckxuex'] = JSON.parse(tab.entity.ckxuex);
+                    tab.entity['ckrh'] = {};//JSON.parse(tab.entity.ckrh);
+                    tab.entity['hbsAg'] = JSON.parse(tab.entity.hbsAg);
+                    tab.entity['add_FIELD_GBS'] = {};//JSON.parse(tab.entity.add_FIELD_GBS);
+                    tab.entity['add_FIELD_ndb'] = {};//JSON.parse(tab.entity.add_FIELD_ndb);
+                    tab.entity['add_FIELD_hcvAb_RNA'] = {};//JSON.parse(tab.entity.add_FIELD_hcvAb_RNA);
+                    tab.entity['rpr'] = {};;
+                    tab.entity['hcvAb'] = {};//JSON.parse(tab.entity.hcvAb);
+                    tab.entity['add_FIELD_hcvAb_RNA'] = {};//JSON.parse(tab.entity.add_FIELD_hcvAb_RNA);
+                    console.log(tab.entity);
+                    //tab.entity['vfdp'] = { "未查": {} }
                 } else if (tab.key === 'tab-8') {
                     tab.entity = res.object.checkUp
                 } else if(tab.key === 'tab-9'){
@@ -169,6 +184,7 @@ export default class Patient extends Component {
                 if (this.change) {
                     console.log('handleSave', key);
                     service.shouzhen.saveForm(tab.key, tab.entity).then(() => {
+                        message.success('信息保存成功',3);
                         this.activeTab(key || next.key);
                     }, () => { // TODO: 仅仅在mock时候用
                         this.activeTab(key || next.key);

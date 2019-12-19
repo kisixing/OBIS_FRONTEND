@@ -15,16 +15,16 @@ export default class extends Component{
       rows: [
         {
           columns:[
-            {name:'vfxx[女方血型]', icon:'female-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
-            {name:'vfxx2[]', type: 'select',span:2, options: baseData.xuexing2Options},
+            {name:'ckxuex[女方血型]', icon:'female-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
+            {name:'chrh[]', type: 'select',span:2, options: baseData.xuexing2Options},
             {span:2},
-            {name:'nfxx[男方血型]', icon:'male-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
-            {name:'nfxx2[]', type: 'select',span:2, options: baseData.xuexing2Options},
+            {name:'husbandCkxuex[男方血型]', icon:'male-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
+            {name:'husbandRh[]', type: 'select',span:2, options: baseData.xuexing2Options},
           ]
         },
         {
           columns:[
-            {name:'ygldb[乙肝两对半]', type:'checkinput-5',valid: 'required', options: baseData.ygOptions,radio:true,span:15}
+            {name:'hbsAg[乙肝两对半]', type:'checkinput-5',valid: 'required', options: baseData.ygOptions,radio:true,span:15}
           ]
         },
         {
@@ -38,17 +38,17 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'bggt[丙肝抗体]', type:'checkinput-5',valid: 'required', options: baseData.yywOptions,radio:true,span:15}
+            {name:'hcvAb[丙肝抗体]', type:'checkinput-5',valid: 'required', options: baseData.yywOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
-            {name:'bgrna[丙肝RNA]', type:'checkinput-5', valid: 'required', options: baseData.yywOptions,radio:true,span:15}
+            {name:'add_FIELD_hcvAb_RNA[丙肝RNA]', type:'checkinput-5', valid: 'required', options: baseData.yywOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
-            {name:'md[梅毒]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.mdOptions,span: 15}
+            {name:'rpr[梅毒]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.mdOptions,span: 15}
           ]
         },
         {
@@ -63,31 +63,31 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'vfdp[女方地贫]', icon:'female-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
+            {name:'thalassemia[女方地贫]', icon:'female-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'nfdp[男方地贫]', icon:'male-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
+            {name:'husbandThalassemia[男方地贫]', icon:'male-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'ndb[尿蛋白]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dbnOptions,span:15}
+            {name:'add_FIELD_ndb[尿蛋白]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dbnOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'gbs[GBS]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:15}
+            {name:'add_FIELD_GBS[GBS]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'hb(g/L)[Hb]', type:'input', span:5},
+            {name:'add_FIELD_lis_hb(g/L)[Hb]', type:'input', span:5},
             {span:1},
-            {name:'mcv(fL)[MCV]',type:'input', span:5},
+            {name:'add_FIELD_lis_mcv(fL)[MCV]',type:'input', span:5},
             {span:1},
-            {name:'plt(x10^9/L)[PLT]', type:'input', span:5},
+            {name:'add_FIELD_lis_plt(x10^9/L)[PLT]', type:'input', span:5},
           ]
         },
         {
