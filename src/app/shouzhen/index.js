@@ -54,23 +54,30 @@ export default class Patient extends Component {
                 tab.init = true;
                 if (tab.key === 'tab-0') {
                     tab.entity = res.object.gravidaInfo
-                    tab.entity['useridtype'] = { label: '身份证', value: '身份证' };
+                    tab.entity['useridtype'] = JSON.parse(res.object.gravidaInfo.useridtype)
                 } else if (tab.key === 'tab-1') {
-                    tab.entity['add_FIELD_husband_drink'] = { "0": "没有","1":"29"}
+                    tab.entity = res.object.husbandInfo
+                    tab.entity['add_FIELD_husband_drink'] = { "0": tab.entity['add_FIELD_husband_drink_type'],"1":tab.entity['add_FIELD_husband_drink']}
+                    tab.entity['add_FIELD_husband_useridtype'] = JSON.parse(res.object.husbandInfo.add_FIELD_husband_useridtype);
+                    console.log(tab.entity);
                 } else if (tab.key === 'tab-2') {
                     tab.entity = res.object.pregnantInfo
-                    tab.entity['ckyibzhzh'] = JSON.parse(res.object.pregnantInfo.ckyibzhzh);
+                    tab.entity['ckyibzhzh'] = JSON.parse(tab.entity.ckyibzhzh);
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-3'){
-                    tab.entity['xzp'] = {
-                        "红细胞": {"input0'": "2019年", "input1'": "广州", "input2'": "测"},
-                        "血小板": {"input0'": "2018", "input1'": "上海", "input2'": "测试2"},
-                        "血浆": {"input0'": "忘记了", "input1'": "未知", "input2'": "未知"}
-                        }                      
+                    tab.entity = res.object.hisInfo
+                    tab.entity['bsguomin'] = JSON.parse(tab.entity.bsguomin);    
+                    tab.entity['bsjibing'] = JSON.parse(tab.entity.bsjibing);    
+                    tab.entity['bsshoushu'] = JSON.parse(tab.entity.bsshoushu);    
+                    tab.entity['hobtabp'] = JSON.parse(tab.entity.hobtabp);                 
                 }
                 else if (tab.key === 'tab-4') {
                     tab.entity = res.object.menstruationMarriage
-                    tab.entity['yjtongj'] = { "偶尔": "" }
+                    tab.entity['maritalHistory'] = JSON.parse(tab.entity.maritalHistory);
+                    //tab.entity['userjinqjh'] = JSON.parse(tab.entity.userjinqjh);
+                    tab.entity['historyOfInfertility'] = JSON.parse(tab.entity.historyOfInfertility);
+                    //tab.entity['yjtongj'] = JSON.parse(tab.entity.yjtongj);
+                    console.log(tab.entity);
                 } else if (tab.key === 'tab-5') {
                     tab.entity ={"preghis": [{
                         "id":1,
@@ -88,11 +95,20 @@ export default class Patient extends Component {
                                 "chux": true,
                                 "abortion": ""}]
                         }
+                } else if (tab.key === 'tab-6') {
+                    tab.entity = res.object.biography
+                    tab.entity['ogtt'] = { 'GDM': { 'input0': "1", 'input1': "2", 'input2': "3" } }
+                    tab.entity['vfdp'] = { "未查": {} }
                 } else if (tab.key === 'tab-7') {
                     tab.entity = res.object.lis
                     tab.entity['ogtt'] = { 'GDM': { 'input0': "1", 'input1': "2", 'input2': "3" } }
                     tab.entity['vfdp'] = { "未查": {} }
-                } else {
+                } else if (tab.key === 'tab-8') {
+                    tab.entity = res.object.checkUp
+                } else if(tab.key === 'tab-9'){
+                    tab.entity = res.object.specialityCheckUp
+                }
+                else {
                     tab.entity = res.object;
                 }
                 console.log(tab.key, tab.entity);

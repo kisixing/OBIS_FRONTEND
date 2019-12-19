@@ -17,14 +17,17 @@ export default {
      * 保存表单数据 tab对应首诊下面的tab菜单，从tab-0开始
      */
     saveForm : function(tab, entity){
-        let type = '';
         let data = {};
-        if(tab === 'tab-0'){
-            type='gravidaInfo'
+        let uri = 'udpateDoc';
+        if(tab === 'tab-2'||tab === 'tab-7'||tab === 'tab-8'||tab === 'tab-9'){
+            uri='saveivisit'
         }
         data = entity
         console.log(entity)
-        return this.userId().then(r => myAxios.post(`/outpatienttest/udpateDoc?id=${r.object.userid}&style=${type}`, data));
+        var arr2 = JSON.stringify(data).replace(/add_/g, "ADD_");
+        console.log(arr2) // [{"leftText":"2019-05","value":"9999"},{"leftText":"2019-06","value":"8888"}]
+        data=JSON.parse(arr2) 
+        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid,...data}));
     },
     /**
      * 诊断处理的诊断列表
