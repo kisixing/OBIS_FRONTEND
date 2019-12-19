@@ -34,12 +34,22 @@ export default class FuzhenForm extends Component {
       entity: { ...baseData.formEntity },
       error: {},
       treatTemp: [],
-      modalState: {}
+      modalState: {},
+      getPacsGrowth: {},
+      getbmi: []
     }
 
     this.renderChart = renderChart();
     service.fuzhen.treatTemp().then(res => this.setState({
       treatTemp: res.object
+    }));
+
+    service.fuzhen.getPacsGrowth().then(res => this.setState({
+      getPacsGrowth: res.object
+    }));
+
+    service.fuzhen.getbmi().then(res => this.setState({
+      getbmi: res.list
     }));
   }
 
@@ -250,6 +260,7 @@ export default class FuzhenForm extends Component {
   handleChange(e, { name, value, valid }) {
     const { entity, error } = this.state;
     const data = { [name]: value };
+    console.log(data)
     const errorData = { [name]: valid };
     switch (name) {
       case 'checkdate':
@@ -304,7 +315,9 @@ export default class FuzhenForm extends Component {
     }
 
     return (
-      <Modal title="修订预产期" width={600} closable visible={!!openYCQ} onCancel={e => handelClick(false)} onOk={e => handelClick(true)}>
+      <Modal className="yuModal" title={<span><Icon type="info-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
+             width={600} closable visible={!!openYCQ} onCancel={e => handelClick(false)} onOk={e => handelClick(true)}>
+        <span>是否修改孕产期：</span>
         <DatePicker defaultValue={info.gesmoc} value={ycq} onChange={(e,v)=>{this.setState({ycq:v})}}/>
       </Modal>
     );
@@ -411,7 +424,7 @@ export default class FuzhenForm extends Component {
         {formRender(entity, this.formConfig(), this.handleChange.bind(this))}
         <Button className="pull-right blue-btn bottom-btn save-btn" type="ghost" onClick={() => this.handleSave(document.querySelector('.fuzhen-form'))}>保存</Button>
         <Button className="pull-right blue-btn bottom-btn" type="ghost" onClick={() => this.handleSave(document.querySelector('.fuzhen-form'), "open")}>保存并开立医嘱</Button>
-        {/*this.renderQX()*/}
+        {/* {this.renderQX()} */}
         {this.renderTreatment()}
         {this.renderYCQ()}
         {this.renderModal()}

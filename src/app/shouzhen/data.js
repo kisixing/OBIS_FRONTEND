@@ -38,12 +38,18 @@ export const jiuOptions = toOptions('没有,白酒,啤酒,红酒,其他');
 /**
  * 血型O,A,B,AB
  */
-export const xuexingOptions = toOptions('O,A,B,AB');
+export const xuexingOptions = [{ label: 'O', value: 'O' },
+{ label: 'A', value: 'A' },
+{ label: 'B', value: 'B' },
+{ label: 'AB', value: 'AB' }];
+//toOptions('O,A,B,AB');
 
 /**
  * 血型RH(+),RH(-)
  */
-export const xuexing2Options = toOptions('RH(+),RH(-)');
+export const xuexing2Options = [{ label: 'RH(+)', value: 'RH(+)' },
+{ label: 'RH(-)', value: 'RH(-)' }];
+//toOptions('RH(+),RH(-)');
 
 /**
  * 一般症状
@@ -230,23 +236,23 @@ export const gwwjjOptions = toOptions('未做检查');
 export const shoushushiColumns = [
   {
 		title: '手术名称',
-		key: 'checkdate',
+		key: 'name',
 		type: 'input'
 	},
 	{
 		title: '手术日期',
-		key: 'ckweek',
+		key: 'date',
 		type: 'date',
 		mode:"ym"
 	},
 	{
 		title: '手术医院',
-		key: 'kg',
+		key: 'hospital',
 		type: 'input'
   },
   {
 		title: '术后病理',
-		key: 'shbl',
+		key: 'postoperativePathology',
 		type: 'input'
 	},
 ]
@@ -273,7 +279,7 @@ export const pregnanciesColumns = [
 		children:[
 			{
 				title: '自然',
-				key: 'ultrasound1_1',
+				key: 'zir',
 				type: 'input'
 			},
 			{
@@ -283,30 +289,30 @@ export const pregnanciesColumns = [
 			},
 			{
 				title: '人工',
-				key: 'ultrasound1_3',
+				key: 'reng',
 				type: 'input'
 			}
 		]
     },
 	{
 		title: '引产',
-		key: 'yc',
+		key: 'yinch',
 		type: 'input'
 	},
 	{
 		title: '死胎',
-		key: 'st',
+		key: 'sit',
 		type: 'checkbox',
 		holdeditor: true
 	},
 	{
 		title: '早产',
-		key: 'zc',
+		key: 'zaoch',
 		type: 'input'
 	},
 	{
 		title: '足月产',
-		key: 'zyc',
+		key: 'zuych',
 		type: 'input'
 	},
 	{
@@ -314,13 +320,13 @@ export const pregnanciesColumns = [
 		children:[
 			{
 				title: '顺产',
-				key: 'ydc',
+				key: 'shunch',
 				type: 'checkbox',
 				holdeditor: true
 			},
 			{
 				title: '手术产式',
-				key: 'shshu',
+				key: 'shouShuChanType',
 				type: 'input'
 			}
 		]
@@ -330,13 +336,13 @@ export const pregnanciesColumns = [
 		children:[
 			{
 				title: '出血',
-				key: 'chux',
+				key: 'chuxue',
 				type: 'checkbox',
 				holdeditor: true
 			},
 			{
 				title: '产褥热',
-				key: 'char',
+				key: 'chanrure',
 				type: 'checkbox',
 				holdeditor: true
 			}
@@ -344,7 +350,7 @@ export const pregnanciesColumns = [
 	},
 	{
 		title: '并发症',
-		key: 'bfz',
+		key: 'bingfzh',
 		type: 'input',
 		width: '200',
 	},
@@ -353,7 +359,7 @@ export const pregnanciesColumns = [
 		children:[
 			{
 				title: '性别',
-				key: 'xb',
+				key: 'xingb',
 				type: 'select',
 				showSearch:true, 
 				options: [
@@ -364,7 +370,7 @@ export const pregnanciesColumns = [
 			},
 			{
 				title: '生存',
-				key: 'sc',
+				key: 'child',
 				type: 'select',
 				showSearch:true, 
 				options: [
@@ -375,22 +381,22 @@ export const pregnanciesColumns = [
 			},
 			{
 				title: '死亡时间',
-				key: 'sw',
+				key: 'siw',
 				type: 'input'
 			},
 			{
 				title: '死亡原因',
-				key: 'swr',
+				key: 'deathCause',
 				type: 'input'
 			},
 			{
 				title: '后遗症',
-				key: 'hyz',
+				key: 'sequela',
 				type: 'input'
 			},
 			{
 				title: '出生体重(kg)',
-				key: 'cstz',
+				key: 'tizh',
 				type: 'input'
 			}
 		]

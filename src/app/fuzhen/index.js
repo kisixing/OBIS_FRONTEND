@@ -3,9 +3,11 @@ import { Select, Button, Popover, Input, Tabs, Tree, Modal, Icon, Spin, Timeline
 
 import tableRender from '../../render/table';
 import FuzhenForm from './form';
+import FuzhenTable from './table';
 import Page from '../../render/page';
 import service from '../../service';
 import * as baseData from './data';
+import * as util from './util';
 
 import "../index.less";
 import "./index.less";
@@ -102,7 +104,11 @@ export default class Patient extends Component {
     
     service.fuzhen.getRvisitPage().then(res => this.setState({
       recentRvisitAll: res.object.list
-    })).then(() => this.setState({ loadingTable: false }));
+    }));
+
+    service.fuzhen.getDiagnosisPlanData().then(res => {
+      
+    })
 
     service.fuzhen.getRecentRvisitList().then(res => 
       this.setState({
@@ -137,12 +143,6 @@ export default class Patient extends Component {
       service.fuzhen.getdiagnosis().then(res => this.setState({
           diagnosis: res.object.list
       }));
-
-      // 使用mock时候才用这个
-      // const { diagnosis } = this.state;
-      // this.setState({
-      //   diagnosis: diagnosis.filter(i => i.id !== id)
-      // });
     })
   }
 
@@ -210,10 +210,6 @@ export default class Patient extends Component {
             diagnosis: res.object.list
           }))
         })
-
-        //mock
-        // item.highriskmark = !item.highriskmark;
-        // this.setState({ diagnosis: diagnosis });
       }
 
       const handleVisibleChange = fx => () => {
@@ -222,11 +218,6 @@ export default class Patient extends Component {
             diagnosis: res.object.list
           }))
         })
-        
-        //mock
-        // diagnosis[i] = diagnosis[i + fx];
-        // diagnosis[i + fx] = item;
-        // this.setState({ diagnosis: diagnosis });
       }
       return (
         <div>
@@ -347,11 +338,21 @@ export default class Patient extends Component {
       const handleClick = (item) => {
         this.setState({isShowPlanModal: false})
       }
-      const initTable = (data) => tableRender(baseData.planKey(), data, { buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this)});
+      const addRecentRvisit = (planEntity) => {
+        service.fuzhen.addRecentRvisit(planEntity).then(
+          service.fuzhen.getRecentRvisitList().then(res => 
+            this.setState({
+              planData: res.object
+          }))
+        )
+      }
+      // const initTable = (data) => tableRender(baseData.planKey(), data, { pagination: false, buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this)});
       return (
-        <Modal title="诊疗计划" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-          {initTable(planData)}
+        planData && planData.length > 0 ?
+        <Modal width="80%" title="诊疗计划" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+          <FuzhenTable planData={planData} onReturn={(param) => this.setState({isShowPlanModal: param})} addRecentRvisit={addRecentRvisit} />
         </Modal>
+        : null
       )
     }
 
@@ -363,12 +364,12 @@ export default class Patient extends Component {
               <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
             }
           </Panel>
-          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={() => this.setState({isShowResultModal: true})}>结果</Button></span>} key="2">
+          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={() => this.setState({isShowResultModal: true})}>其他</Button></span>} key="2">
             <p className="pad-small">{jianyanReport || '无'}</p>
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
             <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>
-              {planData.length>0 ? planData.map((item, index) => (
+              {planData && planData.length>0 ? planData.map((item, index) => (
                 <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
                   <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
                   <p className="font-16">{item.event}</p>
@@ -387,6 +388,14 @@ export default class Patient extends Component {
   renderTable() {
     const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow } = this.state;
 
+    const handleMoreBtn = () => {
+      service.fuzhen.getRvisitPage().then(res => this.setState({
+        recentRvisitAll: res.object.list
+      })).then(() => {
+        this.setState({ recentRvisitShow: true })
+      });
+    }
+
     const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this), ...props });
     return (
       <div className="fuzhen-table">
@@ -399,7 +408,7 @@ export default class Patient extends Component {
           </div>
         </Modal>
         <div className="clearfix">   
-          {recentRvisitAll && recentRvisitAll.length > 2 ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={() => this.setState({ recentRvisitShow: true })}>更多产检记录</Button> : <br />}
+          {recentRvisitAll && recentRvisitAll.length > 2 ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button> : <br />}
           {/* <Button size="small" type="dashed" className="margin-TB-mid margin-R-1 pull-right">删除</Button> */}
           {/* <Button size="small" type="dashed" className="margin-TB-mid margin-R-1 pull-right">添加</Button> */}
         </div>

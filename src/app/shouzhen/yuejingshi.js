@@ -46,7 +46,7 @@ export default class extends Component {
     const { entity, onChange } = this.props;
     return (
       <div className="">
-        {formRender(entity.menstruationMarriage, this.config(), onChange)}
+        {formRender(entity, this.config(), onChange)}
       </div>
     )
   }
