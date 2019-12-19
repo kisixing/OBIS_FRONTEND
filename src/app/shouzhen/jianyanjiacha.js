@@ -16,7 +16,7 @@ export default class extends Component{
         {
           columns:[
             {name:'ckxuex[女方血型]', icon:'female-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
-            {name:'chrh[]', type: 'select',span:2, options: baseData.xuexing2Options},
+            {name:'ckrh[]', type: 'select',span:2, options: baseData.xuexing2Options},
             {span:2},
             {name:'husbandCkxuex[男方血型]', icon:'male-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
             {name:'husbandRh[]', type: 'select',span:2, options: baseData.xuexing2Options},

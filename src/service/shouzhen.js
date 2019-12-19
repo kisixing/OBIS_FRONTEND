@@ -23,9 +23,9 @@ export default {
             uri='saveivisit'
         }
         data = entity
-        console.log(entity)
+        //console.log(entity)
         var arr2 = JSON.stringify(data).replace(/add_/g, "ADD_");
-        console.log(arr2) // [{"leftText":"2019-05","value":"9999"},{"leftText":"2019-06","value":"8888"}]
+        //console.log(arr2) // [{"leftText":"2019-05","value":"9999"},{"leftText":"2019-06","value":"8888"}]
         data=JSON.parse(arr2) 
         return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid,...data}));
     },
@@ -40,7 +40,7 @@ export default {
      */
     adddiagnosis: function(text){
         let data = {'data':text};
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/adddiagnosis?' + r.object.userid,data));
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/adddiagnosis',{userid:r.object.userid,...data}));
     },
     /**
      * 删除诊断列表的数据

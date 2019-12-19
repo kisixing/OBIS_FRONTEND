@@ -13,14 +13,14 @@ export default class extends Component{
     return {
       step: 1,
       rows: [
-        {name:'wss[个人史]', type:'checkinput-4', valid: 'required',unselect:'无', options:baseData.grsOptions},
-        {name:'sss[服用叶酸]', type:'checkinput-4', valid: 'required',unselect:'无',options:baseData.ysOptions},
-        {name:'sss[家族史]', type:'checkinput-4', valid: 'required',options:baseData.jzsOptions},
+        {name:'userhistory[个人史]', type:'checkinput-4', valid: 'required',unselect:'无', options:baseData.grsOptions},
+        {name:'add_FIELD_userhistory_fyys[服用叶酸]', type:'checkinput-4', valid: 'required',unselect:'无',options:baseData.ysOptions},
+        {name:'mzxuan[家族史]', type:'checkinput-4', valid: 'required',options:baseData.jzsOptions},
         {columns:[
           {span:4},
           {rows:[
-            {name:'gjtp[遗传病（女方）]', icon:'female-Gender', type:'checkinput-4', valid: 'required',options:baseData.ychOptions},
-            {name:'xzp[遗传病（男方）]', icon:'male-Gender', type:'checkinput-4', valid: 'required',options:baseData.ychOptions}
+            {name:'add_FIELD_mzxuan61[遗传病（女方）]', icon:'female-Gender', type:'checkinput-4', valid: 'required',options:baseData.ychOptions},
+            {name:'add_FIELD_mzxuan6[遗传病（男方）]', icon:'male-Gender', type:'checkinput-4', valid: 'required',options:baseData.ychOptions}
           ]}
         ]}
       ]

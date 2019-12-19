@@ -69,7 +69,8 @@ export default class Patient extends Component {
                     tab.entity['bsguomin'] = JSON.parse(tab.entity.bsguomin);    
                     tab.entity['bsjibing'] = JSON.parse(tab.entity.bsjibing);    
                     tab.entity['bsshoushu'] = JSON.parse(tab.entity.bsshoushu);    
-                    tab.entity['hobtabp'] = JSON.parse(tab.entity.hobtabp);                 
+                    tab.entity['hobtabp'] = JSON.parse(tab.entity.hobtabp);    
+                    tab.entity['operationHistory'] = res.object.operationHistory;             
                 }
                 else if (tab.key === 'tab-4') {
                     tab.entity = res.object.menstruationMarriage
@@ -79,43 +80,47 @@ export default class Patient extends Component {
                     tab.entity['yjtongj'] = JSON.parse(tab.entity.yjtongj);
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-5') {
-                    tab.entity ={"preghis": [{
-                        "id":1,
-                        "checkdate": "2019-02",
-                        "xiych": "",
-                        "abortion": ""},{
-                            "id":2,
-                            "checkdate": "2018-02",
-                            "xiych": "",
-                            "st":true,
-                            "abortion": ""},{
-                                "id":3,
-                                "checkdate": "本孕",
-                                "xiych": "",
-                                "chux": true,
-                                "abortion": ""}]
-                        }
+                    tab.entity['preghis'] = res.object.gestation;
+                    // tab.entity['preghis'] ={"preghis": [{
+                    //     "id":1,
+                    //     "checkdate": "2019-02",
+                    //     "xiych": "",
+                    //     "abortion": ""},{
+                    //         "id":2,
+                    //         "checkdate": "2018-02",
+                    //         "xiych": "",
+                    //         "st":true,
+                    //         "abortion": ""},{
+                    //             "id":3,
+                    //             "checkdate": "本孕",
+                    //             "xiych": "",
+                    //             "chux": true,
+                    //             "abortion": ""}]
+                    //     }
                 } else if (tab.key === 'tab-6') {
                     tab.entity = res.object.biography
-                    //tab.entity['ogtt'] = { 'GDM': { 'input0': "1", 'input1': "2", 'input2': "3" } }
-                    tab.entity['vfdp'] = {}
+                    tab.entity['mzxuan'] = JSON.parse(tab.entity.mzxuan);//[];
+                    tab.entity['add_FIELD_mzxuan6'] = JSON.parse(tab.entity.add_FIELD_mzxuan6);//[];
+                    tab.entity['add_FIELD_mzxuan61'] = JSON.parse(tab.entity.add_FIELD_mzxuan61);//[];
+                    tab.entity['userhistory'] = JSON.parse(tab.entity.userhistory);//[];
+                    tab.entity['add_FIELD_userhistory_fyys'] = JSON.parse(tab.entity.add_FIELD_userhistory_fyys);//[];
                 } else if (tab.key === 'tab-7') {
                     tab.entity = res.object.lis;
                     tab.entity['aids'] = JSON.parse(tab.entity.aids);
                     tab.entity['ogtt'] = JSON.parse(tab.entity.ogtt);
                     tab.entity['thalassemia'] = JSON.parse(tab.entity.thalassemia);
                     tab.entity['husbandThalassemia'] = JSON.parse(tab.entity.husbandThalassemia);
-                    tab.entity['husbandCkxuex'] = {};//JSON.parse(tab.entity.husbandCkxuex);
-                    tab.entity['husbandRh'] = {};//JSON.parse(tab.entity.husbandRh);
+                    tab.entity['husbandCkxuex'] = JSON.parse(tab.entity.husbandCkxuex);
+                    tab.entity['husbandRh'] = JSON.parse(tab.entity.husbandRh);
                     tab.entity['ckxuex'] = JSON.parse(tab.entity.ckxuex);
-                    tab.entity['ckrh'] = {};//JSON.parse(tab.entity.ckrh);
+                    tab.entity['ckrh'] = JSON.parse(tab.entity.ckrh);
                     tab.entity['hbsAg'] = JSON.parse(tab.entity.hbsAg);
-                    tab.entity['add_FIELD_GBS'] = {};//JSON.parse(tab.entity.add_FIELD_GBS);
-                    tab.entity['add_FIELD_ndb'] = {};//JSON.parse(tab.entity.add_FIELD_ndb);
-                    tab.entity['add_FIELD_hcvAb_RNA'] = {};//JSON.parse(tab.entity.add_FIELD_hcvAb_RNA);
-                    tab.entity['rpr'] = {};;
-                    tab.entity['hcvAb'] = {};//JSON.parse(tab.entity.hcvAb);
-                    tab.entity['add_FIELD_hcvAb_RNA'] = {};//JSON.parse(tab.entity.add_FIELD_hcvAb_RNA);
+                    tab.entity['add_FIELD_GBS'] = JSON.parse(tab.entity.add_FIELD_GBS);
+                    tab.entity['add_FIELD_ndb'] = JSON.parse(tab.entity.add_FIELD_ndb);
+                    tab.entity['add_FIELD_hcvAb_RNA'] = JSON.parse(tab.entity.add_FIELD_hcvAb_RNA);
+                    tab.entity['rpr'] = JSON.parse(tab.entity.rpr);
+                    tab.entity['hcvAb'] = JSON.parse(tab.entity.hcvAb);
+                    tab.entity['add_FIELD_hcvAb_RNA'] = JSON.parse(tab.entity.add_FIELD_hcvAb_RNA);
                     console.log(tab.entity);
                     //tab.entity['vfdp'] = { "未查": {} }
                 } else if (tab.key === 'tab-8') {
