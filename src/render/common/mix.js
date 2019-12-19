@@ -117,7 +117,7 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data1
       data[i.label] = i.value;
       data[`$${i.label}`] = data[`$${i.label}`] || i.$value;
     });
-  }else{
+  }else if(typeof data1 === 'object'){
     Object.keys(data1||{}).forEach(k=>data[k] = data1[k]);
     onChange({}, toData()).then(()=>onBlur());
   }
