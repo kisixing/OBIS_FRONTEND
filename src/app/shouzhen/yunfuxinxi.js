@@ -15,7 +15,7 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'userhage[年龄]', type: 'input', span: 5, valid: 'required|number'},
+            { name: 'userage[年龄]', type: 'input', span: 5, valid: 'required|number'},
             { span: 1 }, 
             { name: 'userbirth[出生日期]', type: 'date', span: 5,valid: 'required'},
             { span: 1 },
@@ -24,7 +24,7 @@ export default class extends Component {
         },
         {
           columns: [
-            { name: 'userhnation[国籍]', type: 'input', span: 5 ,valid: 'required'},
+            { name: 'usernation[国籍]', type: 'input', span: 5 ,valid: 'required'},
             { span: 1 },
             { name: 'userroots[籍贯]', type: 'input', span: 5 ,valid: 'required'},
             { span: 1 },
@@ -44,9 +44,9 @@ export default class extends Component {
           ]
         }, {
           columns: [
-            { name: 'constant[户口地址]', type: 'input', span: 11,valid: 'required'},
+            { name: 'userconstant[户口地址]', type: 'input', span: 11,valid: 'required'},
             { span: 1 },
-            { name: 'address[现住地址]', type: 'input', span: 11,valid: 'required'},
+            { name: 'useraddress[现住地址]', type: 'input', span: 11,valid: 'required'},
             { span: 1 },
           ]
         }
