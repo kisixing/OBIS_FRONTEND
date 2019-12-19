@@ -105,8 +105,8 @@ class MMix extends Component{
 export function checkinput$x({ name, options = [], onChange, onBlur, value:data1 = [], unselect, radio, baseColor = '#333333', ...rest }, count, ...args){
   const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
   const span = Math.floor(count ? (24/count) : Math.max(6, 24 / (optionList.length || 1)));
-
-  const data = (typeof data1.$data === 'object' ? data1.$data : {}) || {};
+  
+  const data = data1 ? (typeof data1.$data === 'object' ? data1.$data : {}) : {};
   const toData = () => {
     var result = Object.keys(data).filter(i => !/^\$/.test(i)).map(i => ({label:i, value: data[i], $value: data[`$${i}`]}));
     result.$data = data;
@@ -118,10 +118,9 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data1
       data[`$${i.label}`] = data[`$${i.label}`] || i.$value;
     });
   }else{
-    Object.keys(data1).forEach(k=>data[k] = data1[k]);
+    Object.keys(data1||{}).forEach(k=>data[k] = data1[k]);
     onChange({}, toData()).then(()=>onBlur());
   }
-  
   
   const findWC = (op, fn) => {
     const getflag = o => (o.flag || (/\((.*)\)/.test(o.label||o) && /\((.*)\)/.exec(o.label||o)[1]) || '').split(',');
@@ -164,6 +163,7 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data1
     onChange(e, toData()).then(()=>onBlur({}, `${name}-${target || 'input'}`));
   }
 
+  
   return (
     <Row className="checkinput">
     {optionList.map((op,index)=>(
