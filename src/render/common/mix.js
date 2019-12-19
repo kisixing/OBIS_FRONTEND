@@ -155,13 +155,13 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data1
     }else{
       delete data[name];
     }
-    return onChange(e, toData()).then(()=>onBlur({checkedChange:true}));
+    return onChange(e, toData()).then(()=>onBlur({checkedChange:true}, `${name}-checkbox`));
   }
 
-  const handleInput = (e,{value, name}) => {
+  const handleInput = (e,{value, name, target}) => {
     data[`$${name}`] = value;
     data[name] = value;
-    onChange(e, toData()).then(()=>onBlur());
+    onChange(e, toData()).then(()=>onBlur({}, `${name}-${target || 'input'}`));
   }
 
   return (

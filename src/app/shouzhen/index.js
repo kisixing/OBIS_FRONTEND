@@ -149,8 +149,8 @@ export default class Patient extends Component {
         // }
     }
 
-    handleChange(e, { name, value, valid }, entity) {
-        console.log(name, entity,entity[name]);
+    handleChange(e, { name, value, target }, entity) {
+        console.log(name, target, value, entity);
         entity[name] = value
         switch (name) {
             case 'dopupt':

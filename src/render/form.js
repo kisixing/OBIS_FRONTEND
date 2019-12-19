@@ -33,10 +33,10 @@ function getValueFn(fn, ...args){
   }
 }
 
-function render(type, props) {
+function render(type, {value, ...props}) {
   const editor = editors[type] || editors[type.replace(/(-.*)?$/, '$x')] || type;
   if (typeof editor === 'function') {
-    return editor(props, /-(.*)$/.test(type) && /-(.*)$/.exec(type)[1], FormItem, AddResize);
+    return editor({...props, value: value?JSON.parse(JSON.stringify(value)):value}, /-(.*)$/.test(type) && /-(.*)$/.exec(type)[1], FormItem, AddResize);
   }
   if (editor === 'table') {
     const { options, value = [{$checkbox: true}], onChange, onBlur, ...rest } = props;
@@ -53,7 +53,7 @@ function render(type, props) {
           list = list.filter(i => i !== item);
           break;
       }
-      onChange({}, list).then(() => onBlur({}));
+      onChange({}, list).then(() => onBlur({}, `row-${row}`));
     }
     const headleChange = (e, { item, row }) => onRowChange('modify', item, row);
     return table(options, value, { ...rest, onChange: headleChange, onRowChange });
@@ -169,7 +169,7 @@ class FormItem extends Component {
     });
   }
 
-  onBlur = ({checkedChange, ...e} = {}) => {
+  onBlur = ({checkedChange, ...e} = {}, target = '') => {
     return new Promise(resolve => {
       const { entity, valid, onChange } = this.props;
       const { name, value } = this.state;
@@ -178,7 +178,7 @@ class FormItem extends Component {
         error: error
       }, () => resolve());
       if (onChange && (JSON.stringify(entity && entity[name]) !== JSON.stringify(value) || checkedChange)) {
-        onChange(e, { name, value, error, entity })
+        onChange(e, { name, value, error, entity, target })
         this.setState(this.getSplitState(this.props.name, {...entity,[name]:value }))
       }
     });
@@ -192,7 +192,7 @@ class FormItem extends Component {
       const span = Math.floor(24 / type.length);
       const data = value || [];
       const handleChange = i => (e, v) => { data[i] = v; return this.onChange(e, {...data}); };
-      const handleBlur = (...args) => { return this.onBlur(...args).then(()=>this.resize());};
+      const handleBlur = i => e => { return this.onBlur(e, `editor-${i}`).then(()=>this.resize());};
       const types = type.map(t => ({
         ...t,
         type: (t.type || t).replace(/\(.*\)/, ''),
@@ -209,7 +209,7 @@ class FormItem extends Component {
             const tWidth = enitorWidth * zoom;
             return (
               <Col span={t.span || span} key={`col-${name}${index}`}>
-                {render(t.type, { ...props, ...t, name: `${name}${index}`, value: data[index], style: { width: tWidth }, onChange: handleChange(index), onBlur: handleBlur })}
+                {render(t.type, { ...props, ...t, name: `${name}${index}`, value: data[index], style: { width: tWidth }, onChange: handleChange(index), onBlur: handleBlur(index) })}
                 {t.unit ? t.unit : null}
               </Col>
             )
@@ -328,9 +328,9 @@ export default function (entity, config, onChange, { children, ...props } = {}) 
       const field = getValueFn(option.name, entity).replace(/\(.*\)/, '').replace(/\[.*\]/, '');
       const list = data[field] || [{}];
       return list.map((group, index) => {
-        const handleChange = (e, { name, value, ...rest }) => {
+        const handleChange = (e, { name, value, target, ...rest }) => {
           list[index][name] = value;
-          return change(e, { name: field, value: list, ...rest })
+          return change(e, { name: field, value: list, target: `group-${index}-${name}${target?'-':''}${target}`, ...rest })
         }
         const parms = {
           list, 
