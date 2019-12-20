@@ -37,7 +37,7 @@ export default class Patient extends Component {
       info: {},
       diagnosi: '',
       diagnosis: [],
-      diagnosislist: [],
+      diagnosislist: {},
       recentRvisit: null,
       recentRvisitAll: null,
       recentRvisitShow: false,
@@ -69,25 +69,7 @@ export default class Patient extends Component {
             "time": "6",
             "userid": 6
         }
-    ],
-    planDataList: [ {
-      "alert": "",
-      "event": "大双方都撒的发生的",
-      "gestation": "555",
-      "id": 11,
-      "item": "2",
-      "time": "4",
-      "userid": 6
-  },
-  {
-      "alert": "",
-      "event": "关怀呵护",
-      "gestation": "12",
-      "id": 18,
-      "item": "1",
-      "time": "6",
-      "userid": 6
-  }],
+      ],
       modalState: [
         {
           "title": "糖尿病门诊预约",
@@ -110,16 +92,16 @@ export default class Patient extends Component {
 
     service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list })),
 
-    service.fuzhen.getDiagnosisInputTemplate().then(res => console.log(res, 888)),
+    service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object})),
 
     service.fuzhen.getRecentRvisit().then(res => this.setState({ recentRvisit: res.object }))])
       .then(() => this.setState({ loading: false }));
     
     service.fuzhen.getRvisitPage().then(res => this.setState({ recentRvisitAll: res.object.list }));
 
-    service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }))
+    service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
 
-    service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));
+    // service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));
   }
 
   adddiagnosis() {
@@ -127,14 +109,9 @@ export default class Patient extends Component {
     if (diagnosi && !diagnosis.filter(i => i.data === diagnosi).length) {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
-        // service.fuzhen.getdiagnosis().then(res => this.setState({
-        //     diagnosis: res.list
-        // }));
-        // 使用mock时候才用这个
-        this.setState({
-          diagnosi: '',
-          diagnosis: diagnosis.concat([{ data: diagnosi }])
-        });
+        service.fuzhen.getdiagnosis().then(res => this.setState({
+            diagnosis: res.object.list
+        }));
       })
     } else if (diagnosi) {
       modal('warning', '添加数据重复');
@@ -143,7 +120,6 @@ export default class Patient extends Component {
 
   deldiagnosis(id) {
     service.fuzhen.deldiagnosis(id).then(() => {
-
       modal('info', '删除诊断信息成功');
       service.fuzhen.getdiagnosis().then(res => this.setState({
           diagnosis: res.object.list
@@ -245,11 +221,16 @@ export default class Patient extends Component {
     /**
      * 点击填充input
      */
-    const setIptVal = (item) => {
+    const setIptVal = (item, param) => {
       this.setState({
         isMouseIn: false,
         diagnosi: item
       })
+      if(param) {
+        
+        let func = service.fuzhen.getDiagnosisInputTemplate(item).then(res => this.setState({diagnosislist: res.object}));
+        util.debounce(func, 2000);
+      }
     }
 
     /**
@@ -287,27 +268,29 @@ export default class Patient extends Component {
             {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
           </Select> */}
 
-          <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value)} 
-                 onFocus={() => this.setState({isShowZhenduan: true})} onBlur={() => this.setState({isShowZhenduan: false})} />
+          <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)} 
+                 onFocus={() => this.setState({isShowZhenduan: true})} 
+                 onBlur={() => this.setState({isShowZhenduan: false})} 
+                 />
           { isShowZhenduan || isMouseIn ?
             <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}> 
               <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
                 <Tabs.TabPane tab="全部" key="1">
-                  {diagnosis.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => setIptVal(item.data)}>{item.data}</p>)}
+                  {diagnosislist['all'].map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => setIptVal(item.name)}>{item.name}</p>)}
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="科室" key="2">
                   <Tree showLine onSelect={(K, e) => setIptVal(e.node.props.title)}>
-                    {diagnosislist[1].list.map((item, index) => (
-                      <Tree.TreeNode selectable={false} title={item.title} key={`0-${index}`}>
-                        {item.list.map((subItem, subIndex) => (
-                          <Tree.TreeNode title={subItem.data} key={`0-0-${subIndex}`}></Tree.TreeNode>
+                    {diagnosislist['department'].map((item, index) => (
+                      <Tree.TreeNode selectable={false} title={item.name} key={`0-${index}`}>
+                        {item.nodes.map((subItem, subIndex) => (
+                          <Tree.TreeNode title={subItem.name} key={`0-0-${subIndex}`}></Tree.TreeNode>
                         ))}
                       </Tree.TreeNode>
                     ))}
                   </Tree>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="个人" key="3">
-                  {diagnosislist[2].list.map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() =>  setIptVal(item.data)}>{item.data}</p>)}
+                  {diagnosislist['personal'].map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() =>  setIptVal(item.name)}>{item.name}</p>)}
                 </Tabs.TabPane>
               </Tabs>
             </div>  : ""}
@@ -346,20 +329,13 @@ export default class Patient extends Component {
       const addRecentRvisit = (planEntity) => {
         let param = {"time": util.formateDate()};
         planEntity = Object.assign(planEntity, param);
-        service.fuzhen.addRecentRvisit(planEntity).then(
-          service.fuzhen.getRecentRvisitList().then(res => 
-            this.setState({
-              planDataList: res.object
-          }))
-        )
+        service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
       }
       // const initTable = (data) => tableRender(baseData.planKey(), data, { pagination: false, buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this)});
       return (
-        planDataList && planDataList.length > 0 ?
         <Modal width="80%" title="诊疗计划" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-          <FuzhenTable planDataList={planDataList} onReturn={(param) => this.setState({isShowPlanModal: param})} addRecentRvisit={addRecentRvisit} />
+          <FuzhenTable onReturn={(param) => this.setState({isShowPlanModal: param})} addRecentRvisit={addRecentRvisit} />
         </Modal>
-        : null
       )
     }
 

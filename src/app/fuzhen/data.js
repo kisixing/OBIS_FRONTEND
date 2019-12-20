@@ -182,7 +182,7 @@ export const planKey = () => [
 		key: 'item',
 	},
 	{
-		title: '提醒事件',
+		title: '提醒事项',
 		key: 'event',
 	}
 ].map(i=>({type:'input',...i}));

@@ -6,7 +6,7 @@ export default {
      * 左侧诊断列表
      */
     getdiagnosis: function(){
-        return this.userId().then(r => myAxios.get('/outpatientRestful/getdiagnosis?userid=' + r.object.userid));
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getdiagnosis?userid=${r.object.userid}`));
     },
 
     /**
@@ -26,10 +26,11 @@ export default {
     },
 
     /**
-     * 获取诊断下拉模板
+     * 获取诊断下拉模板(联想输入)
      */
     getDiagnosisInputTemplate: function(params){
-        return this.userId().then(r => myAxios.get('/outpatientRestful/getDiagnosisInputTemplate', {content:"霍"}));
+        let data = {"content": params};
+        return this.userId().then(r => myAxios.post('/outpatientRestful/getDiagnosisInputTemplate', {userid: r.object.userid, ...data}));
     },
 
     /**
@@ -37,28 +38,29 @@ export default {
      */
     adddiagnosis: function(text){
         let data = {'data':text};
-        return this.userId().then(r => myAxios.post('/outpatientRestful/adddiagnosis', data));
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/adddiagnosis', {userid: r.object.userid, ...data}));
     },
 
     /**
      * 删除诊断列表的数据
      */
     deldiagnosis: function(id){
-        let data = {"id": id};
-        return myAxios.put('/outpatientWriteRestful/deldiagnosis?id=' + id, {});
+        return this.userId().then(r => myAxios.delete('/outpatientWriteRestful/deldiagnosis', {data:{userid: r.object.userid, diagnosiss: [{
+            id: id
+        }]}}));
     },
     /**
      * 诊疗计划（最近两条记录）
      */
     getDiagnosisPlanData: function(){
-        return this.userId().then(r => myAxios.get('/outpatientRestful/getDiagnosisPlanData?userid=' + r.object.userid));
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getDiagnosisPlanData?userid=${r.object.userid}`));
     },
 
     /**
      * 诊疗计划列表
      */
     getRecentRvisitList: function(){
-        return this.userId().then(r => myAxios.get('/outpatientRestful/getRecentRvisitList?id=' + r.object.userid));
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getRecentRvisitList?id=${r.object.userid}`));
     },
 
     /**
@@ -93,14 +95,14 @@ export default {
      * 右侧产检记录
      */
     getRecentRvisit: function(){
-        return this.userId().then(r => myAxios.get('/outpatientRestful/getRvisit?dataType=1&pageCurrent=1&pageSize=10&userid=' + r.object.userid));
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getRvisit?dataType=1&pageCurrent=1&pageSize=10&userid=${r.object.userid}`));
     },
 
     /**
      * 右侧更多产检记录
      */
     getRvisitPage: function(){
-        return this.userId().then(r => myAxios.get('/outpatientRestful/getRvisitPage?pageSize=10&pageCurrent=1&id=' + r.object.userid));
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getRvisitPage?pageSize=10&pageCurrent=1&id=${r.object.userid}`));
     },
 
     /**
@@ -128,7 +130,7 @@ export default {
      * 获取BMI孕期体重管理曲线数据
      */
     getbmi: function(){
-        return this.userId().then(r => myAxios.get('/outpatientRestful/getbmi?id=' + r.object.userid));
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getbmi?id=${r.object.userid}`));
     },
 
     /**

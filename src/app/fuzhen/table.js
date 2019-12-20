@@ -12,7 +12,8 @@ export default class FuzhenForm extends Component {
     super(props);
     this.state = {
 			isShowMplanModal: false,
-			isShowNewplanModal: false,
+      isShowNewplanModal: false,
+      planDataList: [],
       planEntity: {
 				time: "",
         gestation: "",
@@ -102,10 +103,18 @@ export default class FuzhenForm extends Component {
       ]
     };
   }
+  componentDidMount() {
+
+    service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));
+
+  }
 
 	addRecentRvisit() {
-		const { planEntity } = this.state;
-		this.props.addRecentRvisit(planEntity);
+    const { planEntity } = this.state;
+    service.fuzhen.addRecentRvisit(planEntity).then(res => {
+      service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));  
+		  this.props.addRecentRvisit(planEntity);
+    })
 	}
 
 	onReturn(param) {
@@ -133,8 +142,15 @@ export default class FuzhenForm extends Component {
   }
 
   renderLeftTable() {
-    const { planDataList } = this.props;
-    const initTable = data => tableRender(baseData.planKey(), data, { pagination: false, buttons: null, editable: true});
+    const { planDataList } = this.state;
+
+    console.log(planDataList)
+    
+    const handelTableChange = (e, value) => {
+      console.log(e, 99)
+      console.log(value, 99)
+    }
+    const initTable = data => tableRender(baseData.planKey(), data, { pagination: false, buttons: null, editable: true, onBlur: handelTableChange});
     return <div>{planDataList.length > 0 ? initTable(planDataList) : ""}</div>;
   }
 
