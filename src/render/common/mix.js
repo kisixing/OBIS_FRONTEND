@@ -105,8 +105,8 @@ class MMix extends Component{
 export function checkinput$x({ name, options = [], onChange, onBlur, value:data1 = [], unselect, radio, baseColor = '#333333', ...rest }, count, ...args){
   const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
   const span = Math.floor(count ? (24/count) : Math.max(6, 24 / (optionList.length || 1)));
-
-  const data = data1.$data || {};
+  
+  const data = data1 ? (typeof data1.$data === 'object' ? data1.$data : {}) : {};
   const toData = () => {
     var result = Object.keys(data).filter(i => !/^\$/.test(i)).map(i => ({label:i, value: data[i], $value: data[`$${i}`]}));
     result.$data = data;
@@ -117,11 +117,10 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data1
       data[i.label] = i.value;
       data[`$${i.label}`] = data[`$${i.label}`] || i.$value;
     });
-  }else{
-    Object.keys(data1).forEach(k=>data[k] = data1[k]);
+  }else if(typeof data1 === 'object'){
+    Object.keys(data1||{}).forEach(k=>data[k] = data1[k]);
     onChange({}, toData()).then(()=>onBlur());
   }
-  
   
   const findWC = (op, fn) => {
     const getflag = o => (o.flag || (/\((.*)\)/.test(o.label||o) && /\((.*)\)/.exec(o.label||o)[1]) || '').split(',');
@@ -155,15 +154,16 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data1
     }else{
       delete data[name];
     }
-    return onChange(e, toData()).then(()=>onBlur({checkedChange:true}));
+    return onChange(e, toData()).then(()=>onBlur({checkedChange:true}, `${name}-checkbox`));
   }
 
-  const handleInput = (e,{value, name}) => {
+  const handleInput = (e,{value, name, target}) => {
     data[`$${name}`] = value;
     data[name] = value;
-    onChange(e, toData()).then(()=>onBlur());
+    onChange(e, toData()).then(()=>onBlur({}, `${name}-${target || 'input'}`));
   }
 
+  
   return (
     <Row className="checkinput">
     {optionList.map((op,index)=>(
