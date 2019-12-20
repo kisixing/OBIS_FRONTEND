@@ -133,9 +133,9 @@ export default class FuzhenForm extends Component {
   }
 
   renderLeftTable() {
-    const { planData } = this.props;
+    const { planDataList } = this.props;
     const initTable = data => tableRender(baseData.planKey(), data, { pagination: false, buttons: null, editable: true});
-    return <div>{planData.length > 0 ? initTable(planData) : ""}</div>;
+    return <div>{planDataList.length > 0 ? initTable(planDataList) : ""}</div>;
   }
 
   renderRightTree() {

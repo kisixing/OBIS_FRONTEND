@@ -70,6 +70,24 @@ export default class Patient extends Component {
             "userid": 6
         }
     ],
+    planDataList: [ {
+      "alert": "",
+      "event": "大双方都撒的发生的",
+      "gestation": "555",
+      "id": 11,
+      "item": "2",
+      "time": "4",
+      "userid": 6
+  },
+  {
+      "alert": "",
+      "event": "关怀呵护",
+      "gestation": "12",
+      "id": 18,
+      "item": "1",
+      "time": "6",
+      "userid": 6
+  }],
       modalState: [
         {
           "title": "糖尿病门诊预约",
@@ -88,33 +106,20 @@ export default class Patient extends Component {
 
   componentDidMount() {
     Promise.all([
-    service.getuserDoc().then(res => this.setState({
-      info: res
-    })),
-    service.fuzhen.getdiagnosis().then(res => this.setState({
-      diagnosis: res.object.list
-    })),
-    // service.fuzhen.getdiagnosislist().then(res => this.setState({
-    //   diagnosislist: res.data
-    // })),
-    service.fuzhen.getRecentRvisit().then(res => this.setState({
-      recentRvisit: res.object
-    }))
-    ]).then(() => this.setState({ loading: false }));
+    service.getuserDoc().then(res => this.setState({ info: res })),
+
+    service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list })),
+
+    service.fuzhen.getDiagnosisInputTemplate().then(res => console.log(res, 888)),
+
+    service.fuzhen.getRecentRvisit().then(res => this.setState({ recentRvisit: res.object }))])
+      .then(() => this.setState({ loading: false }));
     
-    service.fuzhen.getRvisitPage().then(res => this.setState({
-      recentRvisitAll: res.object.list
-    }));
+    service.fuzhen.getRvisitPage().then(res => this.setState({ recentRvisitAll: res.object.list }));
 
-    service.fuzhen.getDiagnosisPlanData().then(res => {
-      
-    })
+    service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }))
 
-    service.fuzhen.getRecentRvisitList().then(res => 
-      this.setState({
-        planData: res.object
-    })
-    );
+    service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));
   }
 
   adddiagnosis() {
@@ -334,23 +339,25 @@ export default class Patient extends Component {
      * 诊疗计划管理
      */
     const renderPlanModal = () => {
-      const { isShowPlanModal, planData } = this.state;
+      const { isShowPlanModal, planDataList } = this.state;
       const handleClick = (item) => {
         this.setState({isShowPlanModal: false})
       }
       const addRecentRvisit = (planEntity) => {
+        let param = {"time": util.formateDate()};
+        planEntity = Object.assign(planEntity, param);
         service.fuzhen.addRecentRvisit(planEntity).then(
           service.fuzhen.getRecentRvisitList().then(res => 
             this.setState({
-              planData: res.object
+              planDataList: res.object
           }))
         )
       }
       // const initTable = (data) => tableRender(baseData.planKey(), data, { pagination: false, buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this)});
       return (
-        planData && planData.length > 0 ?
+        planDataList && planDataList.length > 0 ?
         <Modal width="80%" title="诊疗计划" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-          <FuzhenTable planData={planData} onReturn={(param) => this.setState({isShowPlanModal: param})} addRecentRvisit={addRecentRvisit} />
+          <FuzhenTable planDataList={planDataList} onReturn={(param) => this.setState({isShowPlanModal: param})} addRecentRvisit={addRecentRvisit} />
         </Modal>
         : null
       )
@@ -369,9 +376,9 @@ export default class Patient extends Component {
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
             <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>
-              {planData && planData.length>0 ? planData.map((item, index) => (
+              {planData&&planData.length>0 ? planData.map((item, index) => (
                 <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
-                  <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
+                  <p className="font-16">{util.countWeek(item.time)}周后 - {item.gestation}孕周</p>
                   <p className="font-16">{item.event}</p>
                 </Timeline.Item>
               ))

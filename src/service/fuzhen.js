@@ -26,11 +26,11 @@ export default {
     },
 
     /**
-     * 科室列表
+     * 获取诊断下拉模板
      */
-    // getdiagnosislist: function(){
-    //     return this.userId().then(r => myAxios.get('/Obcloud/diagnosis/getdiagnosislist?userid=' + r.object.userid));
-    // },
+    getDiagnosisInputTemplate: function(params){
+        return this.userId().then(r => myAxios.get('/outpatientRestful/getDiagnosisInputTemplate', {content:"霍"}));
+    },
 
     /**
      * 添加诊断列表的数据
@@ -51,7 +51,7 @@ export default {
      * 诊疗计划（最近两条记录）
      */
     getDiagnosisPlanData: function(){
-        return this.userId().then(r => myAxios.get('/outpatientRestful/getDiagnosisPlanData?id=' + r.object.userid));
+        return this.userId().then(r => myAxios.get('/outpatientRestful/getDiagnosisPlanData?userid=' + r.object.userid));
     },
 
     /**
@@ -65,7 +65,7 @@ export default {
      * 增加诊疗计划
      */
     addRecentRvisit: function(params){
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/addRecentRvisit', params));
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/addRecentRvisit', Object.assign(params, {userid: r.object.userid})));
     },
 
     /**
