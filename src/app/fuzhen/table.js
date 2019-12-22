@@ -143,8 +143,6 @@ export default class FuzhenForm extends Component {
 
   renderLeftTable() {
     const { planDataList } = this.state;
-
-    console.log(planDataList)
     
     const handelTableChange = (e, value) => {
       console.log(e, 99)

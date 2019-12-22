@@ -24,6 +24,13 @@ export default {
         let data = {'id': i, "sortType": params};
         return this.userId().then(r => myAxios.put('/outpatientWriteRestful/diagnosis/updateSort', data));
     },
+    /**
+     * 关联表单
+     */
+    relatedformtype: function(params) {
+        let data = {"relatedformtype": params};
+        return this.userId().then(r => myAxios.put('/outpatientWriteRestful/diagnosis/relatedformtype', data));
+    },
 
     /**
      * 获取诊断下拉模板(联想输入)

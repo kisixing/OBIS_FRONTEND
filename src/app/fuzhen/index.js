@@ -38,6 +38,7 @@ export default class Patient extends Component {
       diagnosi: '',
       diagnosis: [],
       diagnosislist: {},
+      relatedItem: [],
       recentRvisit: null,
       recentRvisitAll: null,
       recentRvisitShow: false,
@@ -172,7 +173,7 @@ export default class Patient extends Component {
    * 诊断列表
    */
   renderZD() {
-    const { diagnosi, diagnosis, diagnosislist, isShowZhenduan, isMouseIn } = this.state;
+    const { diagnosi, diagnosis, diagnosislist, isShowZhenduan, isMouseIn, relatedItem } = this.state;
     const delConfirm = (item) => {
       Modal.confirm({
         title: '您是否确认要删除这项诊断',
@@ -200,9 +201,32 @@ export default class Patient extends Component {
           }))
         })
       }
+
+      const handleRelated = item => () => {
+        let oRelatedItem = relatedItem;
+        if(oRelatedItem.includes(item)) {
+          let index = oRelatedItem.indexOf(item);
+          oRelatedItem.splice(index, 1);
+        } else {
+          oRelatedItem.push(item);
+        }
+
+        let nRelatedItem = oRelatedItem.join(',');
+        this.setState({relatedItem: oRelatedItem}, () => {
+          service.fuzhen.relatedformtype(nRelatedItem).then(res => {})
+        })
+      }
+
+      let relatedformtype = item.relatedformtype.split(",");
       return (
         <div>
-          <p className="pad-small"><a className="font-16" onClick={handleHighriskmark}>高危诊断</a></p>
+          <p className="pad-small"><a className="font-16" onClick={handleHighriskmark}>{item.highriskmark == 1 ? '高危诊断 √' : '高危诊断'}</a></p>
+          {item.relatedformtype!=="" ? 
+            <div><p>关联表单</p>
+              {relatedformtype.map(item => <p className="pad-small"><a className="font-16" onClick={handleRelated(item)}>
+              {relatedItem.includes(item) ? `${item} √` : item} </a></p>)}
+            </div>
+          : null}
           {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('up')}>上 移</a></p> : null}
           {i + 1 < diagnosis.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>下 移</a></p> : null}
         </div>
@@ -227,9 +251,8 @@ export default class Patient extends Component {
         diagnosi: item
       })
       if(param) {
-        
-        let func = service.fuzhen.getDiagnosisInputTemplate(item).then(res => this.setState({diagnosislist: res.object}));
-        util.debounce(func, 2000);
+        service.fuzhen.getDiagnosisInputTemplate(item).then(res => this.setState({diagnosislist: res.object}));
+        // util.debounce(func, 400);
       }
     }
 
@@ -347,7 +370,7 @@ export default class Patient extends Component {
               <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
             }
           </Panel>
-          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={() => this.setState({isShowResultModal: true})}>其他</Button></span>} key="2">
+          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={e => { e.stopPropagation();this.setState({isShowResultModal: true})} }>其他</Button></span>} key="2">
             <p className="pad-small">{jianyanReport || '无'}</p>
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
