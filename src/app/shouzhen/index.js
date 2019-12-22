@@ -165,10 +165,10 @@ export default class Patient extends Component {
                 entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],entity['dopupt']);
                 entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],entity['ckzdate']);
                 break;
-            case 'gesexpectrv':
-                entity['pupttm'] = common.GetWeek(value,entity['dopupt']);
-                entity['ckztingj'] = common.GetWeek(value,entity['ckzdate']);
-                break;
+            // case 'gesexpectrv':
+            //     entity['pupttm'] = common.GetWeek(value,entity['dopupt']);
+            //     entity['ckztingj'] = common.GetWeek(value,entity['ckzdate']);
+            //     break;
             case 'yqtz':
                 entity['ckbmi'] = common.getBMI(entity['yqtz'],entity['cksheng']);
                 break;

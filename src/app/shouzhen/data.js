@@ -28,7 +28,7 @@ export const sfzOptions = [{ label: '身份证', value: '身份证' },
 /**
  * 证件类型
  */
-export const zjlxOptions = toOptions('身份证,护照,驾驶证');
+export const zjlxOptions = toOptions('身份证,护照,回乡证,台胞证');
 
 /**
  * 酒的类型
@@ -94,7 +94,7 @@ export const plOptions = toOptions('无,偶尔,经常');
 /**
  * 婚姻史
  */
-export const hysOptions = toOptions('未婚,已婚,离异,再婚');
+export const hysOptions = toOptions('未婚,已婚,离异,再婚,丧偶');
 
 /**
  * 是否

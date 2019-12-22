@@ -47,9 +47,9 @@ export default class extends Component{
           columns:[
             { 
               name: 'nextRvisit[下次复诊]',span: 15, type: [
+                {type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions},
                 {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
                 'date',
-                {type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions},
                 {type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions}
               ]
             }

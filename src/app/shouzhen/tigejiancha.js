@@ -48,7 +48,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'jzx[甲状腺]', type:'checkinput-3',valid: 'required', options: baseData.neOptions,radio:true,span:7},
+            {name:'jzx[甲状腺]', type:'checkinput-3', valid: 'required', options: baseData.neOptions,radio:true,span:7},
             {name:'xgzy[血管杂音]', type:'checkinput-3',valid: 'required', options: baseData.hnOptions,radio:true,span:7},
             {span:1},
             {name:'id3[其他]', type:'input', span:6},
@@ -69,7 +69,7 @@ export default class extends Component{
           columns:[
             {name:'xl(次/分)[心率]', type:'input',valid: 'required', span:6},
             {span:1},
-            {name:'xl2[心率]', type:'checkinput-3',valid: 'required', options: baseData.xlOptions,radio:true,span:7},
+            {name:'xl2[心律]', type:'checkinput-3',valid: 'required', options: baseData.xlOptions,radio:true,span:7},
             {span:1},
             {name:'xlzy[杂音]', type:'checkinput-3',valid: 'required', options: baseData.hnOptions,radio:true,span:9},
           ]

@@ -26,7 +26,7 @@ export default class extends Component {
         },
         {
           columns: [
-            { name: 'maritalHistory[婚姻史]', type: 'checkinput-4', span: 11, radio: true, valid: 'required', options: baseData.hysOptions },
+            { name: 'maritalHistory[婚姻史]', type: 'select', span: 4, valid: 'required', options: baseData.hysOptions },
             { span: 1 },
             { name: 'userjiehn[本次结婚年龄]', className: 'width_7', type: 'input', span: 5, valid: 'number|required' },
             { span: 1 },
