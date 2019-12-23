@@ -39,9 +39,9 @@ function render(type, {value, ...props}) {
     return editor({...props, value: value?JSON.parse(JSON.stringify(value)):value}, /-(.*)$/.test(type) && /-(.*)$/.exec(type)[1], FormItem, AddResize);
   }
   if (editor === 'table') {
-    const { options, value = [{$checkbox: true}], onChange, onBlur, ...rest } = props;
+    const { options, onChange, onBlur, ...rest } = props;
     const onRowChange = (type, item, row) => {
-      let list = value || [];
+      let list = value || [{$checkbox: true}];
       switch (type) {
         case 'create':
           list.push(item);
@@ -53,7 +53,7 @@ function render(type, {value, ...props}) {
           list = list.filter(i => i !== item);
           break;
       }
-      onChange({}, list).then(() => onBlur({}, `row-${row}`));
+      onChange({}, list).then(() => onBlur({checkedChange:true}, `row-${row}`));
     }
     const headleChange = (e, { item, row }) => onRowChange('modify', item, row);
     return table(options, value, { ...rest, onChange: headleChange, onRowChange });
