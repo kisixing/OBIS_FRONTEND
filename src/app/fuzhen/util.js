@@ -4,7 +4,7 @@ import { Input } from 'antd';
 import tableRender from '../../render/table';
 
 export function countWeek(date){
-  var days = Math.floor(((new Date() - new Date(date)) / (1000 * 3600) + 8) / 24);
+  var days = Math.ceil(((new Date(date) - new Date()) / (1000 * 3600)) / 24);
   return `${Math.floor(days / 7)}+${days % 7}`;
 }
 

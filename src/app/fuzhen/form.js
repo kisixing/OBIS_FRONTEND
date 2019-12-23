@@ -27,6 +27,7 @@ export default class FuzhenForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      ycq: '',
       openYCQ: false,
       openQX: false,
       openTemplate: false,
@@ -53,6 +54,12 @@ export default class FuzhenForm extends Component {
     }));
   }
 
+  componentWillReceiveProps(props) {
+    const { entity } = this.state;
+    let param = {"ckweek": util.countWeek(props.info.gesexpect)};
+    this.setState({entity: {...entity, ...param}});
+  }
+
   // 2 检测孕妇高危诊断，修改表格以及表单型式
   checkDiagnosisHighrisk(type) {
     const { diagnosis } = this.props;
@@ -67,7 +74,7 @@ export default class FuzhenForm extends Component {
         {
           columns: [
             { name: 'checkdate[日期]', type: 'date', span: 6 },
-            { name: 'ckweek(周)[孕周]', type: 'input', span: 4 },
+            { name: 'ckweek(周)[孕周]', type: 'input', span: 4, onClick:this.handleYz.bind(this) },
             { 
               span: 8,
               columns:[
@@ -92,7 +99,7 @@ export default class FuzhenForm extends Component {
         },
         {   
           columns:[
-            { name: 'ckzijzhz[自觉症状]', type: 'combobox', span: 12, options: baseData.ckzijzhzOptions }
+            { name: 'ckzijzhz[自觉症状]', type:'select', showSearch:true, span: 12, options: baseData.ckzijzhzOptions }
           ]
         },
         {
@@ -216,7 +223,7 @@ export default class FuzhenForm extends Component {
         {
           columns:[
             { name: 'treatment[处理措施]', type: 'textarea', span: 10 },
-            { name:'treatment[模板]', type: 'buttons',span: 14, text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(green)[入院],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
+            { name:'treatment[模板]', type: 'buttons',span: 14, text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
           ]
         },
         {
@@ -233,6 +240,11 @@ export default class FuzhenForm extends Component {
         } 
       ]
     }
+  }
+
+  handleYz() {
+    const { openYCQ } = this.state;
+    this.setState({openYCQ: true});
   }
 
   addTreatment(e, value){
@@ -305,20 +317,22 @@ export default class FuzhenForm extends Component {
   renderYCQ(){
     const { info, onChangeInfo } = this.props;
     const { openYCQ, ycq } = this.state;
-    const handelClick = (isOk) => {
+
+    const handelClick = (e, isOk) => {
       this.setState({openYCQ:false},()=>{
-        openYCQ();
+        // openYCQ();
         if(isOk){
-          onChangeInfo({...info, gesmoc:ycq });
+          onChangeInfo({...info, gesexpect:ycq });
+          this.handleChange(e, {name: 'checkdate', value: ycq});
         }
       });
     }
 
     return (
       <Modal className="yuModal" title={<span><Icon type="info-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
-             width={600} closable visible={!!openYCQ} onCancel={e => handelClick(false)} onOk={e => handelClick(true)}>
+             width={600} closable visible={!!openYCQ} onCancel={e => handelClick(e, false)} onOk={e => handelClick(e, true)}>
         <span>是否修改孕产期：</span>
-        <DatePicker defaultValue={info.gesmoc} value={ycq} onChange={(e,v)=>{this.setState({ycq:v})}}/>
+        <DatePicker defaultValue={info.gesexpect} value={ycq} onChange={(e,v)=>{this.setState({ycq:v})}}/>
       </Modal>
     );
   }

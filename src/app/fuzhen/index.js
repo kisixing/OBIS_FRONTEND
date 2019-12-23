@@ -89,7 +89,7 @@ export default class Patient extends Component {
 
   componentDidMount() {
     Promise.all([
-    service.getuserDoc().then(res => this.setState({ info: res })),
+    service.getuserDoc().then(res => this.setState({ info: res.object })),
 
     service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list })),
 

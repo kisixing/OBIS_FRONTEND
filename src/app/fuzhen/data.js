@@ -20,7 +20,7 @@ export const formEntity = {
 	"userid": "6",
 	"doctor": "",
 	"checkdate": new Date().toLocaleDateString().replace(/\//g,'-'),
-	"ckweek": util.countWeek('2019-10-01'),
+	"ckweek": '',
 	"cktizh": "",
 	"ckshrinkpressure": "",
 	"ckdiastolicpressure": "",
