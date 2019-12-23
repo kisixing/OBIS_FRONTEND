@@ -5,6 +5,7 @@ import tableRender from "../../render/table";
 import formRender, { fireForm } from "../../render/form";
 import * as baseData from "./data";
 import service from '../../service';
+import * as util from './util';
 import './table.less';
 
 export default class FuzhenForm extends Component {
@@ -111,9 +112,15 @@ export default class FuzhenForm extends Component {
 
 	addRecentRvisit() {
     const { planEntity } = this.state;
-    service.fuzhen.addRecentRvisit(planEntity).then(res => {
-      service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));  
-		  this.props.addRecentRvisit(planEntity);
+    const { info } = this.props;
+    let param = {time: util.getWeek(planEntity.gestation, info.tuserweek)};
+    let newplanEntity = Object.assign(planEntity, param);
+
+    this.setState({planEntity: newplanEntity}, () => {
+      service.fuzhen.addRecentRvisit(planEntity).then(res => {
+        service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));  
+        this.props.changeRecentRvisit();
+      })
     })
 	}
 
@@ -145,10 +152,25 @@ export default class FuzhenForm extends Component {
     const { planDataList } = this.state;
     
     const handelTableChange = (e, value) => {
-      console.log(e, 99)
-      console.log(value, 99)
+      const { info } = this.props;
+      let param = {time: util.getWeek(value.item.gestation, info.tuserweek)};
+      value.item = Object.assign(value.item, param);
+
+      service.fuzhen.editRecentRvisit(value.item).then(res => {
+        service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));  
+        this.props.changeRecentRvisit();
+      })
     }
-    const initTable = data => tableRender(baseData.planKey(), data, { pagination: false, buttons: null, editable: true, onBlur: handelTableChange});
+
+    const handleDelete = (select) => {
+      service.fuzhen.delRecentRvisit(select).then(res => {
+        service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));  
+        this.props.changeRecentRvisit();
+      })
+    }
+
+
+    const initTable = data => tableRender(baseData.planKey(), data, { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onChange: handelTableChange});
     return <div>{planDataList.length > 0 ? initTable(planDataList) : ""}</div>;
   }
 

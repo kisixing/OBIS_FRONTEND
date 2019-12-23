@@ -15,29 +15,96 @@ function toOptions(data, vfn = ()=>({})){
 /**
  * 表单初始数据
  */
+// export const formEntity = {
+// 	"id": "",
+// 	"userid": "6",
+// 	"doctor": "",
+// 	"checkdate": new Date().toLocaleDateString().replace(/\//g,'-'),
+// 	"ckweek": '',
+// 	"cktizh": "",
+// 	"ckshrinkpressure": "",
+// 	"ckdiastolicpressure": "",
+// 	"ckzijzhz": "",
+// 	"ckgongg": "",
+// 	"tx1": "",
+// 	"xl1": "1",
+// 	"tx2": "",
+// 	"xl2": "1",
+// 	"tx3": "",
+// 	"xl3": "1",
+// 	"cktaix": "",
+// 	"ckxianl": "1",
+// 	"ckfuzh": "1",
+// 	"fpg": "",
+// 	"pbg2h": "",
+// 	"hbAlc": "",
+// 	"riMoMedicine": "",
+// 	"riMoDosage": "",
+// 	"riNoMedicine": "",
+// 	"riNoDosage": "",
+// 	"riEvMedicine": "",
+// 	"riEvDosage": "",
+// 	"riSlMedicine": "",
+// 	"riSlDosage": "",
+// 	"upState": "",
+// 	"upDosage24h": "",
+// 	"": "4,周",
+// 	"heartRate": "",
+// 	"examination": "",
+// 	"tetz1": "",
+// 	"teafv1": "",
+// 	"teqxl1": "",
+// 	"tetz2": "",
+// 	"teafv2": "",
+// 	"teqxl2": "",
+// 	"tetz3": "",
+// 	"teafv3": "",
+// 	"teqxl3": "",
+// 	"ckzijzhzqt": "",
+// 	"treatment": "",
+// 	"ckappointment": "2019-12-15",
+// 	"rvisitOsType": "产科普通门诊",
+// 	"ckappointmentArea": "1"
+// };
+
+/**
+ * 表单初始数据
+ */
 export const formEntity = {
-	"id": "",
-	"userid": "6",
-	"doctor": "",
+	"parseAddFieldLocations": null,
+	"saveInitialData": false,
 	"checkdate": new Date().toLocaleDateString().replace(/\//g,'-'),
-	"ckweek": '',
+	"ckdia": "",
+	"ckappointment": "",
+	"ckappointmentArea": "",
+	"ckweek": "",
+	"ckmove": "",
+	"cksheng": "",
 	"cktizh": "",
 	"ckshrinkpressure": "",
 	"ckdiastolicpressure": "",
-	"ckzijzhz": "",
+	"ckmaibo": "",
 	"ckgongg": "",
-	"tx1": "",
-	"xl1": "1",
-	"tx2": "",
-	"xl2": "1",
-	"tx3": "",
-	"xl3": "1",
+	"ckfuw": "",
 	"cktaix": "",
-	"ckxianl": "1",
-	"ckfuzh": "1",
+	"cktaiw": "",
+	"ckxianl": "",
+	"ckxianj": "",
+	"ckfuzh": "",
+	"ckxuess": "",
+	"ckniaodb": "",
+	"ckxuet": "",
+	"ckzijzhz": "",
+	"ckzijzhzqt": "",
+	"ckchul": "",
+	"ckjianchyy": "",
+	"sign": "",
+	"ckresult": "",
+	"doctor": "",
+	"rvisitOsType": "",
+	"treatment": "",
 	"fpg": "",
 	"pbg2h": "",
-	"hbAlc": "",
 	"riMoMedicine": "",
 	"riMoDosage": "",
 	"riNoMedicine": "",
@@ -46,25 +113,38 @@ export const formEntity = {
 	"riEvDosage": "",
 	"riSlMedicine": "",
 	"riSlDosage": "",
+	"hbAlc": "",
 	"upState": "",
 	"upDosage24h": "",
-	"": "4,周",
 	"heartRate": "",
 	"examination": "",
+	"medicationPlan": "",
+	"fetal": "",
+	"tx1": "",
+	"xl1": "",
 	"tetz1": "",
 	"teafv1": "",
 	"teqxl1": "",
+	"location1": "",
+	"tx2": "",
+	"xl2": "",
 	"tetz2": "",
 	"teafv2": "",
 	"teqxl2": "",
+	"location2": "",
 	"tetz3": "",
 	"teafv3": "",
 	"teqxl3": "",
-	"ckzijzhzqt": "",
-	"treatment": "",
-	"ckappointment": "2019-12-15",
-	"rvisitOsType": "产科普通门诊",
-	"ckappointmentArea": "1"
+	"txlt": "",
+	"xllt": "",
+	"txrt": "",
+	"xlrt": "",
+	"txlb": "",
+	"xllb": "",
+	"txrb": "",
+	"xlrb": "",
+	"arrear": "",
+	"addField": ""
 };
 
 /**
@@ -81,40 +161,45 @@ export const tableKey = () => [
 	{
 		title: '孕周',
 		key: 'ckweek',
+		type: 'input'
 	},
 	{
 		title: '体重',
-		key: 'kg',	
+		key: 'cktizh',	
 		children:[
 			{
 				title: '(kg)',
-				key: 'kg',
+				key: 'cktizh',
+				type: 'input'
 			},
 		]
 	},
 	{
 		title: '血压',
-		key: 'mmhg',
+		key: 'ckshrinkpressure',
 		width: 160,	
 		children:[
 			{
 				title: '(mmHg)',
-				key: 'mmhg',
+				key: 'ckshrinkpressure',
+				type: 'input'
 			},
 		]
 	},
 	{
 		title: '自觉症状',
-		key: 'disease',
+		key: 'ckzijzhz',
+		type: 'input'
 	},
 	{
 		title: '胎心',
-		key: 'bmp',
+		key: 'cktaix',
 		width: 130,
 		children:[
 			{
 				title: '(bpm)',
-				key: 'bpm',
+				key: 'cktaix',
+				type: 'input'
 			},
 		]
 	},
@@ -131,6 +216,7 @@ export const tableKey = () => [
 			{
 				title: '(cm)',
 				key: 'ckgongg',
+				type: 'input'
 			},
 		]
 	},
@@ -142,24 +228,27 @@ export const tableKey = () => [
 	},
 	{
 		title: '其他',
-		key: 'other',
+		key: 'ckzijzhzqt',
+		type: 'input'
 	},
 	{
         title: '下次复诊',
-		key: 'ultrasound1',
+		key: 'ckappointment',
         children:[
             {
                 title: '预约日期',
-                key: 'ultrasound1_1',
+				key: 'ckappointment',
+				type: 'date'
             }
         ]
     },
 	{ 
 		title: '处理措施',
-		key: 'dispose',
+		key: 'treatment',
+		type: 'input',
 		width: 150
 	}
-].map(i=>({type:'input',...i}));
+];
 
 /**
  * 诊疗计划表头
@@ -167,7 +256,8 @@ export const tableKey = () => [
 export const planKey = () => [
 	{
 		title: 'No',
-		key: 'id',
+		key: 'index',
+		format: (v,{row})=>row+1
 	},
 	{
 		title: '时间',

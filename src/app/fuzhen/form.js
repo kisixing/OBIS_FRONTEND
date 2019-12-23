@@ -63,7 +63,7 @@ export default class FuzhenForm extends Component {
   // 2 检测孕妇高危诊断，修改表格以及表单型式
   checkDiagnosisHighrisk(type) {
     const { diagnosis } = this.props;
-    const types = { gdm: '妊娠期糖尿病', hypertension: '高血压', chd: '冠心病', dtrz: '双胎妊娠', strz: '多胎妊娠' };
+    const types = { gbd: '妊娠期糖尿病', hypertension: '高血压', chd: '冠心病', dtrz: '双胎妊娠', strz: '多胎妊娠' };
     return diagnosis.filter(i => type.split(',').filter(t=>types[t] === i.data).length).length;
   }
 
@@ -142,7 +142,7 @@ export default class FuzhenForm extends Component {
           filter:()=>check('gbd'), columns:[
             { name: 'fpg(mmol/L)[空腹血糖]', type: 'input', span: 6 },
             { name: 'pbg2h(mmol/L)[餐后2H]', type: 'input', span:6 },
-            { name: 'pbghb(%)[HbAlc]', type: 'input', span: 6 }
+            { name: 'hbAlc(%)[HbAlc]', type: 'input', span: 6 }
           ]
         },
         {
@@ -164,7 +164,7 @@ export default class FuzhenForm extends Component {
             {
               label: '用药方案', span: 14, filter:()=>!check('chd'), columns: [
                 { name: 'medicineId[药物]', type: 'input', span: 8 },
-                { name: 'medicineTimes[频率]', type: 'select', span: 8, options: baseData.yyfaOptions },
+                { name: 'medicineTimes[频率]', type: 'select', showSearch: true, span: 8, options: baseData.yyfaOptions },
                 { name: 'medicineDosage form-control[剂量]', type: 'input', span: 8 },
               ]
             },
@@ -178,7 +178,7 @@ export default class FuzhenForm extends Component {
                 { 
                   label: '用药方案', span: 18, columns:[
                     { name: 'upStateName[药物]', span: 6, type: 'input' },
-                    { name: 'medicineTimes[频率]', span: 6, type: 'select', options: baseData.yyfaOptions },
+                    { name: 'medicineTimes[频率]', span: 6, type: 'select', showSearch: true, options: baseData.yyfaOptions },
                     { name: 'upStateCount[剂量]', span: 6, type: 'input' },
                   ] 
                 }
@@ -272,7 +272,6 @@ export default class FuzhenForm extends Component {
   handleChange(e, { name, value, valid }) {
     const { entity, error } = this.state;
     const data = { [name]: value };
-    console.log(data)
     const errorData = { [name]: valid };
     switch (name) {
       case 'checkdate':
