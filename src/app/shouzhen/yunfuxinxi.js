@@ -5,6 +5,17 @@ import formRender from '../../render/form';
 
 export default class extends Component {
   static Title = '孕妇信息';
+  static entityParse(obj = {}){
+    return {
+      ...obj.gravidaInfo,
+      useridtype: JSON.parse(obj.gravidaInfo.useridtype)
+    }
+  }
+  static entitySave(entity = {}){
+    return {
+      ...entity
+    }
+  }
   constructor(props) {
     super(props);
   }
@@ -54,11 +65,20 @@ export default class extends Component {
     };
   }
 
+  handleChange(e, { name, value, target }){
+    const { onChange } = this.props;
+    onChange(e, { name, value, target })
+    // 关联变动请按如下方式写，这些onChange页可以写在form配置的行里
+    // if(name === 'test'){
+    //   onChange(e, { name: 'test01', value: [value,value] })
+    // }
+  }
+
   render(){
-    const { entity, onChange } = this.props;
+    const { entity } = this.props;
     return (
       <div className="">
-        {formRender(entity, this.config(), onChange)}
+        {formRender(entity, this.config(), this.handleChange.bind(this))}
       </div>
     )
   }

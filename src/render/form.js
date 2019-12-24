@@ -63,7 +63,7 @@ function render(type, {value, ...props}) {
       return editor.replace(/^:/, '');
     }
     if (!/^\**$/.test(editor)) {
-      console.log('没有找到可用的编辑组件：' + editor);
+      return <strong>没有找到可用的编辑组件：{editor}</strong>;
     }
   }
   return null;

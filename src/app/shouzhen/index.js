@@ -51,6 +51,11 @@ export default class Patient extends Component {
         const tab = tabs.filter(t => t.key === step).pop() || {};
         // if (!tab.init) {
             service.shouzhen.getForm(tab.key).then(res => {
+
+                // 如果想要使下面的数据转换放到对应的tab文件里面去，请实现entityParse这个方法，参考tab-0：yunfuxinxi.js这个文件
+                const entityParse = tab.entityParse || (i=>i);
+                tab.entity = entityParse(res.object);
+
                 tab.init = true;
                 if (tab.key === 'tab-0') {
                     tab.entity = res.object.gravidaInfo
@@ -161,6 +166,7 @@ export default class Patient extends Component {
         // }
     }
 
+    // 如果想把handleChange的逻辑移动到对应的tab页里面去，请参考tab-0：yunfuxinxi.js这个文件的handleChange
     handleChange(e, { name, value, target }, entity) {
         console.log(name, target, value, entity);
         entity[name] = value
@@ -203,6 +209,8 @@ export default class Patient extends Component {
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
         console.log('handleSave', key, step, tab.entity);
         fireForm(form, 'valid').then((valid) => {
+            // 数据提交前再对数据进行一些处理，请实现entitySave方法，请参考tab-0：yunfuxinxi.js这个文件
+            const entitySave = tab.entitySave || (i=>i);
             tab.error = !valid;
             if (valid) {
                 if (this.change) {
@@ -211,7 +219,7 @@ export default class Patient extends Component {
                         tab.enity.ckdiastolicpressure = ckpressure[0];
                         tab.enity.ckshrinkpressure = ckpressure[1];
                     }
-                    service.shouzhen.saveForm(tab.key, tab.entity).then(() => {
+                    service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
                         message.success('信息保存成功',3);
                         this.activeTab(key || next.key);
                     }, () => { // TODO: 仅仅在mock时候用
