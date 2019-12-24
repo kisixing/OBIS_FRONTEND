@@ -29,11 +29,11 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ygdna(IU/ml)[乙肝DNA]', type:'input', span:5},
+            {name:'add_FIELD_hbsAg_DNA(IU/ml)[乙肝DNA]', type:'input', span:5},
             {span:1},
-            {name:'alt(U/L)[ALT]', type:'input', span:5},
+            {name:'add_FIELD_hbsAg_ALT(U/L)[ALT]', type:'input', span:5},
             {span:1},
-            {name:'ast(U/L)[AST]',type:'input', span:5}
+            {name:'add_FIELD_hbsAg_AST(U/L)[AST]',type:'input', span:5}
           ]
         },
         {
@@ -92,7 +92,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'other[其他]', type:'input', span:11},
+            {name:'ckfzother[其他]', type:'input', span:11},
           ]
         },
       ]

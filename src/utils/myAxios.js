@@ -87,7 +87,7 @@ myAxios.interceptors.request.use(config => {
 myAxios.interceptors.response.use(response => {
     const status = response.status;
     if ((status >= 200 && status < 300) || status === 304) {
-        // 如果想要启用转换，请修改下面这行代码
+        // 如果启用转换，请修改下面这行代码，且请去掉其他地方的praseJSON调用，避免重复调用praseJSON浪费性能
         // return praseJSON(response.data);
         return response.data;
     }
