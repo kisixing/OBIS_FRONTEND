@@ -12,6 +12,9 @@ export default class extends Component {
   }
 
   config() {
+    const isShow = data => {
+      return !data || !data.filter || !data.filter(i=>['拒绝检查','未做检查'].indexOf(i.label)!==-1).length;
+    };
     return {
       step: 1,
       rows: [
@@ -21,7 +24,7 @@ export default class extends Component {
           ]
         },
         {
-          filter: entity => !entity.fkjc || (!entity.fkjc.hasOwnProperty('拒绝检查') && !entity.fkjc.hasOwnProperty('未做检查')), columns: [
+          filter: entity => !entity.fkjc || isShow(entity.fkjc), columns: [
             { span: 1 },
             { name: 'ckwaiy[外阴]', type: 'input', span: 5 },
             { span: 1 },
@@ -33,7 +36,7 @@ export default class extends Component {
           ]
         },
         {
-          filter: entity => !entity.fkjc || (!entity.fkjc.hasOwnProperty('拒绝检查') && !entity.fkjc.hasOwnProperty('未做检查')), columns: [
+          filter: entity => !entity.fkjc || isShow(entity.fkjc), columns: [
             { span: 1 },
             { name: 'ckfuj[附件]', type: 'input', span: 5 },
           ]
@@ -86,7 +89,7 @@ export default class extends Component {
           ]
         },
         {
-          filter: entity => !entity.gpwcl || !entity.gpwcl.hasOwnProperty('未做检查'), columns: [
+          filter: entity => !entity.gpwcl || isShow(entity.gpwcl), columns: [
             { span: 1 },
             { name: 'ckqiaj1(cm)[髂前上棘间径]', type: 'input', span: 5 },
             { span: 1 },
