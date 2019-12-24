@@ -38,7 +38,7 @@ export default class Patient extends Component {
       diagnosi: '',
       diagnosis: [],
       diagnosislist: {},
-      relatedItem: [],
+      relatedObj: {},
       recentRvisit: null,
       recentRvisitAll: null,
       recentRvisitShow: false,
@@ -102,7 +102,6 @@ export default class Patient extends Component {
 
     service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
 
-    // service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));
   }
 
   adddiagnosis() {
@@ -126,21 +125,6 @@ export default class Patient extends Component {
           diagnosis: res.object.list
       }));
     })
-  }
-
-  handelTableChange(type, row) {
-
-    console.log(type, '11');
-    console.log(row, '2222');
-    // service.fuzhen.recentRvisit(row).then(() => {
-    //   service.fuzhen.getRecentRvisit().then(res => this.setState({
-    //     recentRvisit: res.list
-    //   }));
-
-    //   service.fuzhen.getRvisitPage().then(res => this.setState({
-    //     recentRvisitAll: res.list
-    //   }));
-    // });
   }
 
   onChangeInfo(info) {
@@ -168,7 +152,7 @@ export default class Patient extends Component {
    * 诊断列表
    */
   renderZD() {
-    const { diagnosi, diagnosis, diagnosislist, isShowZhenduan, isMouseIn, relatedItem } = this.state;
+    const { diagnosi, diagnosis, diagnosislist, isShowZhenduan, isMouseIn, relatedObj } = this.state;
     const delConfirm = (item) => {
       Modal.confirm({
         title: '您是否确认要删除这项诊断',
@@ -197,19 +181,21 @@ export default class Patient extends Component {
         })
       }
 
-      const handleRelated = item => () => {
-        let oRelatedItem = relatedItem;
-        if(oRelatedItem.includes(item)) {
-          let index = oRelatedItem.indexOf(item);
-          oRelatedItem.splice(index, 1);
+      const handleRelated = (subItem, data) => () => {
+        let newRelatedObj = relatedObj;
+        if (newRelatedObj.hasOwnProperty(data)) {
+          if (newRelatedObj[data].includes(subItem)) {
+            newRelatedObj[data].splice(newRelatedObj[data].indexOf(subItem), 1);
+          } else {
+            newRelatedObj[data].push(subItem)
+          }
         } else {
-          oRelatedItem.push(item);
+           newRelatedObj[data] = [subItem];
         }
-
-        let nRelatedItem = oRelatedItem.join(',');
-        this.setState({relatedItem: oRelatedItem}, () => {
-          service.fuzhen.relatedformtype(nRelatedItem).then(res => {})
-        })
+        let relatedItem = newRelatedObj[data].join(',');
+        this.setState({relatedObj, newRelatedObj}, () => {
+          service.fuzhen.relatedformtype(relatedItem).then(res => {})
+        });
       }
 
       let relatedformtype = item.relatedformtype.split(",");
@@ -218,8 +204,8 @@ export default class Patient extends Component {
           <p className="pad-small"><a className="font-16" onClick={handleHighriskmark}>{item.highriskmark == 1 ? '高危诊断 √' : '高危诊断'}</a></p>
           {item.relatedformtype!=="" ? 
             <div><p>关联表单</p>
-              {relatedformtype.map(item => <p className="pad-small"><a className="font-16" onClick={handleRelated(item)}>
-              {relatedItem.includes(item) ? `${item} √` : item} </a></p>)}
+              {relatedformtype.map(subItem => <p className="pad-small"><a className="font-16" onClick={handleRelated(subItem, item.data)}>
+              {relatedObj[item.data]&&relatedObj[item.data].includes(subItem) ? `${subItem} √` : subItem} </a></p>)}
             </div>
           : null}
           {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('up')}>上 移</a></p> : null}
@@ -397,7 +383,7 @@ export default class Patient extends Component {
 
     const handelTableChange = (type, row) => {
       service.fuzhen.saveRvisitForm(row).then(res => {
-        console.log(res,  '0000')
+        service.fuzhen.getRecentRvisit().then(res => this.setState({ recentRvisit: res.object }))
       })
     }
 
@@ -420,7 +406,7 @@ export default class Patient extends Component {
   }
 
   render() {
-    const { loading, diagnosis, info, modalState } = this.state;
+    const { loading, diagnosis, relatedObj, info, modalState } = this.state;
 
     return (
       <Page className='fuzhen font-16 ant-col'>
@@ -428,7 +414,7 @@ export default class Patient extends Component {
         {this.renderLeft()}
         <div className="fuzhen-right ant-col-19 main-pad-small">
           {this.renderTable()}
-          <FuzhenForm info={info} diagnosis={diagnosis} modalState={modalState} onSave={data => this.saveForm(data)} onChangeInfo={this.onChangeInfo.bind(this)} />
+          <FuzhenForm info={info} diagnosis={diagnosis} relatedObj={relatedObj} modalState={modalState} onSave={data => this.saveForm(data)} onChangeInfo={this.onChangeInfo.bind(this)} />
           <p className="pad_ie">&nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span></p>
         </div>
       </Page>

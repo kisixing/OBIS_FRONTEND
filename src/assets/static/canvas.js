@@ -113,6 +113,7 @@ function drawcross(x, y) {
 
 //缩放
 function scaleContext(context) {
+  context.scale(0.6, 0.25);
   if (context != undefined) {
     context.scale(0.7, 0.7);
   }
@@ -432,27 +433,27 @@ function printline() {
 }
 
 //获取生长曲线数据
-function getPacsGrowth(userid) {
-  $.ajax({
-    type: 'POST',
-    dataType: "json",
-    async: false,
-    data: { userid: userid },
-    //url: 'http://120.77.46.176:8080/Obcloud/api/pacs/getPacsGrowth',
-    url: "http://120.77.46.176:8080/Obcloud/outpatientRestful/getPacsGrowth",
-    success: function (data) {
-      if (data.code == '1') {
-        // parent.BJUI.alertmsg('info', '获取');
-        demodata = data;
+// function getPacsGrowth(userid) {
+//   $.ajax({
+//     type: 'POST',
+//     dataType: "json",
+//     async: false,
+//     data: { userid: userid },
+//     //url: 'http://120.77.46.176:8080/Obcloud/api/pacs/getPacsGrowth',
+//     url: "http://120.77.46.176:8080/Obcloud/outpatientRestful/getPacsGrowth",
+//     success: function (data) {
+//       if (data.code == '1') {
+//         // parent.BJUI.alertmsg('info', '获取');
+//         demodata = data;
 
-        drawgrid('canvas');
-        printline();
-      } else {
-        parent.BJUI.alertmsg('error', data.message);
-      }
-    }
-  });
-}
+//         drawgrid('canvas');
+//         printline();
+//       } else {
+//         parent.BJUI.alertmsg('error', data.message);
+//       }
+//     }
+//   });
+// }
 
 function drawscaleLine(scale, name, namey, style) {
   console.log('drawscaleAC');
