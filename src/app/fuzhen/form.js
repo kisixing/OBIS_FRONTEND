@@ -62,9 +62,66 @@ export default class FuzhenForm extends Component {
 
   // 2 检测孕妇高危诊断，修改表格以及表单型式
   checkDiagnosisHighrisk(type) {
-    const { diagnosis } = this.props;
-    const types = { gbd: '妊娠期糖尿病', hypertension: '高血压', chd: '冠心病', dtrz: '双胎妊娠', strz: '多胎妊娠' };
-    return diagnosis.filter(i => type.split(',').filter(t=>types[t] === i.data).length).length;
+    const { diagnosis, relatedObj } = this.props;
+
+    let diagItem = [];
+    let signItem = [];
+    diagnosis.map(item => { diagItem.push(item.data)});
+    for (var k in relatedObj) { signItem = signItem.concat(relatedObj[k]) };
+
+    const searchParam = {
+      'diabetes': {
+        'diagKeyword': ['糖尿病'],
+        'digWord': [],
+        'signWord': ['内分泌疾病']
+      },
+      'hypertension': {
+        'diagKeyword': ['高血压', '子痫', '肾炎', '肾病', '红斑狼疮'],
+        'digWord': ['红斑狼疮', '风湿性关节炎', '类风湿性关节炎', '硬皮病'],
+        'signWord': ['高血压', '肾病', '免疫系统疾病']
+      },
+      'coronary': {
+        'diagKeyword': [],
+        'digWord': ['冠心病', '心力衰竭', '妊娠合并心力衰竭', '风湿性心脏病', '妊娠合并风湿性心脏病', '先天性心脏病', '心肌病'],
+        'signWord': ['心血管疾病', '血液系统疾病']
+      },
+      'twins': {
+        'diagKeyword': [],
+        'digWord': ['双胎妊娠'],
+        'signWord': []
+      },
+      'multiple': {
+        'diagKeyword': [],
+        'digWord': ['多胎妊娠'],
+        'signWord': []
+      },
+    }
+
+    function refreshFrom(type) {
+      let searchObj = searchParam[type];
+      let bool = false;
+
+      diagItem.length>0 && diagItem.map(item => {
+        searchObj['diagKeyword'].map(subItem => {
+          if (item.indexOf(subItem) != -1) bool = true;
+        })
+      })
+
+      diagItem.length>0 && diagItem.map(item => {
+        if (searchObj['digWord'].includes(item)) bool = true;
+      })
+
+      signItem.length>0 && signItem.map(item => {
+        if (searchObj['signWord'].includes(item)) bool = true;
+      })   
+      return bool;
+    }
+
+    return refreshFrom(type);
+
+    // const types = { gbd: : '妊娠期糖尿病', hypertension: '高血压', chd: '冠心病', dtrz: '双胎妊娠', strz: '多胎妊娠' };
+    // console.log(diagnosis.filter(i => type.split(',').filter(t=>types[t] === i.data).length).length, '3434')
+    // return diagnosis.filter(i => type.split(',').filter(t=>types[t] === i.data).length).length;
   }
 
   formConfig() {
@@ -113,7 +170,7 @@ export default class FuzhenForm extends Component {
             {
               span: 18, rows: [
                 {
-                  label: (check('dtrz')||check('strz'))?'胎1':'', columns: [
+                  label: (check('twins')||check('multiple'))?'胎1':'', columns: [
                     { name: 'wz1[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
                     { name: 'tx1(bmp)[胎心]', type: 'input', span: 8 },
                     { name: 'xl1[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
@@ -121,14 +178,14 @@ export default class FuzhenForm extends Component {
                   ]
                 },
                 {
-                  label: '胎2', filter:()=>check('dtrz,strz'), columns: [
+                  label: '胎2', filter:()=>check('twins')||check('multiple'), columns: [
                     { name: 'wz2[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
                     { name: 'tx2(bmp)[胎心]', type: 'input', span: 8 },
                     { name: 'xl2[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
                   ]
                 },
                 {
-                  label: '胎3', filter:()=>check('strz'), columns: [
+                  label: '胎3', filter:()=>check('multiple'), columns: [
                     { name: 'wz3[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
                     { name: 'tx3(bpm)[胎心]', type: 'input', span: 8 },
                     { name: 'xl3[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
@@ -139,14 +196,14 @@ export default class FuzhenForm extends Component {
           ]
         },
         {
-          filter:()=>check('gbd'), columns:[
+          filter:()=>check('diabetes'), columns:[
             { name: 'fpg(mmol/L)[空腹血糖]', type: 'input', span: 6 },
             { name: 'pbg2h(mmol/L)[餐后2H]', type: 'input', span:6 },
             { name: 'hbAlc(%)[HbAlc]', type: 'input', span: 6 }
           ]
         },
         {
-          filter:()=>check('gbd'), label:'胰岛素方案', columns:[
+          filter:()=>check('diabetes'), label:'胰岛素方案', columns:[
             { name: 'riMo(U)[早]', span: 6, type: [{type:'input( )',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}]},
             { name: 'riNo(U)[中]', span: 6,type: [{type:'input( )',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}] },
             { name: 'riEv(U)[晚]', span: 6,type: [{type:'input( )',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}] },
@@ -162,7 +219,7 @@ export default class FuzhenForm extends Component {
               ]
             },
             {
-              label: '用药方案', span: 14, filter:()=>!check('chd'), columns: [
+              label: '用药方案', span: 14, filter:()=>!check('coronary'), columns: [
                 { name: 'medicineId[药物]', type: 'input', span: 8 },
                 { name: 'medicineTimes[频率]', type: 'select', showSearch: true, span: 8, options: baseData.yyfaOptions },
                 { name: 'medicineDosage form-control[剂量]', type: 'input', span: 8 },
@@ -171,7 +228,7 @@ export default class FuzhenForm extends Component {
           ]
         },
         {
-          filter:()=>check('chd'), rows: [
+          filter:()=>check('coronary'), rows: [
             {
               columns: [
                 { name: 'heartRate(次/分)[心率]', type: 'input', span: 6 },
@@ -192,7 +249,7 @@ export default class FuzhenForm extends Component {
           ]
         },
         {
-          label: '胎1超声', span: 3, filter:()=>check('dtrz,strz'), columns: [
+          label: '胎1超声', span: 3, filter:()=>check('twins')||check('multiple'), columns: [
             { name: 'tetz1(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teafv1(MM)[AVF]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teqxl1[脐血流]', type: 'input', className: 'childLabel', span: 6 },
@@ -200,7 +257,7 @@ export default class FuzhenForm extends Component {
           ]
         },
         {
-          label: '胎2超声', span: 3, filter:()=>check('dtrz,strz'), columns: [
+          label: '胎2超声', span: 3, filter:()=>check('twins')||check('multiple'), columns: [
             { name: 'tetz2(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teafv2(MM)[AVF]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teqxl2[脐血流]', type: 'input', className: 'childLabel', span: 6 },
@@ -208,7 +265,7 @@ export default class FuzhenForm extends Component {
           ]
         },
         {
-          label: '胎3超声', span: 3, filter:()=>check('strz'), columns: [
+          label: '胎3超声', span: 3, filter:()=>check('multiple'), columns: [
             { name: 'tetz3(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teafv3(MM)[AVF]', type: 'input', className: 'childLabel', span: 6 },
             { name: 'teqxl3[脐血流]', type: 'input', className: 'childLabel', span: 6 },
@@ -379,7 +436,7 @@ export default class FuzhenForm extends Component {
         modal({
           title: text,
           className: "canvasContent",
-          content:[<canvas id={canvas} className="z2" style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>, 
+          content:[<canvas id={canvas} style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>, 
                   // <canvas id={canvas2} className="z3" style={{height: 450, width: '40%'}}><p>Your browserdoes not support the canvas element.</p></canvas>,
                   <canvas style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>],
           footer:'',
