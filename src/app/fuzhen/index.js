@@ -129,15 +129,18 @@ export default class Patient extends Component {
   }
 
   handelTableChange(type, row) {
-    service.fuzhen.recentRvisit(row).then(() => {
-      // service.fuzhen.getRecentRvisit().then(res => this.setState({
-      //   recentRvisit: res.list
-      // }));
 
-      // service.fuzhen.getRvisitPage().then(res => this.setState({
-      //   recentRvisitAll: res.list
-      // }));
-    });
+    console.log(type, '11');
+    console.log(row, '2222');
+    // service.fuzhen.recentRvisit(row).then(() => {
+    //   service.fuzhen.getRecentRvisit().then(res => this.setState({
+    //     recentRvisit: res.list
+    //   }));
+
+    //   service.fuzhen.getRvisitPage().then(res => this.setState({
+    //     recentRvisitAll: res.list
+    //   }));
+    // });
   }
 
   onChangeInfo(info) {
@@ -146,27 +149,19 @@ export default class Patient extends Component {
 
   saveForm(entity) {
     this.setState({ loading: true });
+
+    console.log(entity, '666')
+
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
-        // service.fuzhen.getRecentRvisit().then(res => this.setState({
-        //   loading: false,
-        //   recentRvisit: res.list
-        // }));
-
-        // 使用mock时候才用这个
-        const { recentRvisit, recentRvisitAll } = this.state;
-        this.setState({
+        service.fuzhen.getRecentRvisit().then(res => this.setState({
           loading: false,
-          recentRvisit: [entity].concat(recentRvisit),
-          recentRvisitAll: recentRvisitAll.concat([entity]),
-        })
-        //使用mock时候才用这个
-
+          recentRvisit: res.object
+        }));
         resolve();
       }, () => this.setState({ loading: false }));
     })
-
   }
 
   /**
@@ -345,19 +340,17 @@ export default class Patient extends Component {
      * 诊疗计划管理
      */
     const renderPlanModal = () => {
-      const { isShowPlanModal, planDataList } = this.state;
+      const { isShowPlanModal, planDataList, info } = this.state;
       const handleClick = (item) => {
         this.setState({isShowPlanModal: false})
       }
-      const addRecentRvisit = (planEntity) => {
-        let param = {"time": util.formateDate()};
-        planEntity = Object.assign(planEntity, param);
+      const changeRecentRvisit = () => {
         service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
       }
       // const initTable = (data) => tableRender(baseData.planKey(), data, { pagination: false, buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this)});
       return (
         <Modal width="80%" title="诊疗计划" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-          <FuzhenTable onReturn={(param) => this.setState({isShowPlanModal: param})} addRecentRvisit={addRecentRvisit} />
+          <FuzhenTable info={info} onReturn={(param) => this.setState({isShowPlanModal: param})} changeRecentRvisit={changeRecentRvisit} />
         </Modal>
       )
     }
@@ -377,7 +370,7 @@ export default class Patient extends Component {
             <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>
               {planData&&planData.length>0 ? planData.map((item, index) => (
                 <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
-                  <p className="font-16">{util.countWeek(item.time)}周后 - {item.gestation}孕周</p>
+                  <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
                   <p className="font-16">{item.event}</p>
                 </Timeline.Item>
               ))
@@ -402,21 +395,25 @@ export default class Patient extends Component {
       });
     }
 
-    const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this), ...props });
+    const handelTableChange = (type, row) => {
+      service.fuzhen.saveRvisitForm(row).then(res => {
+        service.fuzhen.getRecentRvisit().then(res => this.setState({ recentRvisit: res.object }))
+      })
+    }
+
+    const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
         {initTable(recentRvisit && recentRvisit.slice(0, 2), { width: 1100, size: "small", pagination: false, className: "fuzhenTable", scroll: { x: 1100, y: 220 }, iseditable:({row})=>!!row })}
         {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null}
-        <Modal title="产检记录" visible={recentRvisitShow} width="100%" footer='' maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
+        <Modal title="产检记录" visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
-            {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 } })}
+            {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true, onRowChange: handelTableChange })}
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
           </div>
         </Modal>
         <div className="clearfix">   
           {recentRvisitAll && recentRvisitAll.length > 2 ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button> : <br />}
-          {/* <Button size="small" type="dashed" className="margin-TB-mid margin-R-1 pull-right">删除</Button> */}
-          {/* <Button size="small" type="dashed" className="margin-TB-mid margin-R-1 pull-right">添加</Button> */}
         </div>
       </div>
     );

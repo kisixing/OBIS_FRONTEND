@@ -80,15 +80,15 @@ export default {
     /**
      * 删除诊疗计划
      */
-    delRecentRvisit: function(){
-        return this.userId().then(r => myAxios.delete('/outpatientWriteRestful/delRecentRvisit', params));
+    delRecentRvisit: function(params){
+        return this.userId().then(r => myAxios.delete('/outpatientWriteRestful/delRecentRvisit', {data:{userid: r.object.userid, diagnosisPlans: [params]}}));
     },
 
     /**
      * 修改诊疗计划
      */
-    editRecentRvisit: function(){
-        return this.userId().then(r => myAxios.put('/outpatientWriteRestful/editRecentRvisit', params));
+    editRecentRvisit: function(params){
+        return this.userId().then(r => myAxios.put('/outpatientWriteRestful/editRecentRvisit', {userid: r.object.userid, diagnosisPlans: [params]}));
     },
 
     /**
@@ -143,7 +143,7 @@ export default {
     /**
      * 保存本次产检记录
      */
-    saveRvisitForm: function(entity){
-        return this.userId().then(r => myAxios.put('/outpatientWriteRestful/saveRvisitForm', entity));
+    saveRvisitForm: function(params){
+        return this.userId().then(r => myAxios.put('/outpatientWriteRestful/saveRvisitForm', Object.assign(params, {userid: r.object.userid})));
     },
 }
