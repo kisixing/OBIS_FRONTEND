@@ -69,7 +69,7 @@ export const gjtpOptions = toOptions('正常,异常,未有检查,不清楚');
 /**
  * 血制品
  */
-export const xzpOptions = toOptions([{k:'红细胞{#FF3300}(shouzhenyy-时间,机构,原因)',addspan:2},{k:'血小板{#FF3300}(shouzhenyy-时间,机构,原因)',addspan:2},{k:'血浆{#FF3300}(shouzhenyy-时间,机构,原因)',addspan:2},{k:'全血{#FF3300}(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'白蛋白{#FF3300}(shouzhenyy2-时间,机构,原因)',addspan:2},{k:'免疫球蛋白{#FF3300}(shouzhenyy2-时间,机构,原因)',addspan:2},'其他{#FF3300}','不清楚']);
+export const xzpOptions = toOptions([{k:'红细胞{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血小板{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血浆{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'全血{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'白蛋白{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'免疫球蛋白{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},'其他{#FF3300}','不清楚']);
 
 /**
  * 初潮
@@ -144,7 +144,7 @@ export const cjOptions = toOptions('未触及,可触及');
 /**
  *肾区叩痛
 */
-export const sktOptions = toOptions('有（左）{#FF3300},有（右）{#FF3300}');
+export const sktOptions = toOptions('无,有（左）{#FF3300},有（右）{#FF3300}');
 
 /**
  *下肢浮肿

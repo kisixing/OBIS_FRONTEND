@@ -125,7 +125,19 @@ export default class Patient extends Component {
                     //tab.entity['vfdp'] = { "未查": {} }
                 } else if (tab.key === 'tab-8') {
                     tab.entity = res.object.checkUp
-                    tab.entity.ckshrinkpressure = (typeof tab.entity.ckshrinkpressure === 'object') ? tab.entity.ckshrinkpressure : [tab.entity.ckshrinkpressure, tab.entity.ckshrinkpressure];
+                    tab.entity['vascularMurmur'] = (typeof tab.entity.vascularMurmur === 'object') ? JSON.parse(tab.entity.vascularMurmur):tab.entity.vascularMurmur;
+                    tab.entity['nervousReflex'] = (typeof tab.entity.nervousReflex === 'object') ? JSON.parse(tab.entity.nervousReflex):tab.entity.nervousReflex;
+                    tab.entity['murmurs'] =  (typeof tab.entity.murmurs === 'object') ?JSON.parse(tab.entity.murmurs):tab.entity.murmurs;
+                    tab.entity['ckshenz'] = JSON.parse(tab.entity.ckshenz);
+                    tab.entity['ckrut'] = JSON.parse(tab.entity.ckrut);
+                    tab.entity['ckjiazhx'] = JSON.parse(tab.entity.ckjiazhx);
+                    tab.entity['ckganz'] = JSON.parse(tab.entity.ckganz);
+                    tab.entity['ckpifu'] = JSON.parse(tab.entity.ckpifu);
+                    tab.entity['ckpiz'] = JSON.parse(tab.entity.ckpiz);
+                    tab.entity['ckfuzh'] = JSON.parse(tab.entity.ckfuzh);
+                    tab.entity['breathSounds'] = JSON.parse(tab.entity.breathSounds);
+                    tab.entity['cardiac'] = JSON.parse(tab.entity.cardiac);
+                    tab.entity.ckpressure = (typeof tab.entity.ckpressure === 'object') ? tab.entity.ckpressure : [tab.entity.ckdiastolicpressure, tab.entity.ckshrinkpressure];
                 } else if(tab.key === 'tab-9'){
                     tab.entity = res.object.specialityCheckUp
                 }
@@ -195,6 +207,10 @@ export default class Patient extends Component {
             if (valid) {
                 if (this.change) {
                     console.log('handleSave', key);
+                    if(key === 'tab-8'){
+                        tab.enity.ckdiastolicpressure = ckpressure[0];
+                        tab.enity.ckshrinkpressure = ckpressure[1];
+                    }
                     service.shouzhen.saveForm(tab.key, tab.entity).then(() => {
                         message.success('信息保存成功',3);
                         this.activeTab(key || next.key);

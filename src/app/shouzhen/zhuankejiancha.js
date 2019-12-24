@@ -46,9 +46,9 @@ export default class extends Component {
         {
           columns:[
             { span: 1 },
-            {name:'gg[宫高](cm)', type:'input',span:5,valid: 'required',},
+            {name:'ckgongg[宫高](cm)', type:'input',span:5,valid: 'required',},
             { span: 1 },
-            {name:'fw[腹围](cm)', type:'input', span:5}
+            {name:'ckfuw[腹围](cm)', type:'input', span:5}
           ]
         },
         {
@@ -88,13 +88,13 @@ export default class extends Component {
         {
           filter: entity => !entity.gpwcl || !entity.gpwcl.hasOwnProperty('未做检查'), columns: [
             { span: 1 },
-            { name: 'sjjj(cm)[髂前上棘间径]', type: 'input', span: 5 },
+            { name: 'ckqiaj1(cm)[髂前上棘间径]', type: 'input', span: 5 },
             { span: 1 },
-            { name: 'gsjj(cm)[髂棘间径]', type: 'input', span: 5 },
+            { name: 'ckqiaj2(cm)[髂棘间径]', type: 'input', span: 5 },
             { span: 1 },
-            { name: 'dcwj(cm)[骶耻外径]', type: 'input', span: 5 },
+            { name: 'ckdichi(cm)[骶耻外径]', type: 'input', span: 5 },
             { span: 1 },
-            { name: 'zgjj(cm)[坐骨结节间径]', type: 'input', span: 5 }
+            { name: 'ckzugu(cm)[坐骨结节间径]', type: 'input', span: 5 }
           ]
         },
       ]
