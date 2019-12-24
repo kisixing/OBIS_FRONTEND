@@ -79,7 +79,7 @@ export default class extends Component{
             {name:'ckganz[肝]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:7},
             {name:'ckpiz[脾]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:7},
             {span:1},
-            {name:'ckshenz[肾区叩痛]', type:'checkinput-3',valid: 'required', options: baseData.sktOptions,span:9},
+            {name:'ckshenz[肾区叩痛]', type:'checkinput-3',valid: 'required', options: baseData.sktOptions,radio:true,span:9},
           ]
         },
         {
