@@ -397,7 +397,7 @@ export default class Patient extends Component {
 
     const handelTableChange = (type, row) => {
       service.fuzhen.saveRvisitForm(row).then(res => {
-        console.log(res,  '0000')
+        service.fuzhen.getRecentRvisit().then(res => this.setState({ recentRvisit: res.object }))
       })
     }
 

@@ -369,23 +369,36 @@ export default class FuzhenForm extends Component {
    * 曲线
    */
   renderQX(e,text,resolve){
-    var canvas = 'canvas';
-    modal({
-      title: text,
-      content:<canvas id={canvas} style={{height: 450, width: '99%'}}><p>Your browserdoes not support the canvas element.</p></canvas>,
-      footer:'',
-      width:'90%',
-      maskClosable:true,
-      onCancel:resolve
-    }).then(() => {
-      setTimeout(
-        ()=>{
-          drawgrid('canvas');
-          printline();
-        },200
-      );
-      
-    });
+    const canvas = 'canvas';
+    const canvas2 = 'canvas2';
+    console.log(demodata, '111')
+
+    service.fuzhen.getPacsGrowth().then(res => {
+      if (res.code === '10') {
+        demodata = [];
+        modal({
+          title: text,
+          className: "canvasContent",
+          content:[<canvas id={canvas} className="z2" style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>, 
+                  // <canvas id={canvas2} className="z3" style={{height: 450, width: '40%'}}><p>Your browserdoes not support the canvas element.</p></canvas>,
+                  <canvas style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>],
+          footer:'',
+          width:'90%',
+          maskClosable:true,
+          onCancel:resolve
+        }).then(() => {
+          setTimeout(
+            ()=>{
+              drawgrid('canvas');
+              drawgrid('canvas2');
+              // printline();
+            },200)
+          }
+        );
+      } else {
+        
+      }
+    })
   }
 
   /**
