@@ -87,6 +87,9 @@ myAxios.interceptors.response.use(response => {
     if ((status >= 200 && status < 300) || status === 304) {
         // 如果启用转换，请修改下面这行代码，且请去掉其他地方的praseJSON调用，避免重复调用praseJSON浪费性能
         // return praseJSON(response.data);
+        if(response.data && response.data.code != '200'){
+            Modal.warning({title: '提示: ' + response.data.code, content: response.data.message})
+        }
         return response.data;
     }
 }, error => {
