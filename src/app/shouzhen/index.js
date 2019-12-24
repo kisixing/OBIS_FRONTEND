@@ -62,7 +62,7 @@ export default class Patient extends Component {
                     tab.entity['useridtype'] = JSON.parse(res.object.gravidaInfo.useridtype)
                 } else if (tab.key === 'tab-1') {
                     tab.entity = res.object.husbandInfo
-                    tab.entity['add_FIELD_husband_drink'] = { "0": JSON.parse(tab.entity['add_FIELD_husband_drink_type']),"1":tab.entity['add_FIELD_husband_drink']}
+                    tab.entity['add_FIELD_husband_drink'] = { "0": JSON.parse(tab.entity['add_FIELD_husband_drink_type']),"1":JSON.parse(tab.entity['add_FIELD_husband_drink'])[1]}
                     tab.entity['add_FIELD_husband_useridtype'] = JSON.parse(res.object.husbandInfo.add_FIELD_husband_useridtype);
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-2') {
@@ -151,7 +151,7 @@ export default class Patient extends Component {
                 else {
                     tab.entity = res.object;
                 }
-                
+
                 service.praseJSON(tab.entity);
                 console.log(tab.key, tab.entity);
                 this.setState({ step }, () => {
