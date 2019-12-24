@@ -67,7 +67,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'cardiac(次/分)[心率]', type:'input',valid: 'required', span:6},
+            {name:'cardiac(次/分)[心率]', type:'input',valid: 'required|number', span:6},
             {span:1},
             {name:'heart[心律]', type:'checkinput-3',valid: 'required', options: baseData.xlOptions,radio:true,span:7},
             {span:1},

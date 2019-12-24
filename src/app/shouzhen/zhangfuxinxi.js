@@ -46,7 +46,7 @@ export default class extends Component {
             { name: 'add_FIELD_husband_smoking(支/天)[抽烟]', type: 'input', span: 5 },
             { name: entity=>'add_FIELD_husband_drink[喝酒]' + (!entity.add_FIELD_husband_drink||isMY(entity.add_FIELD_husband_drink[0])?'(ml/天)':''), className:'h_26', span: 6, type: [
                 { type: 'select', options: baseData.jiuOptions },
-                { type:'input',filter: data=>!data||isMY(data[0])}
+                { type:'input',filter: data=>!data||isMY(data[1])}
               ] 
             },
             { name: 'userhjib[现有何病]', type: 'input', span: 12 }

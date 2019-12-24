@@ -29,7 +29,7 @@ export default class extends Component {
             { span: 1 },
             { name: 'ckgongj[宫颈]', type: 'input', span: 5 },
             { span: 1 },
-            { name: 'zg[子宫]', type: 'input', span: 5 }
+            { name: 'ckgongt[子宫]', type: 'input', span: 5 }
           ]
         },
         {
@@ -52,7 +52,7 @@ export default class extends Component {
           ]
         },
         {
-          name: 'ckjc', groups: index => ({
+          name: 'add_FIELD_ckjc', groups: index => ({
             rows: [
               
               {
