@@ -149,13 +149,16 @@ export default class Patient extends Component {
                 else {
                     tab.entity = res.object;
                 }
+                service.praseJSON(tab.entity);
                 console.log(tab.key, tab.entity);
                 this.setState({ step }, () => {
                     const form = document.querySelector('.shouzhen');
                     fireForm(form, 'valid');
                 });
-            }).catch(() => { // TODO: 仅仅在mock时候用
+            }).catch(e => { // TODO: 仅仅在mock时候用
                 tab.init = true;
+                service.praseJSON(tab.entity);
+                console.warn(e);
                 this.setState({ step }, () => {
                     const form = document.querySelector('.shouzhen');
                     fireForm(form, 'valid');
@@ -216,8 +219,8 @@ export default class Patient extends Component {
                 if (this.change) {
                     console.log('handleSave', key);
                     if(key === 'tab-8'){
-                        tab.enity.ckdiastolicpressure = ckpressure[0];
-                        tab.enity.ckshrinkpressure = ckpressure[1];
+                        tab.entity.ckdiastolicpressure = tab.entity.ckpressure[0];
+                        tab.entity.ckshrinkpressure = tab.entity.ckpressure[1];
                     }
                     service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
                         message.success('信息保存成功',3);

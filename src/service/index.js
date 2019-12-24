@@ -1,5 +1,5 @@
 
-import myAxios from '../utils/myAxios';
+import myAxios, * as method from '../utils/myAxios';
 
 import { default as fuzhen } from './fuzhen';
 import { default as shouzhen } from './shouzhen';
@@ -8,6 +8,7 @@ let userId = null;
 let watchInfoList = [];
 
 export default {
+    ...method,
     watchInfo: function(fn){
         watchInfoList.push(fn);
         return () => watchInfoList = watchInfoList.filter(f=>f!==fn);

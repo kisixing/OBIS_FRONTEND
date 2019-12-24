@@ -36,8 +36,6 @@ export const remove$Property = function (obj){
  * 把所有的json数据转换为对象
  */
 export const praseJSON = function(data){
-    // 如果想要启用转换，请注释下面这行代码
-    if(true){return data;}
     for(var p in data){
         if(typeof data[p] === 'string'){
             try{
@@ -87,7 +85,9 @@ myAxios.interceptors.request.use(config => {
 myAxios.interceptors.response.use(response => {
     const status = response.status;
     if ((status >= 200 && status < 300) || status === 304) {
-        return praseJSON(response.data);
+        // 如果想要启用转换，请修改下面这行代码
+        // return praseJSON(response.data);
+        return response.data;
     }
 }, error => {
     error.response = error.response || {};
