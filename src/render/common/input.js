@@ -25,7 +25,7 @@ export function checkbox({onChange, onBlur, value, ...props}){
     onChange(e, `${value}`).then(()=>onBlur())
   };
   return (
-    <Checkbox {...props} value={value} checked={value=='true'} onChange={e=>handleChange(e, e.target.checked)}></Checkbox>
+    <Checkbox {...props} value={value} checked={value=='true'||value===true} onChange={e=>handleChange(e, e.target.checked)}></Checkbox>
   )
 }
 

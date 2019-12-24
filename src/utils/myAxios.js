@@ -46,6 +46,8 @@ export const praseJSON = function(data){
         }
         if(data[p] && (typeof data[p] === 'object')){
             praseJSON(data[p]);
+        }else{
+            data[p] = `${data[p]}`;
         }
     }
     return data;
