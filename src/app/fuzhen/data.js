@@ -2,13 +2,32 @@
 import * as util from './util';
 
 
-function toOptions(data, vfn = ()=>({})){
+// function toOptions(data, vfn = ()=>({})){
+// 	if(data instanceof Array){
+// 		return data.map((v,i) => ({ label: v, value: v, ...vfn(v,i) }))
+// 	}
+// 	if(data && typeof data === 'object'){
+// 		return Object.keys(data).map(i => ({ label: data[i], value: i, ...vfn(v,i) }))
+// 	}
+// 	return [];
+// }
+
+/**
+ * 如果不想在value里面使用label的数据，可以换成用index作为value
+ */
+function toOptions(data, vfn =()=>({})){
 	if(data instanceof Array){
-		return data.map((v,i) => ({ label: v, value: v, ...vfn(v,i) }))
+		return data.map((v,i) => {
+			const { k, ...rest } = v;
+			return { ...rest, label: k || v, value: k || v, ...vfn(k || v,i) }
+		})
 	}
 	if(data && typeof data === 'object'){
-		return Object.keys(data).map(i => ({ label: data[i], value: i, ...vfn(v,i) }))
-	}
+		return Object.keys(data).map((v,i) => ({ label: data[v], value: v, ...vfn(data[v],v,i) }))
+  }
+  if(typeof data === 'string'){
+    return data.split(/[,;]/).map((v,i) => ({ label: v, value: v, ...vfn(v,i) }))
+  }
 	return [];
 }
 
@@ -68,7 +87,7 @@ function toOptions(data, vfn = ()=>({})){
 // };
 
 /**
- * 表单初始数据
+ * 本次产检记录表单初始数据
  */
 export const formEntity = {
 	"parseAddFieldLocations": null,
@@ -145,6 +164,40 @@ export const formEntity = {
 	"xlrb": "",
 	"arrear": "",
 	"addField": ""
+};
+
+/**
+ * 入院登记表单初始数据
+ */
+export const regFormEntity = {
+	"hzxm": '',
+	"xb": '',
+	"csrq": '',
+	"lxdh": "",
+	"zyks": '',
+	"rysq": '',
+	"tsbz": "",
+	"sfzwyzy": "",
+	"gj": "",
+	"jg": "",
+	"mz": "",
+	"csd1": "",
+	"csd2": "",
+	"hy": "",
+	"xzz": "",
+	"yb1": "",
+	"sfzdz": "",
+	"yb2": "",
+	"sfzhm": "",
+	"ly": "",
+	"zy": "",
+	"gzdwjdz": "",
+	"dwyb": "",
+	"dwlxdh": "",
+	"lxrxm": "",
+	"lxrdh": "",
+	"lxrdz": "",
+	"gx": "",
 };
 
 /**
@@ -325,8 +378,8 @@ export const xlOptions = [
 	{ label: '头', value: '1' },
 	{ label: '臀', value: '2' },
 	{ label: '肩', value: '3' },
-	{ label: '其他', value: '5' },
-	{ label: '不清', value: '6' },
+	{ label: '其他', value: '4' },
+	{ label: '不清', value: '5' },
 ];
 
 /**
@@ -344,10 +397,10 @@ export const wzOptions = [
  */
 export const ckfuzhOptions = [
 	{ label: '-', value: '1' },
-	{ label: '+', value: '3' },
-	{ label: '++', value: '4' },
-	{ label: '+++', value: '5' },
-	{ label: '++++', value: '6' },
+	{ label: '+', value: '2' },
+	{ label: '++', value: '3' },
+	{ label: '+++', value: '4' },
+	{ label: '++++', value: '5' },
 ];
 
 /**
@@ -407,3 +460,33 @@ export const tjOptions = [
 	{ label: '异常，入院治疗', value: '3' },
 ];
 
+// 住院登记表
+/**
+ * 住院科室
+ */
+export const zyksOptions = toOptions(['胸外科', '放射科', '耳鼻喉科']);
+/**
+ * 是否在我院住院
+ */
+export const sfzyOptions = toOptions([{k: '是(shouzhenyy-原住院号)', addspan: 2}, '否']);
+/**
+ * 出生地
+ */
+export const csd1Options = toOptions(['广东', '福建', '北京']);
+export const csd2Options = toOptions(['广州', '深圳', '上海']);
+/**
+ * 婚姻
+ */
+export const hyOptions = toOptions('未婚,已婚,丧偶,离婚');
+/**
+ * 来源
+ */
+export const lyOptions = toOptions('本区,本市,本省,外省,港澳台,外国');
+/**
+ * 职业
+ */
+export const zyOptions = toOptions('国家公务员,专业技术人员,企业管理人员,自由职业者,工人,现役军人,个体经营者,职员,农民,学生,退(离)休人员,无业人员(婴儿或学龄的儿童),其他');
+/**
+ * 联系人与患者关系
+ */
+export const gxOptions = toOptions('配偶,子,女,孙子、孙女或外孙子女,父母,祖父母或外祖父母,兄弟姐妹,家庭内其他关系,非家庭关系成员');

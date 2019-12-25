@@ -9,6 +9,8 @@ import service from '../../service';
 import * as baseData from './data';
 import * as util from './util';
 
+import editors from '../shouzhen/editors';
+
 import "../index.less";
 import "./index.less";
 
@@ -85,6 +87,8 @@ export default class Patient extends Component {
         }
       ]
     };
+
+    this.componentWillUnmount = editors();
   }
 
   componentDidMount() {
@@ -382,10 +386,17 @@ export default class Patient extends Component {
     }
 
     const handelTableChange = (type, row) => {
+      // console.log(type, '11');
+      // console.log(row, '22');
       service.fuzhen.saveRvisitForm(row).then(res => {
         service.fuzhen.getRecentRvisit().then(res => this.setState({ recentRvisit: res.object }))
       })
     }
+
+    // const handelTChange = (e, val) => {
+    //   console.log(e, '33');
+    //   console.log(val, '44');
+    // }
 
     const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, ...props });
     return (

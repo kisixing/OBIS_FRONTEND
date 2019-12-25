@@ -33,11 +33,13 @@ export default class FuzhenForm extends Component {
       openTemplate: false,
       openYy: false,
       entity: { ...baseData.formEntity },
+      regFormEntity: {...baseData.regFormEntity},
+      isShowRegForm: false,
       error: {},
       treatTemp: [],
       modalState: {},
       getPacsGrowth: {},
-      getbmi: []
+      getbmi: [],
     }
 
     this.renderChart = renderChart();
@@ -124,6 +126,7 @@ export default class FuzhenForm extends Component {
     // return diagnosis.filter(i => type.split(',').filter(t=>types[t] === i.data).length).length;
   }
 
+  //本次产检记录表单
   formConfig() {
     const check = t => this.checkDiagnosisHighrisk(t);
     return {
@@ -140,7 +143,7 @@ export default class FuzhenForm extends Component {
               ] 
             },
             { 
-              name: 'ckpressure(mmHg)[血压]', type: ['input(/)','input'], span: 6, valid: (value)=>{
+              name: 'ckpressure(mmHg)[血压]', type: [{type: 'input(/)'},{type: 'input'}], span: 6, valid: (value)=>{
               let message = '';
               if(value){
                 if(value[0] && valid('number|rang(0,140)',value[0])){
@@ -287,7 +290,7 @@ export default class FuzhenForm extends Component {
           columns:[
             { 
               name: 'nextRvisit[下次复诊]',span: 16, type: [          
-                {type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions},
+                {type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions, onclick: this.showRegForm.bind(this)},
                 {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
                 'date',
                 {type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions},
@@ -295,6 +298,102 @@ export default class FuzhenForm extends Component {
             }
           ]
         } 
+      ]
+    }
+  }
+
+  // 入院登记表单
+  regFormConfig() {
+    return {
+      rows: [
+        {
+          columns: [
+            { name: 'hzxm[患者姓名]', type: 'input', span: 6 },
+            { name: 'xb[性别]', type: 'input', span: 6 },
+            { name: 'csrq[出生日期]', type: 'input', span: 6 },
+            { name: 'lxdh[联系电话]', type: 'input', span: 6 }
+          ]
+        },
+        {
+          columns: [
+            { name: 'zyks[住院科室]', type: 'select', valid: 'required', span: 6, options: baseData.zyksOptions },
+            { name: 'rysq[入院日期]', type: 'date', valid: 'required', span: 6 },
+          ]
+        },
+        {   
+          columns:[
+            { name: 'tsbz[特殊备注]', type: 'textarea', span: 12, placeholder: "请输入备注" }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'sfzwyzy[是否在我院住院]', type: 'checkinput', radio: true, span: 16, options: baseData.sfzyOptions }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'gj[国籍]', type: 'input', span: 6 },
+            { name: 'jg[籍贯]', type: 'input', span: 6 },
+            { name: 'mz[民族]', type: 'input', span: 6 }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'csd1[出生地]', type: 'select', span: 4, options: baseData.csd1Options },
+            { name: 'csd2[]', type: 'select', span: 4, options: baseData.csd2Options },
+            { name: 'hy[婚姻]', type: 'checkinput', radio: true, span: 12, options: baseData.hyOptions }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'xzz[现住址]', type: 'input', span: 12, placeholder: "请输入" },
+            { name: 'yb1[邮编]', type: 'input', span: 6, placeholder: "请输入" }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'xzz[身份证地址]', type: 'input', span: 12, placeholder: "请输入" },
+            { name: 'yb2[邮编]', type: 'input', span: 6, placeholder: "请输入" }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'sfzhm[身份证号码(ID)]', type: 'input', span: 12 },
+            { name: 'ly[来源]', type: 'checkinput', radio: true, span: 12, options: baseData.lyOptions }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'zy[职业]', type: 'checkinput', radio: true, span: 24, options: baseData.zyOptions }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'gzdwjdz[工作单位及地址]', type: 'input', span: 12, placeholder: "请输入" }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'dwyb[单位邮编]', type: 'input', span: 12, placeholder: "请输入" },
+            { name: 'dwlxdh[单位联系电话]', type: 'input', span: 12, placeholder: "请输入" }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'lxrxm[联系人姓名]', type: 'input', span: 12, placeholder: "请输入" },
+            { name: 'lxrdh[联系人电话]', type: 'input', span: 12, placeholder: "请输入" }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'lxrdz[联系人地址]', type: 'input', span: 12, placeholder: "请输入" }
+          ]
+        },
+        {   
+          columns:[
+            { name: 'gx[联系人与患者关系]', type: 'checkinput', radio: true, span: 24, options: baseData.gxOptions }
+          ]
+        }
       ]
     }
   }
@@ -327,7 +426,7 @@ export default class FuzhenForm extends Component {
   }
 
   handleChange(e, { name, value, valid }) {
-    const { entity, error } = this.state;
+    const { entity, error, isShowRegForm } = this.state;
     const data = { [name]: value };
     const errorData = { [name]: valid };
     switch (name) {
@@ -337,6 +436,9 @@ export default class FuzhenForm extends Component {
         break;
         case 'ckweek':
           this.state.openYCQ = ()=>{};
+        break;
+        case 'nextRvisit':
+          value[0].label === '入院'  ? this.setState({isShowRegForm: true}) : null;
         break;
     }
     this.setState({
@@ -458,6 +560,25 @@ export default class FuzhenForm extends Component {
     })
   }
 
+  // 入院登记表
+  showRegForm() {
+    const { regFormEntity, isShowRegForm } = this.state;
+    console.log('3355')
+    const handleClick = (item) => { this.setState({isShowRegForm: false})};
+
+    return (isShowRegForm ?
+      <Modal width="80%" title="入院登记表"
+        visible={isShowRegForm} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+        {formRender(regFormEntity, this.regFormConfig())}
+        <div style={{overflow: 'hidden'}}> 
+          <Button className="pull-right blue-btn" type="ghost">打印入院登记表</Button>
+          <Button className="pull-right blue-btn margin-R-1" type="ghost">保存</Button>
+        </div>
+      </Modal>
+      : null
+    )
+  }
+
   /**
    * 模板
    */
@@ -500,7 +621,7 @@ export default class FuzhenForm extends Component {
   }
 
   render() {
-    const { entity, openYy } = this.state;
+    const { entity } = this.state;
     return (
       <div className="fuzhen-form">
         <strong className="fuzhen-form-TIT">本次产检记录</strong>
@@ -511,7 +632,8 @@ export default class FuzhenForm extends Component {
         {this.renderTreatment()}
         {this.renderYCQ()}
         {this.renderModal()}
-      </div>
+        {this.showRegForm()}
+      </div> 
     )
   }
 }
