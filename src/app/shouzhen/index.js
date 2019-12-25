@@ -22,6 +22,7 @@ import editors from './editors';
 import "./index.less";
 
 const tabConetnts = [Yfxx, Zfxx, Byqk, Gqs, Yjs, Ycs, Jzs, Jyjc, Tgjc, Zkjc, Zdcl];
+const hideMessage = null;
 
 export default class Patient extends Component {
     constructor(props) {
@@ -215,13 +216,18 @@ export default class Patient extends Component {
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
         console.log('handleSave', key, step, tab.entity);
+        
+        message.destroy();
         const hide = message.loading('正在执行中...', 0);
+
         fireForm(form, 'valid').then((valid) => {
             // 数据提交前再对数据进行一些处理，请实现entitySave方法，请参考tab-0：yunfuxinxi.js这个文件
             const entitySave = tab.entitySave || (i=>i);
             tab.error = !valid;
+
             // 异步手动移除
             setTimeout(hide, 2000);
+            
             if (valid) {
                 // 修复喝酒不触发API问题
                 if(tab.key === 'tab-1'&& tab.entity.add_FIELD_husband_drink != tab.entity.add_FIELD_husband_drink_data[1]){
