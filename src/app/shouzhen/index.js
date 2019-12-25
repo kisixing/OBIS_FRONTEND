@@ -221,7 +221,7 @@ export default class Patient extends Component {
             const entitySave = tab.entitySave || (i=>i);
             tab.error = !valid;
             // 异步手动移除
-            setTimeout(hide, 1000);
+            setTimeout(hide, 2000);
             if (valid) {
                 // 修复喝酒不触发API问题
                 if(tab.key === 'tab-1'&& tab.entity.add_FIELD_husband_drink != tab.entity.add_FIELD_husband_drink_data[1]){
