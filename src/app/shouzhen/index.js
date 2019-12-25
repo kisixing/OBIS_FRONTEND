@@ -62,7 +62,7 @@ export default class Patient extends Component {
                     tab.entity['useridtype'] = JSON.parse(res.object.gravidaInfo.useridtype)
                 } else if (tab.key === 'tab-1') {
                     tab.entity = res.object.husbandInfo
-                    tab.entity['add_FIELD_husband_drink'] = { "0": JSON.parse(tab.entity['add_FIELD_husband_drink_type']),"1":JSON.parse(tab.entity['add_FIELD_husband_drink'])[1]}
+                    tab.entity['add_FIELD_husband_drink_data'] = { "0": JSON.parse(tab.entity['add_FIELD_husband_drink_type']),"1":JSON.parse(tab.entity['add_FIELD_husband_drink'])}
                     tab.entity['add_FIELD_husband_useridtype'] = JSON.parse(res.object.husbandInfo.add_FIELD_husband_useridtype);
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-2') {
@@ -86,6 +86,7 @@ export default class Patient extends Component {
                     tab.entity['yjcuch'] = JSON.parse(tab.entity.yjcuch);
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-5') {
+                    tab.entity = [];
                     tab.entity['preghis'] = res.object.gestation;
                     // tab.entity['preghis'] ={"preghis": [{
                     //     "id":1,
@@ -222,8 +223,8 @@ export default class Patient extends Component {
                 if (this.change) {
                     console.log('handleSave', key);
                     if(tab.key === 'tab-1'){
-                        tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink[0];
-                        tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink[1];
+                        tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink_data[0];
+                        tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1];
                         console.log('save tab-1',tab);
                     }
                     if(tab.key === 'tab-8'){
@@ -231,7 +232,23 @@ export default class Patient extends Component {
                         tab.entity.ckshrinkpressure = tab.entity.ckpressure[1];
                         console.log('save tab-8',tab);
                     }
-                    if(tab.key === 'tab-5'){
+                    if(tab.key != 'tab-5'){
+                        if(tab.key === 'tab-3'){
+                            service.shouzhen.saveOperations(tab.key, entitySave(tab.entity)).then(() => {
+                                message.success('信息保存成功',3);
+                                this.activeTab(key || next.key);
+                            }, () => { // TODO: 仅仅在mock时候用
+                                this.activeTab(key || next.key);
+                            });
+                        }
+                        service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
+                            message.success('信息保存成功',3);
+                            this.activeTab(key || next.key);
+                        }, () => { // TODO: 仅仅在mock时候用
+                            this.activeTab(key || next.key);
+                        });
+                    }
+                    else{
                         service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
                             message.success('信息保存成功',3);
                             this.activeTab(key || next.key);
@@ -241,12 +258,6 @@ export default class Patient extends Component {
                             return;
                         });
                     }
-                    service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
-                        message.success('信息保存成功',3);
-                        this.activeTab(key || next.key);
-                    }, () => { // TODO: 仅仅在mock时候用
-                        this.activeTab(key || next.key);
-                    });
                 } else {
                     this.activeTab(key || next.key);
                 }

@@ -40,6 +40,17 @@ export default {
         return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { userid:r.object.userid,...data}));
     },
     /**
+     * 保存手术史
+     */
+    saveOperations: function(tab, entity){
+        let data = {};
+        let uri = 'writeOperationHistory';
+        data = entity
+        //console.log(entity)
+        data.operationHistorys = data.operationHistory;
+        return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/${uri}`, { userid:r.object.userid,...data}));
+    },
+    /**
      * 诊断处理的诊断列表
      */
     getdiagnosis: function(){
