@@ -3,7 +3,7 @@ import { Row, Col, Button, Input, Table, Select, DatePicker } from 'antd';
 
 export function select({ name, options, width, value='', onChange, onBlur=()=>{}, ...props }){
   const getValue = () => {
-    if(typeof value === 'object'){
+    if(value && typeof value === 'object'){
       return value.value;
     }
     return value;

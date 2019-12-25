@@ -129,7 +129,7 @@ renderDanger() {
               <Col span={3}>高危等级：</Col>
               <Col span={7}><Select value={highriskEntity.risklevel} onChange={e=>handleChange('risklevel', e)}>{'Ⅰ,Ⅱ,Ⅲ,Ⅳ,Ⅴ'.split(',').map(i=><Select.Option value={i}>{i}</Select.Option>)}</Select></Col>
               <Col span={2}>传染病：</Col>
-              <Col span={10}><Select multiple value={highriskEntity.infectious.split(',')} onChange={e=>handleChange('infectious', e.join())}>{'<乙肝大三阳,乙肝小三阳,梅毒,HIV,结核病,重症感染性肺炎,特殊病毒感染（H1N7、寨卡等）,传染病：其他'.split(',').map(i=><Select.Option value={i}>{i}</Select.Option>)}</Select></Col>
+              <Col span={10}><Select multiple value={highriskEntity.infectious&&highriskEntity.infectious.split(',')} onChange={e=>handleChange('infectious', e.join())}>{'<乙肝大三阳,乙肝小三阳,梅毒,HIV,结核病,重症感染性肺炎,特殊病毒感染（H1N7、寨卡等）,传染病：其他'.split(',').map(i=><Select.Option value={i}>{i}</Select.Option>)}</Select></Col>
             </Row>
             <br />
             <Row>
