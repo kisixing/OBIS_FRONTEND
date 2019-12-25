@@ -214,7 +214,7 @@ export default class Patient extends Component {
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
-        console.log('handleSave', key, step, tab.entity);
+        console.log('handleSave-下一步', key, step, tab.entity);
         fireForm(form, 'valid').then((valid) => {
             // 数据提交前再对数据进行一些处理，请实现entitySave方法，请参考tab-0：yunfuxinxi.js这个文件
             const entitySave = tab.entitySave || (i=>i);
@@ -223,8 +223,8 @@ export default class Patient extends Component {
                 if (this.change) {
                     console.log('handleSave', key);
                     if(tab.key === 'tab-1'){
-                        tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink_data[0];
-                        tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1];
+                        tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink_data[0]||'';
+                        tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1]||'';
                         console.log('save tab-1',tab);
                     }
                     if(tab.key === 'tab-8'){
@@ -291,7 +291,7 @@ export default class Patient extends Component {
                     ))}
                 </Tabs>
                 <Row><Col span={21}/><Col>
-                    <Button icon="save" type="primary" onClick={() => this.handleSave()}>{step !== tabs[tabs.length - 1].key ? '下一页' : '保存'}</Button>
+                    <Button icon="save" type="primary" onClick={() => setTimeout(()=>{this.handleSave()},100) }>{step !== tabs[tabs.length - 1].key ? '下一页' : '保存'}</Button>
                 </Col></Row>
             </Page>
         )
