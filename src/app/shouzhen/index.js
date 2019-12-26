@@ -22,6 +22,7 @@ import editors from './editors';
 import "./index.less";
 
 const tabConetnts = [Yfxx, Zfxx, Byqk, Gqs, Yjs, Ycs, Jzs, Jyjc, Tgjc, Zkjc, Zdcl];
+const hideMessage = null;
 
 export default class Patient extends Component {
     constructor(props) {
@@ -215,16 +216,29 @@ export default class Patient extends Component {
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
         console.log('handleSave', key, step, tab.entity);
+        
+        message.destroy();
+        const hide = message.loading('正在执行中...', 0);
+
         fireForm(form, 'valid').then((valid) => {
             // 数据提交前再对数据进行一些处理，请实现entitySave方法，请参考tab-0：yunfuxinxi.js这个文件
             const entitySave = tab.entitySave || (i=>i);
             tab.error = !valid;
+
+            // 异步手动移除
+            setTimeout(hide, 2000);
+            
             if (valid) {
+                // 修复喝酒不触发API问题
+                if(tab.key === 'tab-1'&& tab.entity.add_FIELD_husband_drink != tab.entity.add_FIELD_husband_drink_data[1]){
+                    this.change=true;
+                }
+
                 if (this.change) {
                     console.log('handleSave', key);
                     if(tab.key === 'tab-1'){
-                        tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink_data[0];
-                        tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1];
+                        tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink_data[0]||'';
+                        tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1]||'';
                         console.log('save tab-1',tab);
                     }
                     if(tab.key === 'tab-8'){
@@ -280,18 +294,18 @@ export default class Patient extends Component {
             <Page className='shouzhen pad-T-mid'>
                 <Button type="primary" className="top-save-btn" size="small" onClick={() => alert('保存')}>保存</Button>
                 <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
-                <div className="bgWhite" style={{ position: 'fixed', top: '9em', left: '0', right: '0', bottom: '0' }}></div>
+                <div className="bgWhite" style={{ position: 'fixed', top: '7.65em', left: '0', right: '0', bottom: '0' }}></div>
                 <Tabs type="card" activeKey={step} onChange={key => this.handleSave(key)}>
                     {tabs.map(({ key, title, entity, error, Content }) => (
                         <Tabs.TabPane key={key} tab={<span style={error ? { color: 'red' } : {}}>{error ? <i className="anticon anticon-exclamation-circle" /> : null}{title}</span>}>
-                            <div className="bgWhite pad-mid ">
+                            <div className="bgWhite pad-mid " style={{'maxWidth': '1400px'}}>
                                 {step === key ? <Content info={info} entity={{ ...entity }} onChange={(e, item) => this.handleChange(e, item, entity)} /> : null}
                             </div>
                         </Tabs.TabPane>
                     ))}
                 </Tabs>
                 <Row><Col span={21}/><Col>
-                    <Button icon="save" type="primary" onClick={() => this.handleSave()}>{step !== tabs[tabs.length - 1].key ? '下一页' : '保存'}</Button>
+                    <Button icon="save" type="primary" onClick={() => setTimeout(()=>{this.handleSave()},100) }>{step !== tabs[tabs.length - 1].key ? '下一页' : '保存'}</Button>
                 </Col></Row>
             </Page>
         )
