@@ -584,7 +584,7 @@ export default class FuzhenForm extends Component {
     }
 
     return (isShowRegForm ?
-      <Modal width="80%" title="入院登记表" className="reg-form"
+      <Modal width="80%" title="入院登记表" footer={null} className="reg-form"
         visible={isShowRegForm} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
         {formRender(regFormEntity, this.regFormConfig(), handleChange)}
         <div style={{overflow: 'hidden'}}> 

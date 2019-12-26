@@ -341,7 +341,7 @@ export default class Patient extends Component {
       }
       // const initTable = (data) => tableRender(baseData.planKey(), data, { pagination: false, buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this)});
       return (
-        <Modal width="80%" title="诊疗计划" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+        <Modal width="80%" footer={null} title="诊疗计划" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
           <FuzhenTable info={info} onReturn={(param) => this.setState({isShowPlanModal: param})} changeRecentRvisit={changeRecentRvisit} />
         </Modal>
       )
@@ -405,7 +405,7 @@ export default class Patient extends Component {
       <div className="fuzhen-table">
         {initTable(recentRvisit && recentRvisit.slice(0, 2), { width: 1100, size: "small", pagination: false, className: "fuzhenTable", scroll: { x: 1100, y: 220 }, iseditable:({row})=>!!row })}
         {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null}
-        <Modal title="产检记录" visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
+        <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
             {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true, onRowChange: handelTableChange })}
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
