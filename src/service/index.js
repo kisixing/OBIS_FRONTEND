@@ -27,6 +27,18 @@ export default {
         return myAxios.get('/outpatientRestful/findHighriskTree')
     },
     /**
+     * 高危弹出提醒判断
+     */
+    checkHighriskAlert: function(id){
+        return myAxios.post('/outpatientWriteRestful/checkHighriskAlert', {userid: id, inputType: '2', data: ''});
+    },
+    /**
+     * 添加高危标记
+     */
+    addHighrisk: function(userid, highrisk, level){
+        return myAxios.post('/outpatientWriteRestful/addHighrisk', {userid, highrisk, level});
+    },
+    /**
      * 复诊所需API
      */
     fuzhen: Object.assign(fuzhen, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),

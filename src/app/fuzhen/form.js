@@ -308,10 +308,10 @@ export default class FuzhenForm extends Component {
       rows: [
         {
           columns: [
-            { name: 'hzxm[患者姓名]', type: 'input', span: 6 },
-            { name: 'xb[性别]', type: 'input', span: 6 },
-            { name: 'csrq[出生日期]', type: 'input', span: 6 },
-            { name: 'lxdh[联系电话]', type: 'input', span: 6 }
+            { name: 'hzxm[患者姓名]', type: 'input', span: 6, disabled: true },
+            { name: 'xb[性别]', type: 'input', span: 6, disabled: true  },
+            { name: 'csrq[出生日期]', type: 'input', span: 6, disabled: true  },
+            { name: 'lxdh[联系电话]', type: 'input', span: 6, disabled: true  }
           ]
         },
         {
@@ -487,7 +487,7 @@ export default class FuzhenForm extends Component {
     }
 
     return (
-      <Modal className="yuModal" title={<span><Icon type="info-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
+      <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
              width={600} closable visible={!!openYCQ} onCancel={e => handelClick(e, false)} onOk={e => handelClick(e, true)}>
         <span>是否修改孕产期：</span>
         <DatePicker defaultValue={info.gesexpect} value={ycq} onChange={(e,v)=>{this.setState({ycq:v})}}/>
@@ -509,7 +509,7 @@ export default class FuzhenForm extends Component {
     }
 
     return (openYy ?
-      <Modal className="yuModal" title={<span><Icon type="info-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
+      <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
               visible={openYy} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
         <span>{modalState.title}: </span>    
         <Select defaultValue={modalState.options[0]} style={{ width: 120 }}>
@@ -563,16 +563,33 @@ export default class FuzhenForm extends Component {
   // 入院登记表
   showRegForm() {
     const { regFormEntity, isShowRegForm } = this.state;
-    console.log('3355')
     const handleClick = (item) => { this.setState({isShowRegForm: false})};
+    const handleChange = (e, { name, value, valid }) => {
+      const data = {[name]: value};
+      this.setState({
+        regFormEntity: {...regFormEntity, ...data}
+      })
+    }
+    const handleSave = (form) => {
+      fireForm(form, 'valid').then((valid) => {
+        if(valid) {
+          // service.fuzhen.saveRvisitForm(regFormEntity).then(() => {
+          //   this.setState({regFormEntity: {...baseData.regFormEntity}})
+          // })
+        }
+      })
+    }
+    const printForm = () => {
+      console.log('print')
+    }
 
     return (isShowRegForm ?
-      <Modal width="80%" title="入院登记表"
+      <Modal width="80%" title="入院登记表" className="reg-form"
         visible={isShowRegForm} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-        {formRender(regFormEntity, this.regFormConfig())}
+        {formRender(regFormEntity, this.regFormConfig(), handleChange)}
         <div style={{overflow: 'hidden'}}> 
-          <Button className="pull-right blue-btn" type="ghost">打印入院登记表</Button>
-          <Button className="pull-right blue-btn margin-R-1" type="ghost">保存</Button>
+          <Button className="pull-right blue-btn" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
+          <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={() => handleSave(document.querySelector('.reg-form'))}>保存</Button>
         </div>
       </Modal>
       : null

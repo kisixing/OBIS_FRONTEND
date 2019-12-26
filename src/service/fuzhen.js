@@ -57,6 +57,13 @@ export default {
         }]}}));
     },
     /**
+     * 高危弹出提醒判断
+     */
+    checkHighriskAlert: function(params){
+        let data = {"data": params};
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/checkHighriskAlert', {userid: r.object.userid, inputType: '1', ...data}));
+    },
+    /**
      * 诊疗计划（最近两条记录）
      */
     getDiagnosisPlanData: function(){

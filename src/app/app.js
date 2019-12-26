@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Input, Button, Select, Modal, Tree } from 'antd';
+import { Row, Col, Input, Button, Select, Modal, Tree, Icon } from 'antd';
 
 import router from "../utils/router";
 import bundle from "../utils/bundle";
@@ -30,14 +30,19 @@ export default class App extends Component {
       highriskList: [],
       highriskEntity: null,
       highriskShow: false,
-      muneIndex: 0 // 从0开始
+      muneIndex: 0, // 从0开始
+      isShowHighrisk: false,
+      highriskAlert: {},
     };
     
     service.getuserDoc().then(
       res => this.setState({
       ...res.object, loading: false,
       highriskEntity: {...res.object}
+    }, () => {
+      service.checkHighriskAlert(res.object.userid).then(res => this.setState({highriskAlert: res.object, isShowHighrisk: true}));
     }));
+
     service.highrisk().then(res => this.setState({
       highriskList: res.object
     }))
@@ -50,6 +55,39 @@ export default class App extends Component {
       this.props.history.push(routers[muneIndex].path);
     }
     this.componentWillUnmount = service.watchInfo((info)=>this.setState(info.object));
+  }
+
+    /**
+   * 高危弹出窗口
+   */
+  renderHighrisk() {
+    const { isShowHighrisk, highriskAlert, userid } = this.state;
+
+    const handelShow = (item) => {this.setState({isShowHighrisk: false})};
+    const addHighrisk = (highrisk, level) => {
+      this.setState({isShowHighrisk: false})
+      service.addHighrisk(userid, highrisk, level).then(res => {})
+    }
+
+    return (isShowHighrisk&&highriskAlert.items.length>0 ?
+      <div className="highrisk-wrapper">
+        <div>
+          <span className="exc-icon"><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>
+          <span className="close-icon pull-right" onClick={() => {handelShow()}}><Icon type="close" /></span>
+        </div>
+        <div className="highrisk-content">
+        <div>孕妇诊断有<span className="highrisk-word">{highriskAlert.content}</span>,请标记高危因素</div>     
+          <div className="highrisk-item">
+            {highriskAlert.items.map(item => (
+            <Button className="blue-btn margin-R-1 margin-TB-mid" type="ghost" onClick={() => addHighrisk(item.highrisk, item.level)}>{item.name}</Button>
+            ))}
+          </div>
+          <div><Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelShow()}>关闭，不再提示</Button>
+          <Button className="blue-btn colorGray" type="ghost" onClick={() => handelShow()}>关闭</Button></div>
+        </div>
+      </div>
+      : null
+    );
   }
 
   onClick(item) {
@@ -164,6 +202,7 @@ renderDanger() {
         <div>
           {this.renderDanger()}
         </div>
+        {this.renderHighrisk()}
       </div>
     )
   }

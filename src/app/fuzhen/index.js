@@ -113,8 +113,12 @@ export default class Patient extends Component {
     if (diagnosi && !diagnosis.filter(i => i.data === diagnosi).length) {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
+        service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
+          // console.log(res, '233')
+        })
         service.fuzhen.getdiagnosis().then(res => this.setState({
-            diagnosis: res.object.list
+            diagnosis: res.object.list,
+            diagnosi: ''
         }));
       })
     } else if (diagnosi) {
@@ -137,8 +141,6 @@ export default class Patient extends Component {
 
   saveForm(entity) {
     this.setState({ loading: true });
-
-    console.log(entity, '666')
 
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then(() => {

@@ -170,10 +170,10 @@ export const formEntity = {
  * 入院登记表单初始数据
  */
 export const regFormEntity = {
-	"hzxm": '',
-	"xb": '',
-	"csrq": '',
-	"lxdh": "",
+	"hzxm": '007',
+	"xb": '男',
+	"csrq": '1947-07-07',
+	"lxdh": "10086",
 	"zyks": '',
 	"rysq": '',
 	"tsbz": "",
