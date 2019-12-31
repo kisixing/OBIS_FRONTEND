@@ -122,7 +122,6 @@ export default class extends Component {
 
   render() {
     const { entity, onChange } = this.props;
-    console.log('---------entity--',entity);
     return (
       <div className="width_7 zhuanke">
         {/** TODO：这里的数据需要统一结构，最好是直接entity传入表单 */}
