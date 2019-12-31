@@ -5,6 +5,9 @@ import router from "../utils/router";
 import bundle from "../utils/bundle";
 import service from '../service';
 
+import store from './store';
+import { getAlertAction, closeAlertAction } from './store/actionCreators.js';
+
 import Shouzhen from 'bundle-loader?lazy&name=shouzhen!./shouzhen';
 import Fuzhen from 'bundle-loader?lazy&name=fuzhen!./fuzhen';
 
@@ -31,21 +34,28 @@ export default class App extends Component {
       highriskEntity: null,
       highriskShow: false,
       muneIndex: 0, // 从0开始
-      isShowHighrisk: false,
-      highriskAlert: {},
+      ...store.getState()
     };
+    store.subscribe(this.handleStoreChange);
     
     service.getuserDoc().then(
       res => this.setState({
       ...res.object, loading: false,
       highriskEntity: {...res.object}
     }, () => {
-      service.checkHighriskAlert(res.object.userid).then(res => this.setState({highriskAlert: res.object, isShowHighrisk: true}));
+      service.checkHighriskAlert(res.object.userid).then(res => {
+        const action = getAlertAction(res.object);
+        store.dispatch(action);
+      });
     }));
 
     service.highrisk().then(res => this.setState({
       highriskList: res.object
     }))
+  }
+
+  handleStoreChange = () => {
+    this.setState(store.getState());
   }
 
   componentDidMount() {
@@ -63,17 +73,22 @@ export default class App extends Component {
   renderHighrisk() {
     const { isShowHighrisk, highriskAlert, userid } = this.state;
 
-    const handelShow = (item) => {this.setState({isShowHighrisk: false})};
+    const handelClose = () => {
+      const action = closeAlertAction();
+      store.dispatch(action);
+    };
+
     const addHighrisk = (highrisk, level) => {
-      this.setState({isShowHighrisk: false})
+      const action = closeAlertAction();
+      store.dispatch(action);
       service.addHighrisk(userid, highrisk, level).then(res => {})
     }
 
-    return (isShowHighrisk&&highriskAlert.items.length>0 ?
+    return (isShowHighrisk&&highriskAlert.items&&highriskAlert.items.length>0 ?
       <div className="highrisk-wrapper">
         <div>
           <span className="exc-icon"><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>
-          <span className="close-icon pull-right" onClick={() => {handelShow()}}><Icon type="close" /></span>
+          <span className="close-icon pull-right" onClick={() => {handelClose()}}><Icon type="close" /></span>
         </div>
         <div className="highrisk-content">
         <div>孕妇诊断有<span className="highrisk-word">{highriskAlert.content}</span>,请标记高危因素</div>     
@@ -82,8 +97,8 @@ export default class App extends Component {
             <Button className="blue-btn margin-R-1 margin-TB-mid" type="ghost" onClick={() => addHighrisk(item.highrisk, item.level)}>{item.name}</Button>
             ))}
           </div>
-          <div><Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelShow()}>关闭，不再提示</Button>
-          <Button className="blue-btn colorGray" type="ghost" onClick={() => handelShow()}>关闭</Button></div>
+          <div><Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelClose()}>关闭，不再提示</Button>
+          <Button className="blue-btn colorGray" type="ghost" onClick={() => handelClose()}>关闭</Button></div>
         </div>
       </div>
       : null
@@ -202,7 +217,7 @@ renderDanger() {
         <div>
           {this.renderDanger()}
         </div>
-        {/* {this.renderHighrisk()} */}
+        {this.renderHighrisk()}
       </div>
     )
   }

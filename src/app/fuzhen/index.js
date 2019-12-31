@@ -8,8 +8,10 @@ import Page from '../../render/page';
 import service from '../../service';
 import * as baseData from './data';
 import * as util from './util';
-
 import editors from '../shouzhen/editors';
+
+import store from '../store';
+import { getAlertAction } from '../store/actionCreators.js';
 
 import "../index.less";
 import "./index.less";
@@ -114,7 +116,8 @@ export default class Patient extends Component {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
         service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
-          // console.log(res, '233')
+          const action = getAlertAction(res.object);
+          store.dispatch(action);
         })
         service.fuzhen.getdiagnosis().then(res => this.setState({
             diagnosis: res.object.list,
