@@ -39,6 +39,7 @@ class TableItem extends Component{
   }
 
   onChange = (e, value) => {
+    if (typeof value === 'object') value = value.label;
     return new Promise(resolve=>{
       this.setState({
         value: value
