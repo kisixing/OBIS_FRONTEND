@@ -464,29 +464,29 @@ export default class FuzhenForm extends Component {
     const { onSave } = this.props;
     const { entity } = this.state;
 
-    let newEntity = entity;
-    //血压
-    newEntity.ckshrinkpressure = newEntity.ckpressure[0];
-    newEntity.ckdiastolicpressure = newEntity.ckpressure[1];
-    //下次复诊
-    newEntity.rvisitOsType = newEntity.nextRvisit[0].label;  
-    newEntity.ckappointment = newEntity.nextRvisit[2];
-    newEntity.ckappointmentArea = newEntity.nextRvisit[3].label;
-    //胰岛素方案
-    newEntity.riMoMedicine = newEntity.riMo[0];
-    newEntity.riMoDosage = newEntity.riMo[1];
-    newEntity.riNoMedicine = newEntity.riNo[0];
-    newEntity.riNoDosage = newEntity.riNo[1];
-    newEntity.riEvMedicine = newEntity.riEv[0];
-    newEntity.riEvDosage = newEntity.riEv[1];
-    newEntity.riSlMedicine = newEntity.riSl[0];
-    newEntity.riSlDosage = newEntity.riSl[1];
+    // let newEntity = entity;
+    // //血压
+    // newEntity.ckshrinkpressure = newEntity.ckpressure[0];
+    // newEntity.ckdiastolicpressure = newEntity.ckpressure[1];
+    // //下次复诊
+    // newEntity.rvisitOsType = newEntity.nextRvisit[0].label;  
+    // newEntity.ckappointment = newEntity.nextRvisit[2];
+    // newEntity.ckappointmentArea = newEntity.nextRvisit[3].label;
+    // //胰岛素方案
+    // newEntity.riMoMedicine = newEntity.riMo[0];
+    // newEntity.riMoDosage = newEntity.riMo[1];
+    // newEntity.riNoMedicine = newEntity.riNo[0];
+    // newEntity.riNoDosage = newEntity.riNo[1];
+    // newEntity.riEvMedicine = newEntity.riEv[0];
+    // newEntity.riEvDosage = newEntity.riEv[1];
+    // newEntity.riSlMedicine = newEntity.riSl[0];
+    // newEntity.riSlDosage = newEntity.riSl[1];
 
 
 
     fireForm(form,'valid').then((valid)=>{
       if(valid){
-        // console.log(entity, '123')
+        console.log(entity, '可以保存')
         onSave(entity).then(() => this.setState({
           entity: { ...baseData.formEntity },
           error: {}
