@@ -169,9 +169,20 @@ export default class FuzhenForm extends Component {
       })
     }
 
+    function compare(property){
+      return function(a,b){
+          var value1 = a[property];
+          var value2 = b[property];
+          return value1 - value2;
+      }
+    }
+   
+   let newPlanDataList = planDataList;
+   if (newPlanDataList.length>0) newPlanDataList.sort(compare('gestation'));
+
 
     const initTable = data => tableRender(baseData.planKey(), data, { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onChange: handelTableChange});
-    return <div>{planDataList.length > 0 ? initTable(planDataList) : ""}</div>;
+    return <div>{newPlanDataList.length > 0 ? initTable(newPlanDataList) : ""}</div>;
   }
 
   renderRightTree() {

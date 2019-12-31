@@ -238,8 +238,10 @@ export default class Patient extends Component {
         diagnosi: item
       })
       if(param) {
-        service.fuzhen.getDiagnosisInputTemplate(item).then(res => this.setState({diagnosislist: res.object}));
-        // util.debounce(func, 400);
+        if (this.timer) clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          service.fuzhen.getDiagnosisInputTemplate(item).then(res => this.setState({diagnosislist: res.object}));
+        }, 400)
       }
     }
 
@@ -388,17 +390,10 @@ export default class Patient extends Component {
     }
 
     const handelTableChange = (type, row) => {
-      // console.log(type, '11');
-      // console.log(row, '22');
       service.fuzhen.saveRvisitForm(row).then(res => {
         service.fuzhen.getRecentRvisit().then(res => this.setState({ recentRvisit: res.object }))
       })
     }
-
-    // const handelTChange = (e, val) => {
-    //   console.log(e, '33');
-    //   console.log(val, '44');
-    // }
 
     const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, ...props });
     return (

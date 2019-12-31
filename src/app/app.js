@@ -202,7 +202,7 @@ renderDanger() {
         <div>
           {this.renderDanger()}
         </div>
-        {this.renderHighrisk()}
+        {/* {this.renderHighrisk()} */}
       </div>
     )
   }

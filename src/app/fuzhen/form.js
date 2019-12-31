@@ -174,22 +174,22 @@ export default class FuzhenForm extends Component {
               span: 18, rows: [
                 {
                   label: (check('twins')||check('multiple'))?'胎1':'', columns: [
-                    { name: 'wz1[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
-                    { name: 'tx1(bmp)[胎心]', type: 'input', span: 8 },
-                    { name: 'xl1[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
+                    { name: 'location1[位置]', filter:()=>check('twins')||check('multiple'), type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
+                    { name: 'cktaix(bmp)[胎心]', type: 'input', span: 8 },
+                    { name: 'ckxianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
                     { name: 'ckfuzh[下肢水肿]', type: 'select', span: 8, showSearch:true, options: baseData.ckfuzhOptions}
                   ]
                 },
                 {
                   label: '胎2', filter:()=>check('twins')||check('multiple'), columns: [
-                    { name: 'wz2[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
+                    { name: 'location2[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
                     { name: 'tx2(bmp)[胎心]', type: 'input', span: 8 },
                     { name: 'xl2[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
                   ]
                 },
                 {
                   label: '胎3', filter:()=>check('multiple'), columns: [
-                    { name: 'wz3[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
+                    { name: 'location3[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
                     { name: 'tx3(bpm)[胎心]', type: 'input', span: 8 },
                     { name: 'xl3[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
                   ]
@@ -277,7 +277,7 @@ export default class FuzhenForm extends Component {
         },
         {
           columns:[
-            { name: 'other[其他]', type: 'input', span: 12 }
+            { name: 'ckzijzhzqt[其他]', type: 'input', span: 12 }
           ]
         },
         {
@@ -429,6 +429,13 @@ export default class FuzhenForm extends Component {
     const { entity, error, isShowRegForm } = this.state;
     const data = { [name]: value };
     const errorData = { [name]: valid };
+
+    // console.log(name, '1')
+    // console.log(value, '1')
+    // if(name == 'ckpressure') {
+    //   console.log(value, '123');
+    // }
+
     switch (name) {
       case 'checkdate':
         data.ckweek = util.countWeek(value);
@@ -456,8 +463,30 @@ export default class FuzhenForm extends Component {
   handleSave(form, act) {
     const { onSave } = this.props;
     const { entity } = this.state;
+
+    let newEntity = entity;
+    //血压
+    newEntity.ckshrinkpressure = newEntity.ckpressure[0];
+    newEntity.ckdiastolicpressure = newEntity.ckpressure[1];
+    //下次复诊
+    newEntity.rvisitOsType = newEntity.nextRvisit[0].label;  
+    newEntity.ckappointment = newEntity.nextRvisit[2];
+    newEntity.ckappointmentArea = newEntity.nextRvisit[3].label;
+    //胰岛素方案
+    newEntity.riMoMedicine = newEntity.riMo[0];
+    newEntity.riMoDosage = newEntity.riMo[1];
+    newEntity.riNoMedicine = newEntity.riNo[0];
+    newEntity.riNoDosage = newEntity.riNo[1];
+    newEntity.riEvMedicine = newEntity.riEv[0];
+    newEntity.riEvDosage = newEntity.riEv[1];
+    newEntity.riSlMedicine = newEntity.riSl[0];
+    newEntity.riSlDosage = newEntity.riSl[1];
+
+
+
     fireForm(form,'valid').then((valid)=>{
       if(valid){
+        // console.log(entity, '123')
         onSave(entity).then(() => this.setState({
           entity: { ...baseData.formEntity },
           error: {}
