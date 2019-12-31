@@ -68,7 +68,9 @@ export default class extends Component {
                   { name: 'tw[胎位]', type: 'input', span: 5 },
                   { span: 1 },
                   {
-                    name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small', filter: entity => entity.ckjc.length !== 1, onClick: (e, text, resolve) => {
+                    name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small', 
+                    filter: entity => entity.add_FIELD_ckjc.length !== 1, 
+                    onClick: (e, text, resolve) => {
                       Modal.confirm({
                         title: '您是否确认要删除改记录',
                         width: '300',
@@ -77,7 +79,9 @@ export default class extends Component {
                       });
                     }
                   },
-                  { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small', filter: entity => entity.ckjc.length === index + 1, onClick: (e, text, resolve) => this.handleChange(e, resolve) },
+                  { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small', 
+                  filter: entity => entity.add_FIELD_ckjc.length === index + 1, 
+                  onClick: (e, text, resolve) => this.handleChange(e, resolve) },
                 ]
               },
             ]
@@ -106,22 +110,23 @@ export default class extends Component {
 
   handleChange(e, resolve, index) {
     const { entity, onChange } = this.props;
-    let ckjc = entity.ckjc || [{}];
+    let add_FIELD_ckjc = entity.add_FIELD_ckjc || [{}];
     if (/^\d$/.test(index)) {
-      ckjc = ckjc.filter((v, i) => i !== index);
+      add_FIELD_ckjc = add_FIELD_ckjc.filter((v, i) => i !== index);
     } else {
-      ckjc.push({});
+      add_FIELD_ckjc.push({});
     }
-    onChange(e, { name: 'ckjc', value: ckjc });
+    onChange(e, { name: 'add_FIELD_ckjc', value: add_FIELD_ckjc });
     resolve();
   }
 
   render() {
     const { entity, onChange } = this.props;
+    console.log('---------entity--',entity);
     return (
       <div className="width_7 zhuanke">
         {/** TODO：这里的数据需要统一结构，最好是直接entity传入表单 */}
-        {formRender({ ckjc: entity.ckjc || [{}], ...(entity || {}) }, this.config(), onChange)}
+        {formRender({ add_FIELD_ckjc: entity.add_FIELD_ckjc || [{}], ...(entity || {}) }, this.config(), onChange)}
       </div>
     )
   }
