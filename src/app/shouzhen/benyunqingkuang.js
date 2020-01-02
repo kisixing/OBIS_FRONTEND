@@ -5,7 +5,7 @@ import formRender from '../../render/form';
 import * as baseData from './data';
 
 export default class extends Component {
-  static Title = '本孕情况';
+  static Title = '预产期';
   constructor(props) {
     super(props);
   }
@@ -16,33 +16,41 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'gesmoc[末次月经]', type: 'date', span: 5, valid: 'required'},
-            { name: 'gesexpect[预产期]', type: 'date', span: 5, valid: 'required'},
-            { span: 1 },
-            { name: 'gesexpectrv[修订预产期]', type: 'date', span: 5, valid: 'required' },
+            { name: 'gesmoc[末次月经]', type: 'date', span: 6, valid: 'required'},
+            { name: 'gesexpect[预产期-日期]', className:'col-80-sp', type: 'date', span: 6, valid: 'required'},
+            { name: 'gesexpectrv[预产期-B超]', type: 'date', span: 6, valid: 'required' },
           ]
         },
-        { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required',options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
         {
           columns: [
-            { name: 'ckyibzhzhtd(周)[胎动开始]', type: 'input', span: 5, valid: 'required,number' },
-          ]
-        },
-        
-        '尿妊娠试验阳性',
-        {
-          columns: [
-            { name: 'dopupt[报告时间]', type: 'date', span: 5},
-            { name: 'pupttm(周)[停经]', type: 'input', span: 5},
-          ]
-        },
-        '早孕B超',
-        {
-          columns: [
-            { name: 'ckzdate[报告时间]', type: 'date', span: 5, onChange: (e, {value})=>onChange(e, {name:'ckztingj', value:common.countWeek(value)}) },
+            { name: 'ckzdate[早孕B超]', type: 'date', span: 5, onChange: (e, {value})=>onChange(e, {name:'ckztingj', value:common.countWeek(value)}) },
             { name: 'ckztingj(周)[停经]', type: 'input', span: 5 },
           ]
         },
+        // {
+        //   columns: [
+        //     { name: 'ckyi[主诉]', type: 'input', span: 18, valid: 'required' },
+        //   ]
+        // },
+        // { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required',options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },  
+        {
+          columns: [
+            { name: 'ckzdate[受孕方式]', type: 'checkinput-4', valid: 'required',options: baseData.syfsOptions.map(v=>({...v, label:`${v.label}(input)`})) },  
+          ]
+        },
+        // {
+        //   columns: [
+        //     { name: 'ckyibzhzhtd(周)[胎动开始]', type: 'input', span: 5, valid: 'required,number' },
+        //   ]
+        // },
+        
+        // '尿妊娠试验阳性',
+        // {
+        //   columns: [
+        //     { name: 'dopupt[报告时间]', type: 'date', span: 5},
+        //     { name: 'pupttm(周)[停经]', type: 'input', span: 5},
+        //   ]
+        // },
       ]
     };
   }

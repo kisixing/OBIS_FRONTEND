@@ -4,7 +4,7 @@ import formRender from '../../render/form';
 import * as baseData from './data';
 
 export default class extends Component {
-  static Title = '月经、婚姻史';
+  static Title = '既往史';
   constructor(props) {
     super(props);
   }
@@ -26,18 +26,74 @@ export default class extends Component {
         },
         {
           columns: [
-            { name: 'maritalHistory[婚姻史]', type: 'select', span: 4, valid: 'required', options: baseData.hysOptions },
-            { span: 1 },
-            { name: 'userjiehn[本次结婚年龄]', className: 'width_7', type: 'input', span: 5, valid: 'number|required' },
+            { name: 'maritalHistory[婚姻史]', type: 'checkinput', className:'col-xz-sp',span: 12,  radio: true, valid: 'required', options: baseData.hysOptions },
+            { name: 'userjiehn(岁)[本次结婚年龄]', className: 'width_7', type: 'input', span: 5, valid: 'number|required' },
             { span: 1 },
             { name: 'userjinqjh[近亲结婚]', className:'col-yjs-sp', type: 'checkinput', span: 5, radio: true, valid: 'required', options: baseData.jinqOptions },
           ]
         },
+        //kisi 2020/1/2 合并表单
         {
-          columns: [
-            { name: 'historyOfInfertility[不孕病史]',className:'col-yjs-sp', type: 'checkinput-1', valid: 'required', unselect: '无', options: baseData.bybsOptions.map(v => ({ ...v, span: 8 })) },
+        columns: [
+          { span: 1, className: 'noContent', name: `[个人史]`, type: '**' },
+        ]
+        },
+        {
+          columns:[
+            {name:'hcvAb[吸烟]', type:'checkinput-5',valid: 'required', options: baseData.nhOptions,radio:true,span:15}
           ]
-        }
+        },
+        {
+          columns:[
+            {name:'add_FIELD_hcvAb_RNA[饮酒]', type:'checkinput-5', valid: 'required', options: baseData.nhOptions,radio:true,span:15}
+          ]
+        },
+        {
+          columns:[
+            {name:'rpr[接触有害物质]',
+            className:'col-97-sp', type:'checkinput-3',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+          ]
+        },
+        {
+          columns:[
+            {name:'rpr[接触放射线]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+          ]
+        },       
+        {
+          columns:[
+            {name:'rpr[其他个人史]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+          ]
+        },
+        {
+          columns:[
+            {name:'rpr[高血压]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+          ]
+        },
+        {
+          columns:[
+            {name:'rpr[糖尿病]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+          ]
+        },       
+        {
+          columns:[
+            {name:'rpr[先天畸形]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+          ]
+        },
+        {
+          columns:[
+            {name:'rpr[遗传病]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+          ]
+        },
+        {
+          columns:[
+            {name:'rpr[其他]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+          ]
+        },
+        // {
+        //   columns: [
+        //     { name: 'historyOfInfertility[不孕病史]',className:'col-yjs-sp', type: 'checkinput-1', valid: 'required', unselect: '无', options: baseData.bybsOptions.map(v => ({ ...v, span: 8 })) },
+        //   ]
+        // }
       ]
     };
   }

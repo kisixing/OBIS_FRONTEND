@@ -103,7 +103,8 @@ class MMix extends Component{
  * flag 1.所有的!为互斥，2.!x与x为互斥，3.flag可以为多个以逗号分隔
  */
 export function checkinput$x({ name, options = [], onChange, onBlur, value:data1 = [], unselect, radio, baseColor = '#333333', ...rest }, count, ...args){
-  const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
+  // const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
+  const optionList = (unselect?options.concat([{label:unselect,value:'unselect',unselect:true}]):options);
   const span = Math.floor(count ? (24/count) : Math.max(6, 24 / (optionList.length || 1)));
   
   const data = data1 ? (typeof data1.$data === 'object' ? data1.$data : {}) : {};

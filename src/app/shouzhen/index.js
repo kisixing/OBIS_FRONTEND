@@ -21,7 +21,7 @@ import Zdcl from './zhenduanchuli';
 import editors from './editors';
 import "./index.less";
 
-const tabConetnts = [Yfxx, Zfxx, Byqk, Gqs, Yjs, Ycs, Jzs, Jyjc, Tgjc, Zkjc, Zdcl];
+const tabConetnts = [Yfxx, Zfxx, Byqk, Gqs, Yjs, Ycs, Tgjc, Zkjc,Jyjc, Zdcl];
 const hideMessage = null;
 
 export default class Patient extends Component {
@@ -76,7 +76,7 @@ export default class Patient extends Component {
                     tab.entity['bsjibing'] = JSON.parse(tab.entity.bsjibing);    
                     tab.entity['bsshoushu'] = JSON.parse(tab.entity.bsshoushu);    
                     tab.entity['hobtabp'] = JSON.parse(tab.entity.hobtabp);    
-                    tab.entity['operationHistory'] = res.object.operationHistory;             
+                    tab.entity['operationHistory'] = res.object.operationHistory.operationHistorys;             
                 }
                 else if (tab.key === 'tab-4') {
                     tab.entity = res.object.menstruationMarriage
@@ -88,7 +88,7 @@ export default class Patient extends Component {
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-5') {
                     tab.entity = [];
-                    tab.entity['preghis'] = res.object.gestation;
+                    tab.entity['preghis'] = res.object.gestation.preghiss;
                     // tab.entity['preghis'] ={"preghis": [{
                     //     "id":1,
                     //     "checkdate": "2019-02",
