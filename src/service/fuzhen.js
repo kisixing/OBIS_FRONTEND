@@ -106,17 +106,17 @@ export default {
     },
 
     /**
-     * 右侧产检记录
+     * 查询产检记录列表（最近两条记录）
      */
     getRecentRvisit: function(){
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/getRvisit?dataType=1&pageCurrent=1&pageSize=10&userid=${r.object.userid}`));
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getRecentRvisit?id=${r.object.userid}`));
     },
 
     /**
-     * 右侧更多产检记录
+     * 查询更多产检记录
      */
-    getRvisitPage: function(){
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/getRvisitPage?pageSize=10&pageCurrent=1&id=${r.object.userid}`));
+    getRvisitPage: function(params){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getRvisitPage?pageSize=10&pageCurrent=${params}&id=${r.object.userid}`));
     },
 
     /**
