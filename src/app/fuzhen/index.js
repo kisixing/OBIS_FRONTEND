@@ -48,6 +48,7 @@ export default class Patient extends Component {
       recentRvisitShow: false,
       pageCurrent: 1,
       totalRow: 0,
+      isShowMoreBtn: false,
       isShowZhenduan: false,
       isMouseIn: false,
       isShowSetModal: false,
@@ -87,7 +88,9 @@ export default class Patient extends Component {
     service.fuzhen.getRecentRvisit().then(res => this.setState({ recentRvisit: res.object }))])
       .then(() => this.setState({ loading: false }));
     
-    service.fuzhen.getRvisitPage(this.state.pageCurrent).then(res => this.setState({ recentRvisitAll: res.object.list }));
+    service.fuzhen.getRvisitPage(this.state.pageCurrent).then(res => {
+      if (res.object.list && res.object.list.length > 2) this.setState({isShowMoreBtn: true})
+    });
 
     service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
 
@@ -262,10 +265,6 @@ export default class Patient extends Component {
           ))}
         </ol>
         <div className="fuzhen-left-input font-16">
-          {/* <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
-            {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
-          </Select> */}
-
           <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)} 
                  onFocus={() => this.setState({isShowZhenduan: true})} 
                  onBlur={() => this.setState({isShowZhenduan: false})} 
@@ -365,7 +364,7 @@ export default class Patient extends Component {
   }
 
   renderTable() {
-    const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow } = this.state;
+    const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn } = this.state;
 
     const handleMoreBtn = () => {
       service.fuzhen.getRvisitPage(pageCurrent).then(res => this.setState({
@@ -382,7 +381,7 @@ export default class Patient extends Component {
       })
     }
 
-    const handlePageChange = (page, pageSize) => {
+    const handlePageChange = (page) => {
       service.fuzhen.getRvisitPage(page).then(res => {
         this.setState({recentRvisitAll: res.object.list})})
     }
@@ -395,12 +394,12 @@ export default class Patient extends Component {
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
             {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true, onRowChange: handelTableChange, 
-                      pagination: { defaultPageSize: 10, total: totalRow, onChange: handlePageChange, showQuickJumper: true} })}
+                      pagination: { pageSize: 12, total: totalRow + 2, onChange: handlePageChange, showQuickJumper: true} })}
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
           </div>
         </Modal>
         <div className="clearfix">   
-          {recentRvisitAll && recentRvisitAll.length > 2 ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button> : <br />}
+          {isShowMoreBtn ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button> : <br />}
         </div>
       </div>
     );
