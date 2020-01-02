@@ -113,7 +113,7 @@ function drawcross(x, y) {
 
 //缩放
 function scaleContext(context) {
-  context.scale(0.6, 0.25);
+  // context.scale(0.6, 0.25);
   if (context != undefined) {
     context.scale(0.7, 0.7);
   }

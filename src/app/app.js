@@ -73,9 +73,12 @@ export default class App extends Component {
   renderHighrisk() {
     const { isShowHighrisk, highriskAlert, userid } = this.state;
 
-    const handelClose = () => {
+    const handelClose = (params) => {
       const action = closeAlertAction();
       store.dispatch(action);
+      if(params) {
+        service.closeHighriskAlert(userid, params).then(res => {})
+      }
     };
 
     const addHighrisk = (highrisk, level) => {
@@ -84,7 +87,7 @@ export default class App extends Component {
       service.addHighrisk(userid, highrisk, level).then(res => {})
     }
 
-    return (isShowHighrisk&&highriskAlert.items&&highriskAlert.items.length>0 ?
+    return (isShowHighrisk && highriskAlert.alertMark==1 && highriskAlert.items && highriskAlert.items.length>0 ?
       <div className="highrisk-wrapper">
         <div>
           <span className="exc-icon"><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>
@@ -97,7 +100,7 @@ export default class App extends Component {
             <Button className="blue-btn margin-R-1 margin-TB-mid" type="ghost" onClick={() => addHighrisk(item.highrisk, item.level)}>{item.name}</Button>
             ))}
           </div>
-          <div><Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelClose()}>关闭，不再提示</Button>
+          <div><Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelClose(highriskAlert.content)}>关闭，不再提示</Button>
           <Button className="blue-btn colorGray" type="ghost" onClick={() => handelClose()}>关闭</Button></div>
         </div>
       </div>

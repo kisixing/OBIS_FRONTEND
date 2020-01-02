@@ -33,6 +33,12 @@ export default {
         return myAxios.post('/outpatientWriteRestful/checkHighriskAlert', {userid: id, inputType: '2', data: ''});
     },
     /**
+     * 高危弹出提醒不再提示
+     */
+    closeHighriskAlert: function(id, params){
+        return myAxios.post('/outpatientWriteRestful/closeHighriskAlert', {userid: id, mark: params});
+    },
+    /**
      * 添加高危标记
      */
     addHighrisk: function(userid, highrisk, level){
