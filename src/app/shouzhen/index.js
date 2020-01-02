@@ -36,7 +36,7 @@ export default class Patient extends Component {
         this.state = {
             info: {},
             tabs: tabs,
-            step: tabs[7].key // 从0开始
+            step: tabs[4].key // 从0开始
         }
 
         this.componentWillUnmount = editors();

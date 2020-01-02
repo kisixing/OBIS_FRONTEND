@@ -19,7 +19,7 @@ export default class extends Component{
             {name:'cktizh(kg)[ 现 体 重]', type:'input', span:3, valid: 'required|number|rang(0,500)'},
             {span:5},
             { 
-              name: 'ckpressure(mmHg)[    血    压    ]', type: ['input(/)','input'], span: 5, valid: (value)=>{
+              name: 'ckpressure(mmHg)[血压]', type: ['input(/)','input'], span: 5, valid: (value)=>{
               let message = '';
               if(value){
                 message = [0,1].map(i=>valid(`number|required|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();

@@ -16,15 +16,15 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'gesmoc[末次月经]', type: 'date', span: 6, valid: 'required'},
-            { name: 'gesexpect[预产期-日期]', className:'col-80-sp', type: 'date', span: 6, valid: 'required'},
+            { name: 'gesmoc[末次月经]', type: 'date', span: 5, valid: 'required'},
+            { name: 'gesexpect[预产期-日期]', type: 'date', span: 5, valid: 'required'},
             { name: 'gesexpectrv[预产期-B超]', type: 'date', span: 6, valid: 'required' },
           ]
         },
         {
           columns: [
             { name: 'ckzdate[早孕B超]', type: 'date', span: 5, onChange: (e, {value})=>onChange(e, {name:'ckztingj', value:common.countWeek(value)}) },
-            { name: 'ckztingj(周)[停经]', type: 'input', span: 5 },
+            { name: 'ckztingj(周)[停 经]', type: 'input', span: 4 },
           ]
         },
         // {
@@ -35,7 +35,7 @@ export default class extends Component {
         // { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required',options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },  
         {
           columns: [
-            { name: 'ckzdate[受孕方式]', type: 'checkinput-4', valid: 'required',options: baseData.syfsOptions.map(v=>({...v, label:`${v.label}(input)`})) },  
+            { name: 'ckzdate[受孕方式]', type: 'checkinput-4',span: 14, valid: 'required',options: baseData.syfsOptions.map(v=>({...v, label:`${v.label}(input)`})) },  
           ]
         },
         // {
@@ -58,7 +58,7 @@ export default class extends Component {
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div className="width_6">
+      <div className="width_7">
         {formRender(entity, this.config(), onChange)}
       </div>
     )

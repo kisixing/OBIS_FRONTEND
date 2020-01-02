@@ -154,15 +154,15 @@ export default class extends Component{
       <div className="fuzhen-left-zd">
         <div className="pad-LR-mid">
           <Row className="fuzhen-left-default margin-TB-mid">
-            <Col span={6}>
-              <span className="font-12">1、</span>
+            <Col span={20}>
+              <span className="font-12">1、&nbsp;</span>
               <Input value={yunc}/>&nbsp;孕&nbsp;
-              <Input value={chanc}/>&nbsp;胎
-            </Col>
-            <Col span={6}>
+              <Input value={chanc}/>&nbsp;胎&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;
               宫内妊娠&nbsp;<Input value={info.tuserweek}/>&nbsp;周
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              {info.doctor}
             </Col>
-            <Col span={6}>{info.doctor}</Col>
           </Row>
           {diagnosis.map((item, i) => (
             <Row key={`diagnos-${item.id}-${Date.now()}`}>
@@ -185,7 +185,7 @@ export default class extends Component{
         <br/>
         <Row className="fuzhen-left-input font-16">
           <Col span={1} className="text-right" style={{width:'90px',paddingRight:'5px'}}>
-            <span className="font-18">诊断:</span>
+            <span className="font-18">诊&nbsp;&nbsp;断:</span>
           </Col>
           <Col span={17}>
             <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
