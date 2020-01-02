@@ -46,6 +46,8 @@ export default class Patient extends Component {
       recentRvisit: null,
       recentRvisitAll: null,
       recentRvisitShow: false,
+      pageCurrent: 1,
+      totalRow: 0,
       isShowZhenduan: false,
       isMouseIn: false,
       isShowSetModal: false,
@@ -55,26 +57,7 @@ export default class Patient extends Component {
       templateShow: false,
       collapseActiveKey: ['1', '2', '3'],
       jianyanReport: '血常规、尿常规、肝功、生化、甲功、乙肝、梅毒、艾滋、地贫',
-      planData: [
-        {
-            "alert": "",
-            "event": "大双方都撒的发生的",
-            "gestation": "555",
-            "id": 11,
-            "item": "2",
-            "time": "4",
-            "userid": 6
-        },
-        {
-            "alert": "",
-            "event": "关怀呵护",
-            "gestation": "12",
-            "id": 18,
-            "item": "1",
-            "time": "6",
-            "userid": 6
-        }
-      ],
+      planData: [],
       modalState: [
         {
           "title": "糖尿病门诊预约",
@@ -104,7 +87,7 @@ export default class Patient extends Component {
     service.fuzhen.getRecentRvisit().then(res => this.setState({ recentRvisit: res.object }))])
       .then(() => this.setState({ loading: false }));
     
-    service.fuzhen.getRvisitPage().then(res => this.setState({ recentRvisitAll: res.object.list }));
+    service.fuzhen.getRvisitPage(this.state.pageCurrent).then(res => this.setState({ recentRvisitAll: res.object.list }));
 
     service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
 
@@ -364,14 +347,14 @@ export default class Patient extends Component {
             <p className="pad-small">{jianyanReport || '无'}</p>
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
-            <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>
-              {planData&&planData.length>0 ? planData.map((item, index) => (
+            <Timeline className="pad-small" pending={planData.length>0 ? <Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button> : null}>
+              {planData.length>0 ? planData.map((item, index) => (
                 <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
                   <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
                   <p className="font-16">{item.event}</p>
                 </Timeline.Item>
               ))
-                : '无'}
+                : <div>无</div>}
             </Timeline>
           </Panel>
         </Collapse>
@@ -382,11 +365,12 @@ export default class Patient extends Component {
   }
 
   renderTable() {
-    const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow } = this.state;
+    const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow } = this.state;
 
     const handleMoreBtn = () => {
-      service.fuzhen.getRvisitPage().then(res => this.setState({
-        recentRvisitAll: res.object.list
+      service.fuzhen.getRvisitPage(pageCurrent).then(res => this.setState({
+        recentRvisitAll: res.object.list,
+        totalRow: res.object.totalRow
       })).then(() => {
         this.setState({ recentRvisitShow: true })
       });
@@ -398,6 +382,11 @@ export default class Patient extends Component {
       })
     }
 
+    const handlePageChange = (page, pageSize) => {
+      service.fuzhen.getRvisitPage(page).then(res => {
+        this.setState({recentRvisitAll: res.object.list})})
+    }
+
     const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
@@ -405,7 +394,8 @@ export default class Patient extends Component {
         {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
-            {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true, onRowChange: handelTableChange })}
+            {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true, onRowChange: handelTableChange, 
+                      pagination: { defaultPageSize: 10, total: totalRow, onChange: handlePageChange, showQuickJumper: true} })}
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
           </div>
         </Modal>
