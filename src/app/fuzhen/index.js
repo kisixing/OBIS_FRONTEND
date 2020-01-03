@@ -102,7 +102,11 @@ export default class Patient extends Component {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
         service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
-          const action = getAlertAction(res.object);
+          let data = res.object;
+          if(data.length > 0) {
+            data.map(item => ( item.visible = true ))
+          }
+          const action = getAlertAction(data);
           store.dispatch(action);
         })
         service.fuzhen.getdiagnosis().then(res => this.setState({
