@@ -105,14 +105,14 @@ export default class Patient extends Component {
                     //             "chux": true,
                     //             "abortion": ""}]
                     //     }
-                } else if (tab.key === 'tab-6') {
+                } else if (tab.key === 'tab-') {
                     tab.entity = res.object.biography
                     tab.entity['mzxuan'] = JSON.parse(tab.entity.mzxuan);//[];
                     tab.entity['add_FIELD_mzxuan6'] = JSON.parse(tab.entity.add_FIELD_mzxuan6);//[];
                     tab.entity['add_FIELD_mzxuan61'] = JSON.parse(tab.entity.add_FIELD_mzxuan61);//[];
                     tab.entity['userhistory'] = JSON.parse(tab.entity.userhistory);//[];
                     tab.entity['add_FIELD_userhistory_fyys'] = JSON.parse(tab.entity.add_FIELD_userhistory_fyys);//[];
-                } else if (tab.key === 'tab-7') {
+                } else if (tab.key === 'tab-8') {
                     tab.entity = res.object.lis;
                     // tab.entity['aids'] = JSON.parse(tab.entity.aids);
                     // tab.entity['ogtt'] = JSON.parse(tab.entity.ogtt);
@@ -130,7 +130,7 @@ export default class Patient extends Component {
                     // tab.entity['hcvAb'] = JSON.parse(tab.entity.hcvAb);
                     // tab.entity['add_FIELD_hcvAb_RNA'] = JSON.parse(tab.entity.add_FIELD_hcvAb_RNA);
                     console.log(tab.entity);
-                } else if (tab.key === 'tab-8') {
+                } else if (tab.key === 'tab-6') {
                     tab.entity = res.object.checkUp
                     tab.entity['vascularMurmur'] = (typeof tab.entity.vascularMurmur != 'object') ? JSON.parse(tab.entity.vascularMurmur):tab.entity.vascularMurmur;
                     tab.entity['nervousReflex'] = (typeof tab.entity.nervousReflex != 'object') ? JSON.parse(tab.entity.nervousReflex):tab.entity.nervousReflex;
@@ -146,7 +146,7 @@ export default class Patient extends Component {
                     tab.entity['ckjizh'] = (typeof tab.entity.ckjizh != 'object') ?JSON.parse(tab.entity.ckjizh):tab.entity.ckjizh;
                     tab.entity['breathSounds'] = (typeof tab.entity.breathSounds != 'object') ?JSON.parse(tab.entity.breathSounds):tab.entity.breathSounds;
                     tab.entity.ckpressure = (typeof tab.entity.ckpressure === 'object') ? tab.entity.ckpressure : [tab.entity.ckdiastolicpressure, tab.entity.ckshrinkpressure];
-                } else if(tab.key === 'tab-9'){
+                } else if(tab.key === 'tab-7'){
                     tab.entity = res.object.specialityCheckUp                  
                     tab.entity['add_FIELD_ckjc'] = (typeof tab.entity.add_FIELD_ckjc != 'object') ?JSON.parse(tab.entity.add_FIELD_ckjc):tab.entity.add_FIELD_ckjc;
                 }
