@@ -34,55 +34,68 @@ export default class extends Component {
         },
         //kisi 2020/1/2 合并表单
         {
-          label: '个人史', span: 12, columns: []
+          label: '个人史', span: 12, className:'labelclass'
         },
         {
           columns:[
+            { span: 1 },
             {name:'hcvAb[吸烟]', type:'checkinput-5',valid: 'required', options: baseData.nhOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
+            { span: 1 },
             {name:'add_FIELD_hcvAb_RNA[饮酒]', type:'checkinput-5', valid: 'required', options: baseData.nhOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
-            {name:'rpr[接触有害物质]', type:'checkinput-3',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            { span: 1 },
+            {name:'rpr[接触有害物质]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
+            { span: 1 },
             {name:'rpr[接触放射线]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },       
         {
           columns:[
+            { span: 1 },
             {name:'rpr[其他个人史]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
+          label: '家族史', span: 12, columns: [],className:'labelclass'
+        },
+        {
           columns:[
+            { span: 1 },
             {name:'rpr[高血压]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
+            { span: 1 },
             {name:'rpr[糖尿病]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },       
         {
           columns:[
+            { span: 1 },
             {name:'rpr[先天畸形]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
+            { span: 1 },
             {name:'rpr[遗传病]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
+            { span: 1 },
             {name:'rpr[其他]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },

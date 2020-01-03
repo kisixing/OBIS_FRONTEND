@@ -16,10 +16,10 @@ export default class extends Component{
       rows: [
         {
           columns:[
-            {name:'cktizh(kg)[ 现 体 重]', type:'input', span:3, valid: 'required|number|rang(0,500)'},
+            {name:'cktizh(kg)[现 体 重 ]', type:'input', span:3, valid: 'required|number|rang(0,500)'},
             {span:5},
             { 
-              name: 'ckpressure(mmHg)[血压]', type: ['input(/)','input'], span: 5, valid: (value)=>{
+              name: 'ckpressure(mmHg)[血@@@压 ]', type: ['input(/)','input'], span: 5, valid: (value)=>{
               let message = '';
               if(value){
                 message = [0,1].map(i=>valid(`number|required|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
@@ -29,50 +29,50 @@ export default class extends Component{
               return message;
             }},
             {span:3},
-            {name:'add_FIELD_pulse(次/分)[脉搏]', type:'input', span:3, valid: 'required|number|rang(0,100)'},
+            {name:'add_FIELD_pulse(次/分)[脉@@@搏 ]', type:'input', span:3, valid: 'required|number|rang(0,100)'},
           ]
         },
         {
           columns:[
             {name:'ckcurtizh(kg)[孕前体重]', type:'input', span:3, valid: 'required|number|rang(10,100)'},
             {span:5},
-            {name:'cksheng(cm)[身高]', type:'input', span:3, valid: 'required|number|rang(150,250)'},
+            {name:'cksheng(cm)[身@@@高 ]', type:'input', span:3, valid: 'required|number|rang(150,250)'},
             {span:5},
-            {name:'ckbmi(kg/㎡)[孕前BMI]',className:'col-97-sp', type:'input', span:3, valid: 'required|number|rang(18.5,24.9)'},
+            {name:'ckbmi(kg/㎡)[孕前BMI ]',className:'col-97-sp', type:'input', span:3, valid: 'required|number|rang(18.5,24.9)'},
           ]
         },
         {
           columns:[
             {name:'ckpifu[皮肤黏膜]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,span:8},
-            {name:'ckjiazhx[甲状腺]', type:'checkinput-3', valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'ckjiazhx[甲 状 腺 ]', type:'checkinput-3', valid: 'required', options: baseData.noOptions,radio:true,span:8},
             {name:'vascularMurmur[血管杂音]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            {name:'ckrut[乳房]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'breathSounds[呼吸音]', type:'checkinput-3',valid: 'required', options: baseData.coOptions,radio:true,span:8},
-            {name:'breathSoundsOther[啰音]', type:'checkinput-3',valid: 'required', options: baseData.neOptions,radio:true,span:8},
+            {name:'ckrut[乳@@@房 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'breathSounds[呼 吸 音 ]', type:'checkinput-3',valid: 'required', options: baseData.coOptions,radio:true,span:8},
+            {name:'breathSoundsOther[啰@@@音 ]', type:'checkinput-3',valid: 'required', options: baseData.neOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            {name:'cardiac(次/分)[心率]', type:'input',valid: 'required|number', span:3},
+            {name:'cardiac(次/分)[心@@@率 ]', type:'input',valid: 'required|number', span:3},
             {span:5},
-            {name:'heart[心律]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'murmurs[杂音]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'heart[心@@@律 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'murmurs[杂@@@音 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            {name:'ckganz[肝]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'ckpiz[脾]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'ckganz[肝@@@脏 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'ckpiz[脾@@@脏 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
             {name:'ckshenz[肾区叩痛]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            {name:'ckjizh[脊柱]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'ckjizh[脊@@@柱 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
             {name:'ckfuzh[下肢水肿]', type:'checkinput', className:'col-xz-sp', valid: 'required', options: baseData.xzfOptions,radio:true,span:14},
             // {name:'nervousReflex[双膝反射]', type:'checkinput', className:'col-97-sp', valid: 'required', options: baseData.sxfOptions,radio:true,span:9},
           ]
