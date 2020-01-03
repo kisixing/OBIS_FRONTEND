@@ -138,7 +138,7 @@ export default class Patient extends Component {
                     tab.entity['ckshenz'] = (typeof tab.entity.ckshenz != 'object') ?JSON.parse(tab.entity.ckshenz):tab.entity.ckshenz;
                     tab.entity['ckrut'] = (typeof tab.entity.ckrut != 'object') ?JSON.parse(tab.entity.ckrut):tab.entity.ckrut;
                     tab.entity['ckjiazhx'] = (typeof tab.entity.ckjiazhx != 'object') ?JSON.parse(tab.entity.ckjiazhx):tab.entity.ckjiazhx;
-                    tab.entity['ckganz'] = (typeof tab.entity.ckganz != 'object') ?JSON.parse(tab.entity.ckganz):tab.entity.ckganz;
+                    //tab.entity['ckganz'] = (typeof tab.entity.ckganz != 'object') ?JSON.parse(tab.entity.ckganz):tab.entity.ckganz;
                     tab.entity['ckpifu'] = (typeof tab.entity.ckpifu != 'object') ?JSON.parse(tab.entity.ckpifu):tab.entity.ckpifu;
                     tab.entity['ckpiz'] = (typeof tab.entity.ckpiz != 'object') ?JSON.parse(tab.entity.ckpiz):tab.entity.ckpiz;
                     tab.entity['ckfuzh'] = (typeof tab.entity.ckfuzh != 'object') ?JSON.parse(tab.entity.ckfuzh):tab.entity.ckfuzh;

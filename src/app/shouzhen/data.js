@@ -38,7 +38,7 @@ export const jiuOptions = toOptions('没有,白酒,啤酒,红酒,其他');
 /**
  * 受孕方式
  */
-export const syfsOptions = toOptions(['自然',{k:'IVF{#FF3300}(shouzhenyy2-胚胎植入时间,医院)',addspan:2}]);
+export const syfsOptions = toOptions('IVF{#FF3300}');
 
 /**
  * 血型O,A,B,AB
@@ -305,7 +305,7 @@ export const pregnanciesColumns = [
 	},
 	{
 		title: '   年-月    ',
-		key: 'checkdate',
+		key: 'datagridYearMonth',
 		type: 'date',
 		width: '160',
 		mode:"ym",
@@ -320,8 +320,9 @@ export const pregnanciesColumns = [
 			},
 			{
 				title: '清宫',
-				key: 'ultrasound1_2',
-				type: 'checkbox'
+				key: 'removalUterus',
+				type: 'checkbox',
+				holdeditor: true
 			},
 			{
 				title: '人工',
@@ -439,12 +440,12 @@ export const pregnanciesColumns = [
 	},
 	{
 		title: '分娩医院',
-		key: 'hos',
+		key: 'hospital',
 		type: 'input'
 	},
 	{
 		title: '备注',
-		key: 'remark',
+		key: 'hospital',
 		type: 'input'
 	}
 ]

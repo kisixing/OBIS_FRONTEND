@@ -29,16 +29,16 @@ export default class extends Component{
               return message;
             }},
             {span:3},
-            {name:'add_FIELD_pulse(次/分)[脉@@@搏 ]', type:'input', span:3, valid: 'required|number|rang(0,100)'},
+            {name:'add_FIELD_pulse(次/分)[脉@@@搏 ]', type:'input', span:4, valid: 'required|number|rang(0,100)'},
           ]
         },
         {
           columns:[
             {name:'ckcurtizh(kg)[孕前体重]', type:'input', span:3, valid: 'required|number|rang(10,100)'},
             {span:5},
-            {name:'cksheng(cm)[身@@@高 ]', type:'input', span:3, valid: 'required|number|rang(150,250)'},
-            {span:5},
-            {name:'ckbmi(kg/㎡)[孕前BMI ]',className:'col-97-sp', type:'input', span:3, valid: 'required|number|rang(18.5,24.9)'},
+            {name:'cksheng(cm)[身@@@高 ]', type:'input', span:4, valid: 'required|number|rang(150,250)'},
+            {span:4},
+            {name:'ckbmi(kg/㎡)[孕前BMI ]',className:'col-97-sp', type:'input', span:4, valid: 'required|number|rang(18.5,24.9)'},
           ]
         },
         {
@@ -57,8 +57,8 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'cardiac(次/分)[心@@@率 ]', type:'input',valid: 'required|number', span:3},
-            {span:5},
+            {name:'cardiac(次/分)[心@@@率 ]', type:'input',valid: 'required|number', span:4},
+            {span:4},
             {name:'heart[心@@@律 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
             {name:'murmurs[杂@@@音 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
           ]
