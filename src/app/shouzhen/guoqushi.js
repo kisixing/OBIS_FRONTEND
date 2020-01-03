@@ -13,11 +13,25 @@ export default class extends Component {
     return {
       step: 1,
       rows: [
-        { name: 'bsjibing[疾病史]', type: 'checkinput', valid: 'required', unselect:'无', options: baseData.jibOptions.map(v=>({...v, label:`${v.label}(input)`})) },
-        { name: 'bsshoushu[外伤史]', type: 'checkinput', valid: 'required', span:12, radio:true, options: ['无', '有(input)'] },
+        // {
+        //   columns:[
+        //     { name: 'bsjibing[疾病史]', type: 'checkinput', valid: 'required', unselect:'无', options: baseData.jibOptions.map(v=>({...v, label:`${v.label}(input)`})) },
+        //   ]
+        // },
+        { name: 'bsshoushu[高血压]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions },
+
+        { name: 'bsshoushu[糖尿病]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions },
+
+        { name: 'bsshoushu[心脏病]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions },
+
+        { name: 'bsshoushu[其他病史]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions },
+
         { name: 'operationHistory[手术史]', type: 'table', valid: 'required', pagination: false, editable: true, options: baseData.shoushushiColumns },
-        { name: 'bsguomin[药物或食物过敏史]', type:'checkinput', valid: 'required',options:baseData.ywgmOptions},
-        { name: 'hobtabp[输血及血制品史]', type: 'checkinput', valid: 'required', unselect:'无', options: baseData.xzpOptions },
+
+        { name: 'bsguomin[过敏史]', type: 'checkinput', valid: 'required', options: baseData.ywgmOptions, unselect: '无' },
+
+        { name: 'hobtabp[输血史]', type: 'checkinput', valid: 'required', unselect: '无', options: baseData.sxsOptions },
+
       ]
     };
   }
@@ -25,7 +39,7 @@ export default class extends Component {
   render() {
     const { entity, onChange } = this.props;
     return (
-      <div className="guoqishi">
+      <div className="guoqushi">
         {formRender(entity, this.config(), onChange)}
       </div>
     )

@@ -378,8 +378,7 @@ export const xlOptions = [
 	{ label: '头', value: '1' },
 	{ label: '臀', value: '2' },
 	{ label: '肩', value: '3' },
-	{ label: '其他', value: '4' },
-	{ label: '不清', value: '5' },
+	{ label: '/', value: '4' },
 ];
 
 /**

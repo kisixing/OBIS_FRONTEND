@@ -45,9 +45,9 @@ export default {
     saveOperations: function(tab, entity){
         let data = {};
         let uri = 'writeOperationHistory';
-        data = entity
+        data = []
         //console.log(entity)
-        data.operationHistorys = data.operationHistory;
+        data.operationHistorys = entity.operationHistory;
         return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/${uri}`, { userid:r.object.userid,...data}));
     },
     /**

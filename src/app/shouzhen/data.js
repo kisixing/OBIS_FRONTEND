@@ -36,6 +36,11 @@ export const zjlxOptions = toOptions('身份证,护照,回乡证,台胞证');
 export const jiuOptions = toOptions('没有,白酒,啤酒,红酒,其他');
 
 /**
+ * 受孕方式
+ */
+export const syfsOptions = toOptions(['自然',{k:'IVF{#FF3300}(shouzhenyy2-胚胎植入时间,医院)',addspan:2}]);
+
+/**
  * 血型O,A,B,AB
  */
 export const xuexingOptions = [{ label: 'O', value: 'O' },
@@ -70,6 +75,8 @@ export const gjtpOptions = toOptions('正常,异常,未有检查,不清楚');
  * 血制品
  */
 export const xzpOptions = toOptions([{k:'红细胞{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血小板{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血浆{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'全血{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'白蛋白{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'免疫球蛋白{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},'其他{#FF3300}','不清楚']);
+export const sxsOptions = toOptions([{k:'有{#FF3300}(shouzhenyy-时间,原因)',addspan:2}]);
+
 
 /**
  * 初潮
@@ -117,6 +124,30 @@ export const pfOptions = toOptions('正常,苍白{#FF3300},皮下出血{#FF3300}
 export const neOptions = toOptions('正常,异常(input){#FF3300}');
 
 /**
+ *正常、其他
+*/
+export const noOptions = toOptions('正常,其他(input){#FF3300}');
+
+/**
+ *清、其他
+*/
+export const coOptions = toOptions('清,其他(input){#FF3300}');
+
+/**
+ *存在、其他
+*/
+export const slfsOptions = toOptions('存在,其他(input){#FF3300}');
+
+/**
+ *无、其他
+*/
+export const blfsOptions = toOptions('无,其他(input){#FF3300}');
+/**
+ *无、其他
+*/
+export const eoOptions = toOptions('无,其他(input){#FF3300}');
+
+/**
  *正常、畸形
 */
 export const jxOptions = toOptions('正常,畸形{#FF3300}');
@@ -125,7 +156,12 @@ export const jxOptions = toOptions('正常,畸形{#FF3300}');
  *无、有
 */
 export const hnOptions = toOptions('无,有');
+/**
+ *有、无
+*/
+export const nhOptions = toOptions('有(input){#FF3300},无');
 
+export const wssOptions = toOptions([{k:'有{#FF3300}(input)',addspan:2}]);
 /**
  *乳头
 */
@@ -194,7 +230,7 @@ export const dbnOptions = toOptions('阴性,弱阳性{#FF3300},阳性{#FF3300}(i
 /**
  *药物或食物过敏史
 */
-export const ywgmOptions = toOptions('青霉素{#FF3300},头孢{#FF3300},酒精{#FF3300},食物过敏{#FF3300}(input),其他{#FF3300}(input)');
+export const ywgmOptions = toOptions('药物{#FF3300}(input),食物{#FF3300}(input),其他{#FF3300}(input)');
 
 /**
  *个人史
@@ -223,7 +259,7 @@ export const xOptions = toOptions('阴性,弱阳性{#FF3300},阳性{#FF3300},未
 /**
  * 未做检查,拒绝检查
  */
-export const wjjOptions = toOptions('未做检查,拒绝检查');
+export const wjjOptions = toOptions('已查,拒绝检查');
 
 /**
  * 骨外盆未做检查

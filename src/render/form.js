@@ -221,15 +221,18 @@ class FormItem extends Component {
   }
 
   render() {
-    const { valid, icon } = this.props;
-    const { name, label, unit, value, error } = this.state;
+    const { type, valid, icon } = this.props;
+    const { name, unit, value, error } = this.state;
+    let { label } = this.state;
+    label = type == '**' ? label : !label || label.length <=1 || label.length >=4 ?label : 
+            (label.length == 2 ?`${label.substr(0,1)}&nbsp;&nbsp;&nbsp;&nbsp;${label.substr(1,1)}` :`${label.substr(0,1)}&nbsp;${label.substr(1,1)}&nbsp;${label.substr(2,1)||''}`);
 
     return (
       <div ref="formItem" className={`form-item ${name} ${error && /\*/.test(error) ? 'form-error' : `${error && 'form-warn' || ''} ${!validFn('required', value) && 'is-not-empty' || ''}`}`}>
         {label ? <div ref="formItemlabel" className="form-label">
           {icon ? <i className={`anticon anticon-${icon}`}>&nbsp;</i> : null}
           {/required/.test(valid) ? <span className="colorRed">*</span> : null}
-          <span>{label}:&nbsp;</span>
+          <span dangerouslySetInnerHTML={{__html: label}}></span><span>:&nbsp;</span>
         </div> : null}
         <div className="form-content">
           <div ref="formItemEditor">{this.renderEditor()}</div>
