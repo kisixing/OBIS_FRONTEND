@@ -44,7 +44,11 @@ export default class App extends Component {
       highriskEntity: {...res.object}
     }, () => {
       service.checkHighriskAlert(res.object.userid).then(res => {
-        const action = getAlertAction(res.object);
+        let data = res.object;
+        if(data.length > 0) {
+          data.map(item => ( item.visible = true ))
+        }
+        const action = getAlertAction(data);
         store.dispatch(action);
       });
     }));
@@ -71,39 +75,42 @@ export default class App extends Component {
    * 高危弹出窗口
    */
   renderHighrisk() {
-    const { isShowHighrisk, highriskAlert, userid } = this.state;
-
-    const handelClose = (params) => {
-      const action = closeAlertAction();
+    const { highriskAlert, userid } = this.state;
+    const handelClose = (index, params) => {
+      const action = closeAlertAction(index);
       store.dispatch(action);
       if(params) {
         service.closeHighriskAlert(userid, params).then(res => {})
       }
     };
 
-    const addHighrisk = (highrisk, level) => {
-      const action = closeAlertAction();
+    const addHighrisk = (highrisk, level, index) => {
+      const action = closeAlertAction(index);
       store.dispatch(action);
       service.addHighrisk(userid, highrisk, level).then(res => {})
     }
 
-    return (isShowHighrisk && highriskAlert.alertMark==1 && highriskAlert.items && highriskAlert.items.length>0 ?
-      <div className="highrisk-wrapper">
-        <div>
-          <span className="exc-icon"><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>
-          <span className="close-icon pull-right" onClick={() => {handelClose()}}><Icon type="close" /></span>
-        </div>
-        <div className="highrisk-content">
-        <div>孕妇诊断有<span className="highrisk-word">{highriskAlert.content}</span>,请标记高危因素</div>     
-          <div className="highrisk-item">
-            {highriskAlert.items.map(item => (
-            <Button className="blue-btn margin-R-1 margin-TB-mid" type="ghost" onClick={() => addHighrisk(item.highrisk, item.level)}>{item.name}</Button>
-            ))}
+    return ( highriskAlert && highriskAlert.length>0 ?
+      highriskAlert.map((item, index) => (
+        item.alertMark==1&&item.visible ?
+          <div className="highrisk-wrapper">
+            <div>
+              <span className="exc-icon"><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>
+              <span className="close-icon pull-right" onClick={() => {handelClose(index)}}><Icon type="close" /></span>
+            </div>
+            <div className="highrisk-content">
+            <div>孕妇诊断有<span className="highrisk-word">{item.content}</span>,请标记高危因素</div>     
+              <div className="highrisk-item">
+                {item.items.map(subItem => (
+                <Button className="blue-btn margin-R-1 margin-TB-mid" type="ghost" onClick={() => addHighrisk(subItem.highrisk, subItem.level, index)}>{subItem.name}</Button>
+                ))}
+              </div>
+              <div><Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelClose(index, item.content)}>关闭，不再提示</Button>
+              <Button className="blue-btn colorGray" type="ghost" onClick={() => handelClose(index)}>关闭</Button></div>
+            </div>
           </div>
-          <div><Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelClose(highriskAlert.content)}>关闭，不再提示</Button>
-          <Button className="blue-btn colorGray" type="ghost" onClick={() => handelClose()}>关闭</Button></div>
-        </div>
-      </div>
+        : null
+      ))
       : null
     );
   }

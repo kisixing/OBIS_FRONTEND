@@ -120,10 +120,6 @@ export default class FuzhenForm extends Component {
     }
 
     return refreshFrom(type);
-
-    // const types = { gbd: : '妊娠期糖尿病', hypertension: '高血压', chd: '冠心病', dtrz: '双胎妊娠', strz: '多胎妊娠' };
-    // console.log(diagnosis.filter(i => type.split(',').filter(t=>types[t] === i.data).length).length, '3434')
-    // return diagnosis.filter(i => type.split(',').filter(t=>types[t] === i.data).length).length;
   }
 
   //本次产检记录表单
@@ -184,29 +180,67 @@ export default class FuzhenForm extends Component {
                     { name: 'ckfuzh[下肢水肿]', type: 'select', span: 8, showSearch:true, options: baseData.ckfuzhOptions}
                   ]
                 },
-
                 {
-                  label:'1', name: 'condition', filter:()=>check('twins'), rows: [
-                    {
-                      label: '胎1', name: 'condition', columns: [
-                        { name: 'location[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
-                        { name: 'taix(bmp)[胎心]', type: 'input', span: 8 },
-                        { name: 'xianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
-                      ]
-                    },
-                    {
-                      label: '胎2', columns: [
-                        { name: 'location[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
-                        { name: 'taix(bpm)[胎心]', type: 'input', span: 8 },
-                        { name: 'xianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
-                      ]
-                    }
-                  ]
+                  filter:()=>check('twins')||check('multiple'), name: 'fetalCondition', span: 24, groups: index => ({
+                    rows: [
+                      {
+                        label: `胎${index+1}`, columns: [
+                          { name: 'location[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
+                          { name: 'taix(bmp)[胎心]', type: 'input', span: 7 },
+                          { name: 'xianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
+                          { span: 1 },
+                          {
+                            name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
+                            filter: entity => entity.fetalCondition.length !== 1&&check('multiple'), 
+                            onClick: (e, text, resolve) => {
+                              Modal.confirm({
+                                title: '您是否确认要删除改记录',
+                                width: '300',
+                                style: {top:'50%', left: '30%', fontSize: '18px' },
+                                onOk: () => this.handleBtnChange(e, 'fetalCondition', index)
+                              });
+                            }
+                          },
+                          { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
+                            filter: entity => entity.fetalCondition.length === index + 1&&check('multiple'),
+                            onClick: (e, text, resolve) => this.handleBtnChange(e, 'fetalCondition')},
+                        ]
+                      }
+                    ]
+                  })
                 },
-
               ]
             }
           ]
+        },
+        {
+          name: 'fetalUltrasound', span: 3, filter:()=>check('twins')||check('multiple'), groups: index => ({
+            rows: [
+              {
+                label: `胎${index+1}超声`, columns: [
+                  { name: 'tetz(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 6 },
+                  { name: 'teafv(MM)[AVF]', type: 'input', className: 'childLabel', span: 6 },
+                  { name: 'teqxl[脐血流]', type: 'input', className: 'childLabel', span: 6 },
+                  { span: 1 },
+                  {
+                    name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
+                    filter: entity => entity.fetalUltrasound.length !== 1&&check('multiple'), 
+                    onClick: (e, text, resolve) => {
+                      Modal.confirm({
+                        title: '您是否确认要删除改记录',
+                        width: '300',
+                        style: {top:'50%', left: '30%', fontSize: '18px' },
+                        onOk: () => this.handleBtnChange(e, 'fetalUltrasound', index)
+                      });
+                    }
+                  },
+                  { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
+                    filter: entity => entity.fetalUltrasound.length === index + 1&&check('multiple'),
+                    onClick: (e, text, resolve) => this.handleBtnChange(e, 'fetalUltrasound')},
+                ]
+              }
+            ]
+          })
         },
         {
           filter:()=>check('diabetes'), columns:[
@@ -248,13 +282,13 @@ export default class FuzhenForm extends Component {
                             title: '您是否确认要删除改记录',
                             width: '300',
                             style: {top:'50%', left: '30%', fontSize: '18px' },
-                            onOk: () => this.handleMedBtnChange(e, resolve, index)
+                            onOk: () => this.handleBtnChange(e, 'medicationPlan', index)
                           });
                         }
                       },
                       { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
                         filter: entity => entity.medicationPlan.length === index + 1,
-                        onClick: (e, text, resolve) => this.handleMedBtnChange(e, resolve)},
+                        onClick: (e, text, resolve) => this.handleBtnChange(e, 'medicationPlan')},
                     ]
                   }
                 ]
@@ -284,13 +318,13 @@ export default class FuzhenForm extends Component {
                                 title: '您是否确认要删除改记录',
                                 width: '300',
                                 style: {top:'50%', left: '30%', fontSize: '18px' },
-                                onOk: () => this.handleMedBtnChange(e, resolve, index)
+                                onOk: () => this.handleBtnChange(e, 'medicationPlan', index)
                               });
                             }
                           },
                           { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
                             filter: entity => entity.medicationPlan.length === index + 1,
-                            onClick: (e, text, resolve) => this.handleMedBtnChange(e, resolve)},
+                            onClick: (e, text, resolve) => this.handleBtnChange(e, 'medicationPlan')},
                         ]
                       }
                     ]
@@ -303,30 +337,6 @@ export default class FuzhenForm extends Component {
                 { name: 'examination[化验]', type: 'textarea', span: 12 }
               ]
             }
-          ]
-        },
-        {
-          label: '胎1超声', span: 3, filter:()=>check('twins')||check('multiple'), columns: [
-            { name: 'tetz1(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 6 },
-            { name: 'teafv1(MM)[AVF]', type: 'input', className: 'childLabel', span: 6 },
-            { name: 'teqxl1[脐血流]', type: 'input', className: 'childLabel', span: 6 },
-            {span: 6},
-          ]
-        },
-        {
-          label: '胎2超声', span: 3, filter:()=>check('twins')||check('multiple'), columns: [
-            { name: 'tetz2(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 6 },
-            { name: 'teafv2(MM)[AVF]', type: 'input', className: 'childLabel', span: 6 },
-            { name: 'teqxl2[脐血流]', type: 'input', className: 'childLabel', span: 6 },
-            {span: 6},
-          ]
-        },
-        {
-          label: '胎3超声', span: 3, filter:()=>check('multiple'), columns: [
-            { name: 'tetz3(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 6 },
-            { name: 'teafv3(MM)[AVF]', type: 'input', className: 'childLabel', span: 6 },
-            { name: 'teqxl3[脐血流]', type: 'input', className: 'childLabel', span: 6 },
-            { span: 6 },
           ]
         },
         {
@@ -356,13 +366,13 @@ export default class FuzhenForm extends Component {
     }
   }
 
-  handleMedBtnChange(e, resolve, index) {
+  handleBtnChange(e, params, index) {
     const { entity } = this.state;
     let newEntity = entity;
     if (/^\d$/.test(index)) {
-      newEntity.medicationPlan = newEntity.medicationPlan.filter((v, i) => i !== index);
+      newEntity[params] = newEntity[params].filter((v, i) => i !== index);
     } else {
-      newEntity.medicationPlan.push({});
+      newEntity[params].push({});
     }
     this.setState({entity: newEntity})
   }

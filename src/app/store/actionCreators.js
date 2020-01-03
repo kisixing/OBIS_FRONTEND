@@ -5,6 +5,7 @@ export const getAlertAction = (data) => ({
   data
 })
 
-export const closeAlertAction = (data) => ({
-  type: CLOSE_HIGHRISK_ALERT
+export const closeAlertAction = (index) => ({
+  type: CLOSE_HIGHRISK_ALERT,
+  index
 })

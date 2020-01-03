@@ -138,6 +138,8 @@ export const formEntity = {
 	"heartRate": "",
 	"examination": "",
 	"medicationPlan": [{}],
+	"fetalCondition": [{}, {}],
+	"fetalUltrasound": [{}, {}],
 	"fetal": "",
 	"tx1": "",
 	"xl1": "",
