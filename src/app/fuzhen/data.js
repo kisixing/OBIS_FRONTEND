@@ -137,7 +137,7 @@ export const formEntity = {
 	"upDosage24h": "",
 	"heartRate": "",
 	"examination": "",
-	"medicationPlan": "",
+	"medicationPlan": [{}],
 	"fetal": "",
 	"tx1": "",
 	"xl1": "",
@@ -229,12 +229,12 @@ export const tableKey = () => [
 	},
 	{
 		title: '血压',
-		key: 'ckshrinkpressure',
+		key: 'ckdiastolicpressure',
 		width: 160,	
 		children:[
 			{
 				title: '(mmHg)',
-				key: 'ckshrinkpressure',
+				key: 'ckdiastolicpressure',
 				type: 'input'
 			},
 		]
@@ -464,7 +464,7 @@ export const tjOptions = [
 /**
  * 住院科室
  */
-export const zyksOptions = toOptions(['胸外科', '放射科', '耳鼻喉科']);
+export const zyksOptions = toOptions(['孕妇区', '产区', '爱婴区', '产科VIP']);
 /**
  * 是否在我院住院
  */

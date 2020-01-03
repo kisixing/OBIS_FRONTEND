@@ -171,29 +171,39 @@ export default class FuzhenForm extends Component {
               ] 
             },
             {
+              span: 6, filter:()=>check('twins')||check('multiple'), columns:[
+                { name: 'ckfuzh[下肢水肿]', type: 'select', showSearch:true, options: baseData.ckfuzhOptions}
+              ]
+            },
+            {
               span: 18, rows: [
                 {
-                  label: (check('twins')||check('multiple'))?'胎1':'', columns: [
-                    { name: 'location1[位置]', filter:()=>check('twins')||check('multiple'), type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
+                  filter:()=>!check('twins')&&!check('multiple'), columns: [
                     { name: 'cktaix(bmp)[胎心]', type: 'input', span: 8 },
-                    { name: 'ckxianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
+                    { name: 'ckxian[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
                     { name: 'ckfuzh[下肢水肿]', type: 'select', span: 8, showSearch:true, options: baseData.ckfuzhOptions}
                   ]
                 },
+
                 {
-                  label: '胎2', filter:()=>check('twins')||check('multiple'), columns: [
-                    { name: 'location2[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
-                    { name: 'tx2(bmp)[胎心]', type: 'input', span: 8 },
-                    { name: 'xl2[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
+                  label:'1', name: 'condition', filter:()=>check('twins'), rows: [
+                    {
+                      label: '胎1', name: 'condition', columns: [
+                        { name: 'location[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
+                        { name: 'taix(bmp)[胎心]', type: 'input', span: 8 },
+                        { name: 'xianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
+                      ]
+                    },
+                    {
+                      label: '胎2', columns: [
+                        { name: 'location[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
+                        { name: 'taix(bpm)[胎心]', type: 'input', span: 8 },
+                        { name: 'xianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
+                      ]
+                    }
                   ]
                 },
-                {
-                  label: '胎3', filter:()=>check('multiple'), columns: [
-                    { name: 'location3[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
-                    { name: 'tx3(bpm)[胎心]', type: 'input', span: 8 },
-                    { name: 'xl3[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions }
-                  ]
-                }
+
               ]
             }
           ]
@@ -222,11 +232,33 @@ export default class FuzhenForm extends Component {
               ]
             },
             {
-              label: '用药方案', span: 14, filter:()=>!check('coronary'), columns: [
-                { name: 'medicineId[药物]', type: 'input', span: 8 },
-                { name: 'medicineTimes[频率]', type: 'select', showSearch: true, span: 8, options: baseData.yyfaOptions },
-                { name: 'medicineDosage form-control[剂量]', type: 'input', span: 8 },
-              ]
+              label: '用药方案', name: 'medicationPlan', span: 14, filter:()=>!check('coronary'), groups: index => ({
+                rows: [
+                  {
+                    columns:[
+                      { name: `name[药物]`, span: 7, type: 'input' },
+                      { name: `frequency[频率]`, span: 7, type: 'select', showSearch: true, options: baseData.yyfaOptions },
+                      { name: `dosages[剂量]`, span: 7, type: 'input' },
+                      { span: 1 },
+                      {
+                        name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
+                        filter: entity => entity.medicationPlan.length !== 1, 
+                        onClick: (e, text, resolve) => {
+                          Modal.confirm({
+                            title: '您是否确认要删除改记录',
+                            width: '300',
+                            style: {top:'50%', left: '30%', fontSize: '18px' },
+                            onOk: () => this.handleMedBtnChange(e, resolve, index)
+                          });
+                        }
+                      },
+                      { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
+                        filter: entity => entity.medicationPlan.length === index + 1,
+                        onClick: (e, text, resolve) => this.handleMedBtnChange(e, resolve)},
+                    ]
+                  }
+                ]
+              })  
             },
           ]
         },
@@ -236,11 +268,33 @@ export default class FuzhenForm extends Component {
               columns: [
                 { name: 'heartRate(次/分)[心率]', type: 'input', span: 6 },
                 { 
-                  label: '用药方案', span: 18, columns:[
-                    { name: 'upStateName[药物]', span: 6, type: 'input' },
-                    { name: 'medicineTimes[频率]', span: 6, type: 'select', showSearch: true, options: baseData.yyfaOptions },
-                    { name: 'upStateCount[剂量]', span: 6, type: 'input' },
-                  ] 
+                  label: '用药方案', name: 'medicationPlan', span: 18,  groups: index => ({
+                    rows: [
+                      {
+                        columns:[
+                          { name: `name[药物]`, span: 6, type: 'input' },
+                          { name: `frequency[频率]`, span: 6, type: 'select', showSearch: true, options: baseData.yyfaOptions },
+                          { name: `dosages[剂量]`, span: 6, type: 'input' },
+                          { span: 1 },
+                          {
+                            name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
+                            filter: entity => entity.medicationPlan.length !== 1, 
+                            onClick: (e, text, resolve) => {
+                              Modal.confirm({
+                                title: '您是否确认要删除改记录',
+                                width: '300',
+                                style: {top:'50%', left: '30%', fontSize: '18px' },
+                                onOk: () => this.handleMedBtnChange(e, resolve, index)
+                              });
+                            }
+                          },
+                          { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
+                            filter: entity => entity.medicationPlan.length === index + 1,
+                            onClick: (e, text, resolve) => this.handleMedBtnChange(e, resolve)},
+                        ]
+                      }
+                    ]
+                  })  
                 }
               ]
             },
@@ -300,6 +354,17 @@ export default class FuzhenForm extends Component {
         } 
       ]
     }
+  }
+
+  handleMedBtnChange(e, resolve, index) {
+    const { entity } = this.state;
+    let newEntity = entity;
+    if (/^\d$/.test(index)) {
+      newEntity.medicationPlan = newEntity.medicationPlan.filter((v, i) => i !== index);
+    } else {
+      newEntity.medicationPlan.push({});
+    }
+    this.setState({entity: newEntity})
   }
 
   // 入院登记表单
@@ -426,15 +491,14 @@ export default class FuzhenForm extends Component {
   }
 
   handleChange(e, { name, value, valid }) {
-    const { entity, error, isShowRegForm } = this.state;
-    const data = { [name]: value };
-    const errorData = { [name]: valid };
-
-    // console.log(name, '1')
-    // console.log(value, '1')
-    // if(name == 'ckpressure') {
-    //   console.log(value, '123');
-    // }
+    console.log(name, '11')
+    console.log(value, '22')
+    const { entity, error } = this.state;
+    let data = { [name]: value };
+    let errorData = { [name]: valid };
+    if (name=='ckzijzhz' || name=='ckxianl' || name=='ckfuzh') {
+      data = { [name]: value['label'] };
+    }
 
     switch (name) {
       case 'checkdate':
@@ -464,30 +528,28 @@ export default class FuzhenForm extends Component {
     const { onSave } = this.props;
     const { entity } = this.state;
 
-    // let newEntity = entity;
+    let newEntity = entity;
     // //血压
-    // newEntity.ckshrinkpressure = newEntity.ckpressure[0];
-    // newEntity.ckdiastolicpressure = newEntity.ckpressure[1];
+    if(newEntity.ckpressure[0]) newEntity.ckshrinkpressure = newEntity.ckpressure[0];
+    if(newEntity.ckpressure[1]) newEntity.ckdiastolicpressure = newEntity.ckpressure[1];
     // //下次复诊
-    // newEntity.rvisitOsType = newEntity.nextRvisit[0].label;  
-    // newEntity.ckappointment = newEntity.nextRvisit[2];
-    // newEntity.ckappointmentArea = newEntity.nextRvisit[3].label;
+    if(newEntity.nextRvisit[0]) newEntity.rvisitOsType = newEntity.nextRvisit[0].label;  
+    if(newEntity.nextRvisit[2]) newEntity.ckappointment = newEntity.nextRvisit[2];
+    if(newEntity.nextRvisit[3]) newEntity.ckappointmentArea = newEntity.nextRvisit[3].label;
     // //胰岛素方案
-    // newEntity.riMoMedicine = newEntity.riMo[0];
-    // newEntity.riMoDosage = newEntity.riMo[1];
-    // newEntity.riNoMedicine = newEntity.riNo[0];
-    // newEntity.riNoDosage = newEntity.riNo[1];
-    // newEntity.riEvMedicine = newEntity.riEv[0];
-    // newEntity.riEvDosage = newEntity.riEv[1];
-    // newEntity.riSlMedicine = newEntity.riSl[0];
-    // newEntity.riSlDosage = newEntity.riSl[1];
-
-
+    if(newEntity.riMo[0]) newEntity.riMoMedicine = newEntity.riMo[0];
+    if(newEntity.riMo[1]) newEntity.riMoDosage = newEntity.riMo[1];
+    if(newEntity.riNo[0]) newEntity.riNoMedicine = newEntity.riNo[0];
+    if(newEntity.riNo[1]) newEntity.riNoDosage = newEntity.riNo[1];
+    if(newEntity.riEv[0]) newEntity.riEvMedicine = newEntity.riEv[0];
+    if(newEntity.riEv[1]) newEntity.riEvDosage = newEntity.riEv[1];
+    if(newEntity.riSl[0]) newEntity.riSlMedicine = newEntity.riSl[0];
+    if(newEntity.riSl[1]) newEntity.riSlDosage = newEntity.riSl[1];
 
     fireForm(form,'valid').then((valid)=>{
       if(valid){
         console.log(entity, '可以保存')
-        onSave(entity).then(() => this.setState({
+        onSave(newEntity).then(() => this.setState({
           entity: { ...baseData.formEntity },
           error: {}
         }));
