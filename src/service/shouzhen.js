@@ -32,12 +32,11 @@ export default {
      * 保存孕产史
      */
     savePregnancies : function(tab, entity){
-        let data = {};
         let uri = 'savepreghis';
-        data = entity
         //console.log(entity)
-        data.preghiss = data.preghis;
-        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { userid:r.object.userid,...data}));
+        // preghiss
+        //data.preghisss = data.preghis;
+        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { userid:r.object.userid,...entity}));
     },
     /**
      * 保存手术史

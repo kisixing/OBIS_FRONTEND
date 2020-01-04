@@ -88,7 +88,8 @@ export default class Patient extends Component {
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-5') {
                     tab.entity = [];
-                    tab.entity['preghis'] = res.object.gestation.preghiss;
+                    // preghiss
+                    tab.entity['preghiss'] = res.object.gestation.preghiss;
                     // tab.entity['preghis'] ={"preghis": [{
                     //     "id":1,
                     //     "checkdate": "2019-02",

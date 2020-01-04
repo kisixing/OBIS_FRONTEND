@@ -13,7 +13,7 @@ export default class extends Component{
     return {
       step: 1,
       rows: [
-        {name:'preghis', type:'table', valid: 'required',pagination: false,editable:true,options:baseData.pregnanciesColumns},
+        {name:'preghiss', type:'table', valid: 'required',pagination: false,editable:true,options:baseData.pregnanciesColumns},
       ]
     };
   }
