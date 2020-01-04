@@ -24,25 +24,25 @@ export default class extends Component {
         {
           columns:[
             {span:2},
-        { name: 'bsshoushu[高血压]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
+        { name: 'add_FILED_gaoxueya[高血压]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
           ]
         },
         {
           columns:[
             {span:2},
-        { name: 'bsshoushu[糖尿病]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
+        { name: 'add_FILED_tangniaobing[糖尿病]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
       ]
     },
     {
       columns:[
         {span:2},
-        { name: 'bsshoushu[心脏病]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
+        { name: 'add_FILED_xinzangbing[心脏病]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
       ]
     },
     {
       columns:[
         {span:2},
-        { name: 'bsshoushu[其他病史]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
+        { name: 'add_FILED_qitabingshi[其他病史]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
       ]
     },
     {
