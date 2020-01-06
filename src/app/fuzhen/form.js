@@ -175,7 +175,7 @@ export default class FuzhenForm extends Component {
               span: 18, rows: [
                 {
                   filter:()=>!check('twins')&&!check('multiple'), columns: [
-                    { name: 'cktaix(bmp)[胎心]', type: 'input', span: 8 },
+                    { name: 'cktaix(bmp)[胎心率]', type: 'input', span: 8 },
                     { name: 'ckxian[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
                     { name: 'ckfuzh[下肢水肿]', type: 'select', span: 8, showSearch:true, options: baseData.ckfuzhOptions}
                   ]
@@ -186,7 +186,7 @@ export default class FuzhenForm extends Component {
                       {
                         label: `胎${index+1}`, columns: [
                           { name: 'location[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
-                          { name: 'taix(bmp)[胎心]', type: 'input', span: 7 },
+                          { name: 'taix(bmp)[胎心率]', type: 'input', span: 7 },
                           { name: 'xianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
                           { span: 1 },
                           {
@@ -339,11 +339,11 @@ export default class FuzhenForm extends Component {
             }
           ]
         },
-        {
-          columns:[
-            { name: 'ckzijzhzqt[其他]', type: 'input', span: 12 }
-          ]
-        },
+        // {
+        //   columns:[
+        //     { name: 'ckzijzhzqt[其他]', type: 'input', span: 12 }
+        //   ]
+        // },
         {
           columns:[
             { name: 'treatment[处理措施]', type: 'textarea', span: 10 },
@@ -353,10 +353,10 @@ export default class FuzhenForm extends Component {
         {
           columns:[
             { 
-              name: 'nextRvisit[下次复诊]',span: 16, type: [          
-                {type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions, onclick: this.showRegForm.bind(this)},
+              name: 'nextRvisit[下次复诊]', span: 16, type: [          
+                {name: '11', type:'select', valid: 'required', showSearch:true, options: baseData.rvisitOsTypeOptions, onclick: this.showRegForm.bind(this)},
                 {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
-                'date',
+                {type: 'date', valid: 'required'},
                 {type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions},
               ]
             }

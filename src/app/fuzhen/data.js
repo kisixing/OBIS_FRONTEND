@@ -203,6 +203,31 @@ export const regFormEntity = {
 };
 
 /**
+ * 瘢痕子宫阴道试产表初始数据
+ */
+export const trialFormEntity = {
+	"syz": "",
+	"jjz": "",
+	"qk": "",
+	"jy": ""
+};
+export const syzOptions = toOptions(['孕妇及家属有阴道分娩意愿，了解并能接受试产风险及相关不良结局', 
+																		'有前次剖宫产手术记录', 
+																		'既往只有1次子宫下段横切口剖宫产史，手术顺利，无产后出血、子宫感染等，除剖宫产切口外子宫无创伤性手术瘢痕', 
+																		'2次分娩间隔>=18个月',
+																		'不存在前次剖宫产指征',
+																		'B超检查子宫前壁下段肌层连续']);
+export const jjzOptions = toOptions(['已有2次及以上子宫创伤性手术室', 
+																		'前次剖宫产手术为古典式剖宫产式、子宫下端纵切口或T形切口等不规则切口、剖宫产切口裂伤等并发症，既往有子宫破裂史', 
+																		'本次妊娠存在不适宜阴道分娩的内外科合并症或产科合并症', 
+																		'估计胎儿体质量为4000g或以上']);
+export const qkOptions = toOptions(['前次剖宫产子宫切口肌层仅缝合一层', 
+																		'孕前或早孕超声提示子宫瘢痕憩室']);
+export const jyOptions = toOptions(['剖宫产', 
+																	  '阴道试产（产前根据具体情况再次评估）']);																		
+
+
+/**
  * 表格当表头
  */
 export const tableKey = () => [
@@ -210,13 +235,14 @@ export const tableKey = () => [
 		title: '日期',
 		key: 'checkdate',
 		type: 'date',
-		width: '180',
+		width: 50,
 		format:i=>(`${i||''}`).replace(/\d{4}-/,'')
 	},
 	{
 		title: '孕周',
 		key: 'ckweek',
-		type: 'input'
+		type: 'input',
+		width: 50,
 	},
 	{
 		title: '体重',
@@ -225,19 +251,20 @@ export const tableKey = () => [
 			{
 				title: '(kg)',
 				key: 'cktizh',
-				type: 'input'
+				type: 'input',
+				width: 50,
 			},
 		]
 	},
 	{
 		title: '血压',
 		key: 'ckdiastolicpressure',
-		width: 160,	
 		children:[
 			{
 				title: '(mmHg)',
 				key: 'ckdiastolicpressure',
-				type: 'input'
+				type: 'input',
+				width: 60,	
 			},
 		]
 	},
@@ -247,13 +274,13 @@ export const tableKey = () => [
 		type: 'input'
 	},
 	{
-		title: '胎心',
+		title: '胎心率',
 		key: 'cktaix',
-		width: 130,
 		children:[
 			{
 				title: '(bpm)',
 				key: 'cktaix',
+				width: 30,
 				type: 'input'
 			},
 		]
@@ -262,6 +289,7 @@ export const tableKey = () => [
 		title: '先露',
 		key: 'ckxianl',
 		type:'select',
+		width: 30,
 		options: xlOptions
 	},
 	{
@@ -271,6 +299,7 @@ export const tableKey = () => [
 			{
 				title: '(cm)',
 				key: 'ckgongg',
+				width: 50,
 				type: 'input'
 			},
 		]
@@ -279,30 +308,31 @@ export const tableKey = () => [
 		title: '下肢水肿',
 		key: 'ckfuzh',
 		type:'select',
+		width: 50,
 		options: ckfuzhOptions
 	},
-	{
-		title: '其他',
-		key: 'ckzijzhzqt',
-		type: 'input'
-	},
-	{
-        title: '下次复诊',
-		key: 'ckappointment',
-        children:[
-            {
-                title: '预约日期',
-				key: 'ckappointment',
-				type: 'date'
-            }
-        ]
-    },
+	// {
+	// 	title: '其他',
+	// 	key: 'ckzijzhzqt',
+	// 	type: 'input'
+	// },
 	{ 
 		title: '处理措施',
 		key: 'treatment',
 		type: 'input',
 		width: 150
-	}
+	},
+	{
+		title: '下次复诊',	
+		key: 'ckappointment',
+		// children:[
+		// 	{
+		// 		title: '预约日期',
+		// 		key: 'ckappointment',
+		// 	type: 'date'
+		// 	}
+		// ]
+	},
 ];
 
 /**
