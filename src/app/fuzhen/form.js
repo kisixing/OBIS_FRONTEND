@@ -56,11 +56,11 @@ export default class FuzhenForm extends Component {
     }));
   }
 
-  componentWillReceiveProps(props) {
-    const { entity } = this.state;
-    let param = {"ckweek": util.countWeek(props.info.gesexpect)};
-    this.setState({entity: {...entity, ...param}});
-  }
+  // componentWillReceiveProps(props) {
+  //   const { entity } = this.state;
+  //   let param = {"ckweek": util.countWeek(props.info.gesexpect)};
+  //   this.setState({entity: {...entity, ...param}});
+  // }
 
   // 2 检测孕妇高危诊断，修改表格以及表单型式
   checkDiagnosisHighrisk(type) {
@@ -127,59 +127,59 @@ export default class FuzhenForm extends Component {
     const check = t => this.checkDiagnosisHighrisk(t);
     return {
       rows: [
-        {
-          columns: [
-            { name: 'checkdate[日期]', type: 'date', span: 6 },
-            { name: 'ckweek(周)[孕周]', type: 'input', span: 4, onClick:this.handleYz.bind(this) },
-            { 
-              span: 8,
-              columns:[
-                { name: 'cktizh(kg)[体重]', type: 'input', span: 16, valid: 'number|rang(40,100)' },
-                { type:  'button', span: 8, text: '体重曲线', color:'#1890ff', size:'small', onClick:this.renderQX.bind(this)}
-              ] 
-            },
-            { 
-              name: 'ckpressure(mmHg)[血压]', type: [{type: 'input(/)'},{type: 'input'}], span: 6, valid: (value)=>{
-              let message = '';
-              if(value){
-                if(value[0] && valid('number|rang(0,140)',value[0])){
-                  message += '第1个值' + valid('number|rang(0,140)',value[0])
-                }else if(value[0] && valid('number|rang(0,110)',value[1])){
-                  message += '第2个值' + valid('number|rang(0,140)',value[1])
-                }
-              }
+        // {
+        //   columns: [
+        //     { name: 'checkdate[日期]', type: 'date', span: 6 },
+        //     { name: 'ckweek(周)[孕周]', type: 'input', span: 4, onClick:this.handleYz.bind(this) },
+        //     { 
+        //       span: 8,
+        //       columns:[
+        //         { name: 'cktizh(kg)[体重]', type: 'input', span: 16, valid: 'number|rang(40,100)' },
+        //         { type:  'button', span: 8, text: '体重曲线', color:'#1890ff', size:'small', onClick:this.renderQX.bind(this)}
+        //       ] 
+        //     },
+        //     { 
+        //       name: 'ckpressure(mmHg)[血压]', type: [{type: 'input(/)'},{type: 'input'}], span: 6, valid: (value)=>{
+        //       let message = '';
+        //       if(value){
+        //         if(value[0] && valid('number|rang(0,140)',value[0])){
+        //           message += '第1个值' + valid('number|rang(0,140)',value[0])
+        //         }else if(value[0] && valid('number|rang(0,110)',value[1])){
+        //           message += '第2个值' + valid('number|rang(0,140)',value[1])
+        //         }
+        //       }
               
-              return message;
-            }},
-          ]
-        },
-        {   
-          columns:[
-            { name: 'ckzijzhz[自觉症状]', type:'select', showSearch:true, span: 12, options: baseData.ckzijzhzOptions }
-          ]
-        },
+        //       return message;
+        //     }},
+        //   ]
+        // },
+        // {   
+        //   columns:[
+        //     { name: 'ckzijzhz[自觉症状]', type:'select', showSearch:true, span: 12, options: baseData.ckzijzhzOptions }
+        //   ]
+        // },
         {
           columns: [
-            { 
-              span: 6, columns:[
-                { name: 'ckgongg(cm)[宫高]', type: 'input', span: 16 },
-                { type:  'button', span: 8, text: '生长曲线', color:'#1890ff', size:'small', onClick:this.renderQX.bind(this)}
-              ] 
-            },
-            {
-              span: 6, filter:()=>check('twins')||check('multiple'), columns:[
-                { name: 'ckfuzh[下肢水肿]', type: 'select', showSearch:true, options: baseData.ckfuzhOptions}
-              ]
-            },
+            // { 
+            //   span: 6, columns:[
+            //     { name: 'ckgongg(cm)[宫高]', type: 'input', span: 16 },
+            //     { type:  'button', span: 8, text: '生长曲线', color:'#1890ff', size:'small', onClick:this.renderQX.bind(this)}
+            //   ] 
+            // },
+            // {
+            //   span: 6, filter:()=>check('twins')||check('multiple'), columns:[
+            //     { name: 'ckfuzh[下肢水肿]', type: 'select', showSearch:true, options: baseData.ckfuzhOptions}
+            //   ]
+            // },
             {
               span: 18, rows: [
-                {
-                  filter:()=>!check('twins')&&!check('multiple'), columns: [
-                    { name: 'cktaix(bmp)[胎心率]', type: 'input', span: 8 },
-                    { name: 'ckxian[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
-                    { name: 'ckfuzh[下肢水肿]', type: 'select', span: 8, showSearch:true, options: baseData.ckfuzhOptions}
-                  ]
-                },
+                // {
+                //   filter:()=>!check('twins')&&!check('multiple'), columns: [
+                //     { name: 'cktaix(bmp)[胎心率]', type: 'input', span: 8 },
+                //     { name: 'ckxian[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
+                //     { name: 'ckfuzh[下肢水肿]', type: 'select', span: 8, showSearch:true, options: baseData.ckfuzhOptions}
+                //   ]
+                // },
                 {
                   filter:()=>check('twins')||check('multiple'), name: 'fetalCondition', span: 24, groups: index => ({
                     rows: [
@@ -353,7 +353,7 @@ export default class FuzhenForm extends Component {
         {
           columns:[
             { 
-              name: 'nextRvisit[下次复诊]', span: 16, type: [          
+              name: 'nextRvisit[下次复诊]', valid: 'required', span: 16, type: [          
                 {name: '11', type:'select', valid: 'required', showSearch:true, options: baseData.rvisitOsTypeOptions, onclick: this.showRegForm.bind(this)},
                 {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
                 {type: 'date', valid: 'required'},
@@ -535,17 +535,21 @@ export default class FuzhenForm extends Component {
   }
 
   handleSave(form, act) {
-    const { onSave } = this.props;
+    const { onSave, initData } = this.props;
     const { entity } = this.state;
 
-    let newEntity = entity;
+    console.log(initData, '1');
+    console.log(entity, '2');
+    let newEntity = {...entity, ...initData};
+
+    console.log(newEntity, '3');
     // //血压
     if(newEntity.ckpressure[0]) newEntity.ckshrinkpressure = newEntity.ckpressure[0];
     if(newEntity.ckpressure[1]) newEntity.ckdiastolicpressure = newEntity.ckpressure[1];
     // //下次复诊
-    if(newEntity.nextRvisit[0]) newEntity.rvisitOsType = newEntity.nextRvisit[0].label;  
+    if(newEntity.nextRvisit[0]) newEntity.rvisitOsType = newEntity.nextRvisit[0].describe;  
     if(newEntity.nextRvisit[2]) newEntity.ckappointment = newEntity.nextRvisit[2];
-    if(newEntity.nextRvisit[3]) newEntity.ckappointmentArea = newEntity.nextRvisit[3].label;
+    if(newEntity.nextRvisit[3]) newEntity.ckappointmentArea = newEntity.nextRvisit[3].describe;
     // //胰岛素方案
     if(newEntity.riMo[0]) newEntity.riMoMedicine = newEntity.riMo[0];
     if(newEntity.riMo[1]) newEntity.riMoDosage = newEntity.riMo[1];
@@ -558,7 +562,7 @@ export default class FuzhenForm extends Component {
 
     fireForm(form,'valid').then((valid)=>{
       if(valid){
-        console.log(entity, '可以保存')
+        console.log(newEntity, '可以保存')
         onSave(newEntity).then(() => this.setState({
           entity: { ...baseData.formEntity },
           error: {}
