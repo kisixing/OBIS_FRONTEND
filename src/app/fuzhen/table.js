@@ -151,7 +151,7 @@ export default class FuzhenForm extends Component {
   renderLeftTable() {
     const { planDataList } = this.state;
     
-    const handelTableChange = (e, value) => {
+    const handleTableChange = (e, value) => {
       const { info } = this.props;
       let param = {time: util.getWeek(value.item.gestation, info.tuserweek)};
       value.item = Object.assign(value.item, param);
@@ -181,7 +181,7 @@ export default class FuzhenForm extends Component {
    if (newPlanDataList.length>0) newPlanDataList.sort(compare('gestation'));
 
 
-    const initTable = data => tableRender(baseData.planKey(), data, { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onChange: handelTableChange});
+    const initTable = data => tableRender(baseData.planKey(), data, { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onChange: handleTableChange});
     return <div>{newPlanDataList.length > 0 ? initTable(newPlanDataList) : ""}</div>;
   }
 

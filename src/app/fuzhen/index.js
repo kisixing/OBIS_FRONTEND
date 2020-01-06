@@ -59,6 +59,7 @@ export default class Patient extends Component {
       collapseActiveKey: ['1', '2', '3'],
       jianyanReport: '血常规、尿常规、肝功、生化、甲功、乙肝、梅毒、艾滋、地贫',
       planData: [],
+      initData: { ...baseData.formEntity },
       modalState: [
         {
           "title": "糖尿病门诊预约",
@@ -79,13 +80,20 @@ export default class Patient extends Component {
 
   componentDidMount() {
     Promise.all([
-    service.getuserDoc().then(res => this.setState({ info: res.object })),
+    service.getuserDoc().then(res => this.setState({ info: res.object }, () => {
+      let param = {"ckweek": util.countWeek(res.object.gesexpect)};
+      this.setState({initData: {...this.state.initData, ...param}});
+    })),
 
     service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list })),
 
     service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object})),
 
-    service.fuzhen.getRecentRvisit().then(res => this.setState({ recentRvisit: res.object }))])
+    service.fuzhen.getRecentRvisit().then(res => {
+      res.object.push(this.state.initData);
+      this.setState({recentRvisit: res.object})
+    })])
+
       .then(() => this.setState({ loading: false }));
     
     service.fuzhen.getRvisitPage(this.state.pageCurrent).then(res => {
@@ -138,10 +146,10 @@ export default class Patient extends Component {
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
-        service.fuzhen.getRecentRvisit().then(res => this.setState({
-          loading: false,
-          recentRvisit: res.object
-        }));
+        service.fuzhen.getRecentRvisit().then(res => {
+          res.object.push(this.state.initData);
+          this.setState({loading: false, recentRvisit: res.object})
+        });
         resolve();
       }, () => this.setState({ loading: false }));
     })
@@ -379,9 +387,16 @@ export default class Patient extends Component {
       });
     }
 
+    const handleSaveChange = (type, row) => {
+      this.setState({initData: row})
+    }
+
     const handelTableChange = (type, row) => {
       service.fuzhen.saveRvisitForm(row).then(res => {
-        service.fuzhen.getRecentRvisit().then(res => this.setState({ recentRvisit: res.object }))
+        service.fuzhen.getRecentRvisit().then(res => {
+          res.object.push(this.state.initData);
+          this.setState({recentRvisit: res.object})
+        })
       })
     }
 
@@ -393,11 +408,12 @@ export default class Patient extends Component {
     const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
-        {initTable(recentRvisit && recentRvisit.slice(0, 2), { width: 1100, size: "small", pagination: false, className: "fuzhenTable", scroll: { x: 1100, y: 220 }, iseditable:({row})=>!!row })}
+        {/* iseditable:({row})=>!!row, */}
+        {initTable(recentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable", scroll: { x: 1100, y: 220 }, iseditable:({row})=> row>1, onRowChange: handleSaveChange })}
         {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
-            {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true, onRowChange: handelTableChange, 
+            {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true, onRowChange: handelTableChange, tableLayout: 'fixed',
                       pagination: { pageSize: 12, total: totalRow + 2, onChange: handlePageChange, showQuickJumper: true} })}
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
           </div>
@@ -410,7 +426,7 @@ export default class Patient extends Component {
   }
 
   render() {
-    const { loading, diagnosis, relatedObj, info, modalState } = this.state;
+    const { loading, diagnosis, relatedObj, info, modalState, initData } = this.state;
 
     return (
       <Page className='fuzhen font-16 ant-col'>
@@ -418,7 +434,7 @@ export default class Patient extends Component {
         {this.renderLeft()}
         <div className="fuzhen-right ant-col-19 main-pad-small">
           {this.renderTable()}
-          <FuzhenForm info={info} diagnosis={diagnosis} relatedObj={relatedObj} modalState={modalState} onSave={data => this.saveForm(data)} onChangeInfo={this.onChangeInfo.bind(this)} />
+          <FuzhenForm info={info} initData={initData} diagnosis={diagnosis} relatedObj={relatedObj} modalState={modalState} onSave={data => this.saveForm(data)} onChangeInfo={this.onChangeInfo.bind(this)} />
           <p className="pad_ie">&nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span></p>
         </div>
       </Page>

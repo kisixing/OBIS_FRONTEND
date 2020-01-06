@@ -4,6 +4,8 @@ import { Row, Col, Input, Button, Select, Modal, Tree, Icon } from 'antd';
 import router from "../utils/router";
 import bundle from "../utils/bundle";
 import service from '../service';
+import formRender, {fireForm} from '../render/form';
+import * as baseData from './fuzhen/data';
 
 import store from './store';
 import { getAlertAction, closeAlertAction } from './store/actionCreators.js';
@@ -34,7 +36,9 @@ export default class App extends Component {
       highriskEntity: null,
       highriskShow: false,
       muneIndex: 0, // 从0开始
-      ...store.getState()
+      ...store.getState(),
+      trialFormEntity: {...baseData.trialFormEntity},
+      isShowTrialForm: true,
     };
     store.subscribe(this.handleStoreChange);
     
@@ -113,6 +117,73 @@ export default class App extends Component {
       ))
       : null
     );
+  }
+
+  // 试产表单
+  trialFormConfig() {
+    return {
+      rows: [
+        {
+          columns: [
+            { name: 'syz[TOLAC的适应症]', type: 'checkinput', radio: true, span: 24, options: baseData.syzOptions }
+          ]
+        },
+        {
+          columns: [
+            { name: 'jjz[TOLAC的禁忌症]', type: 'checkinput', radio: true, span: 24, options: baseData.jjzOptions }
+          ]
+        },
+        {
+          columns: [
+            { name: 'qk[不建议催、引产的情况]', type: 'checkinput', radio: true, span: 24, options: baseData.qkOptions }
+          ]
+        },
+        {
+          columns: [
+            { name: 'jy[分娩方式建议]', type: 'checkinput', radio: true, span: 24, options: baseData.jyOptions }
+          ]
+        },
+      ]
+    }
+  }
+    /**
+   * 瘢痕子宫阴道试产表
+   */
+  renderTrial() {
+    const { trialFormEntity, isShowTrialForm } = this.state;
+    const handleClick = (item) => { this.setState({isShowTrialForm: false})};
+    const handleChange = (e, { name, value, valid }) => {
+      const data = {[name]: value};
+      this.setState({
+        trialFormEntity: {...trialFormEntity, ...data}
+      })
+    }
+    const handleSave = (form) => {
+      fireForm(form, 'valid').then((valid) => {
+        if(valid) {
+          // service.fuzhen.saveRvisitForm(trialFormEntity).then(() => {
+          //   this.setState({trialFormEntity: {...baseData.trialFormEntity}})
+          // })
+        }
+      })
+    }
+    const printForm = () => {
+      console.log('print')
+    }
+
+    return (isShowTrialForm ?
+      <Modal width="80%" title="瘢痕子宫阴道试产表" footer={null} className="trial-form"
+        visible={isShowTrialForm} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+        <div>孕妇姓名： xxx</div>
+        {formRender(trialFormEntity, this.trialFormConfig(), handleChange)}
+        <div style={{overflow: 'hidden'}}> 
+          <Button className="pull-right blue-btn" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
+          <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={() => handleSave(document.querySelector('.reg-form'))}>保存</Button>
+        </div>
+      </Modal>
+      : null
+    )
+
   }
 
   onClick(item) {
@@ -228,6 +299,7 @@ renderDanger() {
           {this.renderDanger()}
         </div>
         {this.renderHighrisk()}
+        {/* {this.renderTrial()} */}
       </div>
     )
   }
