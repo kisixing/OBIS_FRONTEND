@@ -307,7 +307,7 @@ export const pregnanciesColumns = [
 		title: '   年-月    ',
 		key: 'datagridYearMonth',
 		type: 'date',
-		width: '160',
+		width: '200',
 		mode:"ym",
 	},
 	{

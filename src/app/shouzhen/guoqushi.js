@@ -57,7 +57,7 @@ export default class extends Component {
     },
     {
       columns:[
-        { name: 'hobtabp[输血史]', type: 'checkinput', valid: 'required', unselect: '无', options: baseData.sxsOptions },
+        { name: 'hobtabp[输血史]', type: 'checkinput-4', valid: 'required', unselect: '无', radio: true, options: baseData.sxsOptions },
       ]
     }
       ]
