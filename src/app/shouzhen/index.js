@@ -79,7 +79,8 @@ export default class Patient extends Component {
                     tab.entity['operationHistory'] = res.object.operationHistory.operationHistorys;             
                 }
                 else if (tab.key === 'tab-4') {
-                    tab.entity = res.object.menstruationMarriage
+                    //tab.entity = res.object.menstruationMarriage
+                    tab.entity = {...res.object.menstruationMarriage,...res.object.biography};
                     tab.entity['maritalHistory'] = JSON.parse(tab.entity.maritalHistory);
                     tab.entity['userjinqjh'] = JSON.parse(tab.entity.userjinqjh);
                     tab.entity['historyOfInfertility'] = JSON.parse(tab.entity.historyOfInfertility);
@@ -133,9 +134,10 @@ export default class Patient extends Component {
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-6') {
                     tab.entity = res.object.checkUp
+                    tab.entity.ckpressure = (typeof tab.entity.ckpressure === 'object') ? tab.entity.ckpressure : [tab.entity.ckdiastolicpressure, tab.entity.ckshrinkpressure];
                     tab.entity['vascularMurmur'] = (typeof tab.entity.vascularMurmur != 'object') ? JSON.parse(tab.entity.vascularMurmur):tab.entity.vascularMurmur;
-                    tab.entity['nervousReflex'] = (typeof tab.entity.nervousReflex != 'object') ? JSON.parse(tab.entity.nervousReflex):tab.entity.nervousReflex;
-                    tab.entity['murmurs'] =  (typeof tab.entity.murmurs != 'object') ?JSON.parse(tab.entity.murmurs):tab.entity.murmurs;
+                    //tab.entity['nervousReflex'] = (typeof tab.entity.nervousReflex != 'object') ? JSON.parse(tab.entity.nervousReflex):tab.entity.nervousReflex;
+                    //tab.entity['murmurs'] =  (typeof tab.entity.murmurs != 'object') ?JSON.parse(tab.entity.murmurs):tab.entity.murmurs;
                     tab.entity['ckshenz'] = (typeof tab.entity.ckshenz != 'object') ?JSON.parse(tab.entity.ckshenz):tab.entity.ckshenz;
                     tab.entity['ckrut'] = (typeof tab.entity.ckrut != 'object') ?JSON.parse(tab.entity.ckrut):tab.entity.ckrut;
                     tab.entity['ckjiazhx'] = (typeof tab.entity.ckjiazhx != 'object') ?JSON.parse(tab.entity.ckjiazhx):tab.entity.ckjiazhx;
@@ -143,13 +145,13 @@ export default class Patient extends Component {
                     tab.entity['ckpifu'] = (typeof tab.entity.ckpifu != 'object') ?JSON.parse(tab.entity.ckpifu):tab.entity.ckpifu;
                     tab.entity['ckpiz'] = (typeof tab.entity.ckpiz != 'object') ?JSON.parse(tab.entity.ckpiz):tab.entity.ckpiz;
                     tab.entity['ckfuzh'] = (typeof tab.entity.ckfuzh != 'object') ?JSON.parse(tab.entity.ckfuzh):tab.entity.ckfuzh;
-                    tab.entity['heart'] = (typeof tab.entity.heart != 'object') ?JSON.parse(tab.entity.heart):tab.entity.heart;
+                    //tab.entity['heart'] = (typeof tab.entity.heart != 'object')?JSON.parse(tab.entity.heart):tab.entity.heart;
                     tab.entity['ckjizh'] = (typeof tab.entity.ckjizh != 'object') ?JSON.parse(tab.entity.ckjizh):tab.entity.ckjizh;
                     tab.entity['breathSounds'] = (typeof tab.entity.breathSounds != 'object') ?JSON.parse(tab.entity.breathSounds):tab.entity.breathSounds;
-                    tab.entity.ckpressure = (typeof tab.entity.ckpressure === 'object') ? tab.entity.ckpressure : [tab.entity.ckdiastolicpressure, tab.entity.ckshrinkpressure];
-                } else if(tab.key === 'tab-7'){
+                    }
+                else if(tab.key === 'tab-7'){
                     tab.entity = res.object.specialityCheckUp                  
-                    tab.entity['add_FIELD_ckjc'] = (typeof tab.entity.add_FIELD_ckjc != 'object') ?JSON.parse(tab.entity.add_FIELD_ckjc):tab.entity.add_FIELD_ckjc;
+                    tab.entity['add_FIELD_ckjc'] = (tab.entity.add_FIELD_ckjc != null && typeof tab.entity.add_FIELD_ckjc != 'object') ?JSON.parse(tab.entity.add_FIELD_ckjc):tab.entity.add_FIELD_ckjc;
                 }
                 else {
                     tab.entity = res.object;
@@ -242,7 +244,7 @@ export default class Patient extends Component {
                         tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1]||'';
                         console.log('save tab-1',tab);
                     }
-                    if(tab.key === 'tab-8'){
+                    if(tab.key === 'tab-6'){
                         tab.entity.ckdiastolicpressure = tab.entity.ckpressure[0];
                         tab.entity.ckshrinkpressure = tab.entity.ckpressure[1];
                         console.log('save tab-8',tab);
@@ -294,7 +296,7 @@ export default class Patient extends Component {
         return (
             <Page className='shouzhen pad-T-mid'>
                 <Button type="primary" className="top-save-btn" size="small" onClick={() => alert('保存')}>保存</Button>
-                <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
+                <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => alert('打印为PDF')}>打印</Button>
                 <div className="bgWhite" style={{ position: 'fixed', top: '7.65em', left: '0', right: '0', bottom: '0' }}></div>
                 <Tabs type="card" activeKey={step} onChange={key => this.handleSave(key)}>
                     {tabs.map(({ key, title, entity, error, Content }) => (

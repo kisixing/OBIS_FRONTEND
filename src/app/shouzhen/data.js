@@ -440,12 +440,12 @@ export const pregnanciesColumns = [
 	},
 	{
 		title: '分娩医院',
-		key: 'hospitalB',
+		key: 'hospital',
 		type: 'input'
 	},
 	{
 		title: '备注',
-		key: 'hospitalC',
+		key: 'xinseother',
 		type: 'input'
 	}
 ]

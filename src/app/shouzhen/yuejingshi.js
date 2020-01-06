@@ -39,31 +39,31 @@ export default class extends Component {
         {
           columns:[
             { span: 1 },
-            {name:'add_FILED_grxiyan[吸烟]', type:'checkinput-5',valid: 'required', options: baseData.nhOptions,radio:true,span:15}
+            {name:'add_FIELD_grxiyan[吸烟]', type:'checkinput-5',valid: 'required', options: baseData.nhOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
             { span: 1 },
-            {name:'add_FILED_gryinjiu[饮酒]', type:'checkinput-5', valid: 'required', options: baseData.nhOptions,radio:true,span:15}
+            {name:'add_FIELD_gryinjiu[饮酒]', type:'checkinput-5', valid: 'required', options: baseData.nhOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
             { span: 1 },
-            {name:'add_FILED_gryouhai[接触有害物质]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            {name:'add_FIELD_gryouhai[接触有害物质]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
             { span: 1 },
-            {name:'add_FILED_grfangshe[接触放射线]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            {name:'add_FIELD_grfangshe[接触放射线]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },       
         {
           columns:[
             { span: 1 },
-            {name:'add_FILED_grqita[其他个人史]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            {name:'add_FIELD_grqita[其他个人史]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
@@ -72,31 +72,31 @@ export default class extends Component {
         {
           columns:[
             { span: 1 },
-            {name:'add_FILED_jzgaoxueya[高血压]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            {name:'add_FIELD_jzgaoxueya[高血压]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
             { span: 1 },
-            {name:'add_FILED_jztangniaobing[糖尿病]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            {name:'add_FIELD_jztangniaobing[糖尿病]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },       
         {
           columns:[
             { span: 1 },
-            {name:'add_FILED_jzjixing[先天畸形]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            {name:'add_FIELD_jzjixing[先天畸形]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
             { span: 1 },
-            {name:'add_FILED_jzyichuanbing[遗传病]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            {name:'add_FIELD_jzyichuanbing[遗传病]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
             { span: 1 },
-            {name:'add_FILED_jzqita[其他]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            {name:'add_FIELD_jzqita[其他]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         // {
