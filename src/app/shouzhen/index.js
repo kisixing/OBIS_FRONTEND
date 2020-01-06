@@ -136,22 +136,28 @@ export default class Patient extends Component {
                     tab.entity = res.object.checkUp
                     tab.entity.ckpressure = (typeof tab.entity.ckpressure === 'object') ? tab.entity.ckpressure : [tab.entity.ckdiastolicpressure, tab.entity.ckshrinkpressure];
                     tab.entity['vascularMurmur'] = (typeof tab.entity.vascularMurmur != 'object') ? JSON.parse(tab.entity.vascularMurmur):tab.entity.vascularMurmur;
-                    //tab.entity['nervousReflex'] = (typeof tab.entity.nervousReflex != 'object') ? JSON.parse(tab.entity.nervousReflex):tab.entity.nervousReflex;
-                    //tab.entity['murmurs'] =  (typeof tab.entity.murmurs != 'object') ?JSON.parse(tab.entity.murmurs):tab.entity.murmurs;
                     tab.entity['ckshenz'] = (typeof tab.entity.ckshenz != 'object') ?JSON.parse(tab.entity.ckshenz):tab.entity.ckshenz;
                     tab.entity['ckrut'] = (typeof tab.entity.ckrut != 'object') ?JSON.parse(tab.entity.ckrut):tab.entity.ckrut;
                     tab.entity['ckjiazhx'] = (typeof tab.entity.ckjiazhx != 'object') ?JSON.parse(tab.entity.ckjiazhx):tab.entity.ckjiazhx;
-                    //tab.entity['ckganz'] = (typeof tab.entity.ckganz != 'object') ?JSON.parse(tab.entity.ckganz):tab.entity.ckganz;
                     tab.entity['ckpifu'] = (typeof tab.entity.ckpifu != 'object') ?JSON.parse(tab.entity.ckpifu):tab.entity.ckpifu;
                     tab.entity['ckpiz'] = (typeof tab.entity.ckpiz != 'object') ?JSON.parse(tab.entity.ckpiz):tab.entity.ckpiz;
                     tab.entity['ckfuzh'] = (typeof tab.entity.ckfuzh != 'object') ?JSON.parse(tab.entity.ckfuzh):tab.entity.ckfuzh;
-                    //tab.entity['heart'] = (typeof tab.entity.heart != 'object')?JSON.parse(tab.entity.heart):tab.entity.heart;
+                    tab.entity['nervousReflex'] = (typeof tab.entity.nervousReflex != 'object') ? JSON.parse(tab.entity.nervousReflex):tab.entity.nervousReflex;
+                    //病历反射
+                    tab.entity['vascularMurmurOther'] = (typeof tab.entity.vascularMurmurOther != 'object') ? JSON.parse(tab.entity.vascularMurmurOther):tab.entity.vascularMurmurOther;
+                    tab.entity['murmurs'] =  (typeof tab.entity.murmurs != 'object') ?JSON.parse(tab.entity.murmurs):tab.entity.murmurs;
+                    tab.entity['ckganz'] = (typeof tab.entity.ckganz != 'object') ?JSON.parse(tab.entity.ckganz):tab.entity.ckganz;
+                    tab.entity['heart'] = (typeof tab.entity.heart != 'object')?JSON.parse(tab.entity.heart):tab.entity.heart;
                     tab.entity['ckjizh'] = (typeof tab.entity.ckjizh != 'object') ?JSON.parse(tab.entity.ckjizh):tab.entity.ckjizh;
                     tab.entity['breathSounds'] = (typeof tab.entity.breathSounds != 'object') ?JSON.parse(tab.entity.breathSounds):tab.entity.breathSounds;
                     }
                 else if(tab.key === 'tab-7'){
-                    tab.entity = res.object.specialityCheckUp                  
-                    tab.entity['add_FIELD_ckjc'] = (tab.entity.add_FIELD_ckjc != null && typeof tab.entity.add_FIELD_ckjc != 'object') ?JSON.parse(tab.entity.add_FIELD_ckjc):tab.entity.add_FIELD_ckjc;
+                    tab.entity = res.object.specialityCheckUp    
+                    let ckjc = tab.entity.add_FIELD_ckjc;   
+                    if(tab.entity.add_FIELD_ckjc == null){
+                        ckjc = '';
+                    }           
+                    tab.entity['add_FIELD_ckjc'] = (ckjc != '' && typeof ckjc != 'object') ?JSON.parse(ckjc):ckjc;
                 }
                 else {
                     tab.entity = res.object;

@@ -1,4 +1,4 @@
-
+/* eslint-disable linebreak-style */
 var maxindex = 750;
 var context = null;
 var lastx = 0;
@@ -16,28 +16,28 @@ var currentx = 10;
 var textposition = 550;
 function formatDate(date, format) {
   if (!date) return;
-  if (!format) format = "yyyy-MM-dd";
+  if (!format) format = 'yyyy-MM-dd';
   switch (typeof date) {
-    case "string":
-      date = new Date(date.replace(/-/, "/"));
-      break;
-    case "number":
-      date = new Date(date);
-      break;
+  case 'string':
+    date = new Date(date.replace(/-/, '/'));
+    break;
+  case 'number':
+    date = new Date(date);
+    break;
   }
-  if (!date instanceof Date) return;
+  if (!(date instanceof Date)) return;
   var dict = {
-    "yyyy": date.getFullYear(),
-    "M": date.getMonth() + 1,
-    "d": date.getDate(),
-    "H": date.getHours(),
-    "m": date.getMinutes(),
-    "s": date.getSeconds(),
-    "MM": ("" + (date.getMonth() + 101)).substr(1),
-    "dd": ("" + (date.getDate() + 100)).substr(1),
-    "HH": ("" + (date.getHours() + 100)).substr(1),
-    "mm": ("" + (date.getMinutes() + 100)).substr(1),
-    "ss": ("" + (date.getSeconds() + 100)).substr(1)
+    'yyyy': date.getFullYear(),
+    'M': date.getMonth() + 1,
+    'd': date.getDate(),
+    'H': date.getHours(),
+    'm': date.getMinutes(),
+    's': date.getSeconds(),
+    'MM': ('' + (date.getMonth() + 101)).substr(1),
+    'dd': ('' + (date.getDate() + 100)).substr(1),
+    'HH': ('' + (date.getHours() + 100)).substr(1),
+    'mm': ('' + (date.getMinutes() + 100)).substr(1),
+    'ss': ('' + (date.getSeconds() + 100)).substr(1),
   };
   return format.replace(/(yyyy|MM?|dd?|HH?|ss?|mm?)/g, function () {
     return dict[arguments[0]];
@@ -45,7 +45,7 @@ function formatDate(date, format) {
 }
 
 
-var starttime = formatDate(new Date(), "HH:mm");
+var starttime = formatDate(new Date(), 'HH:mm');
 function getEventPosition(ev) {
   var x, y;
   if (ev.layerX || ev.layerX == 0) {
@@ -72,7 +72,7 @@ function showcur(x, fhr, toco) {
   context.font = 'bold 16px arial';
   context.fillStyle = 'blue';
   var title = document.getElementById('curtitle');
-  title.innerHTML = 'FHR1:' + fhr + "  " + 'TOCO:' + toco;
+  title.innerHTML = 'FHR1:' + fhr + '  ' + 'TOCO:' + toco;
 }
 
 function showbase() {
@@ -87,16 +87,16 @@ function selectfrom(lowValue, highValue) {
 function drawarc(x, y) {
   context.beginPath();
   context.arc(x, y, 8, 0, 2 * Math.PI);
-  context.fillStyle = "red";
-  context.strokeStyle = "red";
+  context.fillStyle = 'red';
+  context.strokeStyle = 'red';
   context.fill();
   context.stroke();
 }
 
 function drawcross(x, y) {
   context.beginPath();
-  context.fillStyle = "#394a6d";
-  context.strokeStyle = "#394a6d";
+  context.fillStyle = '#394a6d';
+  context.strokeStyle = '#394a6d';
   context.lineWidth = 0;
   context.moveTo(x, y);
   context.lineTo(x + 5, y);
@@ -113,7 +113,6 @@ function drawcross(x, y) {
 
 //缩放
 function scaleContext(context) {
-  // context.scale(0.6, 0.25);
   if (context != undefined) {
     context.scale(0.7, 0.7);
   }
@@ -124,7 +123,9 @@ function drawgrid(id) {
   var canvas = document.getElementById(id);
   if (canvas == null)
     return false;
-  scaleContext(canvas.getContext("2d"));
+  canvas.width = 550;
+  canvas.height = 600;
+  scaleContext(canvas.getContext('2d'));
   sethorizontal(900);
   setvertical(900);
   setrules(30, 'right');
@@ -136,7 +137,7 @@ function sethrules() {
   var canvas = document.getElementById('canvas');
   if (canvas == null)
     return false;
-  context = canvas.getContext("2d");
+  context = canvas.getContext('2d');
   context.font = 'bold 15px consolas';
   context.textAlign = 'center';
   context.textBaseline = 'top';
@@ -164,8 +165,8 @@ function setvertical(maxline) {
   var canvas = document.getElementById('canvas');
   if (canvas == null)
     return false;
-  context = canvas.getContext("2d");
-  context.strokeStyle = "rgb(150,150,150)"; // 横轴线
+  context = canvas.getContext('2d');
+  context.strokeStyle = 'rgb(150,150,150)'; // 横轴线
   for (var i = 0; i < 56; i++) {
     context.beginPath();
     context.lineWidth = 0.8;
@@ -183,7 +184,7 @@ function sethorizontal(length) {
   var canvas = document.getElementById('canvas');
   if (canvas == null)
     return false;
-  context = canvas.getContext("2d");
+  context = canvas.getContext('2d');
   for (var i = 0; i < 31; i++) {
     context.beginPath();
     context.lineWidth = 0.8;
@@ -200,7 +201,7 @@ function setrules(x, align) {
   var canvas = document.getElementById('canvas');
   if (canvas == null)
     return false;
-  context = canvas.getContext("2d");
+  context = canvas.getContext('2d');
   context.font = 'bold 15px consolas';
   context.textAlign = align;
   context.textBaseline = 'top';
@@ -217,7 +218,7 @@ function setrrules(x, align) {
   var canvas = document.getElementById('canvas');
   if (canvas == null)
     return false;
-  context = canvas.getContext("2d");
+  context = canvas.getContext('2d');
   context.font = 'bold 15px consolas';
   context.textAlign = align;
   context.textBaseline = 'top';
@@ -262,7 +263,7 @@ function ac() {
     { 'x': calculateX(25), 'y': calculateY(22) },
     { 'x': calculateX(30), 'y': calculateY(27.7) },
     { 'x': calculateX(35), 'y': calculateY(32.8) },
-    { 'x': calculateX(40), 'y': calculateY(37) }
+    { 'x': calculateX(40), 'y': calculateY(37) },
   ];
   drawscaleLine(topscale, 'AC', 650, '1');
 
@@ -272,7 +273,7 @@ function ac() {
     { 'x': calculateX(25), 'y': calculateY(20) },
     { 'x': calculateX(30), 'y': calculateY(25.2) },
     { 'x': calculateX(35), 'y': calculateY(30) },
-    { 'x': calculateX(40), 'y': calculateY(34) }
+    { 'x': calculateX(40), 'y': calculateY(34) },
   ];
   drawscaleLine(midscale, 'AC', 650, '2');
 
@@ -282,7 +283,7 @@ function ac() {
     { 'x': calculateX(25), 'y': calculateY(18) },
     { 'x': calculateX(30), 'y': calculateY(22.8) },
     { 'x': calculateX(35), 'y': calculateY(27.2) },
-    { 'x': calculateX(40), 'y': calculateY(31) }
+    { 'x': calculateX(40), 'y': calculateY(31) },
   ];
   drawscaleLine(bottomscale, 'AC', 650, '1');
 }
@@ -297,7 +298,7 @@ function fl() {
     { 'x': calculateX(25), 'y': calculateY(47.5) },
     { 'x': calculateX(30), 'y': calculateY(58.5) },
     { 'x': calculateX(35), 'y': calculateY(68.8) },
-    { 'x': calculateX(40), 'y': calculateY(77) }
+    { 'x': calculateX(40), 'y': calculateY(77) },
   ];
   drawscaleLine(topscale, 'FL', 420, '1');
 
@@ -308,7 +309,7 @@ function fl() {
     { 'x': calculateX(25), 'y': calculateY(43) },
     { 'x': calculateX(30), 'y': calculateY(54) },
     { 'x': calculateX(35), 'y': calculateY(63.5) },
-    { 'x': calculateX(40), 'y': calculateY(72) }
+    { 'x': calculateX(40), 'y': calculateY(72) },
   ];
   drawscaleLine(midscale, 'FL', 420, '2');
 
@@ -319,7 +320,7 @@ function fl() {
     { 'x': calculateX(25), 'y': calculateY(38.6) },
     { 'x': calculateX(30), 'y': calculateY(49.5) },
     { 'x': calculateX(35), 'y': calculateY(59.2) },
-    { 'x': calculateX(40), 'y': calculateY(67) }
+    { 'x': calculateX(40), 'y': calculateY(67) },
   ];
   drawscaleLine(bottomscale, 'FL', 420, '1');
 }
@@ -335,7 +336,7 @@ function bpd() {
     { 'x': calculateX(30), 'y': calculateY(82.5) },
     { 'x': calculateX(35), 'y': calculateY(93.4) },
     { 'x': calculateX(37.5), 'y': calculateY(97.6) },
-    { 'x': calculateX(40), 'y': calculateY(100.8) }
+    { 'x': calculateX(40), 'y': calculateY(100.8) },
   ];
   drawscaleLine(topscale, 'BPD', 90, '1');
 
@@ -347,7 +348,7 @@ function bpd() {
     { 'x': calculateX(30), 'y': calculateY(76.7) },
     { 'x': calculateX(35), 'y': calculateY(87.5) },
     { 'x': calculateX(37.5), 'y': calculateY(91.7) },
-    { 'x': calculateX(40), 'y': calculateY(94) }
+    { 'x': calculateX(40), 'y': calculateY(94) },
   ];
   drawscaleLine(midscale, 'BPD', 90, '2');
 
@@ -359,7 +360,7 @@ function bpd() {
     { 'x': calculateX(30), 'y': calculateY(70) },
     { 'x': calculateX(35), 'y': calculateY(80.8) },
     { 'x': calculateX(37.5), 'y': calculateY(84.7) },
-    { 'x': calculateX(40), 'y': calculateY(87) }
+    { 'x': calculateX(40), 'y': calculateY(87) },
   ];
   drawscaleLine(bottomscale, 'BPD', 90, '1');
 }
@@ -375,7 +376,7 @@ function drawscale(scale, name, namey) {
       var y2 = scale[k][i + 1].y;
       var curveness = -0.4;
       context.lineWidth = 1.5;
-      context.strokeStyle = "black";
+      context.strokeStyle = 'black';
       // 贝塞尔曲线中间点 curveness曲率
       var x1 = (x0 + x2) / 2 - (y0 - y2) * curveness;
       var y1 = (y0 + y2) / 2 - (y2 - y0) * curveness;
@@ -394,7 +395,7 @@ function printline() {
   var canvas = document.getElementById('canvas2');
   if (canvas == null)
     return false;
-  context = canvas.getContext("2d");
+  context = canvas.getContext('2d');
   context.clearRect(0, 0, canvas.width, canvas.height);
   var lastx, lasty1, lasty2, lasty3 = 0;
   for (var i = 0; i < demodata.length; i++) {
@@ -408,19 +409,19 @@ function printline() {
         return false;
       context.beginPath();
       context.lineWidth = 2.5;
-      context.strokeStyle = "green";
+      context.strokeStyle = 'green';
       context.moveTo(lastx, lasty1);
       context.lineTo(curx, cury1);
       context.stroke();
       context.beginPath();
       context.lineWidth = 2.5;
-      context.strokeStyle = "green";
+      context.strokeStyle = 'green';
       context.moveTo(lastx, lasty2);
       context.lineTo(curx, cury2);
       context.stroke();
       context.beginPath();
       context.lineWidth = 2.5;
-      context.strokeStyle = "green";
+      context.strokeStyle = 'green';
       context.moveTo(lastx, lasty3);
       context.lineTo(curx, cury3);
       context.stroke();
@@ -433,27 +434,7 @@ function printline() {
 }
 
 //获取生长曲线数据
-// function getPacsGrowth(userid) {
-//   $.ajax({
-//     type: 'POST',
-//     dataType: "json",
-//     async: false,
-//     data: { userid: userid },
-//     //url: 'http://120.77.46.176:8080/Obcloud/api/pacs/getPacsGrowth',
-//     url: "http://120.77.46.176:8080/Obcloud/outpatientRestful/getPacsGrowth",
-//     success: function (data) {
-//       if (data.code == '1') {
-//         // parent.BJUI.alertmsg('info', '获取');
-//         demodata = data;
-
-//         drawgrid('canvas');
-//         printline();
-//       } else {
-//         parent.BJUI.alertmsg('error', data.message);
-//       }
-//     }
-//   });
-// }
+// drawgrid('canvas');
 
 function drawscaleLine(scale, name, namey, style) {
   console.log('drawscaleAC');
@@ -468,10 +449,10 @@ function drawscaleLine(scale, name, namey, style) {
 
     if (style == '2') {
       context.lineWidth = 3;
-      context.strokeStyle = "black";
+      context.strokeStyle = 'black';
     } else {
       context.lineWidth = 1.2;
-      context.strokeStyle = "gray";
+      context.strokeStyle = 'gray';
     }
     context.lineTo(x, y);
   }

@@ -80,7 +80,7 @@ export default class extends Component{
         {
           columns:[
             {name:'nervousReflex[生理反射]', type:'checkinput-3', valid: 'required', options: baseData.slfsOptions,radio:true,span:8},
-            {name:'nervousReflex[病理反射]', type:'checkinput-3', valid: 'required', options: baseData.blfsOptions,radio:true,span:8},
+            {name:'vascularMurmurOther[病理反射]', type:'checkinput-3', valid: 'required', options: baseData.blfsOptions,radio:true,span:8},
           ]
         }
       ]
