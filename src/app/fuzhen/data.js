@@ -140,6 +140,12 @@ export const formEntity = {
 	"medicationPlan": [{}],
 	"fetalCondition": [{}, {}],
 	"fetalUltrasound": [{}, {}],
+	"ckpressure": [],
+	"nextRvisit": [],
+	"riMo": [],
+	"riNo": [],
+	"riEv": [],
+	"riSl": [],
 	"fetal": "",
 	"tx1": "",
 	"xl1": "",
@@ -271,7 +277,8 @@ export const tableKey = () => [
 	{
 		title: '自觉症状',
 		key: 'ckzijzhz',
-		type: 'input'
+		type: 'input',
+		width: 80,	
 	},
 	{
 		title: '胎心率',
@@ -325,6 +332,7 @@ export const tableKey = () => [
 	{
 		title: '下次复诊',	
 		key: 'ckappointment',
+		width: 80
 		// children:[
 		// 	{
 		// 		title: '预约日期',

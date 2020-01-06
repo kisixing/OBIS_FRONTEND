@@ -47,9 +47,9 @@ export default class FuzhenForm extends Component {
       treatTemp: res.object
     }));
 
-    service.fuzhen.getPacsGrowth().then(res => this.setState({
-      getPacsGrowth: res.object
-    }));
+    // service.fuzhen.getPacsGrowth().then(res => this.setState({
+    //   getPacsGrowth: res.object
+    // }));
 
     service.fuzhen.getbmi().then(res => this.setState({
       getbmi: res.list
