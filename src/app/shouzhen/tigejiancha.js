@@ -16,7 +16,7 @@ export default class extends Component{
       rows: [
         {
           columns:[
-            {name:'cktizh(kg)[现 体 重 ]', type:'input', span:3, valid: 'required|number|rang(0,500)'},
+            {name:'ckcurtizh(kg)[现 体 重 ]', type:'input', span:3, valid: 'required|number|rang(0,500)'},
             {span:5},
             { 
               name: 'ckpressure(mmHg)[血@@@压 ]', type: ['input(/)','input'], span: 5, valid: (value)=>{
@@ -34,7 +34,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ckcurtizh(kg)[孕前体重]', type:'input', span:3, valid: 'required|number|rang(10,100)'},
+            {name:'cktizh(kg)[孕前体重]', type:'input', span:3, valid: 'required|number|rang(10,100)'},
             {span:5},
             {name:'cksheng(cm)[身@@@高 ]', type:'input', span:4, valid: 'required|number|rang(150,250)'},
             {span:4},

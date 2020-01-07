@@ -72,11 +72,11 @@ export default class Patient extends Component {
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-3'){
                     tab.entity = res.object.hisInfo
-                    tab.entity['bsguomin'] = JSON.parse(tab.entity.bsguomin);    
-                    tab.entity['bsjibing'] = JSON.parse(tab.entity.bsjibing);    
-                    tab.entity['bsshoushu'] = JSON.parse(tab.entity.bsshoushu);    
-                    tab.entity['hobtabp'] = JSON.parse(tab.entity.hobtabp);    
-                    tab.entity['operationHistory'] = res.object.operationHistory.operationHistorys;             
+                    tab.entity['bsguomin'] = tab.entity.bsguomin;    
+                    tab.entity['bsjibing'] = tab.entity.bsjibing;    
+                    tab.entity['bsshoushu'] = tab.entity.bsshoushu;
+                    tab.entity['hobtabp'] = tab.entity.hobtabp;
+                    tab.entity['operationHistory'] = (res.object.operationHistory.operationHistorys!=null)?res.object.operationHistory.operationHistorys:[];             
                 }
                 else if (tab.key === 'tab-4') {
                     //tab.entity = res.object.menstruationMarriage
@@ -90,7 +90,7 @@ export default class Patient extends Component {
                 } else if (tab.key === 'tab-5') {
                     tab.entity = [];
                     // preghiss
-                    tab.entity['preghiss'] = res.object.gestation.preghiss;
+                    tab.entity['preghiss'] = (res.object.gestation.preghiss!=null)?res.object.gestation.preghiss:[];
                     // tab.entity['preghis'] ={"preghis": [{
                     //     "id":1,
                     //     "checkdate": "2019-02",
@@ -204,11 +204,11 @@ export default class Patient extends Component {
             //     entity['pupttm'] = common.GetWeek(value,entity['dopupt']);
             //     entity['ckztingj'] = common.GetWeek(value,entity['ckzdate']);
             //     break;
-            case 'yqtz':
-                entity['ckbmi'] = common.getBMI(entity['yqtz'],entity['cksheng']);
+            case 'cktizh':
+                entity['ckbmi'] = common.getBMI(entity['cktizh'],entity['cksheng']);
                 break;
             case 'cksheng':
-                entity['ckbmi'] = common.getBMI(entity['yqtz'],entity['cksheng']);
+                entity['ckbmi'] = common.getBMI(entity['cktizh'],entity['cksheng']);
                 break;
 
         }

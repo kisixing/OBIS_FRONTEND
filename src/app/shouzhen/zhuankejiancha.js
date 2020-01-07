@@ -20,11 +20,11 @@ export default class extends Component {
       rows: [
         {
           className: 'zhuanke-group', columns: [
-            { name: 'fkjc[妇科检查]', type: 'checkinput', radio: true, options: baseData.wjjOptions, span: 8 }
+            { name: 'add_FIELD_gynecological_examination[妇科检查]', type: 'checkinput', radio: true, options: baseData.wjjOptions, span: 8 }
           ]
         },
         {
-          filter: entity => !entity.fkjc || isShow(entity.fkjc), columns: [
+          filter: entity => !entity.add_FIELD_gynecological_examination || isShow(entity.add_FIELD_gynecological_examination), columns: [
             { span: 1 },
             { name: 'ckwaiy[外阴]', type: 'input', span: 5 },
             { span: 1 },
@@ -36,7 +36,7 @@ export default class extends Component {
           ]
         },
         {
-          filter: entity => !entity.fkjc || isShow(entity.fkjc), columns: [
+          filter: entity => !entity.add_FIELD_gynecological_examination || isShow(entity.add_FIELD_gynecological_examination), columns: [
             { span: 1 },
             { name: 'ckfuj[附件]', type: 'input', span: 5 },
           ]
