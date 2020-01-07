@@ -8,7 +8,7 @@ import formRender, {fireForm} from '../render/form';
 import * as baseData from './fuzhen/data';
 
 import store from './store';
-import { getAlertAction, closeAlertAction } from './store/actionCreators.js';
+import { getAlertAction, closeAlertAction, showTrialAction } from './store/actionCreators.js';
 
 import Shouzhen from 'bundle-loader?lazy&name=shouzhen!./shouzhen';
 import Fuzhen from 'bundle-loader?lazy&name=fuzhen!./fuzhen';
@@ -38,7 +38,6 @@ export default class App extends Component {
       muneIndex: 0, // 从0开始
       ...store.getState(),
       trialFormEntity: {...baseData.trialFormEntity},
-      isShowTrialForm: true,
     };
     store.subscribe(this.handleStoreChange);
 
@@ -49,7 +48,7 @@ export default class App extends Component {
     }, () => {
       service.checkHighriskAlert(res.object.userid).then(res => {
         let data = res.object;
-        if(data.length > 0) {
+        if(data&&data.length > 0) {
           data.map(item => ( item.visible = true ))
         }
         const action = getAlertAction(data);
@@ -188,10 +187,14 @@ export default class App extends Component {
    * 瘢痕子宫阴道试产表
    */
   renderTrial() {
-    const { trialFormEntity, isShowTrialForm } = this.state;
-    const handleClick = (item) => { this.setState({isShowTrialForm: false})};
+    const { trialFormEntity, isShowTrialModal } = this.state;
+    const handleClick = (bool) => {
+      const action = showTrialAction(bool);
+      store.dispatch(action);
+    };
     const handleChange = (e, { name, value, valid }) => {
       const data = {[name]: value};
+      console.log(data, '11')
       this.setState({
         trialFormEntity: {...trialFormEntity, ...data}
       })
@@ -217,10 +220,10 @@ export default class App extends Component {
         visible={isShowTrialForm} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
         <div>孕妇姓名： xxx</div>
         {formRender(trialFormEntity, this.trialFormConfig(), handleChange)}
-        <div style={{overflow: 'hidden'}}>
+        {/* <div style={{overflow: 'hidden'}}>
           <Button className="pull-right blue-btn" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
           <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={() => handleSave(document.querySelector('.reg-form'))}>保存</Button>
-        </div>
+        </div> */}
       </Modal>
     )
   }
@@ -373,7 +376,7 @@ renderDanger() {
           {this.renderDanger()}
         </div>
         {this.renderHighrisk()}
-        {/* {this.renderTrial()} */}
+        {this.renderTrial()}
       </div>
     )
   }

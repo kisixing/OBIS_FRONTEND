@@ -137,11 +137,12 @@ export const formEntity = {
 	"upDosage24h": "",
 	"heartRate": "",
 	"examination": "",
+	"ckpressure": "",
 	"medicationPlan": [{}],
 	"fetalCondition": [{}, {}],
 	"fetalUltrasound": [{}, {}],
-	"ckpressure": [],
-	"nextRvisit": [],
+	"nextRvisit": {},
+	"nextRvisitText": "",
 	"riMo": [],
 	"riNo": [],
 	"riEv": [],
@@ -264,11 +265,11 @@ export const tableKey = () => [
 	},
 	{
 		title: '血压',
-		key: 'ckdiastolicpressure',
+		key: 'ckpressure',
 		children:[
 			{
 				title: '(mmHg)',
-				key: 'ckdiastolicpressure',
+				key: 'ckpressure',
 				type: 'input',
 				width: 60,
 			},
@@ -327,12 +328,12 @@ export const tableKey = () => [
 		title: '处理措施',
 		key: 'treatment',
 		type: 'input',
-		width: 150
+		width: 150,
 	},
 	{
 		title: '下次复诊',
-		key: 'ckappointment',
-		width: 80
+		key: 'nextRvisitText',
+		width: 80,
 		// children:[
 		// 	{
 		// 		title: '预约日期',
@@ -466,15 +467,15 @@ export const ckzijzhzOptions = toOptions(['胎动好', '无腹痛', '无阴道�
  */
 export const nextRvisitWeekOptions = [
 	{ label: '', value: '' },
-	{ label: '1周后', value: '1,周' },
-	{ label: '2周后', value: '2,周' },
-	{ label: '4周后', value: '4,周' },
+	{ label: '1周后', value: '1' },
+	{ label: '2周后', value: '2' },
+	{ label: '4周后', value: '4' },
 ];
 
 /**
  * 门诊
  */
-export const rvisitOsTypeOptions = toOptions(['', '普通门诊', '高危门诊', '入院'], (v,i)=>({value:i,describe:v.slice(0,1)}));
+export const rvisitOsTypeOptions = toOptions(['', '普通门诊', '高危门诊', '入院'], (v,i)=>({value:i+1,describe:v.slice(0,1)}));
 
 /**
  * 上午/下午

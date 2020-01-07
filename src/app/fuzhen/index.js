@@ -11,7 +11,7 @@ import * as util from './util';
 import editors from '../shouzhen/editors';
 
 import store from '../store';
-import { getAlertAction } from '../store/actionCreators.js';
+import { getAlertAction, showTrialAction } from '../store/actionCreators.js';
 
 import "../index.less";
 import "./index.less";
@@ -90,6 +90,7 @@ export default class Patient extends Component {
     service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object})),
 
     service.fuzhen.getRecentRvisit().then(res => {
+      res.object = res.object || [];
       res.object.push(this.state.initData);
       this.setState({recentRvisit: res.object})
     })])
@@ -109,6 +110,10 @@ export default class Patient extends Component {
     if (diagnosi && !diagnosis.filter(i => i.data === diagnosi).length) {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
+        if (diagnosi==='瘢痕子宫' || diagnosi==='疤痕子宫') {
+          const action = showTrialAction(true);
+          store.dispatch(action);
+        }
         service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
           let data = res.object;
           if(data.length > 0) {
@@ -141,11 +146,13 @@ export default class Patient extends Component {
   }
 
   saveForm(entity) {
+    const { info } = this.state;
     this.setState({ loading: true });
-
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
+        let param = {"ckweek": util.countWeek(info.gesexpect)};
+        this.setState({initData: {...baseData.formEntity, ...param}});
         service.fuzhen.getRecentRvisit().then(res => {
           res.object.push(this.state.initData);
           this.setState({loading: false, recentRvisit: res.object})
@@ -350,16 +357,19 @@ export default class Patient extends Component {
       <div className="fuzhen-left ant-col-5">
         <Collapse defaultActiveKey={collapseActiveKey}>
           <Panel header="诊 断" key="1">
-            {loading ?
-              <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
+            {
+            // loading ?
+            //   <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
+              this.renderZD()
             }
+            
           </Panel>
           <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={e => { e.stopPropagation();this.setState({isShowResultModal: true})} }>其他</Button></span>} key="2">
             <p className="pad-small">{jianyanReport || '无'}</p>
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
-            <Timeline className="pad-small" pending={planData.length>0 ? <Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button> : null}>
-              {planData.length>0 ? planData.map((item, index) => (
+            <Timeline className="pad-small" pending={planData&&planData.length>0 ? <Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button> : null}>
+              {planData&&planData.length>0 ? planData.map((item, index) => (
                 <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
                   <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
                   <p className="font-16">{item.event}</p>
@@ -388,7 +398,8 @@ export default class Patient extends Component {
     }
 
     const handleSaveChange = (type, row) => {
-      this.setState({initData: row})
+      row.ckweek = util.countWeek(row.checkdate);
+      this.setState({initData: row});
     }
 
     const handelTableChange = (type, row) => {
@@ -405,15 +416,27 @@ export default class Patient extends Component {
         this.setState({recentRvisitAll: res.object.list})})
     }
 
+    const resetData = (obj) => {
+      obj.map(item => {
+        item.ckpressure = (!item.ckpressure||item.ckpressure === "") ?  item.ckshrinkpressure +'/'+ item.ckdiastolicpressure : item.ckpressure;
+        item.nextRvisitText = item.ckappointment.slice(5) + ' ' + item.ckappointmentArea + ' ' + item.rvisitOsType;
+      })
+    }
+
+    let newRecentRvisit = recentRvisit;
+    let newRecentRvisitAll = recentRvisitAll;
+    if (recentRvisit) resetData(newRecentRvisit);
+    if (recentRvisitAll) resetData(newRecentRvisitAll);
+
     const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
         {/* iseditable:({row})=>!!row, */}
-        {initTable(recentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable", scroll: { x: 1100, y: 220 }, iseditable:({row})=> row>1, onRowChange: handleSaveChange })}
+        {initTable(newRecentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable", scroll: { x: 1100, y: 220 }, iseditable:({row})=> row>recentRvisit.length-2, onRowChange: handleSaveChange })}
         {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
-            {initTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true, onRowChange: handelTableChange, tableLayout: 'fixed',
+            {initTable(newRecentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true, onRowChange: handelTableChange, tableLayout: 'fixed',
                       pagination: { pageSize: 12, total: totalRow + 2, onChange: handlePageChange, showQuickJumper: true} })}
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
           </div>
