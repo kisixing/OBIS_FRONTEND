@@ -228,7 +228,7 @@ export const tableKey = () => [
 	},
 	{
 		title: '体重',
-		key: 'cktizh',	
+		key: 'cktizh',
 		children:[
 			{
 				title: '(kg)',
@@ -246,7 +246,7 @@ export const tableKey = () => [
 				title: '(mmHg)',
 				key: 'ckpressure',
 				type: 'input',
-				width: 60,	
+				width: 60,
 			},
 		]
 	},
@@ -254,7 +254,7 @@ export const tableKey = () => [
 		title: '自觉症状',
 		key: 'ckzijzhz',
 		type: 'input',
-		width: 80,	
+		width: 80,
 	},
 	{
 		title: '胎心率',
@@ -299,14 +299,14 @@ export const tableKey = () => [
 	// 	key: 'ckzijzhzqt',
 	// 	type: 'input'
 	// },
-	{ 
+	{
 		title: '处理措施',
 		key: 'treatment',
 		type: 'input',
 		width: 150,
 	},
 	{
-		title: '下次复诊',	
+		title: '下次复诊',
 		key: 'nextRvisitText',
 		width: 80,
 		// children:[
@@ -391,10 +391,10 @@ export const diagnosis = toOptions('瘢痕子宫,妊娠期糖尿病,妊娠高血
  * 先露
  */
 export const xlOptions = [
-	{ label: '头', value: '1' },
-	{ label: '臀', value: '2' },
-	{ label: '肩', value: '3' },
-	{ label: '/', value: '4' },
+	{ label: "头", value: "头" },
+	{ label: "臀", value: "臀" },
+	{ label: "肩", value: "肩" },
+	{ label: "/", value: "/" }
 ];
 
 /**

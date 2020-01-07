@@ -32,10 +32,10 @@ export default class extends Component {
         //     { name: 'ckyi[主诉]', type: 'input', span: 18, valid: 'required' },
         //   ]
         // },
-        // { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required',options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },  
+        // { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required',options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
         {
           columns: [
-            { name: 'add_FIELD_shouyun[受孕方式]', type: 'checkinput-4',span: 14, valid: 'required',radio:true,unselect:'自然',options: baseData.syfsOptions.map(v=>({...v, label:`${v.label}(input)`})) },  
+            { name: 'add_FIELD_shouyun[受孕方式]', type: 'checkinput-4',span: 14, valid: 'required',radio:true,unselect:'自然',options: baseData.syfsOptions.map(v=>({...v, label:`${v.label}(input)`})) },
           ]
         },
         // {
@@ -43,7 +43,7 @@ export default class extends Component {
         //     { name: 'ckyibzhzhtd(周)[胎动开始]', type: 'input', span: 5, valid: 'required,number' },
         //   ]
         // },
-        
+
         // '尿妊娠试验阳性',
         // {
         //   columns: [

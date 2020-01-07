@@ -1,14 +1,14 @@
 /**
  * form 表单可以自己定制编辑器，
- * 
+ *
  * function input$x(props, count, FormItem, AddResize){
  *    props.onChange 这个用来改变编辑器里面的数据
  *    props.onBlur 这个用于把数据更新到form表单外部
- * 
+ *
  *    在一个编辑器里面必须先调用onChange之后再调用onBlur，至于这个之后就有编辑器自己决定
  *  return Conponment;
  * }
- * 
+ *
  * 不带$x的编辑器， count为不可用
  * 带$x的编辑器使用时 为input-xx此时xx就是count的值，也可以input使用不带后缀,count为空
  */
@@ -22,7 +22,7 @@ import table from './table';
 import './form.less';
 
 /**
- * 
+ *
  * 如果这个属性可能是个方法，那就取返回
  */
 function getValueFn(fn, ...args){
@@ -224,7 +224,7 @@ class FormItem extends Component {
     const { type, valid, icon } = this.props;
     const { name, unit, value, error } = this.state;
     let { label } = this.state;
-    // label = type == '**' ? label : !label || label.length <=1 || label.length >=4 ?label : 
+    // label = type == '**' ? label : !label || label.length <=1 || label.length >=4 ?label :
     //         (label.length == 2 ?`${label.substr(0,1)}&nbsp;&nbsp;&nbsp;&nbsp;${label.substr(1,1)}` :`${label.substr(0,1)}&nbsp;${label.substr(1,1)}&nbsp;${label.substr(2,1)||''}`);
     label = type == '**' ? label : !label ?label :label.replace(/@/g, '&nbsp;&nbsp;')
     return (
@@ -248,7 +248,7 @@ class FormItem extends Component {
 /**
  * 由配置构建表单内容
  * entity 数据
- * config 的结构 
+ * config 的结构
  * {
  *    children:[ //是行
  *        {className:作用于行上, (其他属性）作用于当前编辑组件},
@@ -257,7 +257,7 @@ class FormItem extends Component {
  *              {className: 作用于列, span: 作用于列, (其他属性)作用于当前编辑组件}
  *          ]
  *        }
- *    ]             
+ *    ]
  * }
  * 这里所有的其他属性会传递到 FormItem 里面
  * onChange 数据修改的处理
@@ -281,8 +281,8 @@ export default function (entity, config, onChange, { children, ...props } = {}) 
 
   function foreach(data, change, list, type, path) {
     return list.map((rc, index) => {
-      if (!rc || (rc.filter && !rc.filter(entity))) { 
-        return null; 
+      if (!rc || (rc.filter && !rc.filter(entity))) {
+        return null;
       }
       const { span, label, className, ...rest } = (typeof rc === 'object' ? rc : {});
       const key = `${path}-${type[0]}${index}`;
@@ -336,7 +336,7 @@ export default function (entity, config, onChange, { children, ...props } = {}) 
           return change(e, { name: field, value: list, target: `group-${index}-${name}${target?'-':''}${target}`, ...rest })
         }
         const parms = {
-          list, 
+          list,
           first: index === 0,
           last: index + 1 === list.length
         };

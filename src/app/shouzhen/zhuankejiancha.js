@@ -13,7 +13,7 @@ export default class extends Component {
 
   config() {
     const isShow = data => {
-      return !data || !data.filter || !data.filter(i=>['拒绝检查','已查'].indexOf(i.label)!==-1).length;
+      return !data || !data.filter || !data.filter(i=>['拒绝检查','已查'].indexOf(i.label) !== -1).length;
     };
     return {
       step: 1,
@@ -45,11 +45,11 @@ export default class extends Component {
           className: 'zhuanke-group', columns: [
             { name: 'ckjc[产科检查]', type: '**', span: 8 },
           ]
-        }, 
+        },
         {
           columns:[
             { span: 1 },
-            {name:'ckgongg[宫高](cm)', type:'input',span:4,valid: 'required',},
+            { name: 'ckgongg[宫高](cm)', type: 'input', span: 4, valid: 'required' },
             { span: 1 },
             // {name:'ckfuw[腹围](cm)', type:'input', span:5}
           ]
@@ -57,7 +57,6 @@ export default class extends Component {
         {
           name: 'add_FIELD_ckjc', groups: index => ({
             rows: [
-              
               {
                 columns: [
                   { span: 1, className: 'noContent', name: `[胎${index + 1}]`, type: '**' },
@@ -68,8 +67,8 @@ export default class extends Component {
                   // { name: 'tw[胎位]', type: 'input', span: 5 },
                   // { span: 1 },
                   {
-                    name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small', 
-                    filter: entity => entity.add_FIELD_ckjc.length !== 1, 
+                    name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
+                    filter: entity => entity.add_FIELD_ckjc.length !== 1,
                     onClick: (e, text, resolve) => {
                       Modal.confirm({
                         title: '您是否确认要删除改记录',
@@ -79,9 +78,11 @@ export default class extends Component {
                       });
                     }
                   },
-                  { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small', 
-                  filter: entity => entity.add_FIELD_ckjc.length === index + 1, 
-                  onClick: (e, text, resolve) => this.handleChange(e, resolve) },
+                  {
+                    name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
+                    filter: entity => entity.add_FIELD_ckjc.length === index + 1,
+                    onClick: (e, text, resolve) => this.handleChange(e, resolve)
+                },
                 ]
               },
             ]
