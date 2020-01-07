@@ -63,11 +63,12 @@
   }
 }
 
-.trial-form {
-  .title {
-    overflow: hidden;
+.trial-modal {
+  .modal-title>.ant-tree-switcher.ant-tree-noline_open,
+  .modal-title>.ant-tree-checkbox {
+    display: none;
   }
-  .form-label {
+  .modal-title>.ant-tree-node-content-wrapper {
     width: 100%;
     text-align: center;
     height: 30px;
@@ -75,9 +76,6 @@
     margin-bottom: 10px;
     background-color: #e6f7ff;
     border-bottom: 3px solid #6699ff;
-  }
-  .ant-col-6, .ant-col-12 {
-    width: 100%;
   }
 }
 

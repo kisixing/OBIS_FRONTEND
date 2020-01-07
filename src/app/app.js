@@ -9,7 +9,9 @@ import store from "./store";
 import {
   getAlertAction,
   closeAlertAction,
-  showTrialAction
+  showTrialAction,
+  showTrialCardAction,
+  showPharAction
 } from "./store/actionCreators.js";
 
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
@@ -40,7 +42,6 @@ export default class App extends Component {
       muneIndex: 0, // 从0开始
       ...store.getState(),
       templateTree: [],
-      isShowTrailCard: false,
     };
     store.subscribe(this.handleStoreChange);
 
@@ -171,62 +172,74 @@ export default class App extends Component {
   /**
    * 瘢痕子宫阴道试产表
    */
-  // handleTrialClick = (bool) => {
-  //   const action = showTrialAction(bool);
-  //   store.dispatch(action);
-  // }
-  // renderTrialModal() {
-  //   const { templateTree, isShowTrialModal } = this.state;
-  //   let newTemplateTree = templateTree;
+  handleCardClick = (name) => {
+    const action1 = showTrialAction(true);
+    const action2 = showPharAction(true);
+    switch(name) {
+      case 'trial': 
+        store.dispatch(action1);
+        break;
+      case 'phar': 
+        store.dispatch(action2);
+        break;
+    }
+  }
+  renderTrialModal() {
+    const { templateTree, isShowTrialModal, username } = this.state;
+    let newTemplateTree = templateTree;
 
-  //   const closeModal = (bool) => {
-  //     this.setState({ isShowTrialModal: false });
-  //     if (bool) {
-  //       Promise.all([
-  //         service.shouzhen.saveTemplateTreeUser(0, newTemplateTree1).then(res => {}),
-  //         service.shouzhen.saveTemplateTreeUser(1, newTemplateTree2).then(res => {})
-  //       ]).then(() => {
-  //         const action = showPharCardAction(true);
-  //         store.dispatch(action);
-  //       })
-  //     }
-  //   }
+    const closeModal = (bool) => {
+      const action = showTrialAction(false);
+      store.dispatch(action);
+      if (bool) {
+        service.shouzhen.saveTemplateTreeUser(2, newTemplateTree).then(res => {
+          const action = showTrialCardAction(true);
+          store.dispatch(action);
+        })
+      }
+    }
 
-  //   const initTree = (arr) => arr.map(node => (
-  //     <div>
-  //       <div>{node.name}</div>
-  //       {node.child.map(item => 
-  //         <Tree.TreeNode key={item.id} title={item.name} ></Tree.TreeNode>
-  //       )}
-  //     </div>
-  //   ));
+    const initTree = (arr) => arr.map(node => (
+      <Tree.TreeNode key={node.id} title={node.name} className="modal-title">
+        {node.child.map(item => (
+          <Tree.TreeNode key={item.id} title={item.name} ></Tree.TreeNode>
+        ))}
+      </Tree.TreeNode>
+    ));
 
-  //   const handleCheck = (keys, { checked }) => {
-  //     newTemplateTree1.forEach(tt => {
-  //       if (keys.indexOf(`${tt.id}`) !== -1) {
-  //         tt.selected = checked;
-  //       }else {
-  //         tt.selected = null;
-  //       }
-  //     })
-  //   };
+    const handleCheck = (keys, { checked }) => {
+      newTemplateTree.forEach(tt => {
+        tt.child.forEach(item => {
+          if (keys.indexOf(`${item.id}`) !== -1) {
+            item.note = checked;
+          }else {
+            item.note = null;
+          }
+        })
+      })
+    };
 
-  //   const treeNodes = initTree(newTemplateTree);
-    
-  //   console.log(newTemplateTree, '1234')
-  //   console.log(treeNodes, '123')
+    let buttons = [
+      <Button onClick={() => closeModal()}>取消</Button>,
+      <Button type="primary" onClick={() => closeModal(true)}>保存</Button>,
+      <Button onClick={() => closeModal()}>打印</Button>
+    ]
 
-  //   return (
-  //     <Modal title="瘢痕子宫阴道试产表" visible={isShowTrialModal} width={800} className="trial-modal"
-  //           onCancel={() => closePharModal()} onOk={() => closePharModal(true)}>
-  //       <Row>
-  //         <Col span={24}>
-  //           <Tree checkable onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
-  //         </Col>
-  //       </Row>
-  //     </Modal>
-  //   )
-  // }
+    const treeNodes = initTree(newTemplateTree);
+    return (
+      templateTree.length>0 ?
+      <Modal title="瘢痕子宫阴道试产表" visible={isShowTrialModal} width={800} className="trial-modal" 
+              footer={buttons} onCancel={() => closeModal()}>
+        <p>孕妇姓名：{username}</p>
+        <Row>
+          <Col span={24}>
+            <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
+          </Col>
+        </Row>
+      </Modal>
+      : null
+    )
+  }
 
 
   onClick(item) {
@@ -236,7 +249,8 @@ export default class App extends Component {
   }
 
   renderHeader() {
-    const { username, userage, tuserweek,tuseryunchan,gesexpect,usermcno,chanjno,risklevel,infectious,isShowTrailCard,isShowPharCard } =this.state;
+    const { username, userage, tuserweek,tuseryunchan,gesexpect,usermcno,chanjno,risklevel,infectious,
+            isShowTrialCard, isShowPharCard } =this.state;
     return (
       <div className="main-header">
         <div className="patient-Info_title font-16">
@@ -287,8 +301,8 @@ export default class App extends Component {
           <ButtonGroup>
             <Button className="danger-btn-5" onClick={()=>this.setState({highriskShow:true})}>{risklevel}</Button>
             {infectious ? <Button className="danger-btn-infectin" onClick={()=>this.setState({highriskShow:true})}>{infectious}</Button> : null}
-            {isShowTrailCard ? <Button className="danger-btn-trial" onClick={() => this.handleTrialClick(true)}>疤</Button> : null}
-            {isShowPharCard ? <Button className="danger-btn-phar" onClick={() => this.handleTrialClick(true)}>栓</Button> : null}
+            {isShowTrialCard ? <Button className="danger-btn-trial" onClick={() => this.handleCardClick('trial')}>疤</Button> : null}
+            {isShowPharCard ? <Button className="danger-btn-phar" onClick={() => this.handleCardClick('phar')}>栓</Button> : null}
           </ButtonGroup>
         </div>
       </div>
@@ -463,7 +477,7 @@ export default class App extends Component {
         </div>
         <div>{this.renderDanger()}</div>
         {this.renderHighrisk()}
-        {/* {this.renderTrialModal()} */}
+        {this.renderTrialModal()}
       </div>
     );
   }
