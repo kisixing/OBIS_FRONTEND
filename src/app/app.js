@@ -48,7 +48,7 @@ export default class App extends Component {
     }, () => {
       service.checkHighriskAlert(res.object.userid).then(res => {
         let data = res.object;
-        if(data.length > 0) {
+        if(data&&data.length > 0) {
           data.map(item => ( item.visible = true ))
         }
         const action = getAlertAction(data);

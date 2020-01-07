@@ -90,6 +90,7 @@ export default class Patient extends Component {
     service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object})),
 
     service.fuzhen.getRecentRvisit().then(res => {
+      res.object = res.object || [];
       res.object.push(this.state.initData);
       this.setState({recentRvisit: res.object})
     })])
@@ -145,11 +146,13 @@ export default class Patient extends Component {
   }
 
   saveForm(entity) {
+    const { info } = this.state;
     this.setState({ loading: true });
-
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
+        let param = {"ckweek": util.countWeek(info.gesexpect)};
+        this.setState({initData: {...baseData.formEntity, ...param}});
         service.fuzhen.getRecentRvisit().then(res => {
           res.object.push(this.state.initData);
           this.setState({loading: false, recentRvisit: res.object})
@@ -354,16 +357,19 @@ export default class Patient extends Component {
       <div className="fuzhen-left ant-col-5">
         <Collapse defaultActiveKey={collapseActiveKey}>
           <Panel header="诊 断" key="1">
-            {loading ?
-              <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
+            {
+            // loading ?
+            //   <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
+              this.renderZD()
             }
+            
           </Panel>
           <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={e => { e.stopPropagation();this.setState({isShowResultModal: true})} }>其他</Button></span>} key="2">
             <p className="pad-small">{jianyanReport || '无'}</p>
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
-            <Timeline className="pad-small" pending={planData.length>0 ? <Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button> : null}>
-              {planData.length>0 ? planData.map((item, index) => (
+            <Timeline className="pad-small" pending={planData&&planData.length>0 ? <Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button> : null}>
+              {planData&&planData.length>0 ? planData.map((item, index) => (
                 <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
                   <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
                   <p className="font-16">{item.event}</p>
@@ -392,7 +398,8 @@ export default class Patient extends Component {
     }
 
     const handleSaveChange = (type, row) => {
-      this.setState({initData: row})
+      row.ckweek = util.countWeek(row.checkdate);
+      this.setState({initData: row});
     }
 
     const handelTableChange = (type, row) => {
@@ -411,7 +418,7 @@ export default class Patient extends Component {
 
     const resetData = (obj) => {
       obj.map(item => {
-        item.ckpressure = item.ckshrinkpressure +'/'+ item.ckdiastolicpressure;
+        item.ckpressure = (!item.ckpressure||item.ckpressure === "") ?  item.ckshrinkpressure +'/'+ item.ckdiastolicpressure : item.ckpressure;
         item.nextRvisitText = item.ckappointment.slice(5) + ' ' + item.ckappointmentArea + ' ' + item.rvisitOsType;
       })
     }

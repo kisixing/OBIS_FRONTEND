@@ -556,7 +556,6 @@ export default class FuzhenForm extends Component {
     if(newEntity.nextRvisit[0]) newEntity.rvisitOsType = newEntity.nextRvisit[0].describe;  
     if(newEntity.nextRvisit[2]) newEntity.ckappointment = newEntity.nextRvisit[2];
     if(newEntity.nextRvisit[3]) newEntity.ckappointmentArea = newEntity.nextRvisit[3].describe;
-    console.log()
     // //胰岛素方案
     if(newEntity.riMo[0]) newEntity.riMoMedicine = newEntity.riMo[0];
     if(newEntity.riMo[1]) newEntity.riMoDosage = newEntity.riMo[1];
