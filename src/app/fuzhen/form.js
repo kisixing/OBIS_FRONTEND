@@ -354,7 +354,7 @@ export default class FuzhenForm extends Component {
           columns:[
             { 
               name: 'nextRvisit[下次复诊]', valid: 'required', span: 16, type: [          
-                {name: '11', type:'select', valid: 'required', showSearch:true, options: baseData.rvisitOsTypeOptions, onclick: this.showRegForm.bind(this)},
+                {type:'select', valid: 'required', showSearch:true, options: baseData.rvisitOsTypeOptions},
                 {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
                 {type: 'date', valid: 'required'},
                 {type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions},
@@ -509,7 +509,6 @@ export default class FuzhenForm extends Component {
     if (name=='ckzijzhz' || name=='ckxianl' || name=='ckfuzh') {
       data = { [name]: value['label'] };
     }
-
     switch (name) {
       case 'checkdate':
         data.ckweek = util.countWeek(value);
@@ -519,7 +518,8 @@ export default class FuzhenForm extends Component {
           this.state.openYCQ = ()=>{};
         break;
         case 'nextRvisit':
-          value[0].label === '入院'  ? this.setState({isShowRegForm: true}) : null;
+          value[0]&&value[0].label === '入院' ? this.setState({isShowRegForm: true}) : null;
+          value[1]&&value[1].value !== "" ? data[name][2]=util.futureDate(value[1].value) : data[name][2]="";
         break;
     }
     this.setState({
@@ -537,19 +537,26 @@ export default class FuzhenForm extends Component {
   handleSave(form, act) {
     const { onSave, initData } = this.props;
     const { entity } = this.state;
+    let newEntity = {...entity};
+    let ckpressure = initData.ckpressure.split('/');
 
-    console.log(initData, '1');
-    console.log(entity, '2');
-    let newEntity = {...entity, ...initData};
+    newEntity.checkdate = initData.checkdate;
+    newEntity.ckweek = initData.ckweek;
+    newEntity.cktizh = initData.cktizh;
+    newEntity.ckzijzhz = initData.ckzijzhz;
 
-    console.log(newEntity, '3');
+    newEntity.ckgongg = initData.ckgongg;
+    newEntity.cktaix = initData.cktaix;
+    newEntity.ckxianl = initData.ckxianl;
+    newEntity.ckfuzh = initData.ckfuzh;
     // //血压
-    if(newEntity.ckpressure[0]) newEntity.ckshrinkpressure = newEntity.ckpressure[0];
-    if(newEntity.ckpressure[1]) newEntity.ckdiastolicpressure = newEntity.ckpressure[1];
+    if(ckpressure[0]) newEntity.ckshrinkpressure = ckpressure[0];
+    if(ckpressure[1]) newEntity.ckdiastolicpressure = ckpressure[1];
     // //下次复诊
     if(newEntity.nextRvisit[0]) newEntity.rvisitOsType = newEntity.nextRvisit[0].describe;  
     if(newEntity.nextRvisit[2]) newEntity.ckappointment = newEntity.nextRvisit[2];
     if(newEntity.nextRvisit[3]) newEntity.ckappointmentArea = newEntity.nextRvisit[3].describe;
+    console.log()
     // //胰岛素方案
     if(newEntity.riMo[0]) newEntity.riMoMedicine = newEntity.riMo[0];
     if(newEntity.riMo[1]) newEntity.riMoDosage = newEntity.riMo[1];

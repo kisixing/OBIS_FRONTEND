@@ -8,7 +8,7 @@ import * as baseData0 from './../shouzhen/data';
 import * as baseData from './../fuzhen/data';
 
 import store from '../store';
-import { getAlertAction } from '../store/actionCreators.js';
+import { getAlertAction, showTrialAction } from '../store/actionCreators.js';
 
 import service from '../../service';
 
@@ -186,6 +186,10 @@ export default class extends Component{
     if (diagnosi && !diagnosis.filter(i => i.data === diagnosi).length) {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
+        if (diagnosi==='瘢痕子宫' || diagnosi==='疤痕子宫') {
+          const action = showTrialAction(true);
+          store.dispatch(action);
+        }
         service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
           let data = res.object;
           if(data.length > 0) {
