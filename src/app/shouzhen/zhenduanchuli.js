@@ -8,8 +8,9 @@ import * as baseData0 from './../shouzhen/data';
 import * as baseData from './../fuzhen/data';
 
 import store from '../store';
-import { getAlertAction, showTrialAction } from '../store/actionCreators.js';
+import { getAlertAction, showTrialAction, showPharCardAction} from '../store/actionCreators.js';
 
+import './index.less';
 import service from '../../service';
 
 function modal(type, title) {
@@ -46,17 +47,23 @@ export default class extends Component{
       treatTemp: [], 
       regFormEntity: {...baseData.regFormEntity},
       isShowRegForm: false,
-      openTemplate: false
+      openTemplate: false,
+      templateTree1: [],
+      templateTree2: [],
+      isShowTrailModal: false,
     };
   }
 
   componentDidMount(){
     service.fuzhen.treatTemp().then(res => this.setState({ treatTemp: res.object }));
 
-    service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list })),
+    service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list }));
 
-    service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}))
+    service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
+    
+    service.shouzhen.findTemplateTree(0).then(res => this.setState({templateTree1: res.object}));
 
+    service.shouzhen.findTemplateTree(1).then(res => this.setState({templateTree2: res.object}));
   }
 
   config(){
@@ -431,6 +438,71 @@ export default class extends Component{
   }
 
   /**
+   * 孕期用药筛查表
+   */
+  renderPharModal() {
+    const { templateTree1, templateTree2, isShowTrailModal } = this.state;
+    let newTemplateTree1 = templateTree1;
+    let newTemplateTree2 = templateTree2;
+
+    const closePharModal = (bool) => {
+      this.setState({ isShowTrailModal: false });
+      if (bool) {
+        Promise.all([
+          service.shouzhen.saveTemplateTreeUser(0, newTemplateTree1).then(res => {}),
+          service.shouzhen.saveTemplateTreeUser(1, newTemplateTree2).then(res => {})
+        ]).then(() => {
+          const action = showPharCardAction(true);
+          store.dispatch(action);
+        })
+      }
+    }
+
+    const initTree = (arr) => arr.map(node => (
+      <Tree.TreeNode key={node.id} title={node.name} ></Tree.TreeNode>
+    ));
+
+    const handleCheck1 = (keys, { checked }) => {
+      newTemplateTree1.forEach(tt => {
+        if (keys.indexOf(`${tt.id}`) !== -1) {
+          tt.selected = checked;
+        }else {
+          tt.selected = null;
+        }
+      })
+    };
+    const handleCheck2 = (keys, { checked }) => {
+      newTemplateTree2.forEach(tt => {
+        if (keys.indexOf(`${tt.id}`) !== -1) {
+          tt.selected = checked;
+        }else {
+          tt.selected = null;
+        }
+      })
+    };
+    const treeNodes1 = initTree(newTemplateTree1);
+    const treeNodes2 = initTree(newTemplateTree2);
+
+    return (
+      <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowTrailModal} width={800} className="phar-modal"
+            onCancel={() => closePharModal()} onOk={() => closePharModal(true)}>
+        <Row>
+          <Col span={12}>
+            <div className="title">高危因素</div>
+            <Tree checkable onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
+            <p>建议用药：克赛0.4ml 皮下注射qd</p>
+          </Col>
+          <Col span={1}></Col>
+          <Col span={11}>
+            <div className="title">预防用药指导</div>
+            <Tree checkable onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes2}</Tree>
+          </Col>
+        </Row>
+      </Modal>
+    )
+  }
+
+  /**
    * 模板
    */
   renderTreatment() {
@@ -527,6 +599,7 @@ export default class extends Component{
         {this.renderTreatment()}
         {this.renderModal()}
         {this.showRegForm()}
+        {this.renderPharModal()}
       </div>
     )
   }

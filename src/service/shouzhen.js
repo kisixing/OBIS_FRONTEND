@@ -104,4 +104,17 @@ export default {
         let data = {"data": params};
         return this.userId().then(r => myAxios.post('/outpatientWriteRestful/checkHighriskAlert', {userid: r.object.userid, inputType: '1', ...data}));
     },
+    /**
+     * 查询血栓高危因素模板 LVT_HIGH_RISK
+     */
+    findTemplateTree: function(params){
+        return this.userId().then(r => myAxios.get(`/templatetree/findTemplateTree?userid=${r.object.userid}&type=${params}`));
+    },
+    /**
+     * 保存血栓模板
+     */
+    saveTemplateTreeUser: function(num, params){
+        let data = {"type": num, "templateTree": params};
+        return this.userId().then(r => myAxios.put('/templatetree/saveTemplateTreeUser', {userid: r.object.userid, ...data}));
+    },
 };

@@ -4,8 +4,6 @@ import { Row, Col, Input, Button, Select, Modal, Tree, Icon } from 'antd';
 import router from "../utils/router";
 import bundle from "../utils/bundle";
 import service from '../service';
-import formRender, {fireForm} from '../render/form';
-import * as baseData from './fuzhen/data';
 
 import store from './store';
 import { getAlertAction, closeAlertAction, showTrialAction } from './store/actionCreators.js';
@@ -37,7 +35,8 @@ export default class App extends Component {
       highriskShow: false,
       muneIndex: 0, // 从0开始
       ...store.getState(),
-      trialFormEntity: {...baseData.trialFormEntity},
+      templateTree: [],
+      isShowTrailCard: false,
     };
     store.subscribe(this.handleStoreChange);
     
@@ -59,6 +58,8 @@ export default class App extends Component {
     service.highrisk().then(res => this.setState({
       highriskList: res.object
     }))
+
+    service.shouzhen.findTemplateTree(2).then(res => this.setState({templateTree: res.object}));
   }
 
   handleStoreChange = () => {
@@ -118,76 +119,66 @@ export default class App extends Component {
     );
   }
 
-  // 试产表单
-  trialFormConfig() {
-    return {
-      rows: [
-        {
-          columns: [
-            { name: 'syz[TOLAC的适应症]', type: 'checkinput', radio: true, span: 24, options: baseData.syzOptions }
-          ]
-        },
-        {
-          columns: [
-            { name: 'jjz[TOLAC的禁忌症]', type: 'checkinput', radio: true, span: 24, options: baseData.jjzOptions }
-          ]
-        },
-        {
-          columns: [
-            { name: 'qk[不建议催、引产的情况]', type: 'checkinput', radio: true, span: 24, options: baseData.qkOptions }
-          ]
-        },
-        {
-          columns: [
-            { name: 'jy[分娩方式建议]', type: 'checkinput', radio: true, span: 24, options: baseData.jyOptions }
-          ]
-        },
-      ]
-    }
-  }
-    /**
+  /**
    * 瘢痕子宫阴道试产表
    */
-  renderTrial() {
-    const { trialFormEntity, isShowTrialModal } = this.state;
-    const handleClick = (bool) => { 
-      const action = showTrialAction(bool);
-      store.dispatch(action);
-    };
-    const handleChange = (e, { name, value, valid }) => {
-      const data = {[name]: value};
-      console.log(data, '11')
-      this.setState({
-        trialFormEntity: {...trialFormEntity, ...data}
-      })
-    }
-    const handleSave = (form) => {
-      fireForm(form, 'valid').then((valid) => {
-        if(valid) {
-          // service.fuzhen.saveRvisitForm(trialFormEntity).then(() => {
-          //   this.setState({trialFormEntity: {...baseData.trialFormEntity}})
-          // })
-        }
-      })
-    }
-    const printForm = () => {
-      console.log('print')
-    }
+  // handleTrialClick = (bool) => {
+  //   const action = showTrialAction(bool);
+  //   store.dispatch(action);
+  // }
+  // renderTrialModal() {
+  //   const { templateTree, isShowTrialModal } = this.state;
+  //   let newTemplateTree = templateTree;
 
-    return (isShowTrialModal ?
-      <Modal width="80%" title="瘢痕子宫阴道试产表" className="trial-form"
-        visible={isShowTrialModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-        <div>孕妇姓名： xxx</div>
-        {formRender(trialFormEntity, this.trialFormConfig(), handleChange)}
-        {/* <div style={{overflow: 'hidden'}}> 
-          <Button className="pull-right blue-btn" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
-          <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={() => handleSave(document.querySelector('.reg-form'))}>保存</Button>
-        </div> */}
-      </Modal>
-      : null
-    )
+  //   const closeModal = (bool) => {
+  //     this.setState({ isShowTrialModal: false });
+  //     if (bool) {
+  //       Promise.all([
+  //         service.shouzhen.saveTemplateTreeUser(0, newTemplateTree1).then(res => {}),
+  //         service.shouzhen.saveTemplateTreeUser(1, newTemplateTree2).then(res => {})
+  //       ]).then(() => {
+  //         const action = showPharCardAction(true);
+  //         store.dispatch(action);
+  //       })
+  //     }
+  //   }
 
-  }
+  //   const initTree = (arr) => arr.map(node => (
+  //     <div>
+  //       <div>{node.name}</div>
+  //       {node.child.map(item => 
+  //         <Tree.TreeNode key={item.id} title={item.name} ></Tree.TreeNode>
+  //       )}
+  //     </div>
+  //   ));
+
+  //   const handleCheck = (keys, { checked }) => {
+  //     newTemplateTree1.forEach(tt => {
+  //       if (keys.indexOf(`${tt.id}`) !== -1) {
+  //         tt.selected = checked;
+  //       }else {
+  //         tt.selected = null;
+  //       }
+  //     })
+  //   };
+
+  //   const treeNodes = initTree(newTemplateTree);
+    
+  //   console.log(newTemplateTree, '1234')
+  //   console.log(treeNodes, '123')
+
+  //   return (
+  //     <Modal title="瘢痕子宫阴道试产表" visible={isShowTrialModal} width={800} className="trial-modal"
+  //           onCancel={() => closePharModal()} onOk={() => closePharModal(true)}>
+  //       <Row>
+  //         <Col span={24}>
+  //           <Tree checkable onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
+  //         </Col>
+  //       </Row>
+  //     </Modal>
+  //   )
+  // }
+
 
   onClick(item) {
     if (item.component) {
@@ -196,7 +187,7 @@ export default class App extends Component {
   }
 
   renderHeader() {
-    const { username, userage, tuserweek,tuseryunchan,gesexpect,usermcno,chanjno,risklevel,infectious } =this.state;
+    const { username, userage, tuserweek,tuseryunchan,gesexpect,usermcno,chanjno,risklevel,infectious,isShowTrailCard,isShowPharCard } =this.state;
     return (
       <div className="main-header">
         <div className="patient-Info_title font-16">
@@ -217,9 +208,11 @@ export default class App extends Component {
           )}
         </p>
         <div className="patient-Info_btnList">
-          <ButtonGroup onClick={()=>this.setState({highriskShow:true})}>
-            <Button className="danger-btn-5">{risklevel}</Button>
-            <Button className="danger-btn-infectin">{infectious}</Button>
+          <ButtonGroup>
+            <Button className="danger-btn-5" onClick={()=>this.setState({highriskShow:true})}>{risklevel}</Button>
+            {infectious ? <Button className="danger-btn-infectin" onClick={()=>this.setState({highriskShow:true})}>{infectious}</Button> : null}
+            {isShowTrailCard ? <Button className="danger-btn-trial" onClick={() => this.handleTrialClick(true)}>疤</Button> : null}
+            {isShowPharCard ? <Button className="danger-btn-phar" onClick={() => this.handleTrialClick(true)}>栓</Button> : null}
           </ButtonGroup>
         </div>
       </div>
@@ -302,7 +295,7 @@ renderDanger() {
           {this.renderDanger()}
         </div>
         {this.renderHighrisk()}
-        {this.renderTrial()}
+        {/* {this.renderTrialModal()} */}
       </div>
     )
   }
