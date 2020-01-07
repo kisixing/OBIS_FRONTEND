@@ -20,15 +20,19 @@ function toOptions(data, vfn =()=>({})){
 /**
  * 身份证：证件类型
  */
-export const sfzOptions = [{ label: '身份证', value: '身份证' },
-{ label: '护照', value: '护照' },
-{ label: '回乡证', value: '回乡证' },
-{ label: '台胞证', value: '台胞证' }];
+export const sfzOptions = [
+	{ label: '身份证', value: '身份证' },
+	{ label: '护照', value: '护照' },
+	{ label: '回乡证', value: '回乡证' },
+	{ label: '台胞证', value: '台胞证' },
+	{ label: '港澳台居民居住证', value: '港澳台居民居住证' }
+];
 
-/**
+/**,
+ * { label: '台胞证', value: '台胞证' }
  * 证件类型
  */
-export const zjlxOptions = toOptions('身份证,护照,回乡证,台胞证');
+export const zjlxOptions = toOptions('身份证,护照,回乡证,台胞证,港澳台居民居住证');
 
 /**
  * 酒的类型
@@ -43,17 +47,21 @@ export const syfsOptions = toOptions('IVF{#FF3300}');
 /**
  * 血型O,A,B,AB
  */
-export const xuexingOptions = [{ label: 'O', value: 'O' },
-{ label: 'A', value: 'A' },
-{ label: 'B', value: 'B' },
-{ label: 'AB', value: 'AB' }];
+export const xuexingOptions = [
+	{ label: 'O', value: 'O' },
+	{ label: 'A', value: 'A' },
+	{ label: 'B', value: 'B' },
+	{ label: 'AB', value: 'AB' }
+];
 //toOptions('O,A,B,AB');
 
 /**
  * 血型RH(+),RH(-)
  */
-export const xuexing2Options = [{ label: 'RH(+)', value: 'RH(+)' },
-{ label: 'RH(-)', value: 'RH(-)' }];
+export const xuexing2Options = [
+	{ label: 'RH(+)', value: 'RH(+)' },
+  { label: 'RH(-)', value: 'RH(-)' }
+];
 //toOptions('RH(+),RH(-)');
 
 /**
@@ -299,7 +307,7 @@ export const shoushushiColumns = [
 export const pregnanciesColumns = [
 	{
 		title: '孕次',
-		key: 'index',	
+		key: 'index',
 		width: '50',
 		format: (v,{row})=>row+1
 	},
@@ -398,23 +406,23 @@ export const pregnanciesColumns = [
 				title: '性别',
 				key: 'xingb',
 				type: 'select',
-				showSearch:true, 
+				showSearch:true,
 				options: [
 					{ label: '男', value: '1' },
 					{ label: '女', value: '2' },
 					{ label: '未知', value: '3' },
-				],		 
+				],
 			},
 			{
 				title: '生存',
 				key: 'child',
 				type: 'select',
-				showSearch:true, 
+				showSearch:true,
 				options: [
 					{ label: '健在', value: '1' },
 					{ label: '死亡', value: '2' },
 					{ label: '未知', value: '3' },
-				],		 
+				],
 			},
 			{
 				title: '死亡时间',

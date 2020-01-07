@@ -217,20 +217,20 @@ export const trialFormEntity = {
 	"qk": "",
 	"jy": ""
 };
-export const syzOptions = toOptions(['孕妇及家属有阴道分娩意愿，了解并能接受试产风险及相关不良结局', 
-																		'有前次剖宫产手术记录', 
-																		'既往只有1次子宫下段横切口剖宫产史，手术顺利，无产后出血、子宫感染等，除剖宫产切口外子宫无创伤性手术瘢痕', 
+export const syzOptions = toOptions(['孕妇及家属有阴道分娩意愿，了解并能接受试产风险及相关不良结局',
+																		'有前次剖宫产手术记录',
+																		'既往只有1次子宫下段横切口剖宫产史，手术顺利，无产后出血、子宫感染等，除剖宫产切口外子宫无创伤性手术瘢痕',
 																		'2次分娩间隔>=18个月',
 																		'不存在前次剖宫产指征',
 																		'B超检查子宫前壁下段肌层连续']);
-export const jjzOptions = toOptions(['已有2次及以上子宫创伤性手术室', 
-																		'前次剖宫产手术为古典式剖宫产式、子宫下端纵切口或T形切口等不规则切口、剖宫产切口裂伤等并发症，既往有子宫破裂史', 
-																		'本次妊娠存在不适宜阴道分娩的内外科合并症或产科合并症', 
+export const jjzOptions = toOptions(['已有2次及以上子宫创伤性手术室',
+																		'前次剖宫产手术为古典式剖宫产式、子宫下端纵切口或T形切口等不规则切口、剖宫产切口裂伤等并发症，既往有子宫破裂史',
+																		'本次妊娠存在不适宜阴道分娩的内外科合并症或产科合并症',
 																		'估计胎儿体质量为4000g或以上']);
-export const qkOptions = toOptions(['前次剖宫产子宫切口肌层仅缝合一层', 
+export const qkOptions = toOptions(['前次剖宫产子宫切口肌层仅缝合一层',
 																		'孕前或早孕超声提示子宫瘢痕憩室']);
-export const jyOptions = toOptions(['剖宫产', 
-																	  '阴道试产（产前根据具体情况再次评估）']);																		
+export const jyOptions = toOptions(['剖宫产',
+																	  '阴道试产（产前根据具体情况再次评估）']);
 
 
 /**
@@ -252,7 +252,7 @@ export const tableKey = () => [
 	},
 	{
 		title: '体重',
-		key: 'cktizh',	
+		key: 'cktizh',
 		children:[
 			{
 				title: '(kg)',
@@ -270,7 +270,7 @@ export const tableKey = () => [
 				title: '(mmHg)',
 				key: 'ckdiastolicpressure',
 				type: 'input',
-				width: 60,	
+				width: 60,
 			},
 		]
 	},
@@ -278,7 +278,7 @@ export const tableKey = () => [
 		title: '自觉症状',
 		key: 'ckzijzhz',
 		type: 'input',
-		width: 80,	
+		width: 80,
 	},
 	{
 		title: '胎心率',
@@ -323,14 +323,14 @@ export const tableKey = () => [
 	// 	key: 'ckzijzhzqt',
 	// 	type: 'input'
 	// },
-	{ 
+	{
 		title: '处理措施',
 		key: 'treatment',
 		type: 'input',
 		width: 150
 	},
 	{
-		title: '下次复诊',	
+		title: '下次复诊',
 		key: 'ckappointment',
 		width: 80
 		// children:[
@@ -415,10 +415,10 @@ export const diagnosis = toOptions('瘢痕子宫,妊娠期糖尿病,妊娠高血
  * 先露
  */
 export const xlOptions = [
-	{ label: '头', value: '1' },
-	{ label: '臀', value: '2' },
-	{ label: '肩', value: '3' },
-	{ label: '/', value: '4' },
+	{ label: "头", value: "头" },
+	{ label: "臀", value: "臀" },
+	{ label: "肩", value: "肩" },
+	{ label: "/", value: "/" }
 ];
 
 /**

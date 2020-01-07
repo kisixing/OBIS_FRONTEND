@@ -72,11 +72,11 @@ export default class Patient extends Component {
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-3'){
                     tab.entity = res.object.hisInfo
-                    tab.entity['bsguomin'] = tab.entity.bsguomin;    
-                    tab.entity['bsjibing'] = tab.entity.bsjibing;    
+                    tab.entity['bsguomin'] = tab.entity.bsguomin;
+                    tab.entity['bsjibing'] = tab.entity.bsjibing;
                     tab.entity['bsshoushu'] = tab.entity.bsshoushu;
                     tab.entity['hobtabp'] = tab.entity.hobtabp;
-                    tab.entity['operationHistory'] = (res.object.operationHistory.operationHistorys!=null)?res.object.operationHistory.operationHistorys:[];             
+                    tab.entity['operationHistory'] = (res.object.operationHistory.operationHistorys!=null)?res.object.operationHistory.operationHistorys:[];
                 }
                 else if (tab.key === 'tab-4') {
                     //tab.entity = res.object.menstruationMarriage
@@ -152,12 +152,12 @@ export default class Patient extends Component {
                     tab.entity['breathSounds'] = (typeof tab.entity.breathSounds != 'object') ?JSON.parse(tab.entity.breathSounds):tab.entity.breathSounds;
                     }
                 else if(tab.key === 'tab-7'){
-                    tab.entity = res.object.specialityCheckUp    
-                    let ckjc = tab.entity.add_FIELD_ckjc;   
-                    if(tab.entity.add_FIELD_ckjc == null){
+                    tab.entity = res.object.specialityCheckUp
+                    let ckjc = tab.entity.add_FIELD_ckjc;
+                    if(tab.entity.add_FIELD_ckjc === null){
                         ckjc = '';
-                    }           
-                    tab.entity['add_FIELD_ckjc'] = (ckjc != '' && typeof ckjc != 'object') ?JSON.parse(ckjc):ckjc;
+                    }
+                    tab.entity['add_FIELD_ckjc'] = (ckjc !== '' && typeof ckjc !== 'object') ? JSON.parse(ckjc) : ckjc;
                 }
                 else {
                     tab.entity = res.object;
@@ -225,7 +225,7 @@ export default class Patient extends Component {
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
         console.log('handleSave', key, step, tab.entity);
-        
+
         message.destroy();
         const hide = message.loading('正在执行中...', 0);
 
@@ -236,7 +236,7 @@ export default class Patient extends Component {
 
             // 异步手动移除
             setTimeout(hide, 2000);
-            
+
             if (valid) {
                 // 修复喝酒不触发API问题
                 if(tab.key === 'tab-1'&& tab.entity.add_FIELD_husband_drink != tab.entity.add_FIELD_husband_drink_data[1]){

@@ -41,7 +41,7 @@ export default class App extends Component {
       isShowTrialForm: true,
     };
     store.subscribe(this.handleStoreChange);
-    
+
     service.getuserDoc().then(
       res => this.setState({
       ...res.object, loading: false,
@@ -93,30 +93,68 @@ export default class App extends Component {
       store.dispatch(action);
       service.addHighrisk(userid, highrisk, level).then(res => {})
     }
-
-    return ( highriskAlert && highriskAlert.length>0 ?
-      highriskAlert.map((item, index) => (
-        item.alertMark==1&&item.visible ?
-          <div className="highrisk-wrapper">
-            <div>
-              <span className="exc-icon"><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>
-              <span className="close-icon pull-right" onClick={() => {handelClose(index)}}><Icon type="close" /></span>
-            </div>
-            <div className="highrisk-content">
-            <div>孕妇诊断有<span className="highrisk-word">{item.content}</span>,请标记高危因素</div>     
-              <div className="highrisk-item">
-                {item.items.map(subItem => (
-                <Button className="blue-btn margin-R-1 margin-TB-mid" type="ghost" onClick={() => addHighrisk(subItem.highrisk, subItem.level, index)}>{subItem.name}</Button>
-                ))}
+    return highriskAlert && highriskAlert.length > 0
+      ? highriskAlert.map((item, index) =>
+          item.alertMark == 1 && item.visible ? (
+            <div key={item.userid} className="highrisk-wrapper">
+              <div>
+                <span className="exc-icon">
+                  <Icon
+                    type="exclamation-circle"
+                    style={{ color: "#FCCD68" }}
+                  />{" "}
+                  请注意！
+                </span>
+                <span
+                  className="close-icon pull-right"
+                  onClick={() => {
+                    handelClose(index);
+                  }}
+                >
+                  <Icon type="close" />
+                </span>
               </div>
-              <div><Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelClose(index, item.content)}>关闭，不再提示</Button>
-              <Button className="blue-btn colorGray" type="ghost" onClick={() => handelClose(index)}>关闭</Button></div>
+              <div className="highrisk-content">
+                <div>
+                  孕妇诊断有
+                  <span className="highrisk-word">{item.content}</span>
+                  ,请标记高危因素
+                </div>
+                <div className="highrisk-item">
+                  {item.items.map(subItem => (
+                    <Button
+                      key={subItem.name}
+                      className="blue-btn margin-R-1 margin-TB-mid"
+                      type="ghost"
+                      onClick={() =>
+                        addHighrisk(subItem.highrisk, subItem.level, index)
+                      }
+                    >
+                      {subItem.name}
+                    </Button>
+                  ))}
+                </div>
+                <div>
+                  <Button
+                    className="blue-btn colorGray margin-R-1"
+                    type="ghost"
+                    onClick={() => handelClose(index, item.content)}
+                  >
+                    关闭，不再提示
+                  </Button>
+                  <Button
+                    className="blue-btn colorGray"
+                    type="ghost"
+                    onClick={() => handelClose(index)}
+                  >
+                    关闭
+                  </Button>
+                </div>
+              </div>
             </div>
-          </div>
-        : null
-      ))
-      : null
-    );
+          ) : null
+        )
+      : null;
   }
 
   // 试产表单
@@ -170,20 +208,21 @@ export default class App extends Component {
     const printForm = () => {
       console.log('print')
     }
+    if (!isShowTrialForm) {
+      return null;
+    }
 
-    return (isShowTrialForm ?
+    return (
       <Modal width="80%" title="瘢痕子宫阴道试产表" footer={null} className="trial-form"
         visible={isShowTrialForm} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
         <div>孕妇姓名： xxx</div>
         {formRender(trialFormEntity, this.trialFormConfig(), handleChange)}
-        <div style={{overflow: 'hidden'}}> 
+        <div style={{overflow: 'hidden'}}>
           <Button className="pull-right blue-btn" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
           <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={() => handleSave(document.querySelector('.reg-form'))}>保存</Button>
         </div>
       </Modal>
-      : null
     )
-
   }
 
   onClick(item) {
@@ -193,28 +232,55 @@ export default class App extends Component {
   }
 
   renderHeader() {
-    const { username, userage, tuserweek,tuseryunchan,gesexpect,usermcno,chanjno,risklevel,infectious } =this.state;
+    const { username, userage, tuserweek, tuseryunchan, gesexpect, usermcno, chanjno, risklevel, infectious } =this.state;
     return (
       <div className="main-header">
         <div className="patient-Info_title font-16">
-          <div><strong>姓名:</strong>{username}</div>
-          <div><strong>年龄:</strong>{userage}</div>
-          <div><strong>孕周:</strong>{tuserweek}</div>
-          <div><strong>孕产:</strong>{tuseryunchan}</div>
-          <div><strong>预产期:</strong>{gesexpect}</div>
-          <div><strong>就诊卡:</strong>{usermcno}</div>
-          <div><strong>产检编号:</strong>{chanjno}</div>
+          <div>
+            <strong>姓名:</strong>
+            {username}
+          </div>
+          <div>
+            <strong>年龄:</strong>
+            {userage}
+          </div>
+          <div>
+            <strong>孕周:</strong>
+            {tuserweek}
+          </div>
+          <div>
+            <strong>孕产:</strong>
+            {tuseryunchan}
+          </div>
+          <div>
+            <strong>预产期:</strong>
+            {gesexpect}
+          </div>
+          <div>
+            <strong>就诊卡:</strong>
+            {usermcno}
+          </div>
+          <div>
+            <strong>产检编号:</strong>
+            {chanjno}
+          </div>
         </div>
         <p className="patient-Info_tab">
-          {routers.map((item, i) => <Button key={"mune" + i}
-            type={this.state.muneIndex != i ? 'dashed' : 'primary'}
-            onClick={() => { this.setState({ muneIndex: i }); this.onClick(item); }}>
-            {item.name}
-          </Button>
-          )}
+          {routers.map((item, i) => (
+            <Button
+              key={"mune" + i}
+              type={this.state.muneIndex != i ? "dashed" : "primary"}
+              onClick={() => {
+                this.setState({ muneIndex: i });
+                this.onClick(item);
+              }}
+            >
+              {item.name}
+            </Button>
+          ))}
         </p>
         <div className="patient-Info_btnList">
-          <ButtonGroup onClick={()=>this.setState({highriskShow:true})}>
+          <ButtonGroup onClick={() => this.setState({ highriskShow: true })}>
             <Button className="danger-btn-5">{risklevel}</Button>
             <Button className="danger-btn-infectin">{infectious}</Button>
           </ButtonGroup>
@@ -252,7 +318,7 @@ renderDanger() {
       {level < 10 ? initTree(node.id, level + 1) : null}
     </Tree.TreeNode>
   ));
-  
+
   return highriskEntity ? (
     <Modal className="highriskPop" title="高危因素" visible={highriskShow} width={1000} maskClosable={true} onCancel={() => this.setState({ highriskShow: false })} onOk={()=>handleOk()}>
       <div>
@@ -261,9 +327,17 @@ renderDanger() {
           <Col span={20}>
             <Row>
               <Col span={3}>高危等级：</Col>
-              <Col span={7}><Select value={highriskEntity.risklevel} onChange={e=>handleChange('risklevel', e)}>{'Ⅰ,Ⅱ,Ⅲ,Ⅳ,Ⅴ'.split(',').map(i=><Select.Option value={i}>{i}</Select.Option>)}</Select></Col>
+              <Col span={7}>
+                <Select value={highriskEntity.risklevel} onChange={e=>handleChange('risklevel', e)}>
+                  {'Ⅰ,Ⅱ,Ⅲ,Ⅳ,Ⅴ'.split(',').map(i => <Select.Option key={i} value={i}>{i}</Select.Option>)}
+                </Select>
+              </Col>
               <Col span={2}>传染病：</Col>
-              <Col span={10}><Select multiple value={highriskEntity.infectious&&highriskEntity.infectious.split(',')} onChange={e=>handleChange('infectious', e.join())}>{'<乙肝大三阳,乙肝小三阳,梅毒,HIV,结核病,重症感染性肺炎,特殊病毒感染（H1N7、寨卡等）,传染病：其他'.split(',').map(i=><Select.Option value={i}>{i}</Select.Option>)}</Select></Col>
+              <Col span={10}>
+                <Select multiple value={highriskEntity.infectious&&highriskEntity.infectious.split(',')} onChange={e => handleChange('infectious', e.join())}>
+                  {'<乙肝大三阳,乙肝小三阳,梅毒,HIV,结核病,重症感染性肺炎,特殊病毒感染（H1N7、寨卡等）,传染病：其他'.split(',').map(i => <Select.Option key={i} value={i}>{i}</Select.Option>)}
+                </Select>
+              </Col>
             </Row>
             <br />
             <Row>
