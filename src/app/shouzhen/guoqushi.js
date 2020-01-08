@@ -47,6 +47,12 @@ export default class extends Component {
     },
     {
       columns:[
+        {span:2},
+        { name: 'noneChecked1[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
+      ]
+    },
+    {
+      columns:[
         { name: 'operationHistory[手术史]', type: 'table', valid: 'required', pagination: false, editable: true, options: baseData.shoushushiColumns },
       ]
     },

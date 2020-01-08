@@ -106,3 +106,22 @@ export const loadWidget = (function (){
     return  Promise.reject('请添加相关配置');
   }
 })();
+
+export function ResetData(entity, name){
+  const arr1 = ['add_FIELD_gaoxueya', 'add_FIELD_tangniaobing', 'add_FIELD_xinzangbing', 'add_FIELD_qitabingshi'];
+  const arr2 = ['add_FIELD_grxiyan', 'add_FIELD_gryinjiu', 'add_FIELD_gryouhai', 'add_FIELD_grfangshe', 'add_FIELD_grqita'];
+  const arr3 = ['add_FIELD_jzgaoxueya', 'add_FIELD_jztangniaobing', 'add_FIELD_jzjixing', 'add_FIELD_jzyichuanbing', 'add_FIELD_jzqita'];
+  switch(name) {
+    case 'noneChecked1':
+      arr1.map(item => { entity[item] = [{"label": "无", "value": ""}] })
+    break;
+    case 'noneChecked2':
+      arr2.map(item => { entity[item] = [{"label": "无", "value": ""}] })
+    break;
+    case 'noneChecked3':
+      arr3.map(item => { entity[item] = [{"label": "无", "value": ""}] })
+    break;
+  }
+  return entity;
+}
+

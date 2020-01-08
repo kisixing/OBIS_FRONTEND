@@ -15,13 +15,13 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'yjcuch(岁)[初潮]', type: 'select', span: 4, showSearch: true, options: baseData.ccOptions, valid: 'required'},
+            { name: 'yjcuch(岁)[初@@潮]', type: 'select', span: 4, showSearch: true, options: baseData.ccOptions, valid: 'required'},
             { span: 2 },
-            { name: 'yjzhouq(天)[周期]', type: 'input', span: 4, valid: 'number|required' },
+            { name: 'yjzhouq(天)[周@@期]', type: 'input', span: 4, valid: 'number|required' },
             { span: 2 },
             { name: 'yjchix[持续天数]', className: 'input_width_4', type: 'input', span: 5, valid: 'number|required' },
             { span: 1 },
-            { name: 'yjtongj[痛经]', type: 'checkinput', span: 6, valid: 'required', radio: true, options: baseData.plOptions },
+            { name: 'yjtongj[痛@@@经]', type: 'checkinput', span: 6, valid: 'required', radio: true, options: baseData.plOptions },
           ]
         },
         {
@@ -39,13 +39,13 @@ export default class extends Component {
         {
           columns:[
             { span: 1 },
-            {name:'add_FIELD_grxiyan[吸烟]', type:'checkinput-5',valid: 'required', options: baseData.nhOptions,radio:true,span:15}
+            {name:'add_FIELD_grxiyan[吸@@烟]', type:'checkinput-5',valid: 'required', options: baseData.nhOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
             { span: 1 },
-            {name:'add_FIELD_gryinjiu[饮酒]', type:'checkinput-5', valid: 'required', options: baseData.nhOptions,radio:true,span:15}
+            {name:'add_FIELD_gryinjiu[饮@@酒]', type:'checkinput-5', valid: 'required', options: baseData.nhOptions,radio:true,span:15}
           ]
         },
         {
@@ -64,6 +64,12 @@ export default class extends Component {
           columns:[
             { span: 1 },
             {name:'add_FIELD_grqita[其他个人史]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+          ]
+        },
+        {
+          columns:[
+            {span:1},
+            { name: 'noneChecked2[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
           ]
         },
         {
@@ -96,7 +102,13 @@ export default class extends Component {
         {
           columns:[
             { span: 1 },
-            {name:'add_FIELD_jzqita[其他]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            {name:'add_FIELD_jzqita[其@他]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+          ]
+        },
+        {
+          columns:[
+            {span:1},
+            { name: 'noneChecked3[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
           ]
         },
         // {
