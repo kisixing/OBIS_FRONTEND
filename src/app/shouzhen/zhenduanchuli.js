@@ -8,7 +8,7 @@ import * as baseData0 from './../shouzhen/data';
 import * as baseData from './../fuzhen/data';
 
 import store from '../store';
-import { getAlertAction, showTrialAction, showPharCardAction} from '../store/actionCreators.js';
+import { getAlertAction, showTrialAction, showPharAction, showPharCardAction} from '../store/actionCreators.js';
 
 import './index.less';
 import service from '../../service';
@@ -48,13 +48,21 @@ export default class extends Component{
       regFormEntity: {...baseData.regFormEntity},
       isShowRegForm: false,
       openTemplate: false,
+      ...store.getState(),
       templateTree1: [],
       templateTree2: [],
-      isShowTrailModal: false,
+      bmiData: '',
     };
+    store.subscribe(this.handleStoreChange);
   }
 
+  handleStoreChange = () => {
+    this.setState(store.getState());
+  };
+
   componentDidMount(){
+    service.fuzhen.getbmi().then(res => this.setState({ bmiData: res.object }));
+
     service.fuzhen.treatTemp().then(res => this.setState({ treatTemp: res.object }));
 
     service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list }));
@@ -441,12 +449,60 @@ export default class extends Component{
    * 孕期用药筛查表
    */
   renderPharModal() {
-    const { templateTree1, templateTree2, isShowTrailModal } = this.state;
+    const { diagnosis, bmiData, templateTree1, templateTree2, isShowPharModal } = this.state;
+    const { info } = this.props;
+    // let bmiKey="";
+    // let ageKey="";
+    //  timesKey, smokeKey, qzKey, qqKey, rsKey;
     let newTemplateTree1 = templateTree1;
     let newTemplateTree2 = templateTree2;
+    const checkedKeys1 = [];
 
-    const closePharModal = (bool) => {
-      this.setState({ isShowTrailModal: false });
+    
+    // templateTree1&&templateTree1.map(item => {
+    //   if(item.name === "肥胖（BMI>30kg/m  )") bmiKey = item.id;
+    //   if(item.name === "年龄>35岁") ageKey = item.id;
+    //   if(item.name === "产次≥3") timesKey = item.id;
+    //   if(item.name === "吸烟") smokeKey = item.id;
+    //   if(item.name === "静脉曲张") qzKey = item.id;
+    //   if(item.name === "本次妊娠子痫前期") qqKey = item.id;
+    //   if(item.name === "多胎妊娠") rsKey = item.id;
+    // })
+    
+
+    if(bmiData&&bmiData.bmi>30) {
+      checkedKeys1.push('6');
+    }
+    if(info&&info.userage>35) {
+      checkedKeys1.push('7');
+    }
+    if(info&&info.tuseryunchan) {
+      info.tuseryunchan.split('/')[1]>=3 ? checkedKeys1.push('8') : null;
+    }
+
+    diagnosis&&diagnosis.map(item => {
+      if(item.data === "血栓") {
+        checkedKeys1.push('15')
+      }
+      if(item.data === "静脉曲张") {
+        checkedKeys1.push('11')
+      }
+      if(item.data === "妊娠子痫前期") {
+        checkedKeys1.push('10')
+      }
+      if(item.data === "多胎妊娠") {
+        checkedKeys1.push('15')
+      }
+    })
+
+    // if(checkedKeys1.length>0) {
+    //   const action = showPharAction(true);
+    //   store.dispatch(action);
+    // }
+    
+    const closeModal = (bool) => {
+      const action = showPharAction(false);
+      store.dispatch(action);
       if (bool) {
         Promise.all([
           service.shouzhen.saveTemplateTreeUser(0, newTemplateTree1).then(res => {}),
@@ -483,13 +539,16 @@ export default class extends Component{
     const treeNodes1 = initTree(newTemplateTree1);
     const treeNodes2 = initTree(newTemplateTree2);
 
+    console.log(checkedKeys1, 'pp')
+
     return (
-      <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowTrailModal} width={800} className="phar-modal"
-            onCancel={() => closePharModal()} onOk={() => closePharModal(true)}>
+      bmiData&&diagnosis ?
+      <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowPharModal} width={800} className="phar-modal"
+            onCancel={() => closeModal()} onOk={() => closeModal(true)}>
         <Row>
           <Col span={12}>
             <div className="title">高危因素</div>
-            <Tree checkable onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
+            <Tree checkable defaultCheckedKeys={checkedKeys1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
             <p>建议用药：克赛0.4ml 皮下注射qd</p>
           </Col>
           <Col span={1}></Col>
@@ -499,6 +558,7 @@ export default class extends Component{
           </Col>
         </Row>
       </Modal>
+      : null
     )
   }
 
