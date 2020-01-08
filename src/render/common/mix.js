@@ -136,6 +136,7 @@ export function checkinput$x({ name, options = [], onChange, onBlur, value:data1
         optionList.filter(o=>o!==op).forEach(o => fn(getrealy(o.value || o)));
       }else{
         fn(optionList[0].value);
+        optionList.forEach((o, i) => {i>optionList.length-2 && fn(getrealy(o.value || o))});
       }
     } else {
       optionList.filter(o=>o!==op).forEach(o=>{

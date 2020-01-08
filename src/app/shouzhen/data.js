@@ -42,7 +42,7 @@ export const jiuOptions = toOptions('没有,白酒,啤酒,红酒,其他');
 /**
  * 受孕方式
  */
-export const syfsOptions = toOptions('IVF{#FF3300}');
+export const syfsOptions = toOptions('IVF(input){#FF3300}, 自然');
 
 /**
  * 血型O,A,B,AB
@@ -83,7 +83,7 @@ export const gjtpOptions = toOptions('正常,异常,未有检查,不清楚');
  * 血制品
  */
 export const xzpOptions = toOptions([{k:'红细胞{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血小板{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血浆{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'全血{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'白蛋白{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'免疫球蛋白{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},'其他{#FF3300}','不清楚']);
-export const sxsOptions = toOptions([{k:'有{#FF3300}(shouzhenyy-时间,原因)',addspan:2}]);
+export const sxsOptions = toOptions([{k:'有{#FF3300}(shouzhenyy-时间,原因)',addspan:2}, '无']);
 
 
 /**
@@ -169,7 +169,7 @@ export const hnOptions = toOptions('无,有');
 */
 export const nhOptions = toOptions('有(input){#FF3300},无');
 
-export const wssOptions = toOptions([{k:'有{#FF3300}(input)',addspan:2}]);
+export const wssOptions = toOptions([{k:'有{#FF3300}(input)',addspan:2}, '无']);
 /**
  *乳头
 */
@@ -286,8 +286,8 @@ export const shoushushiColumns = [
 	{
 		title: '手术日期',
 		key: 'date',
-		type: 'date',
-		mode:"ym"
+		type: 'input',
+		// mode:"ym"
 	},
 	{
 		title: '手术医院',

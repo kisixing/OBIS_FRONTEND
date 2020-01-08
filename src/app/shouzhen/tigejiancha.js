@@ -43,7 +43,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ckpifu[皮肤黏膜]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,span:8},
+            {name:'ckpifu[皮肤黏膜]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
             {name:'ckjiazhx[甲 状 腺 ]', type:'checkinput-3', valid: 'required', options: baseData.noOptions,radio:true,span:8},
             {name:'vascularMurmur[血管杂音]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
           ]

@@ -24,25 +24,25 @@ export default class extends Component {
         {
           columns:[
             {span:2},
-        { name: 'add_FIELD_gaoxueya[高血压]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
+        { name: 'add_FIELD_gaoxueya[高血压]', type: 'checkinput', valid: 'required', radio: true, options: baseData.wssOptions,span:15 },
           ]
         },
         {
           columns:[
             {span:2},
-        { name: 'add_FIELD_tangniaobing[糖尿病]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
+        { name: 'add_FIELD_tangniaobing[糖尿病]', type: 'checkinput', valid: 'required', radio: true, options: baseData.wssOptions,span:15 },
       ]
     },
     {
       columns:[
         {span:2},
-        { name: 'add_FIELD_xinzangbing[心脏病]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
+        { name: 'add_FIELD_xinzangbing[心脏病]', type: 'checkinput', valid: 'required', radio: true, options: baseData.wssOptions,span:15 },
       ]
     },
     {
       columns:[
         {span:2},
-        { name: 'add_FIELD_qitabingshi[其他病史]', type: 'checkinput', valid: 'required', unselect: '无', radio: true, options: baseData.wssOptions,span:15 },
+        { name: 'add_FIELD_qitabingshi[其他]', type: 'checkinput', valid: 'required', radio: true, options: baseData.wssOptions,span:15 },
       ]
     },
     {
@@ -57,7 +57,7 @@ export default class extends Component {
     },
     {
       columns:[
-        { name: 'hobtabp[输血史]', type: 'checkinput-4', valid: 'required', unselect: '无', radio: true, options: baseData.sxsOptions },
+        { name: 'hobtabp[输血史]', type: 'checkinput-4', valid: 'required', radio: true, options: baseData.sxsOptions },
       ]
     }
       ]

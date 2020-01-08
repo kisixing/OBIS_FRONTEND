@@ -35,7 +35,7 @@ export default class extends Component {
         // { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required',options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
         {
           columns: [
-            { name: 'add_FIELD_shouyun[受孕方式]', type: 'checkinput-4',span: 14, valid: 'required',radio:true,unselect:'自然',options: baseData.syfsOptions.map(v=>({...v, label:`${v.label}(input)`})) },
+            { name: 'add_FIELD_shouyun[受孕方式]', type: 'checkinput-4',span: 14, valid: 'required',radio:true,options: baseData.syfsOptions },
           ]
         },
         // {
