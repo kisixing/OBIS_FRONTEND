@@ -432,7 +432,8 @@ export default class Patient extends Component {
     return (
       <div className="fuzhen-table">
         {/* iseditable:({row})=>!!row, */}
-        {initTable(newRecentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable", scroll: { x: 1100, y: 220 }, iseditable:({row})=> row>recentRvisit.length-2, onRowChange: handleSaveChange })}
+        {initTable(newRecentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable", 
+            onClick: true, scroll: { x: 1100, y: 220 }, iseditable:({row})=> row>recentRvisit.length-2, onRowChange: handleSaveChange })}
         {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">

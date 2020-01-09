@@ -4,7 +4,7 @@ const defaultState = {
   highriskAlert:[],
   isShowTrialModal: false,
   isShowTrialCard: false,
-  sShowPharModal: true,
+  isShowPharModal: false,
   isShowPharCard: false,
 }
 
@@ -33,7 +33,7 @@ export default (state = defaultState, action) => {
 
     if(action.type === SHOW_PHAR_MODAL) {
       const newState = JSON.parse(JSON.stringify(state));
-      newState.sShowPharModal = action.bool;
+      newState.isShowPharModal = action.bool;
       return newState;
     }
     if(action.type === SHOW_PHAR_CARD) {
