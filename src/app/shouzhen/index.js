@@ -272,6 +272,13 @@ export default class Patient extends Component {
                         tab.entity.ckshrinkpressure = tab.entity.ckpressure[1];
                         console.log('save tab-8',tab);
                     }
+                    if(tab.key === 'tab-8'){
+                        if (tab.entity.ogtt[0].label === "GDM") {
+                            tab.entity.add_FIELD_ogtt_gdm_empty = tab.entity.ogtt[0].value.input0;
+                            tab.entity.add_FIELD_ogtt_gdm_1h = tab.entity.ogtt[0].value.input1;
+                            tab.entity.add_FIELD_ogtt_gdm_2h = tab.entity.ogtt[0].value.input2;
+                        }
+                    }
                     if(tab.key != 'tab-5'){
                         if(tab.key === 'tab-3'){
                             service.shouzhen.saveOperations(tab.key, entitySave(tab.entity)).then(() => {
