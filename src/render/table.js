@@ -76,11 +76,11 @@ class TableItem extends Component{
   }
 
   render(){
-    const { type, format = i=>i, isEditor, editable, ...props } = this.props;
+    const { type, format = i=>i, isEditor, onClick, editable, ...props } = this.props;
     const { value, error, force } = this.state;
     const editor = editors[type] || type;
     return (
-      <span ref="tableItem" title={error} onDoubleClick={this.onDbClick.bind(this)} className={`table-item table-item-${type} ${(force&&'table-force') || (error&&'table-error') || ''}`}>
+      <span ref="tableItem" title={error} onClick={onClick ? this.onDbClick.bind(this) : null} onDoubleClick={this.onDbClick.bind(this)} className={`table-item table-item-${type} ${(force&&'table-force') || (error&&'table-error') || ''}`}>
         {
           editable && (typeof editor === 'function') && (force || isEditor)?editor({...props, value, onChange: this.onChange.bind(this), onBlur: this.onBlur.bind(this)}):this.format()
         }

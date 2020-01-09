@@ -16,6 +16,8 @@ import {
 
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
 import Fuzhen from "bundle-loader?lazy&name=fuzhen!./fuzhen";
+import Yingxiang from "bundle-loader?lazy&name=yingxiang!./yingxiang";
+import Jianyan from "bundle-loader?lazy&name=jianyan!./jianyan";
 
 import "./app.less";
 
@@ -26,8 +28,8 @@ const routers = [
   { name: "复诊记录", path: "/fz", component: bundle(Fuzhen) },
   { name: "孕期曲线", path: "/yq", component: null },
   { name: "血糖记录", path: "/xt", component: null },
-  { name: "影像报告", path: "/yx", component: null },
-  { name: "检验报告", path: "/jy", component: null },
+  { name: "影像报告", path: "/yx", component: bundle(Yingxiang) },
+  { name: "检验报告", path: "/jy", component: bundle(Jianyan) },
   { name: "胎监记录", path: "/tj", component: null }
 ];
 
@@ -201,7 +203,7 @@ export default class App extends Component {
 
     const initTree = (arr) => arr.map(node => (
       <Tree.TreeNode key={node.id} title={node.name} className="modal-title">
-        {node.child.map(item => (
+        {node.childnode&&node.childnode.child.map(item => (
           <Tree.TreeNode key={item.id} title={item.name} ></Tree.TreeNode>
         ))}
       </Tree.TreeNode>
