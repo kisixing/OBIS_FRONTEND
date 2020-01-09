@@ -52,6 +52,7 @@ export default class extends Component{
       templateTree1: [],
       templateTree2: [],
       bmiData: '',
+      formData: '',
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -61,6 +62,8 @@ export default class extends Component{
   };
 
   componentDidMount(){
+    service.shouzhen.getAllForm().then(res => this.setState({ formData: res.object }));
+
     service.fuzhen.getbmi().then(res => this.setState({ bmiData: res.object }));
 
     service.fuzhen.treatTemp().then(res => this.setState({ treatTemp: res.object }));
@@ -346,7 +349,7 @@ export default class extends Component{
               {info.doctor}
             </Col>
           </Row>
-          {diagnosis.map((item, i) => (
+          {diagnosis&&diagnosis.map((item, i) => (
             <Row key={`diagnos-${item.id}-${Date.now()}`}>
               <Col span={8}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>

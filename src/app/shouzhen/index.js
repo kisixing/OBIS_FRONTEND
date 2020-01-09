@@ -116,6 +116,14 @@ export default class Patient extends Component {
                     tab.entity['add_FIELD_userhistory_fyys'] = JSON.parse(tab.entity.add_FIELD_userhistory_fyys);//[];
                 } else if (tab.key === 'tab-8') {
                     tab.entity = res.object.lis;
+                    if(JSON.parse(tab.entity.ogtt)[0]['label'] === "GDM") {
+                        const data = {"value": {
+                            "input0": tab.entity['add_FIELD_ogtt_gdm_empty'], 
+                            "input1": tab.entity['add_FIELD_ogtt_gdm_1h'], 
+                            "input2": tab.entity['add_FIELD_ogtt_gdm_2h'],
+                        }};
+                        tab.entity['ogtt'] = [Object.assign(JSON.parse(tab.entity.ogtt)[0], data)];
+                    }
                     // tab.entity['aids'] = JSON.parse(tab.entity.aids);
                     // tab.entity['ogtt'] = JSON.parse(tab.entity.ogtt);
                     // tab.entity['thalassemia'] = JSON.parse(tab.entity.thalassemia);

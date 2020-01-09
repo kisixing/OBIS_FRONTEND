@@ -220,7 +220,7 @@ export const yyw2Options = toOptions('阴性,阳性{#FF3300},未查{#FF3300},其
 /**
  *梅毒
 */
-export const mdOptions = toOptions(['阴性',{k:'阳性{#FF3300}(shouzhenyy1-TPPA滴度,TRUST滴度)',addspan:4},'未查{#FF3300}','其他{#FF3300}(input)']);
+export const mdOptions = toOptions(['阴性',{k:'阳性{#FF3300}(shouzhenyy-TPPA滴度,TRUST滴度)',addspan:4},'未查{#FF3300}','其他{#FF3300}(input)']);
 
 /**
  *OGTT

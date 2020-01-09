@@ -270,7 +270,7 @@ export default class Patient extends Component {
     return (
       <div className="fuzhen-left-zd">
         <ol>
-          {diagnosis.map((item, i) => (
+          {diagnosis&&diagnosis.map((item, i) => (
             <li key={`diagnos-${item.id}-${Date.now()}`}>
               <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                 <div title={title(item)}>
