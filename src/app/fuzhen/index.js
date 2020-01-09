@@ -7,7 +7,6 @@ import FuzhenTable from './table';
 import Page from '../../render/page';
 import service from '../../service';
 import * as baseData from './data';
-import * as util from './util';
 import editors from '../shouzhen/editors';
 
 import store from '../store';
@@ -81,7 +80,7 @@ export default class Patient extends Component {
   componentDidMount() {
     Promise.all([
     service.getuserDoc().then(res => this.setState({ info: res.object }, () => {
-      let param = {"ckweek": util.countWeek(res.object.gesexpect)};
+      let param = {"ckweek": res.object.tuserweek};
       this.setState({initData: {...this.state.initData, ...param}});
     })),
 
@@ -151,7 +150,7 @@ export default class Patient extends Component {
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
-        let param = {"ckweek": util.countWeek(info.gesexpect)};
+        let param = {"ckweek": info.tuserweek};
         this.setState({initData: {...baseData.formEntity, ...param}});
         service.fuzhen.getRecentRvisit().then(res => {
           res.object.push(this.state.initData);
@@ -386,7 +385,7 @@ export default class Patient extends Component {
   }
 
   renderTable() {
-    const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn } = this.state;
+    const { info, recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn } = this.state;
 
     const handleMoreBtn = () => {
       service.fuzhen.getRvisitPage(pageCurrent).then(res => this.setState({
@@ -398,7 +397,7 @@ export default class Patient extends Component {
     }
 
     const handleSaveChange = (type, row) => {
-      row.ckweek = util.countWeek(row.checkdate);
+      row.ckweek = info.tuserweek;
       this.setState({initData: row});
     }
 
