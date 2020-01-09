@@ -1,7 +1,5 @@
 export const editTypes = 'input,select,.ant-select-selection'.split(',');
 
- 
-
 export function eventFns({onKeyUp, ...props}) {
   const noAutoClick = el => {
     return [
@@ -13,7 +11,7 @@ export function eventFns({onKeyUp, ...props}) {
     const types = 'input,select,textarea,button,[tabindex]';
     const active = item.querySelector(types) || item;
     const elements = root.querySelectorAll(types);
-    Array.prototype.forEach.call(elements,(el,i)=>{
+    Array.prototype.forEach.call(elements,(el,i) => {
       if(el === active){
         inedx = i;
       }

@@ -16,15 +16,39 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'gesmoc[末次月经]', type: 'date', span: 5, valid: 'required'},
-            { name: 'gesexpect[预产期-日期]', type: 'date', span: 5, valid: 'required'},
-            { name: 'gesexpectrv[预产期-B超]', type: 'date', span: 6, valid: 'required' },
+            {
+              name: "gesmoc[末次月经]",
+              type: "date",
+              span: 5,
+              valid: "required"
+            },
+            {
+              name: "gesexpect[预产期-日期]",
+              type: "date",
+              span: 5,
+              valid: "required"
+            },
+            {
+              name: "gesexpectrv[预产期-B超]",
+              type: "date",
+              span: 6,
+              valid: "required"
+            }
           ]
         },
         {
           columns: [
-            { name: 'ckzdate[早孕B超]', type: 'date', span: 5, onChange: (e, {value})=>onChange(e, {name:'ckztingj', value:common.countWeek(value)}) },
-            { name: 'ckztingj(周)[停 经]', type: 'input', span: 4 },
+            {
+              name: "ckzdate[早孕B超]",
+              type: "date",
+              span: 5,
+              onChange: (e, { value }) =>
+                onChange(e, {
+                  name: "ckztingj",
+                  value: common.countWeek(value)
+                })
+            },
+            { name: "ckztingj(周)[停 经]", type: "input", span: 4 }
           ]
         },
         // {
@@ -35,9 +59,16 @@ export default class extends Component {
         // { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required',options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
         {
           columns: [
-            { name: 'add_FIELD_shouyun[受孕方式]', type: 'checkinput-4',span: 14, valid: 'required',radio:true,options: baseData.syfsOptions },
+            {
+              name: "add_FIELD_shouyun[受孕方式]",
+              type: "checkinput-4",
+              span: 14,
+              valid: "required",
+              radio: true,
+              options: baseData.syfsOptions
+            }
           ]
-        },
+        }
         // {
         //   columns: [
         //     { name: 'ckyibzhzhtd(周)[胎动开始]', type: 'input', span: 5, valid: 'required,number' },

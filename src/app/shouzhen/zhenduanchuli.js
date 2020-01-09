@@ -44,7 +44,7 @@ export default class extends Component{
         }
       ],
       modalData: {},
-      treatTemp: [], 
+      treatTemp: [],
       regFormEntity: {...baseData.regFormEntity},
       isShowRegForm: false,
       openTemplate: false,
@@ -60,7 +60,7 @@ export default class extends Component{
     service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list }));
 
     service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
-    
+
     service.shouzhen.findTemplateTree(0).then(res => this.setState({templateTree1: res.object}));
 
     service.shouzhen.findTemplateTree(1).then(res => this.setState({templateTree2: res.object}));
@@ -78,7 +78,7 @@ export default class extends Component{
         },
         {
           columns:[
-            { 
+            {
               name: 'nextRvisit[下次复诊]',span: 15, type: [
                 {type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions, onclick: this.showRegForm.bind(this)},
                 {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
@@ -110,76 +110,76 @@ export default class extends Component{
             { name: 'rysq[入院日期]', type: 'date', valid: 'required', span: 6 },
           ]
         },
-        {   
+        {
           columns:[
             { name: 'tsbz[特殊备注]', type: 'textarea', span: 12, placeholder: "请输入备注" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'sfzwyzy[是否在我院住院]', type: 'checkinput', radio: true, span: 16, options: baseData.sfzyOptions }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'gj[国籍]', type: 'input', span: 6 },
             { name: 'jg[籍贯]', type: 'input', span: 6 },
             { name: 'mz[民族]', type: 'input', span: 6 }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'csd1[出生地]', type: 'select', span: 4, options: baseData.csd1Options },
             { name: 'csd2[]', type: 'select', span: 4, options: baseData.csd2Options },
             { name: 'hy[婚姻]', type: 'checkinput', radio: true, span: 12, options: baseData.hyOptions }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'xzz[现住址]', type: 'input', span: 12, placeholder: "请输入" },
             { name: 'yb1[邮编]', type: 'input', span: 6, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'xzz[身份证地址]', type: 'input', span: 12, placeholder: "请输入" },
             { name: 'yb2[邮编]', type: 'input', span: 6, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'sfzhm[身份证号码(ID)]', type: 'input', span: 12 },
             { name: 'ly[来源]', type: 'checkinput', radio: true, span: 12, options: baseData.lyOptions }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'zy[职业]', type: 'checkinput', radio: true, span: 24, options: baseData.zyOptions }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'gzdwjdz[工作单位及地址]', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'dwyb[单位邮编]', type: 'input', span: 12, placeholder: "请输入" },
             { name: 'dwlxdh[单位联系电话]', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'lxrxm[联系人姓名]', type: 'input', span: 12, placeholder: "请输入" },
             { name: 'lxrdh[联系人电话]', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'lxrdz[联系人地址]', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'gx[联系人与患者关系]', type: 'checkinput', radio: true, span: 24, options: baseData.gxOptions }
           ]
@@ -247,7 +247,7 @@ export default class extends Component{
   }
 
   renderZD(){
-    const {info={}} = this.props;
+    const { info = {} } = this.props;
     const { diagnosi, diagnosis, diagnosislist, isMouseIn, isShowZhenduan } = this.state;
     const delConfirm = (item) => {
       Modal.confirm({
@@ -318,8 +318,9 @@ export default class extends Component{
 
     let yunc = ''
     let chanc = ''
-    let ycarray = info.tuseryunchan?info.tuseryunchan.split("/"):'';
-    if(ycarray.length>1){
+    let ycarray = info.tuseryunchan ? info.tuseryunchan.split("/") : '';
+    // console.log("777777777777777", info, ycarray);
+    if(ycarray.length > 1){
       yunc = ycarray[0];
       chanc = ycarray[1];
     }
@@ -365,12 +366,12 @@ export default class extends Component{
               {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
             </Select> */}
 
-            <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)} 
-                 onFocus={() => this.setState({isShowZhenduan: true})} 
-                 onBlur={() => this.setState({isShowZhenduan: false})} 
+            <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
+                 onFocus={() => this.setState({isShowZhenduan: true})}
+                 onBlur={() => this.setState({isShowZhenduan: false})}
                  />
             { isShowZhenduan || isMouseIn ?
-            <div className="shouzhen-list" onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}> 
+            <div className="shouzhen-list" onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}>
               <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
                 <Tabs.TabPane tab="全部" key="1">
                   {diagnosislist['all'].map((item, i) => <p className="shouzhen-left-item" key={i} onClick={() => setIptVal(item.name)}>{item.name}</p>)}
@@ -424,7 +425,7 @@ export default class extends Component{
     return (openYy ?
       <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
               visible={openYy} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
-        <span>{modalData.title}: </span>    
+        <span>{modalData.title}: </span>
         <Select defaultValue={modalData.options[0]} style={{ width: 120 }}>
           {modalData.options.map((item) => (
             <Option value={item}>{item}</Option>
@@ -570,7 +571,7 @@ export default class extends Component{
       <Modal width="80%" title="入院登记表" footer={null} className="reg-form"
         visible={isShowRegForm} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
         {formRender(regFormEntity, this.regFormConfig(), handleChange)}
-        <div style={{overflow: 'hidden'}}> 
+        <div style={{overflow: 'hidden'}}>
           <Button className="pull-right blue-btn" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
           <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={() => handleSave(document.querySelector('.reg-form'))}>保存</Button>
         </div>

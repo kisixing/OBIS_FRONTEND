@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button, message, Table, Modal, Spin, Tree } from 'antd';
+import { Button, Table } from 'antd';
 
 import {events, types, editors, valid as validFn} from './common';
 
@@ -118,38 +118,61 @@ class MTable extends Component{
 
   render(){
     const {selected} = this.state;
-    const { buttons, ...props } = this.props;
+    const { buttons, buttonSize = "default", ...props } = this.props;
     return (
       <div>
-        {buttons ? <Button.Group>
-          {buttons.map((btn,i)=><Button key={`btn-${i}`} size="small" onClick={()=>btn.fn(selected)}>{btn.title}</Button>)}
-        </Button.Group> : null}
-        <Table {...props} onRowClick={row=>this.onRowClick(row)} rowClassName={row=>this.rowClassName(row)} />
+        {buttons ? (
+          <Button.Group style={{ marginBottom: "5px" }}>
+            {buttons.map((btn, i) => (
+              <Button
+                key={`btn-${i}`}
+                size={buttonSize}
+                onClick={() => btn.fn(selected)}
+              >
+                {btn.title}
+              </Button>
+            ))}
+          </Button.Group>
+        ) : null}
+        <Table
+          {...props}
+          onRowClick={row => this.onRowClick(row)}
+          rowClassName={row => this.rowClassName(row)}
+        />
       </div>
-    )
+    );
   }
 }
 
-function getheades(columns, level = 0){
-  const nextColumns = Array.prototype.concat.apply([], columns.map(k=>k.children||[k]));
-  const childrenCount = column =>{
+function getheades(columns, level = 0) {
+  const nextColumns = Array.prototype.concat.apply([], columns.map(k => k.children || [k]));
+  const childrenCount = column => {
     if(column.children){
-      return column.children.map(cl=>childrenCount(cl)).reduce((p,c)=>p+c);
+      return column.children.map(cl => childrenCount(cl)).reduce((p,c) => p + c);
     }
     return 1;
   }
-  columns.forEach(column=>{
+  columns.forEach(column => {
     column.level = column.level !== undefined ? column.level : level;
     column.span = childrenCount(column);
   });
-  if(columns.filter(i=>i.children && i.children.length).length){
-    return [columns, ...getheades(nextColumns, level+1)]
+  if (columns.filter(i => i.children && i.children.length).length) {
+    return [columns, ...getheades(nextColumns, level + 1)]
   }
-  return [columns]
+  return [columns];
 }
 
-export default function(keys, data, {onChange = ()=>{}, onRowChange, className, editable, ...props}){
-  const dataSource = data ? data.filter(i=>i&&typeof i === 'object') : [];
+export default function(
+  keys,
+  data,
+  {
+    onChange = () => {},
+    onRowChange,
+    className,
+    editable,
+    ...props
+  }) {
+  const dataSource = data ? data.filter(i => i && typeof i === 'object') : [];
   const rows = getheades(keys);
   const columns = rows[rows.length-1].map(({key, title, width, holdeditor, ...rest}, column)=>{
     return {
@@ -179,7 +202,19 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
             }
           }
         }
-        return <TableItem {...props} {...rest} row={row-rows.length} entity={item} name={key} editable={editable} value={value} isEditor={holdeditor || item.$type===dateType.CREATE} onChange={handleChange}/>
+        return (
+          <TableItem
+            {...props}
+            {...rest}
+            row={row-rows.length}
+            entity={item}
+            name={key}
+            editable={editable}
+            value={value}
+            isEditor={holdeditor || item.$type===dateType.CREATE}
+            onChange={handleChange}
+          />
+        );
       }
     }
   });
@@ -188,8 +223,19 @@ export default function(keys, data, {onChange = ()=>{}, onRowChange, className, 
     buttons: [{title:'添加',fn:()=>onRowChange('create', {$type:dateType.CREATE})},{title:'删除',fn:item=>onRowChange('delete', item)}]
   }
   return (
-    <MTable loading={!data} {...extendProps}  {...events(props)} className={`table-render ${className}`} size="small" bordered={true} dataSource={Array(rows.length).fill({$head:true}).concat(dataSource)} showHeader={false} columns={columns} head={rows}/>
+    <MTable
+      {...extendProps}
+      {...events(props)}
+      loading={!data}
+      className={`table-render ${className}`}
+      size="small"
+      bordered={true}
+      dataSource={Array(rows.length)
+        .fill({ $head: true })
+        .concat(dataSource)}
+      showHeader={false}
+      columns={columns}
+      head={rows}
+    />
   );
 }
-
-

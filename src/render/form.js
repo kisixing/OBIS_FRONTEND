@@ -33,7 +33,7 @@ function getValueFn(fn, ...args){
   }
 }
 
-function render(type, {value, ...props}) {
+function render(type, { value, ...props }) {
   const editor = editors[type] || editors[type.replace(/(-.*)?$/, '$x')] || type;
   if (typeof editor === 'function') {
     return editor({...props, value: value?JSON.parse(JSON.stringify(value)):value}, /-(.*)$/.test(type) && /-(.*)$/.exec(type)[1], FormItem, AddResize);
@@ -228,15 +228,33 @@ class FormItem extends Component {
     //         (label.length == 2 ?`${label.substr(0,1)}&nbsp;&nbsp;&nbsp;&nbsp;${label.substr(1,1)}` :`${label.substr(0,1)}&nbsp;${label.substr(1,1)}&nbsp;${label.substr(2,1)||''}`);
     label = type == '**' ? label : !label ?label :label.replace(/@/g, '&nbsp;&nbsp;')
     return (
-      <div ref="formItem" className={`form-item ${name} ${error && /\*/.test(error) ? 'form-error' : `${error && 'form-warn' || ''} ${!validFn('required', value) && 'is-not-empty' || ''}`}`}>
-        {label ? <div ref="formItemlabel" className="form-label">
-          {icon ? <i className={`anticon anticon-${icon}`}>&nbsp;</i> : null}
-          {/required/.test(valid) ? <span className="colorRed">*</span> : null}
-          <span dangerouslySetInnerHTML={{__html: label}}></span><span>:&nbsp;</span>
-        </div> : null}
+      <div
+        ref="formItem"
+        className={`form-item ${name} ${
+          error && /\*/.test(error)
+            ? "form-error"
+            : `${(error && "form-warn") || ""} ${(!validFn("required", value) &&
+                "is-not-empty") ||
+                ""}`
+        }`}
+      >
+        {label ? (
+          <div ref="formItemlabel" className="form-label">
+            {icon ? <i className={`anticon anticon-${icon}`}>&nbsp;</i> : null}
+            {/required/.test(valid) ? (
+              <span className="colorRed">*</span>
+            ) : null}
+            <span dangerouslySetInnerHTML={{ __html: label }}></span>
+            <span>:&nbsp;</span>
+          </div>
+        ) : null}
         <div className="form-content">
           <div ref="formItemEditor">{this.renderEditor()}</div>
-          {unit ? <div ref="formItemUnit" className="form-unit">{unit}</div> : null}
+          {unit ? (
+            <div ref="formItemUnit" className="form-unit">
+              {unit}
+            </div>
+          ) : null}
           {error ? <div className="form-message">{error}</div> : null}
         </div>
       </div>
