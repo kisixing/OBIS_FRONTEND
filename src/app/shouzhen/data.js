@@ -310,7 +310,7 @@ export const pregnanciesColumns = [
 	{
 		title: '孕次',
 		key: 'index',
-		width: '50',
+		width: '60',
 		format: (v,{row})=>row+1
 	},
 	{
@@ -360,7 +360,8 @@ export const pregnanciesColumns = [
 	{
 		title: '足月产',
 		key: 'zuych',
-		type: 'input'
+		type: 'checkbox',
+		holdeditor: true
 	},
 	{
 		title: '分娩方式',
@@ -479,3 +480,53 @@ export const lisiColumns = [
 		key: 'field',
 	}
 ]
+
+export const initYCData = {
+  "abortion": "",
+  "addField": null,
+  "addFlag": null,
+  "bingfzh": "",
+  "chanrure": "",
+  "child": "",
+  "chuxue": "",
+  "datagridYearMonth": "本孕",
+  "deathCause": "",
+  "deathTime": "",
+  "fenm": "",
+  "gesweek": null,
+  "hospital": null,
+  "id": null,
+  "isdeleted": "",
+  "jianz": "",
+  "jix": "",
+  "others": "",
+  "pougch": "",
+  "pregdatem": "",
+  "pregdatey": "",
+  "pregnum": "",
+  "putt": "",
+  "qianch": "",
+  "removalUterus": null,
+  "reng": "",
+  "sequela": "",
+  "shouShuChanType": "",
+  "shunch": "",
+  "sich": "",
+  "sit": false,
+  "siw": "",
+  "subsistence": "",
+  "tizh": "",
+  "tunzhch": "",
+  "unhealth": "",
+  "userid": null,
+  "xingb": "",
+  "xinseother": "",
+  "xiych": "",
+  "xsrqk": "",
+  "yaol": "",
+  "yinch": "",
+  "yiwrsh": "",
+  "zaoch": "",
+  "zir": "",
+  "zuych": "",  
+};

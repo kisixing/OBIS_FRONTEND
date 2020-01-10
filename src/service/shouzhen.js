@@ -117,10 +117,4 @@ export default {
         let data = {"type": num, "templateTree": params};
         return this.userId().then(r => myAxios.put('/templatetree/saveTemplateTreeUser', {userid: r.object.userid, ...data}));
     },
-    /**
-     * 获取所有表单数据
-     */
-    getAllForm: function(){
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/ivisitMain?style=gravidaInfo&userid=${r.object.userid}`));
-    }
 };

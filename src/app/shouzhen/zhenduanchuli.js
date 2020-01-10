@@ -51,8 +51,6 @@ export default class extends Component{
       ...store.getState(),
       templateTree1: [],
       templateTree2: [],
-      bmiData: '',
-      formData: '',
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -62,9 +60,6 @@ export default class extends Component{
   };
 
   componentDidMount(){
-    service.shouzhen.getAllForm().then(res => this.setState({ formData: res.object }));
-
-    service.fuzhen.getbmi().then(res => this.setState({ bmiData: res.object }));
 
     service.fuzhen.treatTemp().then(res => this.setState({ treatTemp: res.object }));
 
@@ -453,15 +448,15 @@ export default class extends Component{
    * 孕期用药筛查表
    */
   renderPharModal() {
-    const { diagnosis, bmiData, templateTree1, templateTree2, isShowPharModal } = this.state;
-    const { info } = this.props;
+    const { diagnosis, bmiData, formData, templateTree1, templateTree2, isShowPharModal } = this.state;
+    const { entity } = this.props;
+    console.log(entity, '567')
     // let bmiKey="";
     // let ageKey="";
     //  timesKey, smokeKey, qzKey, qqKey, rsKey;
     let newTemplateTree1 = templateTree1;
     let newTemplateTree2 = templateTree2;
     const checkedKeys1 = [];
-
     
     // templateTree1&&templateTree1.map(item => {
     //   if(item.name === "肥胖（BMI>30kg/m  )") bmiKey = item.id;
@@ -483,10 +478,13 @@ export default class extends Component{
     if(info&&info.tuseryunchan) {
       info.tuseryunchan.split('/')[1]>=3 ? checkedKeys1.push('8') : null;
     }
+    if(formData&&JSON.parse(formData.biography.add_FIELD_grxiyan)[0].label==="有") {
+      checkedKeys1.push('9');
+    }
 
     diagnosis&&diagnosis.map(item => {
       if(item.data === "血栓") {
-        checkedKeys1.push('15')
+        checkedKeys1.push('14')
       }
       if(item.data === "静脉曲张") {
         checkedKeys1.push('11')
@@ -495,7 +493,7 @@ export default class extends Component{
         checkedKeys1.push('10')
       }
       if(item.data === "多胎妊娠") {
-        checkedKeys1.push('15')
+        checkedKeys1.push('14')
       }
     })
 
@@ -503,6 +501,11 @@ export default class extends Component{
     //   const action = showPharAction(true);
     //   store.dispatch(action);
     // }
+
+    const show = () => {
+      const action = showPharAction(true);
+      store.dispatch(action);
+    }
     
     const closeModal = (bool) => {
       const action = showPharAction(false);
@@ -546,7 +549,7 @@ export default class extends Component{
     console.log(checkedKeys1, 'pp')
 
     return (
-      bmiData&&diagnosis ?
+      checkedKeys1 ?
       <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowPharModal} width={800} className="phar-modal"
             onCancel={() => closeModal()} onOk={() => closeModal(true)}>
         <Row>
@@ -663,7 +666,7 @@ export default class extends Component{
         {this.renderTreatment()}
         {this.renderModal()}
         {this.showRegForm()}
-        {this.renderPharModal()}
+        {/* {this.renderPharModal()} */}
       </div>
     )
   }

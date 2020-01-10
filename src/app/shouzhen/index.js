@@ -18,6 +18,7 @@ import Tgjc from './tigejiancha';
 import Zkjc from './zhuankejiancha';
 import Zdcl from './zhenduanchuli';
 
+import * as baseData from './data';
 import editors from './editors';
 import "./index.less";
 
@@ -91,6 +92,7 @@ export default class Patient extends Component {
                     tab.entity = [];
                     // preghiss
                     tab.entity['preghiss'] = (res.object.gestation.preghiss!=null)?res.object.gestation.preghiss:[];
+                    tab.entity['preghiss'].push(baseData.initYCData);
                     // tab.entity['preghis'] ={"preghis": [{
                     //     "id":1,
                     //     "checkdate": "2019-02",
@@ -304,6 +306,7 @@ export default class Patient extends Component {
                         });
                     }
                     else{
+                        tab.entity.preghiss.pop();
                         service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
                             message.success('信息保存成功',3);
                             this.activeTab(key || next.key);
@@ -346,7 +349,7 @@ export default class Patient extends Component {
                     ))}
                 </Tabs>
                 <Row><Col span={21}/><Col>
-                    <Button icon="save" type="primary" onClick={() => setTimeout(()=>{this.handleSave()},100) }>{step !== tabs[tabs.length - 1].key ? '下一页' : '保存'}</Button>
+                    <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(()=>{this.handleSave()},100) }>{step !== tabs[tabs.length - 1].key ? '下一页' : '保存'}</Button>
                 </Col></Row>
             </Page>
         )
