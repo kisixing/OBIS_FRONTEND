@@ -52,7 +52,8 @@ export function GetWeek(expected, today) {
   return yunzh
 };
 
-export function getBMI(weight,height){
+export function getBMI(weight, height) {
+  console.log("7777777777", weight, height);
   if(!weight || !height){
     return '';
   }

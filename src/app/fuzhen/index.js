@@ -95,7 +95,7 @@ export default class Patient extends Component {
     })])
 
       .then(() => this.setState({ loading: false }));
-    
+
     service.fuzhen.getRvisitPage(this.state.pageCurrent).then(res => {
       if (res.object.list && res.object.list.length > 2) this.setState({isShowMoreBtn: true})
     });
@@ -215,7 +215,7 @@ export default class Patient extends Component {
       return (
         <div>
           <p className="pad-small"><a className="font-16" onClick={handleHighriskmark}>{item.highriskmark == 1 ? '高危诊断 √' : '高危诊断'}</a></p>
-          {item.relatedformtype!=="" ? 
+          {item.relatedformtype!=="" ?
             <div><p>关联表单</p>
               {relatedformtype.map(subItem => <p className="pad-small"><a className="font-16" onClick={handleRelated(subItem, item.data)}>
               {relatedObj[item.data]&&relatedObj[item.data].includes(subItem) ? `${subItem} √` : subItem} </a></p>)}
@@ -283,12 +283,12 @@ export default class Patient extends Component {
           ))}
         </ol>
         <div className="fuzhen-left-input font-16">
-          <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)} 
-                 onFocus={() => this.setState({isShowZhenduan: true})} 
-                 onBlur={() => this.setState({isShowZhenduan: false})} 
+          <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
+                 onFocus={() => this.setState({isShowZhenduan: true})}
+                 onBlur={() => this.setState({isShowZhenduan: false})}
                  />
           { isShowZhenduan || isMouseIn ?
-            <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}> 
+            <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}>
               <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
                 <Tabs.TabPane tab="全部" key="1">
                   {diagnosislist['all'].map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => setIptVal(item.name)}>{item.name}</p>)}
@@ -361,7 +361,7 @@ export default class Patient extends Component {
             //   <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
               this.renderZD()
             }
-            
+
           </Panel>
           <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={e => { e.stopPropagation();this.setState({isShowResultModal: true})} }>其他</Button></span>} key="2">
             <p className="pad-small">{jianyanReport || '无'}</p>
@@ -431,7 +431,7 @@ export default class Patient extends Component {
     return (
       <div className="fuzhen-table">
         {/* iseditable:({row})=>!!row, */}
-        {initTable(newRecentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable", 
+        {initTable(newRecentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable",
             onClick: true, scroll: { x: 1100, y: 220 }, iseditable:({row})=> row>recentRvisit.length-2, onRowChange: handleSaveChange })}
         {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
@@ -441,7 +441,7 @@ export default class Patient extends Component {
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
           </div>
         </Modal>
-        <div className="clearfix">   
+        <div className="clearfix">
           {isShowMoreBtn ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button> : <br />}
         </div>
       </div>
@@ -452,15 +452,25 @@ export default class Patient extends Component {
     const { loading, diagnosis, relatedObj, info, modalState, initData } = this.state;
 
     return (
-      <Page className='fuzhen font-16 ant-col'>
+      <Page className="fuzhen font-16 ant-col">
         <div className="bgDOM"></div>
         {this.renderLeft()}
-        <div className="fuzhen-right ant-col-19 main-pad-small">
+        <div className="fuzhen-right ant-col-19 pad-mid">
           {this.renderTable()}
-          <FuzhenForm info={info} initData={initData} diagnosis={diagnosis} relatedObj={relatedObj} modalState={modalState} onSave={data => this.saveForm(data)} onChangeInfo={this.onChangeInfo.bind(this)} />
-          <p className="pad_ie">&nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span></p>
+          <FuzhenForm
+            info={info}
+            initData={initData}
+            diagnosis={diagnosis}
+            relatedObj={relatedObj}
+            modalState={modalState}
+            onSave={data => this.saveForm(data)}
+            onChangeInfo={this.onChangeInfo.bind(this)}
+          />
+          <p className="pad_ie">
+            &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>
+          </p>
         </div>
       </Page>
-    )
+    );
   }
 }

@@ -49,12 +49,12 @@ export default class Patient extends Component {
 
     activeTab(step) {
         const { tabs } = this.state;
+
         const tab = tabs.filter(t => t.key === step).pop() || {};
         // if (!tab.init) {
             service.shouzhen.getForm(tab.key).then(res => {
-
                 // 如果想要使下面的数据转换放到对应的tab文件里面去，请实现entityParse这个方法，参考tab-0：yunfuxinxi.js这个文件
-                const entityParse = tab.entityParse || (i=>i);
+                const entityParse = tab.entityParse || (i => i);
                 tab.entity = entityParse(res.object);
 
                 tab.init = true;
@@ -77,8 +77,7 @@ export default class Patient extends Component {
                     tab.entity['bsshoushu'] = tab.entity.bsshoushu;
                     tab.entity['hobtabp'] = tab.entity.hobtabp;
                     tab.entity['operationHistory'] = (res.object.operationHistory.operationHistorys!=null)?res.object.operationHistory.operationHistorys:[];
-                }
-                else if (tab.key === 'tab-4') {
+                } else if (tab.key === 'tab-4') {
                     //tab.entity = res.object.menstruationMarriage
                     tab.entity = {...res.object.menstruationMarriage,...res.object.biography};
                     tab.entity['maritalHistory'] = JSON.parse(tab.entity.maritalHistory);
@@ -118,8 +117,8 @@ export default class Patient extends Component {
                     tab.entity = res.object.lis;
                     if(JSON.parse(tab.entity.ogtt)[0]['label'] === "GDM") {
                         const data = {"value": {
-                            "input0": tab.entity['add_FIELD_ogtt_gdm_empty'], 
-                            "input1": tab.entity['add_FIELD_ogtt_gdm_1h'], 
+                            "input0": tab.entity['add_FIELD_ogtt_gdm_empty'],
+                            "input1": tab.entity['add_FIELD_ogtt_gdm_1h'],
                             "input2": tab.entity['add_FIELD_ogtt_gdm_2h'],
                         }};
                         tab.entity['ogtt'] = [Object.assign(JSON.parse(tab.entity.ogtt)[0], data)];
@@ -141,41 +140,149 @@ export default class Patient extends Component {
                     // tab.entity['add_FIELD_hcvAb_RNA'] = JSON.parse(tab.entity.add_FIELD_hcvAb_RNA);
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-6') {
-                    tab.entity = res.object.checkUp
-                    tab.entity.ckpressure = (typeof tab.entity.ckpressure === 'object') ? tab.entity.ckpressure : [tab.entity.ckdiastolicpressure, tab.entity.ckshrinkpressure];
-                    tab.entity['vascularMurmur'] = (typeof tab.entity.vascularMurmur != 'object') ? JSON.parse(tab.entity.vascularMurmur):tab.entity.vascularMurmur;
-                    tab.entity['ckshenz'] = (typeof tab.entity.ckshenz != 'object') ?JSON.parse(tab.entity.ckshenz):tab.entity.ckshenz;
-                    tab.entity['ckrut'] = (typeof tab.entity.ckrut != 'object') ?JSON.parse(tab.entity.ckrut):tab.entity.ckrut;
-                    tab.entity['ckjiazhx'] = (typeof tab.entity.ckjiazhx != 'object') ?JSON.parse(tab.entity.ckjiazhx):tab.entity.ckjiazhx;
-                    tab.entity['ckpifu'] = (typeof tab.entity.ckpifu != 'object') ?JSON.parse(tab.entity.ckpifu):tab.entity.ckpifu;
-                    tab.entity['ckpiz'] = (typeof tab.entity.ckpiz != 'object') ?JSON.parse(tab.entity.ckpiz):tab.entity.ckpiz;
-                    tab.entity['ckfuzh'] = (typeof tab.entity.ckfuzh != 'object') ?JSON.parse(tab.entity.ckfuzh):tab.entity.ckfuzh;
-                    tab.entity['nervousReflex'] = (typeof tab.entity.nervousReflex != 'object') ? JSON.parse(tab.entity.nervousReflex):tab.entity.nervousReflex;
-                    //病历反射
-                    tab.entity['vascularMurmurOther'] = (typeof tab.entity.vascularMurmurOther != 'object') ? JSON.parse(tab.entity.vascularMurmurOther):tab.entity.vascularMurmurOther;
-                    tab.entity['murmurs'] =  (typeof tab.entity.murmurs != 'object') ?JSON.parse(tab.entity.murmurs):tab.entity.murmurs;
-                    tab.entity['ckganz'] = (typeof tab.entity.ckganz != 'object') ?JSON.parse(tab.entity.ckganz):tab.entity.ckganz;
-                    tab.entity['heart'] = (typeof tab.entity.heart != 'object')?JSON.parse(tab.entity.heart):tab.entity.heart;
-                    tab.entity['ckjizh'] = (typeof tab.entity.ckjizh != 'object') ?JSON.parse(tab.entity.ckjizh):tab.entity.ckjizh;
-                    tab.entity['breathSounds'] = (typeof tab.entity.breathSounds != 'object') ?JSON.parse(tab.entity.breathSounds):tab.entity.breathSounds;
-                    }
-                else if(tab.key === 'tab-7'){
+                  tab.entity = res.object.checkUp;
+                  // 初始化BMI数值
+                  tab.entity["ckbmi"] = common.getBMI(
+                    tab.entity["cktizh"],
+                    tab.entity["cksheng"]
+                  );
+                  tab.entity.ckpressure =
+                    typeof tab.entity
+                      .ckpressure === "object"
+                      ? tab.entity.ckpressure
+                      : [
+                          tab.entity
+                            .ckdiastolicpressure,
+                          tab.entity
+                            .ckshrinkpressure
+                        ];
+                  tab.entity["vascularMurmur"] =
+                    typeof tab.entity
+                      .vascularMurmur !=
+                    "object"
+                      ? JSON.parse(
+                          tab.entity
+                            .vascularMurmur
+                        )
+                      : tab.entity
+                          .vascularMurmur;
+                  tab.entity["ckshenz"] =
+                    typeof tab.entity.ckshenz !=
+                    "object"
+                      ? JSON.parse(
+                          tab.entity.ckshenz
+                        )
+                      : tab.entity.ckshenz;
+                  tab.entity["ckrut"] =
+                    typeof tab.entity.ckrut !=
+                    "object"
+                      ? JSON.parse(
+                          tab.entity.ckrut
+                        )
+                      : tab.entity.ckrut;
+                  tab.entity["ckjiazhx"] =
+                    typeof tab.entity
+                      .ckjiazhx != "object"
+                      ? JSON.parse(
+                          tab.entity.ckjiazhx
+                        )
+                      : tab.entity.ckjiazhx;
+                  tab.entity["ckpifu"] =
+                    typeof tab.entity.ckpifu !=
+                    "object"
+                      ? JSON.parse(
+                          tab.entity.ckpifu
+                        )
+                      : tab.entity.ckpifu;
+                  tab.entity["ckpiz"] =
+                    typeof tab.entity.ckpiz !=
+                    "object"
+                      ? JSON.parse(
+                          tab.entity.ckpiz
+                        )
+                      : tab.entity.ckpiz;
+                  tab.entity["ckfuzh"] =
+                    typeof tab.entity.ckfuzh !=
+                    "object"
+                      ? JSON.parse(
+                          tab.entity.ckfuzh
+                        )
+                      : tab.entity.ckfuzh;
+                  tab.entity["nervousReflex"] =
+                    typeof tab.entity
+                      .nervousReflex != "object"
+                      ? JSON.parse(
+                          tab.entity
+                            .nervousReflex
+                        )
+                      : tab.entity
+                          .nervousReflex;
+                  //病历反射
+                  tab.entity[
+                    "vascularMurmurOther"
+                  ] =
+                    typeof tab.entity
+                      .vascularMurmurOther !=
+                    "object"
+                      ? JSON.parse(
+                          tab.entity
+                            .vascularMurmurOther
+                        )
+                      : tab.entity
+                          .vascularMurmurOther;
+                  tab.entity["murmurs"] =
+                    typeof tab.entity.murmurs !=
+                    "object"
+                      ? JSON.parse(
+                          tab.entity.murmurs
+                        )
+                      : tab.entity.murmurs;
+                  tab.entity["ckganz"] =
+                    typeof tab.entity.ckganz !=
+                    "object"
+                      ? JSON.parse(
+                          tab.entity.ckganz
+                        )
+                      : tab.entity.ckganz;
+                  tab.entity["heart"] =
+                    typeof tab.entity.heart !=
+                    "object"
+                      ? JSON.parse(
+                          tab.entity.heart
+                        )
+                      : tab.entity.heart;
+                  tab.entity["ckjizh"] =
+                    typeof tab.entity.ckjizh !=
+                    "object"
+                      ? JSON.parse(
+                          tab.entity.ckjizh
+                        )
+                      : tab.entity.ckjizh;
+                  tab.entity["breathSounds"] =
+                    typeof tab.entity
+                      .breathSounds != "object"
+                      ? JSON.parse(
+                          tab.entity
+                            .breathSounds
+                        )
+                      : tab.entity.breathSounds;
+                } else if (tab.key === 'tab-7') {
+                  console.log('4444444444444444')
                     tab.entity = res.object.specialityCheckUp
                     let ckjc = tab.entity.add_FIELD_ckjc;
                     if(tab.entity.add_FIELD_ckjc === null){
                         ckjc = '';
                     }
                     tab.entity['add_FIELD_ckjc'] = (ckjc !== '' && typeof ckjc !== 'object') ? JSON.parse(ckjc) : ckjc;
-                }
-                else {
+                } else {
                     tab.entity = res.object;
                 }
 
                 service.praseJSON(tab.entity);
                 console.log(tab.key, tab.entity);
                 this.setState({ step }, () => {
-                    const form = document.querySelector('.shouzhen');
-                    fireForm(form, 'valid');
+                  const form = document.querySelector(".shouzhen");
+                  fireForm(form, "valid");
                 });
             }).catch(e => { // TODO: 仅仅在mock时候用
                 tab.init = true;
@@ -212,6 +319,7 @@ export default class Patient extends Component {
             //     entity['pupttm'] = common.GetWeek(value,entity['dopupt']);
             //     entity['ckztingj'] = common.GetWeek(value,entity['ckzdate']);
             //     break;
+            // 孕前体重
             case 'cktizh':
                 entity['ckbmi'] = common.getBMI(entity['cktizh'],entity['cksheng']);
                 break;
