@@ -203,7 +203,7 @@ export default class App extends Component {
 
     const initTree = (arr) => arr.map(node => (
       <Tree.TreeNode key={node.id} title={node.name} className="modal-title">
-        {node.childnode&&node.childnode.child.map(item => (
+        {node&&node.child.map(item => (
           <Tree.TreeNode key={item.id} title={item.name} ></Tree.TreeNode>
         ))}
       </Tree.TreeNode>

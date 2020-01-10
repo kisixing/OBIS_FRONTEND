@@ -13,7 +13,8 @@ export default class extends Component{
     return {
       step: 1,
       rows: [
-        {name:'preghiss', type:'table', valid: 'required',pagination: false,editable:true,options:baseData.pregnanciesColumns},
+        {name:'preghiss', type:'table', valid: 'required',pagination: false, editable:true, 
+         iseditable:({entity})=> entity.datagridYearMonth !== '本孕', options:baseData.pregnanciesColumns},
       ]
     };
   }

@@ -417,6 +417,7 @@ export default class Patient extends Component {
                         tab.entity.preghiss.pop();
                         service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
                             message.success('信息保存成功',3);
+                            tab.entity.preghiss.push(baseData.initYCData);
                             this.activeTab(key || next.key);
                             return;
                         }, () => { // TODO: 仅仅在mock时候用

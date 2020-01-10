@@ -280,16 +280,16 @@ export const gwwjjOptions = toOptions('未做检查');
  * 手术史表头
  */
 export const shoushushiColumns = [
-  {
-		title: '手术名称',
-		key: 'name',
-		type: 'input'
-	},
 	{
 		title: '手术日期',
 		key: 'date',
 		type: 'input',
 		// mode:"ym"
+	},
+  {
+		title: '手术名称',
+		key: 'name',
+		type: 'input'
 	},
 	{
 		title: '手术医院',
