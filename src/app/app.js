@@ -18,6 +18,7 @@ import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
 import Fuzhen from "bundle-loader?lazy&name=fuzhen!./fuzhen";
 import Yingxiang from "bundle-loader?lazy&name=yingxiang!./yingxiang";
 import Jianyan from "bundle-loader?lazy&name=jianyan!./jianyan";
+import Yunqi from "bundle-loader?lazy&name=yunqi!./yunqi";
 
 import "./app.less";
 
@@ -26,7 +27,7 @@ const ButtonGroup = Button.Group;
 const routers = [
   { name: "首检信息", path: "/sz", component: bundle(Shouzhen) },
   { name: "复诊记录", path: "/fz", component: bundle(Fuzhen) },
-  { name: "孕期曲线", path: "/yq", component: null },
+  { name: "孕期曲线", path: "/yq", component: bundle(Yunqi) },
   { name: "血糖记录", path: "/xt", component: null },
   { name: "影像报告", path: "/yx", component: bundle(Yingxiang) },
   { name: "检验报告", path: "/jy", component: bundle(Jianyan) },

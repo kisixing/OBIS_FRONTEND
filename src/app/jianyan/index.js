@@ -121,7 +121,11 @@ export default class Patient extends Component {
         <div className="right-wrapper">
           <div className="right-title">
             <p><span className="right-words">NT报告 </span>检验报告单</p>
-            <Button className="right-btn" type="primary" size="small" onClick={() => this.setState({isShowModal: true})}>审阅</Button>
+            {
+              !isShowModal ?
+              <Button className="right-btn" type="primary" size="small" onClick={() => this.setState({isShowModal: true})}>审阅</Button>
+              : null
+            }
           </div>
           <ul className="right-msg">
             <li className="msg-item">检验单号 8346833</li>
