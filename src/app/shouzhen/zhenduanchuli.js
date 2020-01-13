@@ -51,6 +51,7 @@ export default class extends Component{
       ...store.getState(),
       templateTree1: [],
       templateTree2: [],
+      checkedKeys: [],
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -70,6 +71,10 @@ export default class extends Component{
     service.shouzhen.findTemplateTree(0).then(res => this.setState({templateTree1: res.object}));
 
     service.shouzhen.findTemplateTree(1).then(res => this.setState({templateTree2: res.object}));
+
+    service.shouzhen.getAllForm().then(res => {
+      this.setCheckedKeys(res.object);
+    });
   }
 
   config(){
@@ -444,69 +449,49 @@ export default class extends Component{
     );
   }
 
-  /**
-   * 孕期用药筛查表
-   */
-  renderPharModal() {
-    const { diagnosis, bmiData, formData, templateTree1, templateTree2, isShowPharModal } = this.state;
-    const { entity } = this.props;
-    console.log(entity, '567')
-    // let bmiKey="";
-    // let ageKey="";
-    //  timesKey, smokeKey, qzKey, qqKey, rsKey;
-    let newTemplateTree1 = templateTree1;
-    let newTemplateTree2 = templateTree2;
-    const checkedKeys1 = [];
-    
-    // templateTree1&&templateTree1.map(item => {
-    //   if(item.name === "肥胖（BMI>30kg/m  )") bmiKey = item.id;
-    //   if(item.name === "年龄>35岁") ageKey = item.id;
-    //   if(item.name === "产次≥3") timesKey = item.id;
-    //   if(item.name === "吸烟") smokeKey = item.id;
-    //   if(item.name === "静脉曲张") qzKey = item.id;
-    //   if(item.name === "本次妊娠子痫前期") qqKey = item.id;
-    //   if(item.name === "多胎妊娠") rsKey = item.id;
-    // })
-    
-
-    if(bmiData&&bmiData.bmi>30) {
-      checkedKeys1.push('6');
-    }
-    if(info&&info.userage>35) {
-      checkedKeys1.push('7');
-    }
-    if(info&&info.tuseryunchan) {
-      info.tuseryunchan.split('/')[1]>=3 ? checkedKeys1.push('8') : null;
-    }
-    if(formData&&JSON.parse(formData.biography.add_FIELD_grxiyan)[0].label==="有") {
-      checkedKeys1.push('9');
-    }
-
-    diagnosis&&diagnosis.map(item => {
-      if(item.data === "血栓") {
-        checkedKeys1.push('14')
-      }
-      if(item.data === "静脉曲张") {
-        checkedKeys1.push('11')
-      }
-      if(item.data === "妊娠子痫前期") {
-        checkedKeys1.push('10')
-      }
-      if(item.data === "多胎妊娠") {
-        checkedKeys1.push('14')
-      }
-    })
-
-    // if(checkedKeys1.length>0) {
-    //   const action = showPharAction(true);
-    //   store.dispatch(action);
-    // }
+  setCheckedKeys(params) {
+    const { checkedKeys, templateTree1 } = this.state;
+    const bmi = params.checkUp.ckbmi; 
+    const age = params.gravidaInfo.userage; 
+    const preghiss = params.gestation.preghiss.length;  
+    const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);  
+    const diagnosisList = params.diagnosisList; 
 
     const show = () => {
       const action = showPharAction(true);
       store.dispatch(action);
     }
-    
+
+    const getKey = (val) => {
+      let ID = '';
+      templateTree1&&templateTree1.map(item => {
+        if(item.name === val) ID = item.id;
+      })
+      return ID.toString();
+    }
+
+    if(bmi>30) checkedKeys.push(getKey("肥胖（BMI>30kg/m  )"));
+    if(age>35) checkedKeys.push(getKey("年龄>35岁"));
+    if(preghiss>=3) checkedKeys.push(getKey("产次≥3"));
+    if(xiyan[0].label==="有") checkedKeys.push(getKey("吸烟"));
+
+    diagnosisList.map(item => {
+      if(item.data === "血栓") show();
+      if(item.data === "静脉曲张") checkedKeys.push(getKey("静脉曲张"));
+      if(item.data === "妊娠子痫前期") checkedKeys.push(getKey("本次妊娠子痫前期"));
+      if(item.data === "多胎妊娠") checkedKeys.push(getKey("多胎妊娠"));
+    })
+    if(checkedKeys.length>0) show();
+  }
+
+  /**
+   * 孕期用药筛查表
+   */
+  renderPharModal() {
+    const { checkedKeys, templateTree1, templateTree2, isShowPharModal } = this.state;
+    let newTemplateTree1 = templateTree1;
+    let newTemplateTree2 = templateTree2;
+ 
     const closeModal = (bool) => {
       const action = showPharAction(false);
       store.dispatch(action);
@@ -546,26 +531,24 @@ export default class extends Component{
     const treeNodes1 = initTree(newTemplateTree1);
     const treeNodes2 = initTree(newTemplateTree2);
 
-    console.log(checkedKeys1, 'pp')
+    console.log(checkedKeys, 'pp')
 
     return (
-      checkedKeys1 ?
       <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowPharModal} width={800} className="phar-modal"
             onCancel={() => closeModal()} onOk={() => closeModal(true)}>
         <Row>
           <Col span={12}>
             <div className="title">高危因素</div>
-            <Tree checkable defaultCheckedKeys={checkedKeys1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
+            <Tree checkable defaultCheckedKeys={checkedKeys} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
             <p>建议用药：克赛0.4ml 皮下注射qd</p>
           </Col>
           <Col span={1}></Col>
           <Col span={11}>
             <div className="title">预防用药指导</div>
-            <Tree checkable onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes2}</Tree>
+            <Tree className="phar-right" checkable onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes2}</Tree>
           </Col>
         </Row>
       </Modal>
-      : null
     )
   }
 
@@ -666,7 +649,7 @@ export default class extends Component{
         {this.renderTreatment()}
         {this.renderModal()}
         {this.showRegForm()}
-        {/* {this.renderPharModal()} */}
+        {this.renderPharModal()}
       </div>
     )
   }
