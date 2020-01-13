@@ -346,6 +346,13 @@ export default class Patient extends Component {
             case 'add_FIELD_jzgaoxueya': case 'add_FIELD_jztangniaobing': case 'add_FIELD_jzjixing': case 'add_FIELD_jzyichuanbing': case 'add_FIELD_jzqita':
                 target==="有-checkbox" ? entity['noneChecked3'] = [{"label": "", "value": ""}] : null;
                 break;
+            case 'preghiss':
+                var data = value.slice(-1);
+                if(data[0]['$type'] === 'CREATE') {
+                    var item = entity['preghiss'].pop();
+                    entity['preghiss'].splice(-1, 0, item);
+                }
+            break;
         }
         this.change = true;
 

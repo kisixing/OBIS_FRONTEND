@@ -531,8 +531,6 @@ export default class extends Component{
     const treeNodes1 = initTree(newTemplateTree1);
     const treeNodes2 = initTree(newTemplateTree2);
 
-    console.log(checkedKeys, 'pp')
-
     return (
       <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowPharModal} width={800} className="phar-modal"
             onCancel={() => closeModal()} onOk={() => closeModal(true)}>
