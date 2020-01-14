@@ -127,7 +127,6 @@ export default {
      * 首诊页面打印
      */
     printPdfByFile: function(){
-        return this.userId().then(r => myAxios.post('/print/printPdfByFile?userid=25139&modelType=ivisit'));
-        // return this.userId().then(r => myAxios.post('/print/printPdfByFile', {userid: r.object.userid, modelType: 'ivisit'}));
+        return this.userId().then(r => myAxios.get(`/print/printPdfByFileRestful?userid=${r.object.userid}&modelType=ivisit`));
     },
 };

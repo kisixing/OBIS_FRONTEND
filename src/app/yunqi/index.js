@@ -10,6 +10,7 @@ export default class Patient extends Component {
   }
 
   componentDidMount() {
+    drawgrid('canvas');
 
     const canvas = this.refs.canvas;
     const context = canvas.getContext("2d");
@@ -20,6 +21,9 @@ export default class Patient extends Component {
       <Page className="yunqi font-16 ant-col">
         <Row>
           <Col span={8}>
+          <canvas id="canvas" width="700" height="600" style={{border: "1px solid gray"}}>
+              您的浏览器不支持canvas，请更换浏览器.
+            </canvas>
             <canvas ref="canvas" width="700" height="600" style={{border: "1px solid gray"}}>
               您的浏览器不支持canvas，请更换浏览器.
             </canvas>

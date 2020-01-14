@@ -19,6 +19,7 @@ import Fuzhen from "bundle-loader?lazy&name=fuzhen!./fuzhen";
 import Yingxiang from "bundle-loader?lazy&name=yingxiang!./yingxiang";
 import Jianyan from "bundle-loader?lazy&name=jianyan!./jianyan";
 import Yunqi from "bundle-loader?lazy&name=yunqi!./yunqi";
+import Xuetang from "bundle-loader?lazy&name=xuetang!./xuetang";
 
 import "./app.less";
 
@@ -28,7 +29,7 @@ const routers = [
   { name: "首检信息", path: "/sz", component: bundle(Shouzhen) },
   { name: "复诊记录", path: "/fz", component: bundle(Fuzhen) },
   { name: "孕期曲线", path: "/yq", component: bundle(Yunqi) },
-  { name: "血糖记录", path: "/xt", component: null },
+  { name: "血糖记录", path: "/xt", component: bundle(Xuetang) },
   { name: "影像报告", path: "/yx", component: bundle(Yingxiang) },
   { name: "检验报告", path: "/jy", component: bundle(Jianyan) },
   { name: "胎监记录", path: "/tj", component: null }
