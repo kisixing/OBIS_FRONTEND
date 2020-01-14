@@ -465,7 +465,7 @@ export const pregnanciesColumns = [
 				title: '出生体重(kg)',
 				key: 'tizh',
 				type: 'input',
-				width: 100
+				width: 120
 			}
 		]
 	},

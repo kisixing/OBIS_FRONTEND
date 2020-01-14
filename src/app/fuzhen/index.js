@@ -92,9 +92,7 @@ export default class Patient extends Component {
       res.object = res.object || [];
       res.object.push(this.state.initData);
       this.setState({recentRvisit: res.object})
-    })])
-
-      .then(() => this.setState({ loading: false }));
+    })]).then(() => this.setState({ loading: false }));
 
     service.fuzhen.getRvisitPage(this.state.pageCurrent).then(res => {
       if (res.object.list && res.object.list.length > 2) this.setState({isShowMoreBtn: true})
