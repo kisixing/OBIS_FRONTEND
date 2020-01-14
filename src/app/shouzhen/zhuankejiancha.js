@@ -62,7 +62,7 @@ export default class extends Component {
                   { span: 1, className: 'noContent', name: `[胎${index + 1}]`, type: '**' },
                   { name: 'tx(bpm)[胎心率]', type: 'input', span: 4 },
                   { span: 1 },
-                  { name: 'xl[先露]', type: 'select', span: 4, options: baseData2.xlOptions },
+                  { name: 'xl[先露]', type: 'select', span: 4, valid: 'required', options: baseData2.xlOptions },
                   { span: 1 },
                   // { name: 'tw[胎位]', type: 'input', span: 5 },
                   // { span: 1 },

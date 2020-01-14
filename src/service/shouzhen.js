@@ -123,4 +123,11 @@ export default {
     getAllForm: function(){
         return this.userId().then(r => myAxios.get(`/outpatientRestful/ivisitMain?style=gravidaInfo&userid=${r.object.userid}`));
     },
+    /**
+     * 首诊页面打印
+     */
+    printPdfByFile: function(){
+        return this.userId().then(r => myAxios.post('/print/printPdfByFile?userid=25139&modelType=ivisit'));
+        // return this.userId().then(r => myAxios.post('/print/printPdfByFile', {userid: r.object.userid, modelType: 'ivisit'}));
+    },
 };

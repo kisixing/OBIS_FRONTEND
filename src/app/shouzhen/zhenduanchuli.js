@@ -52,6 +52,7 @@ export default class extends Component{
       templateTree1: [],
       templateTree2: [],
       checkedKeys: [],
+      allFormData: null,
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -73,6 +74,7 @@ export default class extends Component{
     service.shouzhen.findTemplateTree(1).then(res => this.setState({templateTree2: res.object}));
 
     service.shouzhen.getAllForm().then(res => {
+      this.setState({allFormData: res.object});
       this.setCheckedKeys(res.object);
     });
   }
@@ -200,7 +202,7 @@ export default class extends Component{
   }
 
   adddiagnosis() {
-    const { diagnosis, diagnosi } = this.state;
+    const { diagnosis, diagnosi, allFormData } = this.state;
     if (diagnosi && !diagnosis.filter(i => i.data === diagnosi).length) {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
@@ -219,6 +221,10 @@ export default class extends Component{
         service.fuzhen.getdiagnosis().then(res => this.setState({
             diagnosis: res.object.list,
             diagnosi: ''
+        }, () => {
+          if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
+            this.setCheckedKeys(allFormData);
+          }  
         }));
       })
     } else if (diagnosi) {
@@ -341,10 +347,10 @@ export default class extends Component{
           <Row className="shouzhen-left-default margin-TB-mid">
             <Col span={20}>
               <span className="font-12">1、&nbsp;</span>
-              <Input value={yunc}/>&nbsp;孕&nbsp;
-              <Input value={chanc}/>&nbsp;胎&nbsp;
+              G&nbsp;<Input value={yunc}/>&nbsp;
+              P&nbsp;<Input value={chanc}/>&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;
-              宫内妊娠&nbsp;<Input value={info.tuserweek}/>&nbsp;周
+              妊娠&nbsp;<Input value={info.tuserweek}/>&nbsp;周
               &nbsp;&nbsp;&nbsp;&nbsp;
               {info.doctor}
             </Col>
@@ -450,12 +456,11 @@ export default class extends Component{
   }
 
   setCheckedKeys(params) {
-    const { checkedKeys, templateTree1 } = this.state;
+    const { checkedKeys, templateTree1, diagnosis } = this.state;
     const bmi = params.checkUp.ckbmi; 
     const age = params.gravidaInfo.userage; 
     const preghiss = params.gestation.preghiss.length;  
     const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);  
-    const diagnosisList = params.diagnosisList; 
 
     const show = () => {
       const action = showPharAction(true);
@@ -475,9 +480,9 @@ export default class extends Component{
     if(preghiss>=3) checkedKeys.push(getKey("产次≥3"));
     if(xiyan[0].label==="有") checkedKeys.push(getKey("吸烟"));
 
-    diagnosisList.map(item => {
-      if(item.data === "血栓") show();
-      if(item.data === "静脉曲张") checkedKeys.push(getKey("静脉曲张"));
+    diagnosis.map(item => {
+      if(item.data.indexOf("血栓") !== -1) show();
+      if(item.data.indexOf("静脉曲张") !== -1) checkedKeys.push(getKey("静脉曲张"));
       if(item.data === "妊娠子痫前期") checkedKeys.push(getKey("本次妊娠子痫前期"));
       if(item.data === "多胎妊娠") checkedKeys.push(getKey("多胎妊娠"));
     })

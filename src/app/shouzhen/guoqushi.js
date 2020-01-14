@@ -4,7 +4,7 @@ import formRender from '../../render/form';
 import * as baseData from './data';
 
 export default class extends Component {
-  static Title = '过去史';
+  static Title = '一般病史';
   constructor(props) {
     super(props);
   }
@@ -18,6 +18,17 @@ export default class extends Component {
         //     { name: 'bsjibing[疾病史]', type: 'checkinput', valid: 'required', unselect:'无', options: baseData.jibOptions.map(v=>({...v, label:`${v.label}(input)`})) },
         //   ]
         // },
+        {
+          columns: [
+            { span: 2 },
+            {
+              name: "ADD_FIELD_symptom[主@诉]",
+              type: "input",
+              valid: "required",
+              span: 18
+            }
+          ]
+        },
         {
           label: "疾病史:",
           span: 12,
@@ -66,7 +77,7 @@ export default class extends Component {
           columns: [
             { span: 2 },
             {
-              name: "add_FIELD_qitabingshi[其他]",
+              name: "add_FIELD_qitabingshi[其@他]",
               type: "checkinput",
               valid: "required",
               radio: true,
@@ -79,6 +90,19 @@ export default class extends Component {
           columns:[
             {span:2},
             { name: 'noneChecked1[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
+          ]
+        },
+        {
+          columns: [
+            { span: 2 },
+            {
+              name: "bsshoushuother[外伤史]",
+              type: "checkinput",
+              valid: "required",
+              radio: true,
+              options: baseData.wssOptions,
+              span: 15
+            }
           ]
         },
         {

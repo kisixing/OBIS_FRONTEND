@@ -450,10 +450,19 @@ export default class Patient extends Component {
 
     render() {
         const { tabs, info, step } = this.state;
+        const printIvisit = () => {
+            service.shouzhen.printPdfByFile().then(res => {
+                console.log(res, '123')
+            }).catch(e => {
+                console.log(e, '11')
+            })
+            // window.print();
+        }
+
         return (
             <Page className='shouzhen pad-T-mid'>
                 <Button type="primary" className="top-save-btn" size="small" onClick={() => alert('保存')}>保存</Button>
-                <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => alert('打印为PDF')}>打印</Button>
+                <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
                 <div className="bgWhite" style={{ position: 'fixed', top: '7.65em', left: '0', right: '0', bottom: '0' }}></div>
                 <Tabs type="card" activeKey={step} onChange={key => this.handleSave(key)}>
                     {tabs.map(({ key, title, entity, error, Content }) => (
