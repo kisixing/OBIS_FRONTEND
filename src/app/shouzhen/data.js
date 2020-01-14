@@ -277,6 +277,21 @@ export const wjjOptions = toOptions('已查,拒绝检查');
 export const gwwjjOptions = toOptions('未做检查');
 
 /**
+ * 手术医院
+ */
+export const ssyyOptions = toOptions('中山一院, 中山二院, 中山三院, 广医一院, 广医三院, 省中医院, 省妇幼, 市妇幼');
+
+/**
+ * 手术产式
+ */
+export const sscsOptions = toOptions('剖宫产, 吸引, 钳产, 臀助产');
+
+/**
+ * 分娩医院
+ */
+export const fmyyOptions = toOptions('中山一院, 中山二院, 中山三院, 广医一院, 广医三院, 省妇幼, 市妇幼');
+
+/**
  * 手术史表头
  */
 export const shoushushiColumns = [
@@ -294,7 +309,9 @@ export const shoushushiColumns = [
 	{
 		title: '手术医院',
 		key: 'hospital',
-		type: 'input'
+		type: 'select',
+		showSearch: true,
+		options: ssyyOptions
   },
   {
 		title: '术后病理',
@@ -316,9 +333,9 @@ export const pregnanciesColumns = [
 	{
 		title: '   年-月    ',
 		key: 'datagridYearMonth',
-		type: 'date',
+		type: 'input',
 		width: '200',
-		mode:"ym",
+		// mode:"ym",
 	},
 	{
 		title: '流产',
@@ -375,7 +392,9 @@ export const pregnanciesColumns = [
 			{
 				title: '手术产式',
 				key: 'shouShuChanType',
-				type: 'input'
+				type: 'select',
+				showSearch: true,
+				options: sscsOptions
 			}
 		]
 	},
@@ -445,14 +464,18 @@ export const pregnanciesColumns = [
 			{
 				title: '出生体重(kg)',
 				key: 'tizh',
-				type: 'input'
+				type: 'input',
+				width: 100
 			}
 		]
 	},
 	{
 		title: '分娩医院',
 		key: 'hospital',
-		type: 'input'
+		type: 'select',
+		showSearch: true,
+		options: fmyyOptions,
+		width: 140
 	},
 	{
 		title: '备注',
