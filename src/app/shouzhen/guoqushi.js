@@ -30,9 +30,9 @@ export default class extends Component {
           ]
         },
         {
-          label: "疾病史:",
+          label: "疾病史",
           span: 12,
-          className: "labelclass2"
+          className: "labelclass"
         },
         {
           columns: [

@@ -85,7 +85,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ADD_FIELD_checkup_other[其@@@他]', type:'input', span:12, valid: 'required'},
+            {name:'ADD_FIELD_checkup_other[其@@@他]', type:'input', span:12},
           ]
         }
       ]
