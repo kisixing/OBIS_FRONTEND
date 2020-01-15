@@ -576,7 +576,7 @@ export default class FuzhenForm extends Component {
       }
     });
     if(act === "open") {
-      console.log(111);
+      window.print();
     }
   }
 
@@ -681,7 +681,7 @@ export default class FuzhenForm extends Component {
         regFormEntity: {...regFormEntity, ...data}
       })
     }
-    const handleSave = (form) => {
+    const handleRegSave = (form) => {
       fireForm(form, 'valid').then((valid) => {
         if(valid) {
           // service.fuzhen.saveRvisitForm(regFormEntity).then(() => {
@@ -700,7 +700,7 @@ export default class FuzhenForm extends Component {
         {formRender(regFormEntity, this.regFormConfig(), handleChange)}
         <div style={{overflow: 'hidden'}}> 
           <Button className="pull-right blue-btn" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
-          <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={() => handleSave(document.querySelector('.reg-form'))}>保存</Button>
+          <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={() => handleRegSave(document.querySelector('.reg-form'))}>保存</Button>
         </div>
       </Modal>
       : null

@@ -50,7 +50,7 @@ function render(type, { value, ...props }) {
           list[row] = item;
           break;
         case 'delete':
-          list = list.filter(i => i !== item);
+          item.datagridYearMonth!=='本孕' ? list = list.filter(i => i !== item) : null;
           break;
       }
       onChange({}, list).then(() => onBlur({checkedChange:true}, `row-${row}`));

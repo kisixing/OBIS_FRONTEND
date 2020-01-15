@@ -3,6 +3,8 @@ import myAxios, * as method from '../utils/myAxios';
 
 import { default as fuzhen } from './fuzhen';
 import { default as shouzhen } from './shouzhen';
+import { default as jianyan } from './jianyan';
+import { default as yunqi } from './yunqi';
 
 let userId = null;
 let watchInfoList = [];
@@ -50,7 +52,17 @@ export default {
     fuzhen: Object.assign(fuzhen, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),
 
     /**
-     * 复诊所需API
+     * 首检所需API
      */
-    shouzhen: Object.assign(shouzhen, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) })
+    shouzhen: Object.assign(shouzhen, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),
+
+    /**
+     * 检验所需API
+     */
+    jianyan: Object.assign(jianyan, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),
+    
+    /**
+     * 孕期所需API
+     */
+    yunqi: Object.assign(yunqi, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),
 }

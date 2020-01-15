@@ -277,24 +277,41 @@ export const wjjOptions = toOptions('已查,拒绝检查');
 export const gwwjjOptions = toOptions('未做检查');
 
 /**
+ * 手术医院
+ */
+export const ssyyOptions = toOptions('中山一院, 中山二院, 中山三院, 广医一院, 广医三院, 省中医院, 省妇幼, 市妇幼');
+
+/**
+ * 手术产式
+ */
+export const sscsOptions = toOptions('剖宫产, 吸引, 钳产, 臀助产');
+
+/**
+ * 分娩医院
+ */
+export const fmyyOptions = toOptions('中山一院, 中山二院, 中山三院, 广医一院, 广医三院, 省妇幼, 市妇幼');
+
+/**
  * 手术史表头
  */
 export const shoushushiColumns = [
-  {
-		title: '手术名称',
-		key: 'name',
-		type: 'input'
-	},
 	{
 		title: '手术日期',
 		key: 'date',
 		type: 'input',
 		// mode:"ym"
 	},
+  {
+		title: '手术名称',
+		key: 'name',
+		type: 'input'
+	},
 	{
 		title: '手术医院',
 		key: 'hospital',
-		type: 'input'
+		type: 'select',
+		showSearch: true,
+		options: ssyyOptions
   },
   {
 		title: '术后病理',
@@ -310,15 +327,15 @@ export const pregnanciesColumns = [
 	{
 		title: '孕次',
 		key: 'index',
-		width: '50',
+		width: '60',
 		format: (v,{row})=>row+1
 	},
 	{
 		title: '   年-月    ',
 		key: 'datagridYearMonth',
-		type: 'date',
+		type: 'input',
 		width: '200',
-		mode:"ym",
+		// mode:"ym",
 	},
 	{
 		title: '流产',
@@ -360,7 +377,8 @@ export const pregnanciesColumns = [
 	{
 		title: '足月产',
 		key: 'zuych',
-		type: 'input'
+		type: 'checkbox',
+		holdeditor: true
 	},
 	{
 		title: '分娩方式',
@@ -374,7 +392,9 @@ export const pregnanciesColumns = [
 			{
 				title: '手术产式',
 				key: 'shouShuChanType',
-				type: 'input'
+				type: 'select',
+				showSearch: true,
+				options: sscsOptions
 			}
 		]
 	},
@@ -444,14 +464,18 @@ export const pregnanciesColumns = [
 			{
 				title: '出生体重(kg)',
 				key: 'tizh',
-				type: 'input'
+				type: 'input',
+				width: 120
 			}
 		]
 	},
 	{
 		title: '分娩医院',
 		key: 'hospital',
-		type: 'input'
+		type: 'select',
+		showSearch: true,
+		options: fmyyOptions,
+		width: 140
 	},
 	{
 		title: '备注',
@@ -479,3 +503,53 @@ export const lisiColumns = [
 		key: 'field',
 	}
 ]
+
+export const initYCData = {
+  "abortion": "",
+  "addField": null,
+  "addFlag": null,
+  "bingfzh": "",
+  "chanrure": "",
+  "child": "",
+  "chuxue": "",
+  "datagridYearMonth": "本孕",
+  "deathCause": "",
+  "deathTime": "",
+  "fenm": "",
+  "gesweek": null,
+  "hospital": null,
+  "id": null,
+  "isdeleted": "",
+  "jianz": "",
+  "jix": "",
+  "others": "",
+  "pougch": "",
+  "pregdatem": "",
+  "pregdatey": "",
+  "pregnum": "",
+  "putt": "",
+  "qianch": "",
+  "removalUterus": null,
+  "reng": "",
+  "sequela": "",
+  "shouShuChanType": "",
+  "shunch": "",
+  "sich": "",
+  "sit": false,
+  "siw": "",
+  "subsistence": "",
+  "tizh": "",
+  "tunzhch": "",
+  "unhealth": "",
+  "userid": null,
+  "xingb": "",
+  "xinseother": "",
+  "xiych": "",
+  "xsrqk": "",
+  "yaol": "",
+  "yinch": "",
+  "yiwrsh": "",
+  "zaoch": "",
+  "zir": "",
+  "zuych": "",  
+};
