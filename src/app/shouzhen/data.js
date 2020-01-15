@@ -104,7 +104,7 @@ export const bybsOptions = toOptions('输卵管因素{#FF3300},丈夫少精弱�
 /**
  * 频率
  */
-export const plOptions = toOptions('无,偶尔,经常');
+export const plOptions = toOptions('偶尔,经常,无');
 
 /**
  * 婚姻史

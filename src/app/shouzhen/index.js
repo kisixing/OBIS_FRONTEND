@@ -50,7 +50,6 @@ export default class Patient extends Component {
 
     activeTab(step) {
         const { tabs } = this.state;
-
         const tab = tabs.filter(t => t.key === step).pop() || {};
         // if (!tab.init) {
             service.shouzhen.getForm(tab.key).then(res => {
@@ -222,9 +221,7 @@ export default class Patient extends Component {
                       : tab.entity
                           .nervousReflex;
                   //病历反射
-                  tab.entity[
-                    "vascularMurmurOther"
-                  ] =
+                  tab.entity["vascularMurmurOther"] =
                     typeof tab.entity
                       .vascularMurmurOther !=
                     "object"
@@ -271,7 +268,6 @@ export default class Patient extends Component {
                         )
                       : tab.entity.breathSounds;
                 } else if (tab.key === 'tab-7') {
-                  console.log('4444444444444444')
                     tab.entity = res.object.specialityCheckUp
                     let ckjc = tab.entity.add_FIELD_ckjc;
                     if(tab.entity.add_FIELD_ckjc === null){
@@ -305,6 +301,7 @@ export default class Patient extends Component {
     // 如果想把handleChange的逻辑移动到对应的tab页里面去，请参考tab-0：yunfuxinxi.js这个文件的handleChange
     handleChange(e, { name, value, target }, entity) {
         console.log(name, target, value, entity);
+        console.log("78787878787", value);
         entity[name] = value
         switch (name) {
             case 'dopupt':
@@ -477,23 +474,85 @@ export default class Patient extends Component {
         }
 
         return (
-            <Page className='shouzhen pad-T-mid'>
-                <Button type="primary" className="top-save-btn" size="small" onClick={() => alert('保存')}>保存</Button>
-                <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
-                <div className="bgWhite" style={{ position: 'fixed', top: '7.65em', left: '0', right: '0', bottom: '0' }}></div>
-                <Tabs type="card" activeKey={step} onChange={key => this.handleSave(key)}>
-                    {tabs.map(({ key, title, entity, error, Content }) => (
-                        <Tabs.TabPane key={key} tab={<span style={error ? { color: 'red' } : {}}>{error ? <i className="anticon anticon-exclamation-circle" /> : null}{title}</span>}>
-                            <div className="bgWhite pad-mid " style={{'maxWidth': '1400px'}}>
-                                {step === key ? <Content info={info} entity={{ ...entity }} onChange={(e, item) => this.handleChange(e, item, entity)} /> : null}
-                            </div>
-                        </Tabs.TabPane>
-                    ))}
-                </Tabs>
-                <Row><Col span={21}/><Col>
-                    <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(()=>{this.handleSave()},100) }>{step !== tabs[tabs.length - 1].key ? '下一页' : '保存'}</Button>
-                </Col></Row>
-            </Page>
-        )
+          <Page className="shouzhen pad-T-mid">
+            <Button
+              type="primary"
+              className="top-save-btn"
+              size="small"
+              onClick={() => alert("保存")}
+            >
+              保存
+            </Button>
+            <Button
+              type="primary"
+              className="top-savePDF-btn"
+              size="small"
+              onClick={() => printIvisit()}
+            >
+              打印
+            </Button>
+
+            <div
+              className="bgWhite"
+              style={{
+                position: "fixed",
+                top: "7.65em",
+                left: "0",
+                right: "0",
+                bottom: "0"
+              }}
+            ></div>
+            <Tabs
+              type="card"
+              activeKey={step}
+              onChange={key => this.handleSave(key)}
+            >
+              {tabs.map(({ key, title, entity, error, Content }) => (
+                <Tabs.TabPane
+                  key={key}
+                  tab={
+                    <span style={error ? { color: "red" } : {}}>
+                      {error ? (
+                        <i className="anticon anticon-exclamation-circle" />
+                      ) : null}
+                      {title}
+                    </span>
+                  }
+                >
+                  <div
+                    className="bgWhite pad-mid "
+                    style={{ maxWidth: "1400px" }}
+                  >
+                    {step === key ? (
+                      <Content
+                        info={info}
+                        entity={{ ...entity }}
+                        onChange={(e, item) =>
+                          this.handleChange(e, item, entity)
+                        }
+                      />
+                    ) : null}
+                  </div>
+                </Tabs.TabPane>
+              ))}
+            </Tabs>
+            <Row>
+              <Col span={21} />
+              <Col>
+                <Button
+                  icon="save"
+                  type="primary"
+                  onClick={() =>
+                    setTimeout(() => {
+                      this.handleSave();
+                    }, 100)
+                  }
+                >
+                  {step !== tabs[tabs.length - 1].key ? "下一页" : "保存"}
+                </Button>
+              </Col>
+            </Row>
+          </Page>
+        );
     }
 }

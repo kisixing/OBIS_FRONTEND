@@ -132,6 +132,7 @@ export function checkinput$x(
       ? data1.$data
       : {}
     : {};
+
   const toData = () => {
     var result = Object.keys(data)
       .filter(i => !/^\$/.test(i))
@@ -139,6 +140,7 @@ export function checkinput$x(
     result.$data = data;
     return result;
   };
+
   if (data1 instanceof Array) {
     data1.forEach(i => {
       data[i.label] = i.value;
@@ -197,6 +199,7 @@ export function checkinput$x(
   };
 
   const handleCheck = (e, { name, checked, option }) => {
+    // console.log("8888888", name, checked, option);
     if (checked) {
       data[name] = data[`$${name}`] || "";
       findWC(option, n => delete data[n]);
