@@ -153,4 +153,18 @@ export default {
     saveRvisitForm: function(params){
         return this.userId().then(r => myAxios.put('/outpatientWriteRestful/saveRvisitForm', Object.assign(params, {userid: r.object.userid})));
     },
+
+    /**
+     * 获取入院登记表
+     */
+    getRecordList: function(params){
+        return this.userId().then(r => myAxios.get(`/hospitalization/registerRecord?docid=${r.object.userid}`));
+    },
+
+    /**
+     * 更新入院登记表
+     */
+    postRecordList: function(entity){
+        return this.userId().then(r => myAxios.post('/hospitalization/specialtyRecordList', entity));
+    },
 }

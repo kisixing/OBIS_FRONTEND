@@ -540,6 +540,7 @@ export default class Patient extends Component {
               <Col span={21} />
               <Col>
                 <Button
+                  className="shouzhen-bbtn"
                   icon="save"
                   type="primary"
                   onClick={() =>
