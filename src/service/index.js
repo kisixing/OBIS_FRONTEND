@@ -5,6 +5,8 @@ import { default as fuzhen } from './fuzhen';
 import { default as shouzhen } from './shouzhen';
 import { default as jianyan } from './jianyan';
 import { default as yunqi } from './yunqi';
+import { default as xuetang } from './xuetang';
+import { default as yingxiang } from './yingxiang';
 
 let userId = null;
 let watchInfoList = [];
@@ -65,4 +67,14 @@ export default {
      * 孕期所需API
      */
     yunqi: Object.assign(yunqi, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),
+
+    /**
+     * 血糖所需API
+     */
+    xuetang: Object.assign(xuetang, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),
+
+    /**
+     * 血糖所需API
+     */
+    yingxiang: Object.assign(yingxiang, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),
 }

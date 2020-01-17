@@ -53,6 +53,8 @@ export default class extends Component{
       templateTree2: [],
       checkedKeys: [],
       allFormData: null,
+      chanc: 0,
+      yunc: 1
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -77,6 +79,8 @@ export default class extends Component{
       this.setState({allFormData: res.object});
       this.setCheckedKeys(res.object);
     });
+
+    this.getGPTimes();
   }
 
   config(){
@@ -263,9 +267,24 @@ export default class extends Component{
     }
   }
 
+  getGPTimes() {
+    const {entity} = this.props;
+    const allPreghiss = entity.gestation.preghiss;
+    this.setState({yunc: allPreghiss.length + 1});
+    let times = 0;
+    allPreghiss&&allPreghiss.map(item => {
+      if(item.zuych === true) {
+        times++;
+      } else if (item.zaoch !== "") {
+        times++;
+      }
+    })
+    this.setState({chanc: times});
+  }
+
   renderZD(){
     const { info = {} } = this.props;
-    const { diagnosi, diagnosis, diagnosislist, isMouseIn, isShowZhenduan } = this.state;
+    const { diagnosi, diagnosis, diagnosislist, isMouseIn, isShowZhenduan, chanc, yunc } = this.state;
     const delConfirm = (item) => {
       Modal.confirm({
         title: '您是否确认要删除这项诊断',
@@ -333,14 +352,6 @@ export default class extends Component{
       )
     }
 
-    let yunc = ''
-    let chanc = ''
-    let ycarray = info.tuseryunchan ? info.tuseryunchan.split("/") : '';
-    // console.log("777777777777777", info, ycarray);
-    if(ycarray.length > 1){
-      yunc = ycarray[0];
-      chanc = ycarray[1];
-    }
     return (
       <div className="shouzhen-left-zd">
         <div className="pad-LR-mid">
@@ -533,8 +544,8 @@ export default class extends Component{
         }
       })
     };
-    const treeNodes1 = initTree(newTemplateTree1);
-    const treeNodes2 = initTree(newTemplateTree2);
+    const treeNodes1 = newTemplateTree1&&initTree(newTemplateTree1);
+    const treeNodes2 = newTemplateTree2&&initTree(newTemplateTree2);
 
     return (
       <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowPharModal} width={800} className="phar-modal"

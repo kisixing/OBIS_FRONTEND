@@ -25,6 +25,13 @@ class TableItem extends Component{
   }
 
   componentDidMount(){
+    const { iseditable = ()=> true, entity, row, name, value, onClick } = this.props;
+    const arr = ["cktizh", "ckzijzhz", "cktaix", "ckxianl", "ckgongg", "ckfuzh"];
+    if(iseditable({entity, row, name, value}) && onClick){
+      if(arr.includes(name)) {
+        this.setState({force:true});
+      }
+    }
     this.refs.tableItem.parentNode.ondbclick = ()=>this.setState({force:true});
   }
 

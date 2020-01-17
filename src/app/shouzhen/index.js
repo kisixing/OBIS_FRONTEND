@@ -72,7 +72,9 @@ export default class Patient extends Component {
                     console.log("78787878", tab.entity["address"]);
                 } else if (tab.key === 'tab-1') {
                     tab.entity = res.object.husbandInfo
-                    tab.entity['add_FIELD_husband_drink_data'] = { "0": JSON.parse(tab.entity['add_FIELD_husband_drink_type']),"1":JSON.parse(tab.entity['add_FIELD_husband_drink'])}
+                    let type = tab.entity['add_FIELD_husband_drink_type'] ? JSON.parse(tab.entity['add_FIELD_husband_drink_type']) : '';
+                    let drink = tab.entity['add_FIELD_husband_drink'] ? JSON.parse(tab.entity['add_FIELD_husband_drink']) : ''
+                    tab.entity['add_FIELD_husband_drink_data'] = { 0: type, 1: drink }
                     tab.entity['add_FIELD_husband_useridtype'] = JSON.parse(res.object.husbandInfo.add_FIELD_husband_useridtype);
                     console.log(tab.entity);
                 } else if (tab.key === 'tab-2') {
@@ -443,6 +445,7 @@ export default class Patient extends Component {
                 }
                 this.change = false;
             } else {
+                message.error('必填项不能为空！');
                 if (key === 'openPDF') {
                     window.open("http://www.baidu.com?" + step, tab.entity, '_blank');
                 } else if (key) {
@@ -546,6 +549,7 @@ export default class Patient extends Component {
               <Col span={21} />
               <Col>
                 <Button
+                  className="shouzhen-bbtn"
                   icon="save"
                   type="primary"
                   onClick={() =>

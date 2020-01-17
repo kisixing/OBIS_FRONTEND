@@ -21,7 +21,7 @@ export default class extends Component {
             { span: 2 },
             { name: 'yjchix[持续天数]', className: 'input_width_4', type: 'input', span: 5, valid: 'number|required' },
             { span: 1 },
-            { name: 'yjtongj[痛@@@经]', type: 'checkinput', span: 6, valid: 'required', radio: true, options: baseData.plOptions },
+            { name: 'yjtongj[痛@@@@经]', type: 'checkinput', span: 6, valid: 'required', radio: true, options: baseData.plOptions },
           ]
         },
         {

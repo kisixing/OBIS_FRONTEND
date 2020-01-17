@@ -51,9 +51,15 @@ export default class FuzhenForm extends Component {
     //   getPacsGrowth: res.object
     // }));
 
-    service.fuzhen.getbmi().then(res => this.setState({
-      getbmi: res.list
-    }));
+    // service.fuzhen.getbmi().then(res => this.setState({
+    //   getbmi: res.list
+    // }));
+  }
+
+  componentDidMount() {
+    service.fuzhen.getRecordList().then(res => {
+      this.setState({regFormEntity: res.object})
+    })
   }
 
   // componentWillReceiveProps(props) {
@@ -383,90 +389,91 @@ export default class FuzhenForm extends Component {
       rows: [
         {
           columns: [
-            { name: 'hzxm[患者姓名]', type: 'input', span: 6, disabled: true },
-            { name: 'xb[性别]', type: 'input', span: 6, disabled: true  },
-            { name: 'csrq[出生日期]', type: 'input', span: 6, disabled: true  },
-            { name: 'lxdh[联系电话]', type: 'input', span: 6, disabled: true  }
+            { name: 'name[患者姓名]', type: 'input', span: 6, disabled: true },
+            { name: 'sex[性别]', type: 'input', span: 6, disabled: true  },
+            { name: 'birthday[出生日期]', type: 'input', span: 6, disabled: true  },
+            { name: 'telephone[联系电话]', type: 'input', span: 6, disabled: true  }
           ]
         },
         {
           columns: [
-            { name: 'zyks[住院科室]', type: 'select', valid: 'required', span: 6, options: baseData.zyksOptions },
-            { name: 'rysq[入院日期]', type: 'date', valid: 'required', span: 6 },
+            { name: 'dept[住院科室]', type: 'select', valid: 'required', span: 6, options: baseData.zyksOptions },
+            { span: 1 },
+            { name: 'dateHos[入院日期]((孕20+5周))', type: 'date', valid: 'required', span: 6 },
           ]
         },
         {   
           columns:[
-            { name: 'tsbz[特殊备注]', type: 'textarea', span: 12, placeholder: "请输入备注" }
+            { name: 'note[特殊备注]', type: 'textarea', span: 12, placeholder: "请输入备注" }
           ]
         },
         {   
           columns:[
-            { name: 'sfzwyzy[是否在我院住院]', type: 'checkinput', radio: true, span: 16, options: baseData.sfzyOptions }
+            { name: 'hospitalized[是否曾在我院住院]', className: 'long-label', type: 'checkinput-4', radio: true, span: 16, options: baseData.sfzyOptions }
           ]
         },
         {   
           columns:[
-            { name: 'gj[国籍]', type: 'input', span: 6 },
-            { name: 'jg[籍贯]', type: 'input', span: 6 },
-            { name: 'mz[民族]', type: 'input', span: 6 }
+            { name: 'notionality[国籍]', type: 'input', span: 6 },
+            { name: 'root[籍贯]', type: 'input', span: 6 },
+            { name: 'ethnicity[民族]', type: 'input', span: 6 }
           ]
         },
         {   
           columns:[
-            { name: 'csd1[出生地]', type: 'select', span: 4, options: baseData.csd1Options },
-            { name: 'csd2[]', type: 'select', span: 4, options: baseData.csd2Options },
-            { name: 'hy[婚姻]', type: 'checkinput', radio: true, span: 12, options: baseData.hyOptions }
+            { name: 'birthAddrProvince[出生地]', type: 'select', span: 4, options: baseData.csd1Options },
+            { name: 'birthAddrCity[]', type: 'select', span: 4, options: baseData.csd2Options },
+            { name: 'marriage[婚姻]', type: 'checkinput', radio: true, span: 12, options: baseData.hyOptions }
           ]
         },
         {   
           columns:[
-            { name: 'xzz[现住址]', type: 'input', span: 12, placeholder: "请输入" },
-            { name: 'yb1[邮编]', type: 'input', span: 6, placeholder: "请输入" }
+            { name: 'address[现住址]', type: 'input', span: 12, placeholder: "请输入" },
+            { name: 'postno[邮编]', type: 'input', span: 6, placeholder: "请输入" }
           ]
         },
         {   
           columns:[
-            { name: 'xzz[身份证地址]', type: 'input', span: 12, placeholder: "请输入" },
-            { name: 'yb2[邮编]', type: 'input', span: 6, placeholder: "请输入" }
+            { name: 'idcardAddr[身份证地址]', type: 'input', span: 12, placeholder: "请输入" },
+            { name: 'idcardPostno[邮编]', type: 'input', span: 6, placeholder: "请输入" }
           ]
         },
         {   
           columns:[
-            { name: 'sfzhm[身份证号码(ID)]', type: 'input', span: 12 },
-            { name: 'ly[来源]', type: 'checkinput', radio: true, span: 12, options: baseData.lyOptions }
+            { name: 'idcardNo[身份证号码(ID)]', type: 'input', span: 10 },
+            { name: 'idcardSource[来源]', className: "reg-source", type: 'checkinput', radio: true, span: 14, options: baseData.lyOptions }
           ]
         },
         {   
           columns:[
-            { name: 'zy[职业]', type: 'checkinput', radio: true, span: 24, options: baseData.zyOptions }
+            { name: 'occupation[职业]', type: 'checkinput', radio: true, span: 24, options: baseData.zyOptions }
           ]
         },
         {   
           columns:[
-            { name: 'gzdwjdz[工作单位及地址]', type: 'input', span: 12, placeholder: "请输入" }
+            { name: 'corAddr[工作单位及地址]', className: 'long-label', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
         {   
           columns:[
-            { name: 'dwyb[单位邮编]', type: 'input', span: 12, placeholder: "请输入" },
-            { name: 'dwlxdh[单位联系电话]', type: 'input', span: 12, placeholder: "请输入" }
+            { name: 'corPostno[单位邮编]', type: 'input', span: 12, placeholder: "请输入" },
+            { name: 'corTele[单位联系电话]', className: 'long-label', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
         {   
           columns:[
-            { name: 'lxrxm[联系人姓名]', type: 'input', span: 12, placeholder: "请输入" },
-            { name: 'lxrdh[联系人电话]', type: 'input', span: 12, placeholder: "请输入" }
+            { name: 'ecName[联系人姓名]', type: 'input', span: 12, placeholder: "请输入" },
+            { name: 'ecTele[联系人电话]', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
         {   
           columns:[
-            { name: 'lxrdz[联系人地址]', type: 'input', span: 12, placeholder: "请输入" }
+            { name: 'ecAddr[联系人地址]', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
         {   
           columns:[
-            { name: 'gx[联系人与患者关系]', type: 'checkinput', radio: true, span: 24, options: baseData.gxOptions }
+            { name: 'ecRelative[联系人与患者关系]', className: 'long-label', type: 'checkinput', radio: true, span: 24, options: baseData.gxOptions }
           ]
         }
       ]
@@ -675,35 +682,45 @@ export default class FuzhenForm extends Component {
   showRegForm() {
     const { regFormEntity, isShowRegForm } = this.state;
     const handleClick = (item) => { this.setState({isShowRegForm: false})};
-    const handleChange = (e, { name, value, valid }) => {
+    const handleRegChange = (e, { name, value, valid }) => {
+      console.log(name, value, '12444')
       const data = {[name]: value};
       this.setState({
         regFormEntity: {...regFormEntity, ...data}
+      }, () => {
+        console.log(regFormEntity, '1234')
       })
     }
     const handleRegSave = (form) => {
       fireForm(form, 'valid').then((valid) => {
         if(valid) {
-          // service.fuzhen.saveRvisitForm(regFormEntity).then(() => {
-          //   this.setState({regFormEntity: {...baseData.regFormEntity}})
-          // })
+          service.fuzhen.postRecordList(regFormEntity).then(() => {
+            this.setState({regFormEntity: {...baseData.regFormEntity}})
+          })
+        }else {
+          message.error('必填项不能为空!');
         }
       })
     }
     const printForm = () => {
-      console.log('print')
+      window.print();
     }
 
-    return (isShowRegForm ?
-      <Modal width="80%" title="入院登记表" footer={null} className="reg-form"
-        visible={isShowRegForm} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-        {formRender(regFormEntity, this.regFormConfig(), handleChange)}
-        <div style={{overflow: 'hidden'}}> 
-          <Button className="pull-right blue-btn" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
-          <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={() => handleRegSave(document.querySelector('.reg-form'))}>保存</Button>
+    const title = [
+      <div className="reg-title">
+        <span>入院登记表</span>
+        <div className="reg-btns">
+          <Button className="pull-right blue-btn margin-R-2" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
+           <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={() => handleRegSave(document.querySelector('.reg-form'))}>保存</Button>
         </div>
+      </div>
+    ]
+
+    return (
+      <Modal width="80%" title={title} footer={null} className="reg-form"
+        visible={isShowRegForm} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+        {formRender(regFormEntity, this.regFormConfig(), handleRegChange)}
       </Modal>
-      : null
     )
   }
 

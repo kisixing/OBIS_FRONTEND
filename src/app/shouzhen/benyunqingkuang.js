@@ -39,7 +39,7 @@ export default class extends Component {
         {
           columns: [
             {
-              name: "ckzdate[早孕B超]",
+              name: "ckzdate[早孕 B超]",
               type: "date",
               span: 5,
               onChange: (e, { value }) =>

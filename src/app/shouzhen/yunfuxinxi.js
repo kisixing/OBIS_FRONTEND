@@ -149,6 +149,11 @@ export default class extends Component {
             },
             { span: 1 }
           ]
+        }, 
+        {
+          columns: [
+            { name: 'add_field_readdress[产休地址]', type: 'input', span: 11, valid: 'required'},
+          ]
         }
       ]
     };
