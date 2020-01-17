@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button, message, Table, Modal, Spin, Tree } from 'antd';
+import { Row, Col } from 'antd';
 import {manageEditor} from '../../render/form';
 
 export default function(){

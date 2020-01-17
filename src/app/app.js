@@ -180,10 +180,10 @@ export default class App extends Component {
     const action1 = showTrialAction(true);
     const action2 = showPharAction(true);
     switch(name) {
-      case 'trial': 
+      case 'trial':
         store.dispatch(action1);
         break;
-      case 'phar': 
+      case 'phar':
         store.dispatch(action2);
         break;
     }
@@ -232,7 +232,7 @@ export default class App extends Component {
     const treeNodes = initTree(newTemplateTree);
     return (
       templateTree.length>0 ?
-      <Modal title="瘢痕子宫阴道试产表" visible={isShowTrialModal} width={800} className="trial-modal" 
+      <Modal title="瘢痕子宫阴道试产表" visible={isShowTrialModal} width={800} className="trial-modal"
               footer={buttons} onCancel={() => closeModal()}>
         <p>孕妇姓名：{username}</p>
         <Row>
@@ -387,7 +387,9 @@ export default class App extends Component {
                     onChange={e => handleChange("risklevel", e)}
                   >
                     {"Ⅰ,Ⅱ,Ⅲ,Ⅳ,Ⅴ".split(",").map(i => (
-                      <Select.Option value={i}>{i}</Select.Option>
+                      <Select.Option key={i} value={i}>
+                        {i}
+                      </Select.Option>
                     ))}
                   </Select>
                 </Col>
@@ -404,7 +406,9 @@ export default class App extends Component {
                     {"<乙肝大三阳,乙肝小三阳,梅毒,HIV,结核病,重症感染性肺炎,特殊病毒感染（H1N7、寨卡等）,传染病：其他"
                       .split(",")
                       .map(i => (
-                        <Select.Option value={i}>{i}</Select.Option>
+                        <Select.Option key={i} value={i}>
+                          {i}
+                        </Select.Option>
                       ))}
                   </Select>
                 </Col>

@@ -61,6 +61,15 @@ export default class Patient extends Component {
                 if (tab.key === 'tab-0') {
                     tab.entity = res.object.gravidaInfo
                     tab.entity['useridtype'] = JSON.parse(res.object.gravidaInfo.useridtype)
+                    tab.entity["root"] = {
+                      0: res.object.gravidaInfo.userconstant && res.object.gravidaInfo.userconstant.join(" "),
+                      1: res.object.gravidaInfo.userconstantd,
+                    };
+                    tab.entity['address'] = {
+                      0: res.object.gravidaInfo.useraddress && res.object.gravidaInfo.useraddress.join(" "),
+                      1: res.object.gravidaInfo.useraddressd,
+                    }
+                    console.log("78787878", tab.entity["address"]);
                 } else if (tab.key === 'tab-1') {
                     tab.entity = res.object.husbandInfo
                     tab.entity['add_FIELD_husband_drink_data'] = { "0": JSON.parse(tab.entity['add_FIELD_husband_drink_type']),"1":JSON.parse(tab.entity['add_FIELD_husband_drink'])}

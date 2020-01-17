@@ -291,7 +291,15 @@ html, body {
 	}
 }
 .h_26 .ant-select-selection--single {
-	height: 26px !important;
+	height: 28px !important;
+
+	&:hover {
+		border-bottom-color: #57c5f7;
+	}
+
+	.ant-select-selection__rendered {
+		height: 100%;
+	}
 }
 /* ie8
  */
@@ -315,3 +323,8 @@ html, body {
 	padding-bottom: 5px;
 }
 
+// 选择下拉菜单样式
+.ant-select-dropdown-menu,
+.ant-cascader-menus {
+	font-size: 15px;
+}

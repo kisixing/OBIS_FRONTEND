@@ -2,10 +2,11 @@ import React, { Component } from "react";
 
 import * as baseData from './data';
 import formRender from '../../render/form';
+import options from '../../utils/cascader-address-options';
 
 export default class extends Component {
   static Title = '孕妇信息';
-  static entityParse(obj = {}){
+  static entityParse(obj = {}) {
     return {
       ...obj.gravidaInfo,
       useridtype: JSON.parse(obj.gravidaInfo.useridtype)
@@ -26,39 +27,127 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: 'userage[年龄]', type: 'input', span: 5, valid: 'required|number'},
-            { span: 1 }, 
-            { name: 'userbirth[出生日期]', type: 'date', span: 5,valid: 'required'},
+            {
+              name: "userage[年龄]",
+              type: "input",
+              span: 5,
+              valid: "required|number"
+            },
             { span: 1 },
-            { name: 'usercuzh[建档日期]', type: 'date', span: 5 ,valid: 'required'},
+            {
+              name: "userbirth[出生日期]",
+              type: "date",
+              span: 5,
+              valid: "required"
+            },
+            { span: 1 },
+            {
+              name: "usercuzh[建档日期]",
+              type: "date",
+              span: 5,
+              valid: "required"
+            }
           ]
         },
         {
           columns: [
-            { name: 'usernation[国籍]', type: 'input', span: 5 ,valid: 'required'},
+            {
+              name: "usernation[国籍]",
+              type: "input",
+              span: 5,
+              valid: "required"
+            },
             { span: 1 },
-            { name: 'userroots[籍贯]', type: 'input', span: 5 ,valid: 'required'},
+            {
+              name: "userroots[籍贯]",
+              type: "input",
+              span: 5,
+              valid: "required"
+            },
             { span: 1 },
-            { name: 'userpeople[民族]', type: 'input', span: 4 ,valid: 'required'},
+            {
+              name: "userpeople[民族]",
+              type: "input",
+              span: 4,
+              valid: "required"
+            },
             { span: 1 },
-            { name: 'useroccupation[职业]', type: 'input', span: 6 ,valid: 'required'},
+            {
+              name: "useroccupation[职业]",
+              type: "input",
+              span: 6,
+              valid: "required"
+            }
           ]
-        }, {
+        },
+        {
           columns: [
-            { name: 'usermobile[手机]', type: 'input', span: 5, valid: 'number|required' },
+            {
+              name: "usermobile[手机]",
+              type: "input",
+              span: 5,
+              valid: "number|required"
+            },
             { span: 1 },
-            { name: 'phone[固话]', type: 'input', span: 5},
+            { name: "phone[固话]", type: "input", span: 5 },
             { span: 1 },
-            { name: 'useridtype[证件类型]', type: 'select', span: 4, showSearch: false, options: baseData.sfzOptions ,valid: 'required'},
+            {
+              name: "useridtype[证件类型]",
+              type: "select",
+              span: 4,
+              showSearch: false,
+              options: baseData.sfzOptions,
+              valid: "required"
+            },
             { span: 1 },
-            { name: 'useridno[证件号码]', type: 'input', span: 6 ,valid: 'required'}
+            {
+              name: "useridno[证件号码]",
+              type: "input",
+              span: 6,
+              valid: "required"
+            }
           ]
-        }, {
+        },
+        {
           columns: [
-            { name: 'userconstant[户口地址]', type: 'input', span: 11,valid: 'required'},
+            {
+              name: "userconstant[户口地址]",
+              type: "input",
+              span: 11,
+              valid: "required"
+            },
             { span: 1 },
-            { name: 'useraddress[现住地址]', type: 'input', span: 11,valid: 'required'},
+            {
+              name: "useraddress[现住地址]",
+              type: "input",
+              span: 11,
+              valid: "required"
+            },
+            { span: 1 }
+          ]
+        },
+        {
+          columns: [
+            {
+              name: "root[户口地址]",
+              className: "h_26",
+              span: 11,
+              type: [
+                { type: "cascader", options: options },
+                { type: "input", valid: "required" }
+              ]
+            },
             { span: 1 },
+            {
+              name: "address[现居地址]",
+              className: "h_26",
+              span: 11,
+              type: [
+                { type: "cascader", options: options },
+                { type: "input", valid: "required" }
+              ]
+            },
+            { span: 1 }
           ]
         }
       ]
