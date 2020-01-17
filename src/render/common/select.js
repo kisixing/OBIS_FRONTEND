@@ -8,6 +8,7 @@ export function select({
   value = "",
   onChange,
   onBlur = () => {},
+  style,
   ...props
 }) {
   const getValue = () => {
@@ -21,12 +22,14 @@ export function select({
       onBlur({ checkedChange: true })
     );
   };
+  console.log('444444444444', style)
   return (
     <Select
       {...props}
       value={getValue()}
       options={options}
       onChange={handleChange}
+      style={style}
     >
       {options.map(o => (
         <Select.Option key={o.value} value={o.value}>

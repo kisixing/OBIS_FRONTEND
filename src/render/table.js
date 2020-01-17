@@ -5,9 +5,9 @@ import {events, types, editors, valid as validFn} from './common';
 
 import './table.less';
 
-const dateType = {CREATE:'CREATE',MODIFY:'MODIFY'};
+const dateType = { CREATE:'CREATE', MODIFY:'MODIFY' };
 
-class TableItem extends Component{
+class TableItem extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -25,10 +25,10 @@ class TableItem extends Component{
   }
 
   componentDidMount(){
-    const { iseditable = ()=> true, entity, row, name, value, onClick } = this.props;
+    const { iseditable = () => true, entity, row, name, value, onClick } = this.props;
     const arr = ["cktizh", "ckzijzhz", "cktaix", "ckxianl", "ckgongg", "ckfuzh"];
-    if(iseditable({entity, row, name, value}) && onClick){
-      if(arr.includes(name)) {
+    if (iseditable({entity, row, name, value}) && onClick) {
+      if (arr.includes(name)) {
         this.setState({force:true});
       }
     }
@@ -47,10 +47,10 @@ class TableItem extends Component{
 
   onChange = (e, value) => {
     if (typeof value === 'object') value = value.label;
-    return new Promise(resolve=>{
+    return new Promise(resolve => {
       this.setState({
         value: value
-      },resolve);
+      }, resolve);
     });
   }
 
@@ -62,24 +62,24 @@ class TableItem extends Component{
       force: !!error,
       error: error
     });
-    if(!error){
+    if (!error) {
       onChange(e, value)
     }
   }
 
-  format(){
-    const { format = i=>i, entity, name, row, options } = this.props;
+  format() {
+    const { format = i => i, entity, name, row, options } = this.props;
     const { value } = this.state;
     const getLabel = (ls, v)=>{
       let result = '';
       if(ls instanceof Array){
-        const option = ls.filter(op=>(op.value||op)==v).pop();
+        const option = ls.filter(op => (op.value || op) == v).pop();
         result = option ? (option.describe || option.label || option) : '';
       }
       return result;
     }
 
-    return format(getLabel(options, value) || value, {row, entity, name, lookup: getLabel, format:v=>getLabel(options, v)});
+    return format(getLabel(options, value) || value, {row, entity, name, lookup: getLabel, format: v => getLabel(options, v)});
   }
 
   render(){
@@ -87,43 +87,56 @@ class TableItem extends Component{
     const { value, error, force } = this.state;
     const editor = editors[type] || type;
     return (
-      <span ref="tableItem" title={error} onClick={onClick ? this.onDbClick.bind(this) : null} onDoubleClick={this.onDbClick.bind(this)} className={`table-item table-item-${type} ${(force&&'table-force') || (error&&'table-error') || ''}`}>
-        {
-          editable && (typeof editor === 'function') && (force || isEditor)?editor({...props, value, onChange: this.onChange.bind(this), onBlur: this.onBlur.bind(this)}):this.format()
-        }
+      <span
+        ref="tableItem"
+        title={error}
+        onClick={onClick ? this.onDbClick.bind(this) : null}
+        onDoubleClick={this.onDbClick.bind(this)}
+        className={`table-item table-item-${type} ${(force && "table-force") ||
+          (error && "table-error") ||
+          ""}`}
+      >
+        {editable && typeof editor === "function" && (force || isEditor)
+          ? editor({
+              ...props,
+              value,
+              onChange: this.onChange.bind(this),
+              onBlur: this.onBlur.bind(this)
+            })
+          : this.format()}
       </span>
     );
   }
 }
 
 
-class MTable extends Component{
-  constructor(props){
+class MTable extends Component {
+  constructor(props) {
     super(props);
     this.state = {
       selected: null
     }
   }
 
-  onRowClick(record){
+  onRowClick(record) {
     const { onRowSave } = this.props;
     const {selected} = this.state;
-    if(selected && record !== selected){
+    if(selected && record !== selected) {
       onRowSave(selected);
     }
     this.setState({selected: record});
   }
 
-  rowClassName(record){
+  rowClassName(record) {
     const {selected} = this.state;
-    if(!record.$head){
-      return `table-content ${selected===record ? 'row-selected' : ''}`
+    if(!record.$head) {
+      return `table-content ${selected === record ? 'row-selected' : ''}`
     }else{
       return 'table-head';
     }
   }
 
-  render(){
+  render() {
     const {selected} = this.state;
     const { buttons, buttonSize = "default", ...props } = this.props;
     return (
@@ -135,6 +148,10 @@ class MTable extends Component{
                 key={`btn-${i}`}
                 size={buttonSize}
                 onClick={() => btn.fn(selected)}
+                style={{
+                  height: buttonSize === "default" ? "30px" : "initial",
+                  fontSize: '14px'
+                }}
               >
                 {btn.title}
               </Button>
@@ -198,7 +215,7 @@ export default function(
             }
           }
         }
-        const handleChange = (e, value) =>{
+        const handleChange = (e, value) => {
           if(item[key] !== value){
             item[key] = value;
             item.$type = item.$type || dateType.MODIFY;
@@ -226,9 +243,16 @@ export default function(
     }
   });
   const extendProps = {
-    onRowSave: item=> item.$type && onRowChange('modify', item, dataSource.indexOf(item)),
-    buttons: [{title:'添加',fn:()=>onRowChange('create', {$type:dateType.CREATE})},{title:'删除',fn:item=>onRowChange('delete', item)}]
-  }
+    onRowSave: item =>
+      item.$type && onRowChange("modify", item, dataSource.indexOf(item)),
+    buttons: [
+      {
+        title: "添加",
+        fn: () => onRowChange("create", { $type: dateType.CREATE })
+      },
+      { title: "删除", fn: item => onRowChange("delete", item) }
+    ]
+  };
   return (
     <MTable
       {...extendProps}

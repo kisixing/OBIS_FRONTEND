@@ -245,7 +245,7 @@ class FormItem extends Component {
               <span className="colorRed">*</span>
             ) : null}
             <span dangerouslySetInnerHTML={{ __html: label }}></span>
-            <span>:&nbsp;</span>
+            <span className="colon">:</span>
           </div>
         ) : null}
         <div className="form-content">

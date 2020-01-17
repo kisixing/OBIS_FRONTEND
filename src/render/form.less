@@ -14,12 +14,20 @@
 }
 
 .form-item {
-  .form-label{
+  .form-label {
+    position: relative;
     display: inline-block;
-    width: 90px;
+    width: 92px;
+    padding-right: 10px;
     text-align: right;
+
+    .colon {
+      position: absolute;
+      right: 4px;
+      bottom: 2px;
+    }
   }
-  .form-content{
+  .form-content {
     position: relative;
     display: inline-block;
     >* {
@@ -55,7 +63,7 @@
   .inputxxx{
     border: none ;
   }
-  .ant-checkbox-wrapper{
+  .ant-checkbox-wrapper {
     // color: #d3d3d3;
   }
   .checkinput {
@@ -68,7 +76,12 @@
   .checkinput,
   .ant-select-selection {
     // color: #ff3300;
+    height: 100%;
     border: 1px solid #ff3300 !important;
+
+    & > div {
+      height: 100%;
+    }
   }
 }
 .form-warn {
@@ -136,6 +149,8 @@
   }
   .ant-checkbox-wrapper {
     margin-right: 12px;
+    padding-top: 2px;
+    font-size: initial;
 
     .ant-checkbox {
       line-height: initial;

@@ -6,7 +6,7 @@
   /* 顶部对齐 */
   .form-item {
     & > div {
-      vertical-align:top;
+      // vertical-align: top;
     }
   }
   .benyunqingkuang{
@@ -146,10 +146,22 @@
   }
 }
 
-.form-item .form-label {
-  height: 30px;
-  line-height: 30px;
-  vertical-align: top;
+.form-item {
+  .form-label {
+    height: 32px;
+    line-height: 30px;
+    vertical-align: top;
+    // border: 1px solid #999;
+  }
+
+  .form-content {
+    height: 32px;
+    // border: 1px solid #999;
+
+    & > div {
+      height: 100%;
+    }
+  }
 }
 
 .phar-modal {

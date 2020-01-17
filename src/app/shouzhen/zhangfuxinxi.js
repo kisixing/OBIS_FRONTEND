@@ -63,8 +63,8 @@ export default class extends Component {
               className: "h_26",
               span: 6,
               type: [
-                { type: "select", options: baseData.jiuOptions },
-                { type: "input", filter: data => !data || isMY(data[0]) }
+                { type: "select", options: baseData.jiuOptions, span: 15 },
+                { type: "input", span: 8, filter: data => !data || isMY(data[0]) }
               ]
             },
             { name: "userhjib[现有何病]", type: "input", span: 12 }
