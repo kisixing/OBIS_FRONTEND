@@ -22,7 +22,7 @@ export default class extends Component {
           columns: [
             { span: 2 },
             {
-              name: "ADD_FIELD_symptom[主@诉]",
+              name: "add_FIELD_symptom[主@诉]",
               type: "input",
               valid: "required",
               span: 18

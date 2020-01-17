@@ -16,4 +16,11 @@ export default {
     return this.userId().then(r => myAxios.get(`/outpatientRestful/getbmi?id=${r.object.userid}`));
   },
 
+  /**
+   * 获取妊娠数据曲线数据
+   */
+  getPreg: function(){
+    return this.userId().then(r => myAxios.get(`/outpatientRestful/getPreg?userid=${r.object.userid}`));
+  },
+
 }

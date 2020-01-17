@@ -157,7 +157,7 @@ export default {
     /**
      * 获取入院登记表
      */
-    getRecordList: function(params){
+    getRecordList: function(){
         return this.userId().then(r => myAxios.get(`/hospitalization/registerRecord?docid=${r.object.userid}`));
     },
 
@@ -165,6 +165,6 @@ export default {
      * 更新入院登记表
      */
     postRecordList: function(entity){
-        return this.userId().then(r => myAxios.post('/hospitalization/specialtyRecordList', entity));
+        return this.userId().then(r => myAxios.post('/hospitalization/registerRecord', entity));
     },
 }

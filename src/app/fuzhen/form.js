@@ -40,6 +40,7 @@ export default class FuzhenForm extends Component {
       modalState: {},
       getPacsGrowth: {},
       getbmi: [],
+      yunz: '孕20+6周',
     }
 
     this.renderChart = renderChart();
@@ -54,12 +55,6 @@ export default class FuzhenForm extends Component {
     // service.fuzhen.getbmi().then(res => this.setState({
     //   getbmi: res.list
     // }));
-  }
-
-  componentDidMount() {
-    service.fuzhen.getRecordList().then(res => {
-      this.setState({regFormEntity: res.object})
-    })
   }
 
   // componentWillReceiveProps(props) {
@@ -385,6 +380,7 @@ export default class FuzhenForm extends Component {
 
   // 入院登记表单
   regFormConfig() {
+    const { yunz } = this.state;
     return {
       rows: [
         {
@@ -399,7 +395,7 @@ export default class FuzhenForm extends Component {
           columns: [
             { name: 'dept[住院科室]', type: 'select', valid: 'required', span: 6, options: baseData.zyksOptions },
             { span: 1 },
-            { name: 'dateHos[入院日期]((孕20+5周))', type: 'date', valid: 'required', span: 6 },
+            { name: `dateHos[入院日期]((${yunz}))`, type: 'date', valid: 'required', span: 7 },
           ]
         },
         {   
@@ -525,8 +521,8 @@ export default class FuzhenForm extends Component {
           this.state.openYCQ = ()=>{};
         break;
         case 'nextRvisit':
-          value[0]&&value[0].label === '入院' ? this.setState({isShowRegForm: true}) : null;
-          value[1]&&value[1].value !== "" ? data[name][2]=util.futureDate(value[1].value) : data[name][2]="";
+          value[0]&&value[0].label === '入院' ? this.openRegform() : null;
+          value[1]&&value[1].value !== "" ? data[name][2]=util.futureDate(value[1].value) : null;
         break;
     }
     this.setState({
@@ -678,24 +674,59 @@ export default class FuzhenForm extends Component {
     })
   }
 
+  openRegform() {
+    service.fuzhen.getRecordList().then(res => {
+      let data = res.object;
+      data['birthAddrCity'] = JSON.parse(data['birthAddrCity']);
+      data['birthAddrProvince'] = JSON.parse(data['birthAddrProvince']);
+      data['dept'] = JSON.parse(data['dept']);
+      data['ecRelative'] = JSON.parse(data['ecRelative']);
+      data['hospitalized'] = JSON.parse(data['hospitalized']);
+      data['idcardSource'] = JSON.parse(data['idcardSource']);
+      data['marriage'] = JSON.parse(data['marriage']);
+      data['occupation'] = JSON.parse(data['occupation']);
+      this.setState({regFormEntity: data}, () => {
+        this.setState({isShowRegForm: true})
+      })
+    })
+  }
+
   // 入院登记表
   showRegForm() {
-    const { regFormEntity, isShowRegForm } = this.state;
-    const handleClick = (item) => { this.setState({isShowRegForm: false})};
+    const { entity, regFormEntity, isShowRegForm } = this.state;
+    const handleClick = () => { this.setState({isShowRegForm: false})};
     const handleRegChange = (e, { name, value, valid }) => {
-      console.log(name, value, '12444')
-      const data = {[name]: value};
+      let data = {[name]: value};
+      if(name === "dateHos") {
+        entity.nextRvisit[2] = value;
+        let rvisitData = {'nextRvisit': entity.nextRvisit};
+        this.setState({
+          entity: {...entity, ...rvisitData}
+        })
+      }
+      if(typeof value !== "string") {
+        value = JSON.stringify(value);
+        data = {[name]: value};
+      }
       this.setState({
         regFormEntity: {...regFormEntity, ...data}
-      }, () => {
-        console.log(regFormEntity, '1234')
       })
     }
     const handleRegSave = (form) => {
+      let newRegFormEntity = regFormEntity;
+      Object.keys(newRegFormEntity).forEach(key => {
+        newRegFormEntity[key] = typeof newRegFormEntity[key] === "string" ? newRegFormEntity[key] : JSON.stringify(newRegFormEntity[key]);
+      })
+      const hospitalized = newRegFormEntity.hospitalized;
+      if(hospitalized && JSON.parse(hospitalized)[0].label === "是" && JSON.parse(hospitalized)[0].value !== "") {
+        newRegFormEntity.inpatientNo = JSON.parse(newRegFormEntity.hospitalized)[0].value.input0;
+      }
+      
       fireForm(form, 'valid').then((valid) => {
         if(valid) {
-          service.fuzhen.postRecordList(regFormEntity).then(() => {
+          service.fuzhen.postRecordList(newRegFormEntity).then(() => {
             this.setState({regFormEntity: {...baseData.regFormEntity}})
+            this.setState({isShowRegForm: false})
           })
         }else {
           message.error('必填项不能为空!');
