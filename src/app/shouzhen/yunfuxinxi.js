@@ -7,6 +7,7 @@ import options from '../../utils/cascader-address-options';
 export default class extends Component {
   static Title = '孕妇信息';
   static entityParse(obj = {}) {
+    console.log('object')
     return {
       ...obj.gravidaInfo,
       useridtype: JSON.parse(obj.gravidaInfo.useridtype)
@@ -108,51 +109,53 @@ export default class extends Component {
             }
           ]
         },
-        {
-          columns: [
-            {
-              name: "userconstant[户口地址]",
-              type: "input",
-              span: 11,
-              valid: "required"
-            },
-            { span: 1 },
-            {
-              name: "useraddress[现住地址]",
-              type: "input",
-              span: 11,
-              valid: "required"
-            },
-            { span: 1 }
-          ]
-        },
         // {
         //   columns: [
         //     {
-        //       name: "root[户口地址]",
-        //       className: "h_26",
+        //       name: "userconstant[户口地址]",
+        //       type: "input",
         //       span: 11,
-        //       type: [
-        //         { type: "cascader", options: options },
-        //         { type: "input", valid: "required" }
-        //       ]
+        //       valid: "required"
         //     },
         //     { span: 1 },
         //     {
-        //       name: "address[现居地址]",
-        //       className: "h_26",
+        //       name: "useraddress[现住地址]",
+        //       type: "input",
         //       span: 11,
-        //       type: [
-        //         { type: "cascader", options: options },
-        //         { type: "input", valid: "required" }
-        //       ]
+        //       valid: "required"
         //     },
         //     { span: 1 }
         //   ]
         // },
         {
           columns: [
-            { name: 'add_field_readdress[产休地址]', type: 'input', span: 11, valid: 'required'},
+            {
+              name: "root[户口地址]",
+              className: "h_26",
+              span: 11,
+              valid: "required",
+              type: [
+                { type: "cascader", options: options },
+                { type: "input" }
+              ]
+            },
+            { span: 1 },
+            {
+              name: "address[现居地址]",
+              className: "h_26",
+              span: 11,
+              valid: "required",
+              type: [
+                { type: "cascader", options: options },
+                { type: "input", }
+              ]
+            },
+            { span: 1 }
+          ]
+        },
+        {
+          columns: [
+            { name: 'add_FIELD_readdress[产休地址]', type: 'input', span: 11, valid: 'required'},
           ]
         }
       ]
