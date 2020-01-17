@@ -71,16 +71,24 @@ export default class Patient extends Component {
                     }
                     console.log("78787878", tab.entity["address"]);
                 } else if (tab.key === 'tab-1') {
-                    tab.entity = res.object.husbandInfo
-                    let type = tab.entity['add_FIELD_husband_drink_type'] ? JSON.parse(tab.entity['add_FIELD_husband_drink_type']) : '';
+                    tab.entity = res.object.husbandInfo;
+                    let t = tab.entity["add_FIELD_husband_drink_type"];
+                    let type = "";
+                    if (t && t.indexOf('{') !== -1) {
+                      type = JSON.parse(tab.entity["add_FIELD_husband_drink"]);
+                    } else {
+                      type = t;
+                    }
+
+                    // let type = tab.entity['add_FIELD_husband_drink_type'] ? JSON.parse(tab.entity['add_FIELD_husband_drink_type']) : '';
                     let drink = tab.entity['add_FIELD_husband_drink'] ? JSON.parse(tab.entity['add_FIELD_husband_drink']) : ''
                     tab.entity['add_FIELD_husband_drink_data'] = { 0: type, 1: drink }
                     tab.entity['add_FIELD_husband_useridtype'] = JSON.parse(res.object.husbandInfo.add_FIELD_husband_useridtype);
-                    console.log(tab.entity);
+                    // console.log(tab.entity);
                 } else if (tab.key === 'tab-2') {
                     tab.entity = res.object.pregnantInfo
                     tab.entity['ckyibzhzh'] = JSON.parse(tab.entity.ckyibzhzh);
-                    console.log(tab.entity);
+                    // console.log(tab.entity);
                 } else if (tab.key === 'tab-3'){
                     tab.entity = res.object.hisInfo
                     tab.entity['bsguomin'] = tab.entity.bsguomin;

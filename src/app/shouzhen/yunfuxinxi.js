@@ -126,30 +126,30 @@ export default class extends Component {
             { span: 1 }
           ]
         },
-        {
-          columns: [
-            {
-              name: "root[户口地址]",
-              className: "h_26",
-              span: 11,
-              type: [
-                { type: "cascader", options: options },
-                { type: "input", valid: "required" }
-              ]
-            },
-            { span: 1 },
-            {
-              name: "address[现居地址]",
-              className: "h_26",
-              span: 11,
-              type: [
-                { type: "cascader", options: options },
-                { type: "input", valid: "required" }
-              ]
-            },
-            { span: 1 }
-          ]
-        }, 
+        // {
+        //   columns: [
+        //     {
+        //       name: "root[户口地址]",
+        //       className: "h_26",
+        //       span: 11,
+        //       type: [
+        //         { type: "cascader", options: options },
+        //         { type: "input", valid: "required" }
+        //       ]
+        //     },
+        //     { span: 1 },
+        //     {
+        //       name: "address[现居地址]",
+        //       className: "h_26",
+        //       span: 11,
+        //       type: [
+        //         { type: "cascader", options: options },
+        //         { type: "input", valid: "required" }
+        //       ]
+        //     },
+        //     { span: 1 }
+        //   ]
+        // },
         {
           columns: [
             { name: 'add_field_readdress[产休地址]', type: 'input', span: 11, valid: 'required'},
