@@ -116,7 +116,7 @@ export default class FuzhenForm extends Component {
 
       signItem.length>0 && signItem.map(item => {
         if (searchObj['signWord'].includes(item)) bool = true;
-      })   
+      })
       return bool;
     }
 
@@ -132,14 +132,14 @@ export default class FuzhenForm extends Component {
         //   columns: [
         //     { name: 'checkdate[日期]', type: 'date', span: 6 },
         //     { name: 'ckweek(周)[孕周]', type: 'input', span: 4, onClick:this.handleYz.bind(this) },
-        //     { 
+        //     {
         //       span: 8,
         //       columns:[
         //         { name: 'cktizh(kg)[体重]', type: 'input', span: 16, valid: 'number|rang(40,100)' },
         //         { type:  'button', span: 8, text: '体重曲线', color:'#1890ff', size:'small', onClick:this.renderQX.bind(this)}
-        //       ] 
+        //       ]
         //     },
-        //     { 
+        //     {
         //       name: 'ckpressure(mmHg)[血压]', type: [{type: 'input(/)'},{type: 'input'}], span: 6, valid: (value)=>{
         //       let message = '';
         //       if(value){
@@ -149,23 +149,23 @@ export default class FuzhenForm extends Component {
         //           message += '第2个值' + valid('number|rang(0,140)',value[1])
         //         }
         //       }
-              
+
         //       return message;
         //     }},
         //   ]
         // },
-        // {   
+        // {
         //   columns:[
         //     { name: 'ckzijzhz[自觉症状]', type:'select', showSearch:true, span: 12, options: baseData.ckzijzhzOptions }
         //   ]
         // },
         {
           columns: [
-            // { 
+            // {
             //   span: 6, columns:[
             //     { name: 'ckgongg(cm)[宫高]', type: 'input', span: 16 },
             //     { type:  'button', span: 8, text: '生长曲线', color:'#1890ff', size:'small', onClick:this.renderQX.bind(this)}
-            //   ] 
+            //   ]
             // },
             // {
             //   span: 6, filter:()=>check('twins')||check('multiple'), columns:[
@@ -192,7 +192,7 @@ export default class FuzhenForm extends Component {
                           { span: 1 },
                           {
                             name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
-                            filter: entity => entity.fetalCondition.length !== 1&&check('multiple'), 
+                            filter: entity => entity.fetalCondition.length !== 1&&check('multiple'),
                             onClick: (e, text, resolve) => {
                               Modal.confirm({
                                 title: '您是否确认要删除改记录',
@@ -225,7 +225,7 @@ export default class FuzhenForm extends Component {
                   { span: 1 },
                   {
                     name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
-                    filter: entity => entity.fetalUltrasound.length !== 1&&check('multiple'), 
+                    filter: entity => entity.fetalUltrasound.length !== 1&&check('multiple'),
                     onClick: (e, text, resolve) => {
                       Modal.confirm({
                         title: '您是否确认要删除改记录',
@@ -277,7 +277,7 @@ export default class FuzhenForm extends Component {
                       { span: 1 },
                       {
                         name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
-                        filter: entity => entity.medicationPlan.length !== 1, 
+                        filter: entity => entity.medicationPlan.length !== 1,
                         onClick: (e, text, resolve) => {
                           Modal.confirm({
                             title: '您是否确认要删除改记录',
@@ -293,7 +293,7 @@ export default class FuzhenForm extends Component {
                     ]
                   }
                 ]
-              })  
+              })
             },
           ]
         },
@@ -302,7 +302,7 @@ export default class FuzhenForm extends Component {
             {
               columns: [
                 { name: 'heartRate(次/分)[心率]', type: 'input', span: 6 },
-                { 
+                {
                   label: '用药方案', name: 'medicationPlan', span: 18,  groups: index => ({
                     rows: [
                       {
@@ -313,7 +313,7 @@ export default class FuzhenForm extends Component {
                           { span: 1 },
                           {
                             name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
-                            filter: entity => entity.medicationPlan.length !== 1, 
+                            filter: entity => entity.medicationPlan.length !== 1,
                             onClick: (e, text, resolve) => {
                               Modal.confirm({
                                 title: '您是否确认要删除改记录',
@@ -329,7 +329,7 @@ export default class FuzhenForm extends Component {
                         ]
                       }
                     ]
-                  })  
+                  })
                 }
               ]
             },
@@ -353,8 +353,8 @@ export default class FuzhenForm extends Component {
         },
         {
           columns:[
-            { 
-              name: 'nextRvisit[下次复诊]', valid: 'required', span: 16, type: [          
+            {
+              name: 'nextRvisit[下次复诊]', valid: 'required', span: 16, type: [
                 {type:'select', valid: 'required', showSearch:true, options: baseData.rvisitOsTypeOptions},
                 {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
                 {type: 'date', valid: 'required'},
@@ -362,7 +362,7 @@ export default class FuzhenForm extends Component {
               ]
             }
           ]
-        } 
+        }
       ]
     }
   }
@@ -398,76 +398,76 @@ export default class FuzhenForm extends Component {
             { name: `dateHos[入院日期]((${yunz}))`, type: 'date', valid: 'required', span: 7 },
           ]
         },
-        {   
+        {
           columns:[
             { name: 'note[特殊备注]', type: 'textarea', span: 12, placeholder: "请输入备注" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'hospitalized[是否曾在我院住院]', className: 'long-label', type: 'checkinput-4', radio: true, span: 16, options: baseData.sfzyOptions }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'notionality[国籍]', type: 'input', span: 6 },
             { name: 'root[籍贯]', type: 'input', span: 6 },
             { name: 'ethnicity[民族]', type: 'input', span: 6 }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'birthAddrProvince[出生地]', type: 'select', span: 4, options: baseData.csd1Options },
             { name: 'birthAddrCity[]', type: 'select', span: 4, options: baseData.csd2Options },
             { name: 'marriage[婚姻]', type: 'checkinput', radio: true, span: 12, options: baseData.hyOptions }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'address[现住址]', type: 'input', span: 12, placeholder: "请输入" },
             { name: 'postno[邮编]', type: 'input', span: 6, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'idcardAddr[身份证地址]', type: 'input', span: 12, placeholder: "请输入" },
             { name: 'idcardPostno[邮编]', type: 'input', span: 6, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'idcardNo[身份证号码(ID)]', type: 'input', span: 10 },
             { name: 'idcardSource[来源]', className: "reg-source", type: 'checkinput', radio: true, span: 14, options: baseData.lyOptions }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'occupation[职业]', type: 'checkinput', radio: true, span: 24, options: baseData.zyOptions }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'corAddr[工作单位及地址]', className: 'long-label', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'corPostno[单位邮编]', type: 'input', span: 12, placeholder: "请输入" },
             { name: 'corTele[单位联系电话]', className: 'long-label', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'ecName[联系人姓名]', type: 'input', span: 12, placeholder: "请输入" },
             { name: 'ecTele[联系人电话]', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'ecAddr[联系人地址]', type: 'input', span: 12, placeholder: "请输入" }
           ]
         },
-        {   
+        {
           columns:[
             { name: 'ecRelative[联系人与患者关系]', className: 'long-label', type: 'checkinput', radio: true, span: 24, options: baseData.gxOptions }
           ]
@@ -556,7 +556,7 @@ export default class FuzhenForm extends Component {
     if(ckpressure[0]) newEntity.ckshrinkpressure = ckpressure[0];
     if(ckpressure[1]) newEntity.ckdiastolicpressure = ckpressure[1];
     // //下次复诊
-    if(newEntity.nextRvisit[0]) newEntity.rvisitOsType = newEntity.nextRvisit[0].describe;  
+    if(newEntity.nextRvisit[0]) newEntity.rvisitOsType = newEntity.nextRvisit[0].describe;
     if(newEntity.nextRvisit[2]) newEntity.ckappointment = newEntity.nextRvisit[2];
     if(newEntity.nextRvisit[3]) newEntity.ckappointmentArea = newEntity.nextRvisit[3].describe;
     // //胰岛素方案
@@ -609,7 +609,7 @@ export default class FuzhenForm extends Component {
     );
   }
 
-  
+
   /**
    *预约窗口
    */
@@ -625,7 +625,7 @@ export default class FuzhenForm extends Component {
     return (openYy ?
       <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
               visible={openYy} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
-        <span>{modalState.title}: </span>    
+        <span>{modalState.title}: </span>
         <Select defaultValue={modalState.options[0]} style={{ width: 120 }}>
           {modalState.options.map((item) => (
             <Option value={item}>{item}</Option>
@@ -652,7 +652,7 @@ export default class FuzhenForm extends Component {
         modal({
           title: text,
           className: "canvasContent",
-          content:[<canvas id={canvas} style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>, 
+          content:[<canvas id={canvas} style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>,
                   // <canvas id={canvas2} className="z3" style={{height: 450, width: '40%'}}><p>Your browserdoes not support the canvas element.</p></canvas>,
                   <canvas style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>],
           footer:'',
@@ -669,7 +669,7 @@ export default class FuzhenForm extends Component {
           }
         );
       } else {
-        
+
       }
     })
   }
@@ -721,7 +721,7 @@ export default class FuzhenForm extends Component {
       if(hospitalized && JSON.parse(hospitalized)[0].label === "是" && JSON.parse(hospitalized)[0].value !== "") {
         newRegFormEntity.inpatientNo = JSON.parse(newRegFormEntity.hospitalized)[0].value.input0;
       }
-      
+
       fireForm(form, 'valid').then((valid) => {
         if(valid) {
           service.fuzhen.postRecordList(newRegFormEntity).then(() => {
@@ -802,15 +802,34 @@ export default class FuzhenForm extends Component {
       <div className="fuzhen-form">
         <strong className="fuzhen-form-TIT">本次产检记录</strong>
         {formRender(entity, this.formConfig(), this.handleChange.bind(this))}
-        <Button className="pull-right blue-btn bottom-btn save-btn" type="ghost" onClick={() => this.handleSave(document.querySelector('.fuzhen-form'))}>保存</Button>
-        <Button className="pull-right blue-btn bottom-btn" type="ghost" onClick={() => this.handleSave(document.querySelector('.fuzhen-form'), "open")}>保存并开立医嘱</Button>
+        <div style={{ minHeight: '32px', textAlign: 'right' }}>
+          <Button
+            className="blue-btn"
+            type="ghost"
+            style={{ marginRight: '12px' }}
+            onClick={() =>
+              this.handleSave(document.querySelector(".fuzhen-form"))
+            }
+          >
+            保存
+          </Button>
+          <Button
+            className="blue-btn"
+            type="ghost"
+            onClick={() =>
+              this.handleSave(document.querySelector(".fuzhen-form"), "open")
+            }
+          >
+            保存并开立医嘱
+          </Button>
+        </div>
         {/* {this.renderQX()} */}
         {this.renderTreatment()}
         {this.renderYCQ()}
         {this.renderModal()}
         {this.showRegForm()}
-      </div> 
-    )
+      </div>
+    );
   }
 }
 

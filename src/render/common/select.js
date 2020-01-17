@@ -22,7 +22,6 @@ export function select({
       onBlur({ checkedChange: true })
     );
   };
-  console.log('444444444444', style)
   return (
     <Select
       {...props}
