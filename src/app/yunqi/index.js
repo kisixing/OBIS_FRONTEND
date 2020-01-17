@@ -8,24 +8,29 @@ export default class Patient extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bmiDashLine1: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 11.5 }],
-      bmiDashLine2: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 3 }, { 'x': 39, 'y': 16 }],
+      bmiDashLine1: [{ 'week': 0, 'tizhong': 0 }, { 'week': 12, 'tizhong': 1.5 }, { 'week': 39, 'tizhong': 11.5 }],
+      bmiDashLine2: [{ 'week': 0, 'tizhong': 0 }, { 'week': 12, 'tizhong': 3 }, { 'week': 39, 'tizhong': 16 }],
 
-      pregSolidLine1: [{ 'x': 1, 'y': 0 }, { 'x': 3, 'y': 1 }, { 'x': 5, 'y': 3 }, { 'x': 7, 'y': 4.5 }, { 'x': 9, 'y': 6 },
-                      { 'x': 11, 'y': 7 }, { 'x': 13, 'y': 8.5 }, { 'x': 15, 'y': 10.5 }, { 'x': 17, 'y': 12.5 }, { 'x': 19, 'y': 13.5 },
-                      { 'x': 21, 'y': 15 }, { 'x': 23, 'y': 16 }, { 'x': 25, 'y': 17.5 }, { 'x': 27, 'y': 17 }],
+      pregSolidLine1: [{ 'week': 1, 'gonggao': 0 }, { 'week': 3, 'gonggao': 1 }, { 'week': 5, 'gonggao': 3 }, { 'week': 7, 'gonggao': 4.5 }, { 'week': 9, 'gonggao': 6 },
+                      { 'week': 11, 'gonggao': 7 }, { 'week': 13, 'gonggao': 8.5 }, { 'week': 15, 'gonggao': 10.5 }, { 'week': 17, 'gonggao': 12.5 }, { 'week': 19, 'gonggao': 13.5 },
+                      { 'week': 21, 'gonggao': 15 }, { 'week': 23, 'gonggao': 16 }, { 'week': 25, 'gonggao': 17.5 }, { 'week': 27, 'gonggao': 17 }],
 
-      pregDashLine1: [{ 'x': 1, 'y': 1.5 }, { 'x': 3, 'y': 2.5 }, { 'x': 5, 'y': 4.5 }, { 'x': 7, 'y': 6 }, { 'x': 9, 'y': 7.5 },
-                      { 'x': 11, 'y': 8.5 }, { 'x': 13, 'y': 10 }, { 'x': 15, 'y': 12.5 }, { 'x': 17, 'y': 14.5 }, { 'x': 19, 'y': 14.5 },
-                      { 'x': 21, 'y': 16 }, { 'x': 23, 'y': 17.5 }, { 'x': 25, 'y': 18.5 }, { 'x': 26, 'y': 18 }, { 'x': 27, 'y': 17.5 }],
+      pregDashLine1: [{ 'week': 1, 'gonggao': 1.5 }, { 'week': 3, 'gonggao': 2.5 }, { 'week': 5, 'gonggao': 4.5 }, { 'week': 7, 'gonggao': 6 }, { 'week': 9, 'gonggao': 7.5 },
+                      { 'week': 11, 'gonggao': 8.5 }, { 'week': 13, 'gonggao': 10 }, { 'week': 15, 'gonggao': 12.5 }, { 'week': 17, 'gonggao': 14.5 }, { 'week': 19, 'gonggao': 14.5 },
+                      { 'week': 21, 'gonggao': 16 }, { 'week': 23, 'gonggao': 17.5 }, { 'week': 25, 'gonggao': 18.5 }, { 'week': 26, 'gonggao': 18 }, { 'week': 27, 'gonggao': 17.5 }],
 
-      pregSolidLine2: [{ 'x': 1, 'y': 7 },{ 'x': 2, 'y': 8 }, { 'x': 3, 'y': 8 }, { 'x': 5, 'y': 10 }, { 'x': 7, 'y': 11.5 }, { 'x': 9, 'y': 13.5 },
-                      { 'x': 11, 'y': 15 }, { 'x': 13, 'y': 16.5 }, { 'x': 15, 'y': 18 }, { 'x': 17, 'y': 19.5 }, { 'x': 19, 'y': 20.5 },
-                      { 'x': 21, 'y': 21.5 }, { 'x': 23, 'y': 22.5 }, { 'x': 25, 'y': 23.5 }, { 'x': 26, 'y': 23 }, { 'x': 27, 'y': 23 }],
+      pregSolidLine2: [{ 'week': 1, 'gonggao': 7 },{ 'week': 2, 'gonggao': 8 }, { 'week': 3, 'gonggao': 8 }, { 'week': 5, 'gonggao': 10 }, { 'week': 7, 'gonggao': 11.5 }, { 'week': 9, 'gonggao': 13.5 },
+                      { 'week': 11, 'gonggao': 15 }, { 'week': 13, 'gonggao': 16.5 }, { 'week': 15, 'gonggao': 18 }, { 'week': 17, 'gonggao': 19.5 }, { 'week': 19, 'gonggao': 20.5 },
+                      { 'week': 21, 'gonggao': 21.5 }, { 'week': 23, 'gonggao': 22.5 }, { 'week': 25, 'gonggao': 23.5 }, { 'week': 26, 'gonggao': 23 }, { 'week': 27, 'gonggao': 23 }],
 
-      pregDashLine2: [{ 'x': 1, 'y': 5.5 },{ 'x': 2, 'y': 7 }, { 'x': 3, 'y': 7 }, { 'x': 5, 'y': 8.5 }, { 'x': 7, 'y': 10 }, { 'x': 9, 'y': 12 },
-                      { 'x': 11, 'y': 13.5 }, { 'x': 13, 'y': 15 }, { 'x': 15, 'y': 16.5 }, { 'x': 17, 'y': 18.5 }, { 'x': 19, 'y': 19 },
-                      { 'x': 21, 'y': 20.5 }, { 'x': 23, 'y': 21 }, { 'x': 25, 'y': 22.5 }, { 'x': 26, 'y': 22 }, { 'x': 27, 'y': 22 }],
+      pregDashLine2: [{ 'week': 1, 'gonggao': 5.5 },{ 'week': 2, 'gonggao': 7 }, { 'week': 3, 'gonggao': 7 }, { 'week': 5, 'gonggao': 8.5 }, { 'week': 7, 'gonggao': 10 }, { 'week': 9, 'gonggao': 12 },
+                      { 'week': 11, 'gonggao': 13.5 }, { 'week': 13, 'gonggao': 15 }, { 'week': 15, 'gonggao': 16.5 }, { 'week': 17, 'gonggao': 18.5 }, { 'week': 19, 'gonggao': 19 },
+                      { 'week': 21, 'gonggao': 20.5 }, { 'week': 23, 'gonggao': 21 }, { 'week': 25, 'gonggao': 22.5 }, { 'week': 26, 'gonggao': 22 }, { 'week': 27, 'gonggao': 22 }],
+
+      bmiNum: '',
+      bmiTz: '',
+      bmiList: [],
+      pregList: [],
     };
   }
 
@@ -34,6 +39,20 @@ export default class Patient extends Component {
       demodata = res.object;
       drawgrid('canvas');
     });
+
+    service.yunqi.getPreg().then(res => {
+      this.setState({pregList: res.object}, () => {
+        this.drawPregCanvas();
+      })
+    })
+
+    service.yunqi.getbmi().then(res => {
+      this.setState({
+        bmiNum: res.object.bmi,
+        bmiTz: res.object.cktizh,
+        bmiList: res.object.list
+      }, () => { this.drawBmiCanvas() })
+    })
 
     this.drawPregCanvas();
     this.drawBmiCanvas();
@@ -74,24 +93,24 @@ export default class Patient extends Component {
   }
 
   //绘制曲线
-  drawScaleLine(ctx, oringin, steps, data, color, shape) {
+  drawScaleLine(ctx, oringin, steps, data, params, color, shape) {
     for (let i = 0; i < data.length; i++) {
 
       ctx.beginPath();
       ctx.setLineDash([]);
-      ctx.arc(oringin[0] + steps[0] * data[i].x, oringin[1] - steps[1] * data[i].y, 1, 0, 2*Math.PI);
+      ctx.arc(oringin[0] + steps[0] * data[i][params[0]], oringin[1] - steps[1] * data[i][params[1]], 1, 0, 2*Math.PI);
       ctx.strokeStyle = 'red';
       ctx.stroke();
       
       ctx.beginPath();
       ctx.setLineDash(shape);
       if(i < data.length - 1) {
-        ctx.moveTo(oringin[0] + steps[0] * data[i].x, oringin[1] - steps[1] * data[i].y);
-        ctx.lineTo(oringin[0] + steps[0] * data[i + 1].x, oringin[1] - steps[1] * data[i + 1].y);
+        ctx.moveTo(oringin[0] + steps[0] * data[i][params[0]], oringin[1] - steps[1] * data[i][params[1]]);
+        ctx.lineTo(oringin[0] + steps[0] * data[i + 1][params[0]], oringin[1] - steps[1] * data[i + 1][params[1]]);
 
-        // ctx.quadraticCurveTo(((oringin[0] + steps[0] * data[i].x) + (oringin[0] + steps[0] * data[i + 1].x)) / 2, 
-        //                     ((oringin[1] - steps[1] * data[i].y) + (oringin[1] - steps[1] * data[i + 1].y)) / 2, 
-        //                     oringin[0] + steps[0] * data[i + 1].x, oringin[1] - steps[1] * data[i + 1].y);
+        // ctx.quadraticCurveTo(((oringin[0] + steps[0] * data[i][params[0]]) + (oringin[0] + steps[0] * data[i + 1][params[0]])) / 2, 
+        //                     ((oringin[1] - steps[1] * data[i][params[1]]) + (oringin[1] - steps[1] * data[i + 1][params[1]])) / 2, 
+        //                     oringin[0] + steps[0] * data[i + 1][params[0]], oringin[1] - steps[1] * data[i + 1][params[1]]);
       }
 
       ctx.strokeStyle = color;
@@ -100,9 +119,23 @@ export default class Patient extends Component {
   }
 
   drawPregCanvas() {
-    const { pregDashLine1, pregDashLine2, pregSolidLine1, pregSolidLine2 } = this.state;
+    const { pregDashLine1, pregDashLine2, pregSolidLine1, pregSolidLine2, pregList } = this.state;
 
-    
+    const resetItem = (item) => {
+      if(item.week.indexOf('+') !== -1) {
+        let arr = item.week.split('+');
+        item.week = parseInt(arr[0]) + parseInt(arr[1]) / 7;
+      }
+      item.week = item.week - 15;
+      item.gonggao = item.gonggao - 12;
+      return item;
+    }
+
+    let newPregData = pregList.filter(i => i.week >= 15 && i.week <= 42 && i.gonggao >= 12 && i.gonggao <= 41);
+    newPregData && newPregData.map((item) => {
+      item = resetItem(item);
+    })
+  
     const canvas = document.getElementById('pregCanvas');
     const context = canvas.getContext("2d");
     canvas.width = '700';
@@ -152,14 +185,29 @@ export default class Patient extends Component {
     this.setVerRules(context, [baseLeft, baseTop + 450], 540, 'black', 1, 20, 5);
     this.setHorRules(context, [baseLeft, baseTop + 450], 450, 'black', 1, 15, 5);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregDashLine1, '#607b8b', [3]);
-    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregDashLine2, '#607b8b', [3]);
-    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregSolidLine1, '#607b8b', []);
-    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregSolidLine2, '#607b8b', []);
+    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregDashLine1, ["week", "gonggao"], '#607b8b', [3]);
+    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregDashLine2, ["week", "gonggao"], '#607b8b', [3]);
+    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregSolidLine1, ["week", "gonggao"], '#607b8b', []);
+    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregSolidLine2, ["week", "gonggao"], '#607b8b', []);
+
+    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], newPregData, ["week", "gonggao"], 'pink', []);
   }
 
   drawBmiCanvas() {
-    const { bmiDashLine1, bmiDashLine2 } = this.state;
+    const { bmiDashLine1, bmiDashLine2, bmiNum, bmiTz, bmiList } = this.state;
+    let newBmiList = JSON.parse(JSON.stringify(bmiList));
+    newBmiList && newBmiList.map((item, index) => {
+      if(index > 0) {
+        item.tizhong = item.tizhong - bmiList[index - 1].tizhong;
+      }
+      if(item.week.indexOf('+') !== -1) {
+        let arr = item.week.split('+');
+        item.week = parseInt(arr[0]) + parseInt(arr[1]) / 7;
+      }
+      item.week = item.week - 1;
+    })
+
+    newBmiList = newBmiList.filter(i => i.week >= 0 && i.week <= 39 && i.tizhong >= 0 && i.tizhong <= 20);
 
     const canvas = document.getElementById('bmiCanvas');
     const context = canvas.getContext("2d");
@@ -219,8 +267,10 @@ export default class Patient extends Component {
     this.setVerRules(context, [baseLeft, baseTop + 300], 780, 'black', 1, 20, 5);
     this.setHorRules(context, [baseLeft, baseTop + 300], 300, 'black', 1, 30, 5);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + 300],  [20, 15], bmiDashLine1, '#52aaff', [8]);
-    this.drawScaleLine(context, [baseLeft, baseTop + 300],  [20, 15], bmiDashLine2, '#52aaff', [8]);
+    this.drawScaleLine(context, [baseLeft, baseTop + 300],  [20, 15], bmiDashLine1, ["week", "tizhong"], '#52aaff', [8]);
+    this.drawScaleLine(context, [baseLeft, baseTop + 300],  [20, 15], bmiDashLine2, ["week", "tizhong"], '#52aaff', [8]);
+
+    this.drawScaleLine(context, [baseLeft, baseTop + 300],  [20, 15], newBmiList, ["week", "tizhong"], 'pink', []);
   }
 
   render() {
