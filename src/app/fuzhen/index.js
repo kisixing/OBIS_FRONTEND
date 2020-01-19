@@ -422,25 +422,74 @@ export default class Patient extends Component {
 
     let newRecentRvisit = recentRvisit;
     let newRecentRvisitAll = recentRvisitAll;
-    if (recentRvisit) resetData(newRecentRvisit);
-    if (recentRvisitAll) resetData(newRecentRvisitAll);
+    if (recentRvisit) {
+      resetData(newRecentRvisit);
+    };
+    if (recentRvisitAll) {
+      resetData(newRecentRvisitAll);
+    };
 
     const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
         {/* iseditable:({row})=>!!row, */}
-        {initTable(newRecentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable",
-            onClick: true, scroll: { x: 1100, y: 220 }, iseditable:({row})=> row>recentRvisit.length-2, onRowChange: handleSaveChange })}
-        {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null}
-        <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
+        {initTable(newRecentRvisit, {
+          width: 1100,
+          size: "small",
+          pagination: false,
+          editable: true,
+          className: "fuzhenTable",
+          onClick: true,
+          scroll: { x: 1100, y: 220 },
+          iseditable: ({ row }) => row > recentRvisit.length - 2,
+          onRowChange: handleSaveChange
+        })}
+        {/* {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null} */}
+        <Modal
+          title="产检记录"
+          footer={null}
+          visible={recentRvisitShow}
+          width="100%"
+          maskClosable={true}
+          onCancel={() => this.setState({ recentRvisitShow: false })}
+        >
           <div className="table-content">
-            {initTable(newRecentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true, onRowChange: handelTableChange, tableLayout: 'fixed',
-                      pagination: { pageSize: 12, total: totalRow + 2, onChange: handlePageChange, showQuickJumper: true} })}
-            <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert('另存为PDF')}>另存为PDF</Button>
+            {initTable(newRecentRvisitAll, {
+              className: "fuzhenTable",
+              scroll: { x: 1100 },
+              editable: true,
+              onRowChange: handelTableChange,
+              tableLayout: "fixed",
+              pagination: {
+                pageSize: 12,
+                total: totalRow + 2,
+                onChange: handlePageChange,
+                showQuickJumper: true
+              }
+            })}
+            <Button
+              type="primary"
+              className="bottom-savePDF-btn"
+              size="small"
+              onClick={() => alert("另存为PDF")}
+            >
+              另存为PDF
+            </Button>
           </div>
         </Modal>
         <div className="clearfix">
-          {isShowMoreBtn ? <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button> : <br />}
+          {isShowMoreBtn ? (
+            <Button
+              size="small"
+              type="dashed"
+              className="margin-TB-mid pull-right"
+              onClick={handleMoreBtn}
+            >
+              更多产检记录
+            </Button>
+          ) : (
+            <br />
+          )}
         </div>
       </div>
     );

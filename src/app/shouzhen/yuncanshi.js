@@ -13,8 +13,16 @@ export default class extends Component{
     return {
       step: 1,
       rows: [
-        {name:'preghiss', type:'table', valid: 'required',pagination: false, editable:true, 
-         iseditable:({entity})=> entity.datagridYearMonth !== '本孕', options:baseData.pregnanciesColumns},
+        {
+          name: "preghiss",
+          type: "table",
+          valid: "required",
+          pagination: false,
+          editable: true,
+          iseditable: ({ entity }) => entity.datagridYearMonth !== "本孕",
+          options: baseData.pregnanciesColumns,
+          className: "table-wrapper"
+        }
       ]
     };
   }
@@ -22,9 +30,9 @@ export default class extends Component{
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div className="">
+      <div>
         {formRender(entity, this.config(), onChange)}
       </div>
-    )
+    );
   }
 }
