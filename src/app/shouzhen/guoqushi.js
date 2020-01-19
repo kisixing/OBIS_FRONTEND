@@ -23,8 +23,11 @@ export default class extends Component {
             { span: 2 },
             {
               name: "add_FIELD_symptom[主@诉]",
-              type: "input",
+              type: "select",
               valid: "required",
+              options: baseData.zsOptions,
+              autoInsert: true,
+              showSearch: true,
               span: 18
             }
           ]

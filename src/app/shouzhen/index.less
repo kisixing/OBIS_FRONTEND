@@ -20,6 +20,44 @@
     right: 30px;
   }
 
+  .form-item {
+    .form-label {
+      height: 32px;
+      line-height: 30px;
+      vertical-align: top;
+      // border: 1px solid #999;
+    }
+  
+    .form-content {
+      height: 32px;
+      // border: 1px solid #999;
+  
+      & > div {
+        height: 100%;
+      }
+    }
+  }
+
+    // 孕产史table样式修改
+  .table-wrapper {
+    .form-item {
+      .form-label {
+        height: 32px;
+        line-height: 30px;
+        vertical-align: top;
+        // border: 1px solid #999;
+      }
+
+      .form-content {
+        height: initial;
+        // border: 1px solid #999;
+
+        & > div {
+          height: 100%;
+        }
+      }
+    }
+  }
 }
 
 .zhuanke-group{
@@ -146,45 +184,6 @@
   }
 }
 
-.form-item {
-  .form-label {
-    height: 32px;
-    line-height: 30px;
-    vertical-align: top;
-    // border: 1px solid #999;
-  }
-
-  .form-content {
-    height: 32px;
-    // border: 1px solid #999;
-
-    & > div {
-      height: 100%;
-    }
-  }
-}
-
-// 孕产史table样式修改
-.table-wrapper {
-  .form-item {
-    .form-label {
-      height: 32px;
-      line-height: 30px;
-      vertical-align: top;
-      // border: 1px solid #999;
-    }
-
-    .form-content {
-      height: initial;
-      // border: 1px solid #999;
-
-      & > div {
-        height: 100%;
-      }
-    }
-  }
-}
-
 .phar-modal {
   .title {
     width: 100%;
@@ -194,5 +193,11 @@
     margin-bottom: 10px;
     background-color: #e6f7ff;
     border-bottom: 3px solid #6699ff;
+  }
+}
+
+.yun-can-shi {
+  .ant-table-small .ant-table-tbody>tr>td {
+    padding: 0;
   }
 }

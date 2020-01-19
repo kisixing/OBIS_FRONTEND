@@ -1,7 +1,7 @@
 
 import React, { Component } from "react";
 import { Row, Col, Input, Icon, Select, Button, message, Table, Modal, Spin, Tree, DatePicker } from 'antd';
-import addOptions from '../../utils/cascader-address-options';
+import addrOptions from '../../utils/cascader-address-options';
 import * as util from './util';
 import * as baseData from './data';
 import formRender, {fireForm} from '../../render/form';
@@ -55,6 +55,8 @@ export default class FuzhenForm extends Component {
     // service.fuzhen.getbmi().then(res => this.setState({
     //   getbmi: res.list
     // }));
+
+    this.getRegform();
   }
 
   // componentWillReceiveProps(props) {
@@ -417,9 +419,9 @@ export default class FuzhenForm extends Component {
         },
         {
           columns:[
-            // { name: 'birthAddrProvince[出生地]', span: 6, type: "cascader", options: addOptions },
-            { name: 'birthAddrProvince[出生地]', type: 'select', span: 4, options: baseData.csd1Options },
-            { name: 'birthAddrCity[]', type: 'select', span: 4, options: baseData.csd2Options },
+            { name: 'birthAddrProvince[出生地]', span: 12, type: [{type: "cascader", options: addrOptions}] },
+            // { name: 'birthAddrProvince[出生地]', type: 'select', span: 4, options: baseData.csd1Options },
+            // { name: 'birthAddrCity[]', type: 'select', span: 4, options: baseData.csd2Options },
             { name: 'marriage[婚姻]', type: 'checkinput', radio: true, span: 12, options: baseData.hyOptions }
           ]
         },
@@ -522,7 +524,7 @@ export default class FuzhenForm extends Component {
           this.state.openYCQ = ()=>{};
         break;
         case 'nextRvisit':
-          value[0]&&value[0].label === '入院' ? this.openRegform() : null;
+          value[0]&&value[0].label === '入院' ? this.setState({isShowRegForm: true}) : null;
           value[1]&&value[1].value !== "" ? data[name][2]=util.futureDate(value[1].value) : null;
         break;
     }
@@ -675,7 +677,7 @@ export default class FuzhenForm extends Component {
     })
   }
 
-  openRegform() {
+  getRegform() {
     service.fuzhen.getRecordList().then(res => {
       let data = res.object;
       Object.keys(data).forEach(key => {
@@ -683,17 +685,7 @@ export default class FuzhenForm extends Component {
           data[key] = JSON.parse(data[key])
         }
       })
-      // data['birthAddrCity'] = JSON.parse(data['birthAddrCity']);
-      // data['birthAddrProvince'] = JSON.parse(data['birthAddrProvince']);
-      // data['dept'] = JSON.parse(data['dept']);
-      // data['ecRelative'] = JSON.parse(data['ecRelative']);
-      // data['hospitalized'] = JSON.parse(data['hospitalized']);
-      // data['idcardSource'] = JSON.parse(data['idcardSource']);
-      // data['marriage'] = JSON.parse(data['marriage']);
-      // data['occupation'] = JSON.parse(data['occupation']);
-      this.setState({regFormEntity: data}, () => {
-        this.setState({isShowRegForm: true})
-      })
+      this.setState({regFormEntity: data})
     })
   }
 
@@ -711,10 +703,6 @@ export default class FuzhenForm extends Component {
           entity: {...entity, ...rvisitData}
         })
       }
-      if(typeof value !== "string") {
-        value = JSON.stringify(value);
-        data = {[name]: value};
-      }
       this.setState({
         regFormEntity: {...regFormEntity, ...data}
       })
@@ -728,12 +716,12 @@ export default class FuzhenForm extends Component {
       if(hospitalized && JSON.parse(hospitalized)[0].label === "是" && JSON.parse(hospitalized)[0].value !== "") {
         newRegFormEntity.inpatientNo = JSON.parse(newRegFormEntity.hospitalized)[0].value.input0;
       }
-
       fireForm(form, 'valid').then((valid) => {
         if(valid) {
           service.fuzhen.postRecordList(newRegFormEntity).then(() => {
             this.setState({regFormEntity: {...baseData.regFormEntity}})
             this.setState({isShowRegForm: false})
+            this.getRegform()
           })
         }else {
           message.error('必填项不能为空!');

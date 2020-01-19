@@ -9,6 +9,7 @@ export function select({
   onChange,
   onBlur = () => {},
   style,
+  autoInsert,
   ...props
 }) {
   const getValue = () => {
@@ -22,12 +23,20 @@ export function select({
       onBlur({ checkedChange: true })
     );
   };
+  const handleSearch = e => {
+    autoInsert ? onChange(e, e).then(() =>  {}) : null;  
+  };
+  const handleBlur = e => {
+    onBlur({ checkedChange: true })
+  };
   return (
     <Select
       {...props}
       value={getValue()}
       options={options}
       onChange={handleChange}
+      onSearch={handleSearch}
+      onBlur={handleBlur}
       style={style}
     >
       {options.map(o => (

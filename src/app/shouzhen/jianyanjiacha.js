@@ -38,12 +38,8 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'hcvAb[丙肝抗体]', type:'checkinput-5',valid: 'required', options: baseData.yywOptions,radio:true,span:15}
-          ]
-        },
-        {
-          columns:[
-            {name:'add_FIELD_hcvAb_RNA[丙肝RNA]', type:'checkinput-5', valid: 'required', options: baseData.yywOptions,radio:true,span:15}
+            {name:'hcvAb[丙肝抗体]', type:'checkinput-5',valid: 'required', options: baseData.yywOptions,radio:true,span:12},
+            {name:'add_FIELD_hcvAb_RNA[丙肝RNA]', type:'checkinput-5', valid: 'required', options: baseData.yywOptions,radio:true,span:12}
           ]
         },
         {
@@ -58,7 +54,11 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ogtt[OGTT]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.ogttOptions,span:15}
+            {name:'add_FIELD_TSH[TSH]', type:'input', span:5},
+            {span:1},
+            {name:'add_FIELD_free_t3[游离T3]', type:'input', span:5},
+            {span:1},
+            {name:'add_FIELD_free_t4[游离T4]',type:'input', span:5}
           ]
         },
         {
@@ -78,7 +78,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'add_FIELD_GBS[GBS]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:15}
+            {name:'ogtt[OGTT]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.ogttOptions,span:15}
           ]
         },
         {
@@ -88,6 +88,11 @@ export default class extends Component{
             {name:'add_FIELD_lis_mcv(fL)[MCV]',type:'input', span:5},
             {span:1},
             {name:'add_FIELD_lis_plt(x10^9/L)[PLT]', type:'input', span:5},
+          ]
+        },
+        {
+          columns:[
+            {name:'add_FIELD_GBS[GBS]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:15}
           ]
         },
         {
