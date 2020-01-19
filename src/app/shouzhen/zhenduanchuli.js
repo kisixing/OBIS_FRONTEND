@@ -88,19 +88,33 @@ export default class extends Component{
       step: 1,
       rows: [
         {
-          columns:[
-            { name: 'treatment[处理措施]', type: 'textarea', span: 8 },
-            { name:'treatment[模板]', type: 'buttons',span: 16, text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
+          columns: [
+            { name: "treatment[处理措施]", type: "textarea", span: 8, className: "table-wrapper" },
+            {
+              name: "treatment[模板]",
+              type: "buttons",
+              span: 16,
+              text:
+                "(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(#1890ff)[更多]",
+              onClick: this.handleTreatmentClick.bind(this)
+            }
           ]
         },
         {
-          columns:[
+          columns: [
             {
-              name: 'nextRvisit[下次复诊]',span: 15, type: [
-                {type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions, onclick: this.showRegForm.bind(this)},
-                {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
-                'date',
-                {type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions}
+              name: "nextRvisit[下次复诊]",
+              span: 15,
+              type: [
+                {
+                  type: "select",
+                  showSearch: true,
+                  options: baseData.rvisitOsTypeOptions,
+                  onclick: this.showRegForm.bind(this)
+                },
+                { type: "select", showSearch: true, options: baseData.nextRvisitWeekOptions },
+                "date",
+                { type: "select", showSearch: true, options: baseData.ckappointmentAreaOptions }
               ]
             }
           ]
@@ -228,7 +242,7 @@ export default class extends Component{
         }, () => {
           if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
             this.setCheckedKeys(allFormData);
-          }  
+          }
         }));
       })
     } else if (diagnosi) {
@@ -468,10 +482,10 @@ export default class extends Component{
 
   setCheckedKeys(params) {
     const { checkedKeys, templateTree1, diagnosis } = this.state;
-    const bmi = params.checkUp.ckbmi; 
-    const age = params.gravidaInfo.userage; 
-    const preghiss = params.gestation.preghiss.length;  
-    const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);  
+    const bmi = params.checkUp.ckbmi;
+    const age = params.gravidaInfo.userage;
+    const preghiss = params.gestation.preghiss.length;
+    const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);
 
     const show = () => {
       const action = showPharAction(true);
@@ -507,7 +521,7 @@ export default class extends Component{
     const { checkedKeys, templateTree1, templateTree2, isShowPharModal } = this.state;
     let newTemplateTree1 = templateTree1;
     let newTemplateTree2 = templateTree2;
- 
+
     const closeModal = (bool) => {
       const action = showPharAction(false);
       store.dispatch(action);

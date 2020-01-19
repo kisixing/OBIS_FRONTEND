@@ -14,7 +14,7 @@
  */
 
 import React, { Component } from "react";
-import { Row, Col, Button, message, Table, Modal, Spin, Tree } from 'antd';
+import { Row, Col } from 'antd';
 
 import { events, editors, valid as validFn } from './common';
 import table from './table';
@@ -25,10 +25,10 @@ import './form.less';
  *
  * 如果这个属性可能是个方法，那就取返回
  */
-function getValueFn(fn, ...args){
-  if(typeof fn === 'function'){
+function getValueFn(fn, ...args) {
+  if (typeof fn === 'function') {
     return fn(...args)
-  }else{
+  } else {
     return fn;
   }
 }
@@ -36,7 +36,12 @@ function getValueFn(fn, ...args){
 function render(type, { value, ...props }) {
   const editor = editors[type] || editors[type.replace(/(-.*)?$/, '$x')] || type;
   if (typeof editor === 'function') {
-    return editor({...props, value: value?JSON.parse(JSON.stringify(value)):value}, /-(.*)$/.test(type) && /-(.*)$/.exec(type)[1], FormItem, AddResize);
+    return editor(
+      { ...props, value: value ? JSON.parse(JSON.stringify(value)) : value },
+      /-(.*)$/.test(type) && /-(.*)$/.exec(type)[1],
+      FormItem,
+      AddResize
+    );
   }
   if (editor === 'table') {
     const { options, onChange, onBlur, ...rest } = props;
@@ -50,20 +55,26 @@ function render(type, { value, ...props }) {
           list[row] = item;
           break;
         case 'delete':
-          item.datagridYearMonth!=='本孕' ? list = list.filter(i => i !== item) : null;
+          item.datagridYearMonth !== '本孕' ? list = list.filter(i => i !== item) : null;
           break;
       }
-      onChange({}, list).then(() => onBlur({checkedChange:true}, `row-${row}`));
+      onChange({}, list).then(() =>
+        onBlur({ checkedChange: true }, `row-${row}`)
+      );
     }
     const headleChange = (e, { item, row }) => onRowChange('modify', item, row);
-    return table(options, value, { ...rest, onChange: headleChange, onRowChange });
+    return table(options, value, {
+      ...rest,
+      onChange: headleChange,
+      onRowChange
+    });
   }
   if (editor) {
     if (/^:/.test(editor)) {
       return editor.replace(/^:/, '');
     }
     if (!/^\**$/.test(editor)) {
-      return <strong>没有找到可用的编辑组件：{editor}</strong>;
+      return <em>没有找到可用的编辑组件：{editor}</em>;
     }
   }
   return null;
@@ -83,8 +94,6 @@ const AddResize = (function (fn) {
   };
 })();
 
-
-
 class FormItem extends Component {
   constructor(props) {
     super(props);
@@ -96,7 +105,7 @@ class FormItem extends Component {
     }
   }
 
-  getSplitState(name = '', entity = {}){
+  getSplitState(name = '', entity = {}) {
     const $name = getValueFn(name, entity)
     const field = $name.replace(/\(.*\)/, '').replace(/\[.*\]/, '');
 
@@ -116,7 +125,7 @@ class FormItem extends Component {
       if (formItemEditor) {
         const panelWidth = Math.min(formItem.offsetWidth, width || formItem.offsetWidth);
         const editorWidth = panelWidth - (formItemlabel.offsetWidth || 0) - (formItemUnit.offsetWidth || 0) - 4;
-        if(editorWidth>0){
+        if (editorWidth > 0) {
           formItemEditor.style.width = editorWidth + 'px';
           this.setState({
             width: editorWidth
@@ -169,7 +178,7 @@ class FormItem extends Component {
     });
   }
 
-  onBlur = ({checkedChange, ...e} = {}, target = '') => {
+  onBlur = ({ checkedChange, ...e } = {}, target = '') => {
     return new Promise(resolve => {
       const { entity, valid, onChange } = this.props;
       const { name, value } = this.state;
@@ -200,24 +209,42 @@ class FormItem extends Component {
       }));
       const enitorWidth = width - types.filter(i => i.unit).length * 16;
       if (typeof data !== 'object') {
-        return <strong>{name} 的数据应该为数组或类数组，而当前是 {data}</strong>;
+        return <em>{name} 的数据应该为数组或类数组，而当前是 {data}</em>;
       }
       return (
+        // 布局模式，可选 flex，现代浏览器下有效
         <Row type="flex">
-          {types.filter(i=>!i.filter || i.filter(data)).map((t, index) => {
-            const zoom = (t.span && t.span < 1) ? t.span : (t.span || span) / 24
-            const tWidth = enitorWidth * zoom;
-            return (
-              <Col span={t.span || span} key={`col-${name}${index}`}>
-                {render(t.type, { ...props, ...t, name: `${name}${index}`, value: data[index], style: { width: tWidth }, onChange: handleChange(index), onBlur: handleBlur(index) })}
-                {t.unit ? t.unit : null}
-              </Col>
-            )
-          })}
+          {types
+            .filter(i => !i.filter || i.filter(data))
+            .map((t, index) => {
+              const zoom = t.span && t.span < 1 ? t.span : (t.span || span) / 24;
+              const tWidth = enitorWidth * zoom;
+              return (
+                <Col span={t.span || span} key={`col-${name}${index}`}>
+                  {render(t.type, {
+                    ...props,
+                    ...t,
+                    name: `${name}${index}`,
+                    value: data[index],
+                    style: { width: tWidth },
+                    onChange: handleChange(index),
+                    onBlur: handleBlur(index)
+                  })}
+                  {t.unit ? t.unit : null}
+                </Col>
+              );
+            })}
         </Row>
-      )
+      );
     }
-    return render(type, { ...props, name, value, width, onChange: this.onChange.bind(this), onBlur: this.onBlur.bind(this) });
+    return render(type, {
+      ...props,
+      name,
+      value,
+      width,
+      onChange: this.onChange.bind(this),
+      onBlur: this.onBlur.bind(this)
+    });
   }
 
   render() {
@@ -226,7 +253,7 @@ class FormItem extends Component {
     let { label } = this.state;
     // label = type == '**' ? label : !label || label.length <=1 || label.length >=4 ?label :
     //         (label.length == 2 ?`${label.substr(0,1)}&nbsp;&nbsp;&nbsp;&nbsp;${label.substr(1,1)}` :`${label.substr(0,1)}&nbsp;${label.substr(1,1)}&nbsp;${label.substr(2,1)||''}`);
-    label = type == '**' ? label : !label ?label :label.replace(/@/g, '&nbsp;&nbsp;')
+    label = type === '**' ? label : !label ? label : label.replace(/@/g, '&nbsp;&nbsp;');
     return (
       <div
         ref="formItem"
@@ -268,10 +295,10 @@ class FormItem extends Component {
  * entity 数据
  * config 的结构
  * {
- *    children:[ //是行
+ *    children:[ // 是行
  *        {className:作用于行上, (其他属性）作用于当前编辑组件},
  *        {
- *          children: [ //是列
+ *          children: [ // 是列
  *              {className: 作用于列, span: 作用于列, (其他属性)作用于当前编辑组件}
  *          ]
  *        }
@@ -374,11 +401,16 @@ export default function (entity, config, onChange, { children, ...props } = {}) 
  */
 export function fireForm(parentNode, type) {
   return new Promise(resolve => {
-    Promise.all(Array.prototype.map.call(parentNode.querySelectorAll('.form-item'), el => el.fireReact(type))).then(function () {
-      resolve(!parentNode.querySelector('.form-error'));
-    },()=>{
-      resolve(false);
-    })
+    Promise.all(
+      Array.prototype.map.call(parentNode.querySelectorAll(".form-item"), el => el.fireReact(type))
+    ).then(
+      function() {
+        resolve(!parentNode.querySelector(".form-error"));
+      },
+      () => {
+        resolve(false);
+      }
+    );
   });
 }
 

@@ -34,41 +34,41 @@ export default class extends Component {
         },
         //kisi 2020/1/2 合并表单
         {
-          label: '个人史', span: 12, className:'labelclass'
+          label: '个人史', span: 12, className: 'labelclass'
         },
         {
           columns:[
-            { span: 1 },
+            { span: 2 },
             {name:'add_FIELD_grxiyan[吸@@烟]', type:'checkinput-5',valid: 'required', options: baseData.nhOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
-            { span: 1 },
+            { span: 2 },
             {name:'add_FIELD_gryinjiu[饮@@酒]', type:'checkinput-5', valid: 'required', options: baseData.nhOptions,radio:true,span:15}
           ]
         },
         {
           columns:[
-            { span: 1 },
+            { span: 2 },
             {name:'add_FIELD_gryouhai[接触有害物质]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
-            { span: 1 },
+            { span: 2 },
             {name:'add_FIELD_grfangshe[接触放射线]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
-        },       
+        },
         {
           columns:[
-            { span: 1 },
+            { span: 2 },
             {name:'add_FIELD_grqita[其@他]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
-            {span:1},
+            { span: 2 },
             { name: 'noneChecked2[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
           ]
         },
@@ -77,37 +77,37 @@ export default class extends Component {
         },
         {
           columns:[
-            { span: 1 },
+            { span: 2 },
             {name:'add_FIELD_jzgaoxueya[高血压]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
-            { span: 1 },
+            { span: 2 },
             {name:'add_FIELD_jztangniaobing[糖尿病]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
-        },       
+        },
         {
           columns:[
-            { span: 1 },
+            { span: 2 },
             {name:'add_FIELD_jzjixing[先天畸形]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
-            { span: 1 },
+            { span: 2 },
             {name:'add_FIELD_jzyichuanbing[遗传病]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
-            { span: 1 },
+            { span: 2 },
             {name:'add_FIELD_jzqita[其@他]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
           ]
         },
         {
           columns:[
-            {span:1},
+            { span: 2 },
             { name: 'noneChecked3[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
           ]
         },

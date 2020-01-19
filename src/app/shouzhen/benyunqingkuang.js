@@ -19,13 +19,13 @@ export default class extends Component {
             {
               name: "gesmoc[末次月经]",
               type: "date",
-              span: 5,
+              span: 6,
               valid: "required"
             },
             {
               name: "gesexpect[预产期-日期]",
               type: "date",
-              span: 5,
+              span: 6,
               valid: "required"
             },
             {
@@ -39,17 +39,17 @@ export default class extends Component {
         {
           columns: [
             {
-              name: "ckzdate[早孕 B超]",
+              name: "ckzdate[早孕-B超]",
               type: "date",
-              span: 5,
+              span: 6,
               onChange: (e, { value }) =>
                 onChange(e, {
                   name: "ckztingj",
                   value: common.countWeek(value)
                 })
             },
-            { name: "ckztingj(周)[停@经]", type: "input", span: 4 },
-            { name: "ckzweek(周)[如@孕]", type: "input", span: 4 },
+            { name: "ckztingj(周)[停@@经]", type: "input", span: 6 },
+            { name: "ckzweek(周)[如@@孕]", type: "input", span: 6 },
           ]
         },
         // {

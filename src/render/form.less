@@ -1,19 +1,23 @@
-.form-row{
+.form-row {
   margin: 10px 0;
 }
 
-.form-row,.form-column{
-  position: relative;
-  .row-label,.column-label{
-    position: absolute;
-    left: 0;
-    top: -10px;
-    font-weight: bold;
-    color: #73a1ef;
+.form-row,
+.form-column {
+  &.labelclass {
+    label {
+      display: inline-block;
+      height: 32px;
+      line-height: 32px;
+      width: 92px;
+      padding-right: 10px;
+      text-align: right;
+      font-size: 16px;
+    }
   }
 }
 
-.form-item {
+.form-item { // 73a1ef
   .form-label {
     position: relative;
     display: inline-block;
@@ -30,14 +34,17 @@
   .form-content {
     position: relative;
     display: inline-block;
-    >* {
+
+    & > * {
       display: inline-block;
     }
-    .form-unit{
+
+    .form-unit {
       font-size: 0.7em;
-      padding-left: 2px;
+      padding-left: 4px;
     }
-    .form-message{
+
+    .form-message {
       // 因为不需要显示error message，所以隐藏
       display: none;
       position: absolute;

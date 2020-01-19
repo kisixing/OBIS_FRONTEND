@@ -13,14 +13,9 @@ export default class extends Component {
     return {
       step: 1,
       rows: [
-        // {
-        //   columns:[
-        //     { name: 'bsjibing[疾病史]', type: 'checkinput', valid: 'required', unselect:'无', options: baseData.jibOptions.map(v=>({...v, label:`${v.label}(input)`})) },
-        //   ]
-        // },
         {
           columns: [
-            { span: 2 },
+            { label: "疾病史 : ", span: 2, className: "labelclass" },
             {
               name: "add_FIELD_symptom[主@诉]",
               type: "input",
@@ -28,11 +23,6 @@ export default class extends Component {
               span: 18
             }
           ]
-        },
-        {
-          label: "疾病史",
-          span: 12,
-          className: "labelclass"
         },
         {
           columns: [
