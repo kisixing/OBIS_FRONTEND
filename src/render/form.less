@@ -83,11 +83,16 @@
   .checkinput,
   .ant-select-selection {
     // color: #ff3300;
-    height: 100%;
-    border: 1px solid #ff3300 !important;
+    // height: 100%;
+    border: 1px solid #ff3300;
 
     & > div {
       height: 100%;
+
+      .ant-select-selection {
+        border: none;
+        height: initial;
+      }
     }
   }
 }
