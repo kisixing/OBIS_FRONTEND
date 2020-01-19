@@ -80,7 +80,7 @@ export default class Patient extends Component {
                     let t = tab.entity["add_FIELD_husband_drink_type"];
                     let type = "";
                     if (t && t.indexOf('{') !== -1) {
-                      type = JSON.parse(tab.entity["add_FIELD_husband_drink"]);
+                      type = JSON.parse(t);
                     } else {
                       type = t;
                     }

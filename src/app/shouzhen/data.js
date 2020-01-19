@@ -37,7 +37,7 @@ export const zjlxOptions = toOptions('身份证,护照,回乡证,台胞证,港�
 /**
  * 酒的类型
  */
-export const jiuOptions = toOptions('没有,白酒,啤酒,红酒,其他');
+export const jiuOptions = toOptions('无,白酒,啤酒,红酒,其他');
 
 /**
  * 受孕方式
@@ -551,5 +551,5 @@ export const initYCData = {
   "yiwrsh": "",
   "zaoch": "",
   "zir": "",
-  "zuych": "",  
+  "zuych": "",
 };
