@@ -1,7 +1,7 @@
 
 import React, { Component } from "react";
 import { Row, Col, Input, Icon, Select, Button, message, Table, Modal, Spin, Tree, DatePicker } from 'antd';
-
+import addOptions from '../../utils/cascader-address-options';
 import * as util from './util';
 import * as baseData from './data';
 import formRender, {fireForm} from '../../render/form';
@@ -417,6 +417,7 @@ export default class FuzhenForm extends Component {
         },
         {
           columns:[
+            // { name: 'birthAddrProvince[出生地]', span: 6, type: "cascader", options: addOptions },
             { name: 'birthAddrProvince[出生地]', type: 'select', span: 4, options: baseData.csd1Options },
             { name: 'birthAddrCity[]', type: 'select', span: 4, options: baseData.csd2Options },
             { name: 'marriage[婚姻]', type: 'checkinput', radio: true, span: 12, options: baseData.hyOptions }
@@ -677,14 +678,19 @@ export default class FuzhenForm extends Component {
   openRegform() {
     service.fuzhen.getRecordList().then(res => {
       let data = res.object;
-      data['birthAddrCity'] = JSON.parse(data['birthAddrCity']);
-      data['birthAddrProvince'] = JSON.parse(data['birthAddrProvince']);
-      data['dept'] = JSON.parse(data['dept']);
-      data['ecRelative'] = JSON.parse(data['ecRelative']);
-      data['hospitalized'] = JSON.parse(data['hospitalized']);
-      data['idcardSource'] = JSON.parse(data['idcardSource']);
-      data['marriage'] = JSON.parse(data['marriage']);
-      data['occupation'] = JSON.parse(data['occupation']);
+      Object.keys(data).forEach(key => {
+        if(typeof data[key] ==="string" && data[key].indexOf('{') !== -1) {
+          data[key] = JSON.parse(data[key])
+        }
+      })
+      // data['birthAddrCity'] = JSON.parse(data['birthAddrCity']);
+      // data['birthAddrProvince'] = JSON.parse(data['birthAddrProvince']);
+      // data['dept'] = JSON.parse(data['dept']);
+      // data['ecRelative'] = JSON.parse(data['ecRelative']);
+      // data['hospitalized'] = JSON.parse(data['hospitalized']);
+      // data['idcardSource'] = JSON.parse(data['idcardSource']);
+      // data['marriage'] = JSON.parse(data['marriage']);
+      // data['occupation'] = JSON.parse(data['occupation']);
       this.setState({regFormEntity: data}, () => {
         this.setState({isShowRegForm: true})
       })
@@ -697,6 +703,7 @@ export default class FuzhenForm extends Component {
     const handleClick = () => { this.setState({isShowRegForm: false})};
     const handleRegChange = (e, { name, value, valid }) => {
       let data = {[name]: value};
+      console.log(name, value, '123')
       if(name === "dateHos") {
         entity.nextRvisit[2] = value;
         let rvisitData = {'nextRvisit': entity.nextRvisit};
