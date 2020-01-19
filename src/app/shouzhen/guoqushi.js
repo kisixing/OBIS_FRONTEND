@@ -18,8 +18,11 @@ export default class extends Component {
             { label: "疾病史 : ", span: 2, className: "labelclass" },
             {
               name: "add_FIELD_symptom[主@诉]",
-              type: "input",
+              type: "select",
               valid: "required",
+              options: baseData.zsOptions,
+              autoInsert: true,
+              showSearch: true,
               span: 18
             }
           ]

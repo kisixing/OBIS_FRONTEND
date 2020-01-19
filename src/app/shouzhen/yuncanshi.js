@@ -30,7 +30,7 @@ export default class extends Component{
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div>
+      <div className="yun-can-shi">
         {formRender(entity, this.config(), onChange)}
       </div>
     );

@@ -83,7 +83,7 @@ export const gjtpOptions = toOptions('正常,异常,未有检查,不清楚');
  * 血制品
  */
 export const xzpOptions = toOptions([{k:'红细胞{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血小板{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血浆{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'全血{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'白蛋白{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'免疫球蛋白{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},'其他{#FF3300}','不清楚']);
-export const sxsOptions = toOptions([{k:'有{#FF3300}(shouzhenyy-时间,原因)',addspan:2}, '无']);
+export const sxsOptions = toOptions(['无', {k:'有{#FF3300}(shouzhenyy-时间,原因)',addspan:2}]);
 
 
 /**
@@ -167,15 +167,19 @@ export const hnOptions = toOptions('无,有');
 /**
  *有、无
 */
-export const nhOptions = toOptions('有(input){#FF3300},无');
+export const nhOptions = toOptions('无,有(input){#FF3300}');
 
-export const wssOptions = toOptions([{k:'有{#FF3300}(input)',addspan:2}, '无']);
+export const wssOptions = toOptions(['无', {k:'有{#FF3300}(input)',addspan:2}]);
 
 export const noneOptions = toOptions('以上皆无');
 /**
  *乳头
 */
 export const rtOptions = toOptions('凸起,凹陷');
+/**
+ *主诉
+*/
+export const zsOptions = toOptions('无不适,胎动好,无不适，胎动好');
 
 /**
  *心率
@@ -311,6 +315,7 @@ export const shoushushiColumns = [
 		key: 'hospital',
 		type: 'select',
 		showSearch: true,
+		autoInsert: true,
 		options: ssyyOptions
   },
   {
@@ -348,8 +353,8 @@ export const pregnanciesColumns = [
 			{
 				title: '清宫',
 				key: 'removalUterus',
-				type: 'checkbox',
-				holdeditor: true
+				type: 'input',
+				// holdeditor: true
 			},
 			{
 				title: '人工',
@@ -475,12 +480,14 @@ export const pregnanciesColumns = [
 		type: 'select',
 		showSearch: true,
 		options: fmyyOptions,
+		autoInsert: true,
 		width: 140
 	},
 	{
 		title: '备注',
 		key: 'xinseother',
-		type: 'input'
+		type: 'input',
+		width: 400
 	}
 ]
 
