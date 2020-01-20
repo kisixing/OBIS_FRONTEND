@@ -340,7 +340,16 @@ export default class Patient extends Component {
                     var item = entity['preghiss'].pop();
                     entity['preghiss'].splice(-1, 0, item);
                 }
-            break;
+            break; 
+            case 'treatment':
+              entity.diagnosis['diagnosisHandle'] = value;
+            break; 
+            case 'nextRvisit':
+              if(value[0]) entity.diagnosis['xiacsftype'] = value[0].describe;
+              if(value[1]) entity.diagnosis['xiacsfdate'] = value[1].label;
+              if(value[2]) entity.diagnosis['nextRvisitWeek'] = value[2];
+              if(value[3]) entity.diagnosis['xiacsfdatearea'] = value[3].label;
+            break; 
         }
         this.change = true;
 

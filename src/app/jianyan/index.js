@@ -51,6 +51,11 @@ export default class Patient extends Component {
 
     const getDetail = (id, bool) => {
       service.jianyan.getLisDetail(id, bool).then(res => this.setState({ detailData: res.object }));
+
+      service.jianyan.checkReport("已看", "", "", id, bool).then(res => {
+        service.jianyan.getLisReport().then(res => this.setState({ reportList: res.object }));
+      });
+
       if(bool) {
         this.setState({ repAmy: true, repId: id })
       } else {
@@ -66,11 +71,12 @@ export default class Patient extends Component {
               <Collapse.Panel header={item.groupTitle} key={item.id}>
                 {
                   item.data.map(subItem => (
-                    <div className="left-item" onClick={() => {subItem.isAmy ? getDetail(subItem.amyId, true) : getDetail(subItem.sampleno)}}>                   
-                      <p>{subItem.title}</p>
-                      <Button className={subItem.state==="2" ? "left-btn normal" : "left-btn"} size="small">
+                    <div className="left-item" onClick={() => {subItem.isAmy ? getDetail(subItem.amyId, true) : getDetail(subItem.sampleno)}}>    
+                      {subItem.state === "" ? <span className="left-state">新</span> : null}       
+                      <p className="left-title">{subItem.title}</p>
+                      {/* <Button className={subItem.state==="2" ? "left-btn normal" : "left-btn"} size="small">
                         {subItem.state===null ? '待审阅' : (subItem.state==='1' ? '已看' : (subItem.state==='2' ? '正常' : '异常'))}
-                      </Button>
+                      </Button> */}
                       {subItem.isAmy ? <span className="left-lable">外院</span> : null}
                     </div>
                   ))
@@ -92,11 +98,11 @@ export default class Patient extends Component {
         <div className="right-wrapper">
           <div className="right-title">
             <p><span className="right-words">{detailData.title} </span>检验报告单</p>
-            {
+            {/* {
               !isShowModal ?
               <Button className="right-btn" type="primary" size="small" onClick={() => this.setState({isShowModal: true})}>审阅</Button>
               : null
-            }
+            } */}
           </div>
           <ul className="right-msg">
             <li className="msg-item">检验单号: {detailData.sampleno}</li>
@@ -111,58 +117,58 @@ export default class Patient extends Component {
       )
     }
 
-    const renderModal = () => {
-      const {repResult, repRemarks, repSign, repId, repAmy} = this.state;
-      const handleClick = (bool) => { 
-        this.setState({isShowModal: false})
-        if(bool) {
-          service.jianyan.checkReport(repResult, repRemarks, repSign, repId, repAmy).then(res => {
-            service.jianyan.getLisReport().then(res => this.setState({ reportList: res.object }));
-          });
-          console.log(repResult, repRemarks, repSign, repId, repAmy)
-        }
-      };
+    // const renderModal = () => {
+    //   const {repResult, repRemarks, repSign, repId, repAmy} = this.state;
+    //   const handleClick = (bool) => { 
+    //     this.setState({isShowModal: false})
+    //     if(bool) {
+    //       service.jianyan.checkReport(repResult, repRemarks, repSign, repId, repAmy).then(res => {
+    //         service.jianyan.getLisReport().then(res => this.setState({ reportList: res.object }));
+    //       });
+    //       console.log(repResult, repRemarks, repSign, repId, repAmy)
+    //     }
+    //   };
 
-      const stateChange = (value) => {
-        this.setState({repResult: value})
-      }
+    //   const stateChange = (value) => {
+    //     this.setState({repResult: value})
+    //   }
 
-      const remarksChange = (e) => {
-        this.setState({repRemarks: e.target.value})
-      }
+    //   const remarksChange = (e) => {
+    //     this.setState({repRemarks: e.target.value})
+    //   }
 
-      const signChange = (e) => {
-        this.setState({repSign: e.target.value})
-      }
+    //   const signChange = (e) => {
+    //     this.setState({repSign: e.target.value})
+    //   }
 
-      const footer = [
-        <div>
-          <div className="right-modal">
-            <span className="modal-item">报告结果：   
-              <Select defaultValue="正常" style={{ width: 60 }} onChange={stateChange}>
-                <Select.Option value="2">正常</Select.Option>
-                <Select.Option value="3">异常</Select.Option>
-              </Select>
-            </span>
-            <span className="modal-item">报告备注： <Input style={{ width: 120 }} value={repRemarks} onChange={e => remarksChange(e)}/></span>
-            <span className="modal-item">医生签名： <Input style={{ width: 120 }} value={repSign} onChange={e => signChange(e)}/></span>
-          </div>
-          <Button onClick={() => handleClick()}>关闭</Button>
-          <Button type="primary" onClick={() => handleClick(true)}>保存</Button>
-        </div>
-      ];
+    //   const footer = [
+    //     <div>
+    //       <div className="right-modal">
+    //         <span className="modal-item">报告结果：   
+    //           <Select defaultValue="正常" style={{ width: 60 }} onChange={stateChange}>
+    //             <Select.Option value="2">正常</Select.Option>
+    //             <Select.Option value="3">异常</Select.Option>
+    //           </Select>
+    //         </span>
+    //         <span className="modal-item">报告备注： <Input style={{ width: 120 }} value={repRemarks} onChange={e => remarksChange(e)}/></span>
+    //         <span className="modal-item">医生签名： <Input style={{ width: 120 }} value={repSign} onChange={e => signChange(e)}/></span>
+    //       </div>
+    //       <Button onClick={() => handleClick()}>关闭</Button>
+    //       <Button type="primary" onClick={() => handleClick(true)}>保存</Button>
+    //     </div>
+    //   ];
 
-      return (
-        <Modal width="70%" visible={isShowModal} footer={footer} onCancel={() => handleClick()}>
-          {renderTable()}
-        </Modal>
-      )
-    }
+    //   return (
+    //     <Modal width="70%" visible={isShowModal} footer={footer} onCancel={() => handleClick()}>
+    //       {renderTable()}
+    //     </Modal>
+    //   )
+    // }
     
     return (
       <div className="jianyan-right ant-col-18">
         {renderTable()}
-        {renderModal()}
+        {/* {renderModal()} */}
       </div>
     )
   }

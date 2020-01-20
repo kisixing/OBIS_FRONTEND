@@ -40,11 +40,11 @@ export default class Patient extends Component {
       drawgrid('canvas');
     });
 
-    service.yunqi.getPreg().then(res => {
-      this.setState({pregList: res.object}, () => {
-        this.drawPregCanvas();
-      })
-    })
+    // service.yunqi.getPreg().then(res => {
+    //   this.setState({pregList: res.object}, () => {
+    //     this.drawPregCanvas();
+    //   })
+    // })
 
     service.yunqi.getbmi().then(res => {
       this.setState({
@@ -197,9 +197,7 @@ export default class Patient extends Component {
     const { bmiDashLine1, bmiDashLine2, bmiNum, bmiTz, bmiList } = this.state;
     let newBmiList = JSON.parse(JSON.stringify(bmiList));
     newBmiList && newBmiList.map((item, index) => {
-      if(index > 0) {
-        item.tizhong = item.tizhong - bmiList[index - 1].tizhong;
-      }
+      item.tizhong = item.tizhong - bmiTz;
       if(item.week.indexOf('+') !== -1) {
         let arr = item.week.split('+');
         item.week = parseInt(arr[0]) + parseInt(arr[1]) / 7;
@@ -207,70 +205,74 @@ export default class Patient extends Component {
       item.week = item.week - 1;
     })
 
-    newBmiList = newBmiList.filter(i => i.week >= 0 && i.week <= 39 && i.tizhong >= 0 && i.tizhong <= 20);
+    newBmiList = newBmiList.filter(i => i.week >= 0 && i.week <= 39 && i.tizhong >= -6 && i.tizhong <= 20);
 
     const canvas = document.getElementById('bmiCanvas');
     const context = canvas.getContext("2d");
-    canvas.width = '960';
-    canvas.height = '450';
-    const baseLeft = 80;
+    canvas.width = 700;
+    canvas.height = 520;
+    const baseLeft = 60;
     const baseTop = 80;
+    const xStep = 30;
+    const yStep = 15;
+    const xCount = 14;
+    const yCount = 40;
 
     context.font = 'bold 16px sans-serif';
     context.textAlign='center';
-    context.fillText('BMI孕期体重管理曲线', 450, 20);
+    context.fillText('BMI孕期体重管理曲线', canvas.width / 2, 20);
     
     context.fillStyle = '#52aaff';
     context.font = 'normal 12px sans-serif';
-    context.fillText('孕前BMI:18.5~24.9kgm2', 450, 40);
-    context.fillText('体重正常，建议增长体重增长目标11.5~16kg', 450, 55);
+    context.fillText(`孕前BMI: ${bmiNum} kg/m2`, canvas.width / 2, 40);
+    context.fillText('体重正常，建议增长体重增长目标11.5~16kg', canvas.width / 2, 55);
 
     context.fillStyle = '#000';
     //x轴线
     const setVertical = () => {
       context.strokeStyle = 'gray'; // 横轴线
-      for (var i = 0; i < 11; i++) {
+      for (var i = 0; i < xCount; i++) {
         context.beginPath();
         context.lineWidth = 0.5;
-        context.moveTo(baseLeft, baseTop + 30 * i);
-        context.lineTo(baseLeft + 780, baseTop + 30 * i);
+        context.moveTo(baseLeft, baseTop + xStep * i);
+        context.lineTo(baseLeft + (yCount - 1) * yStep, baseTop + xStep * i);
        
         context.textBaseline='middle';
-        context.fillText(i * 2, 60, 380 - i * 30);
+        context.fillText(i * 2 + (-6), baseLeft - 20, (xCount - 1) * xStep + baseTop - i * xStep);
 
         context.stroke();
       }
-      context.fillText('体重增长(kg)', 80, 55);
+      context.fillText('体重增长(kg)', baseLeft - 20, 55);
     }
 
     //y轴线
     const setHorizontal = () => {
       let count = 0;
-      for (var i = 0; i < 40; i++) {
+      for (var i = 0; i < yCount; i++) {
         count++;
         context.beginPath();
         context.lineWidth = 0.5;
-        context.moveTo(20 * i + baseLeft, baseTop);
-        context.lineTo(20 * i + baseLeft, baseTop + 300);
+        context.moveTo(yStep * i + baseLeft, baseTop);
+        context.lineTo(yStep * i + baseLeft, baseTop + xStep * (xCount - 1));
         if(count === 1 || count === 4) {
           count = count === 4 ? 1 : count;
           context.textAlign='center';
-          context.fillText(i + 1, baseLeft + i * 20, 395);
+          context.fillText(i + 1, baseLeft + i * yStep, xStep * xCount + baseTop - 15);
         }
         context.stroke();
       }
-      context.fillText('孕周(周)', 890, 380);
+      context.fillText('孕周(周)', yStep * yCount + baseLeft + 15, (xCount - 1) * xStep + baseTop);
     }
 
     setVertical();
     setHorizontal();
-    this.setVerRules(context, [baseLeft, baseTop + 300], 780, 'black', 1, 20, 5);
-    this.setHorRules(context, [baseLeft, baseTop + 300], 300, 'black', 1, 30, 5);
+    this.setVerRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (yCount - 1) * yStep, 'black', 1, yStep, 5);
+    this.setHorRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (xCount - 1) * xStep, 'black', 1, xStep, 5);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + 300],  [20, 15], bmiDashLine1, ["week", "tizhong"], '#52aaff', [8]);
-    this.drawScaleLine(context, [baseLeft, baseTop + 300],  [20, 15], bmiDashLine2, ["week", "tizhong"], '#52aaff', [8]);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine1, ["week", "tizhong"], '#52aaff', [8]);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine2, ["week", "tizhong"], '#52aaff', [8]);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + 300],  [20, 15], newBmiList, ["week", "tizhong"], 'pink', []);
+    // this.drawScaleLine(context, [baseLeft, baseTop + 300],  [15, 15], newBmiList, ["week", "tizhong"], 'pink', []);
   }
 
   render() {
@@ -279,9 +281,9 @@ export default class Patient extends Component {
         <canvas id="canvas" style={{border: "1px solid gray", marginRight: "10px"}}>
           您的浏览器不支持canvas，请更换浏览器.
         </canvas>
-        <canvas id="pregCanvas" style={{border: "1px solid gray"}}>
+        {/* <canvas id="pregCanvas" style={{border: "1px solid gray"}}>
           您的浏览器不支持canvas，请更换浏览器.
-        </canvas>
+        </canvas> */}
         <canvas id="bmiCanvas" style={{border: "1px solid gray"}}>
           您的浏览器不支持canvas，请更换浏览器.
         </canvas>
