@@ -23,7 +23,7 @@ export default class extends Component {
               options: baseData.zsOptions,
               autoInsert: true,
               showSearch: true,
-              span: 18
+              span: 15
             }
           ]
         },
