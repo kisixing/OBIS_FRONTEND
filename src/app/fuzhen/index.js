@@ -445,14 +445,7 @@ export default class Patient extends Component {
           onRowChange: handleSaveChange
         })}
         {/* {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null} */}
-        <Modal
-          title="产检记录"
-          footer={null}
-          visible={recentRvisitShow}
-          width="100%"
-          maskClosable={true}
-          onCancel={() => this.setState({ recentRvisitShow: false })}
-        >
+        <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
             {initTable(newRecentRvisitAll, {
               className: "fuzhenTable",
@@ -467,29 +460,15 @@ export default class Patient extends Component {
                 showQuickJumper: true
               }
             })}
-            <Button
-              type="primary"
-              className="bottom-savePDF-btn"
-              size="small"
-              onClick={() => alert("另存为PDF")}
-            >
+            <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert("另存为PDF")}>
               另存为PDF
             </Button>
           </div>
         </Modal>
         <div className="clearfix">
-          {isShowMoreBtn ? (
-            <Button
-              size="small"
-              type="dashed"
-              className="margin-TB-mid pull-right"
-              onClick={handleMoreBtn}
-            >
-              更多产检记录
-            </Button>
-          ) : (
-            <br />
-          )}
+          {isShowMoreBtn 
+            ? (<Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button>)
+            : ( <br />)}
         </div>
       </div>
     );
