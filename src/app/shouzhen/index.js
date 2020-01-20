@@ -258,6 +258,8 @@ export default class Patient extends Component {
                         ckjc = '';
                     }
                     tab.entity['add_FIELD_ckjc'] = (ckjc !== '' && typeof ckjc !== 'object') ? JSON.parse(ckjc) : ckjc;
+                } else if (tab.key === 'tab-9') {
+                    tab.entity = res.object.diagnosis
                 } else {
                     tab.entity = res.object;
                 }
@@ -342,13 +344,13 @@ export default class Patient extends Component {
                 }
             break; 
             case 'treatment':
-              entity.diagnosis['diagnosisHandle'] = value;
+              entity['diagnosisHandle'] = value;
             break; 
             case 'nextRvisit':
-              if(value[0]) entity.diagnosis['xiacsftype'] = value[0].describe;
-              if(value[1]) entity.diagnosis['xiacsfdate'] = value[1].label;
-              if(value[2]) entity.diagnosis['nextRvisitWeek'] = value[2];
-              if(value[3]) entity.diagnosis['xiacsfdatearea'] = value[3].label;
+              if(value[0]) entity['xiacsftype'] = value[0].describe;
+              if(value[1]) entity['xiacsfdate'] = value[1].label;
+              if(value[2]) entity['nextRvisitWeek'] = value[2];
+              if(value[3]) entity['xiacsfdatearea'] = value[3].label;
             break; 
         }
         this.change = true;

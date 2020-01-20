@@ -73,14 +73,14 @@ export default class extends Component{
         {
           columns:[
             {name:'ckjizh[脊@@@柱 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'ckfuzh[下肢水肿]', type:'checkinput', className:'col-xz-sp', valid: 'required', options: baseData.xzfOptions,radio:true,span:14},
+            {name:'nervousReflex[生理反射]', type:'checkinput-3', valid: 'required', options: baseData.slfsOptions,radio:true,span:8},
+            {name:'vascularMurmurOther[病理反射]', type:'checkinput-3', valid: 'required', options: baseData.blfsOptions,radio:true,span:8},
             // {name:'nervousReflex[双膝反射]', type:'checkinput', className:'col-97-sp', valid: 'required', options: baseData.sxfOptions,radio:true,span:9},
           ]
         },
         {
           columns:[
-            {name:'nervousReflex[生理反射]', type:'checkinput-3', valid: 'required', options: baseData.slfsOptions,radio:true,span:8},
-            {name:'vascularMurmurOther[病理反射]', type:'checkinput-3', valid: 'required', options: baseData.blfsOptions,radio:true,span:8},
+            {name:'ckfuzh[下肢水肿]', type:'checkinput', className:'col-xz-sp', valid: 'required', options: baseData.xzfOptions,radio:true,span:14},
           ]
         },
         {
