@@ -2,18 +2,14 @@
   margin: 10px 0;
 }
 
-.form-row,
-.form-column {
-  &.labelclass {
-    label {
-      display: inline-block;
-      height: 32px;
-      line-height: 32px;
-      width: 92px;
-      padding-right: 10px;
-      text-align: right;
-      font-size: 16px;
-    }
+.form-row, .form-column {
+  position: relative;
+  .row-label, .column-label {
+    position: absolute;
+    left: 0;
+    top: -10px;
+    font-weight: bold;
+    color: #73a1ef;
   }
 }
 

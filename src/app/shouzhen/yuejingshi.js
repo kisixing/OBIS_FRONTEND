@@ -34,7 +34,7 @@ export default class extends Component {
         },
         //kisi 2020/1/2 合并表单
         {
-          label: '个人史', span: 12, className: 'labelclass'
+          label: '个人史:', span: 12, className: 'labelclass'
         },
         {
           columns:[
@@ -73,7 +73,7 @@ export default class extends Component {
           ]
         },
         {
-          label: '家族史', span: 12, columns: [],className:'labelclass'
+          label: '家族史:', span: 12, columns: [],className:'labelclass'
         },
         {
           columns:[

@@ -481,7 +481,7 @@ export const pregnanciesColumns = [
 		showSearch: true,
 		options: fmyyOptions,
 		autoInsert: true,
-		width: 140
+		width: 160
 	},
 	{
 		title: '备注',

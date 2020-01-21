@@ -13,9 +13,10 @@ export default class extends Component {
     return {
       step: 1,
       rows: [
+        { label: "疾病史 : ", span: 2, className: "labelclass" },
         {
           columns: [
-            { label: "疾病史 : ", span: 2, className: "labelclass" },
+            { span: 2 },
             {
               name: "add_FIELD_symptom[主@诉]",
               type: "select",

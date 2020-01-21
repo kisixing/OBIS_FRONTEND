@@ -117,12 +117,12 @@ export function checkinput$x(
   count,
   ...args
 ) {
-  const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
-  // const optionList = unselect
-  //   ? options.concat([
-  //       { label: unselect, value: "unselect", unselect: true }
-  //     ])
-  //   : options;
+  // const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
+  const optionList = unselect
+    ? options.concat([
+        { label: unselect, value: "unselect", unselect: true }
+      ])
+    : options;
   const span = Math.floor(
     count ? 24 / count : Math.max(6, 24 / (optionList.length || 1))
   );
