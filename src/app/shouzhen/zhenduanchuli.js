@@ -6,7 +6,7 @@ import formRender, {fireForm} from '../../render/form';
 import formTable from '../../render/table';
 import * as baseData0 from './../shouzhen/data';
 import * as baseData from './../fuzhen/data';
-
+import * as util from '../fuzhen/util';
 import store from '../store';
 import { getAlertAction, showTrialAction, showPharAction, showPharCardAction} from '../store/actionCreators.js';
 
@@ -519,13 +519,27 @@ export default class extends Component{
    */
   renderPharModal() {
     const { checkedKeys, templateTree1, templateTree2, isShowPharModal } = this.state;
+    const { info } = this.props;
     let newTemplateTree1 = templateTree1;
     let newTemplateTree2 = templateTree2;
 
     const closeModal = (bool) => {
       const action = showPharAction(false);
       store.dispatch(action);
-      if (bool) {
+      if (bool) {   
+        // 新增与诊疗计划关联
+        if (newTemplateTree2[3].selected === true) {
+          let data = {
+            "userid": "6",
+            "time": "",
+            "gestation": "28",
+            "item": "",
+            "event": "VTE预防用药"
+          };
+          data.time = util.getWeek(28, info.tuserweek);
+          console.log(data, '1221')
+          service.fuzhen.addRecentRvisit(data).then(res => {})
+        }
         Promise.all([
           service.shouzhen.saveTemplateTreeUser(0, newTemplateTree1).then(res => {}),
           service.shouzhen.saveTemplateTreeUser(1, newTemplateTree2).then(res => {})
@@ -568,7 +582,7 @@ export default class extends Component{
           <Col span={12}>
             <div className="title">高危因素</div>
             <Tree checkable defaultCheckedKeys={checkedKeys} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
-            <p>建议用药：克赛0.4ml 皮下注射qd</p>
+            {/* <p>建议用药：克赛0.4ml 皮下注射qd</p> */}
           </Col>
           <Col span={1}></Col>
           <Col span={11}>

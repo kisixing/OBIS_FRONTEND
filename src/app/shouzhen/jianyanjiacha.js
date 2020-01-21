@@ -78,16 +78,16 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ogtt[OGTT]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.ogttOptions,span:15}
-          ]
-        },
-        {
-          columns:[
             {name:'add_FIELD_lis_hb(g/L)[Hb]', type:'input', span:5},
             {span:1},
             {name:'add_FIELD_lis_mcv(fL)[MCV]',type:'input', span:5},
             {span:1},
             {name:'add_FIELD_lis_plt(x10^9/L)[PLT]', type:'input', span:5},
+          ]
+        },
+        {
+          columns:[
+            {name:'ogtt[OGTT]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.ogttOptions,span:15}
           ]
         },
         {

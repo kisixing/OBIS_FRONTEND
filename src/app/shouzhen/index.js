@@ -167,90 +167,26 @@ export default class Patient extends Component {
                 } else if (tab.key === 'tab-6') {
                   tab.entity = res.object.checkUp;
                   // 初始化BMI数值
-                  tab.entity["ckbmi"] = common.getBMI(
-                    tab.entity["cktizh"],
-                    tab.entity["cksheng"]
-                  );
-                  tab.entity.ckpressure =
-                    typeof tab.entity.ckpressure === "object"
-                      ? tab.entity.ckpressure
-                      : [
-                          tab.entity.ckshrinkpressure,
-                          tab.entity.ckdiastolicpressure
-                        ];
-                  tab.entity["vascularMurmur"] =
-                    typeof tab.entity
-                      .vascularMurmur !=
-                    "object"
-                      ? JSON.parse(tab.entity.vascularMurmur)
-                      : tab.entity.vascularMurmur;
-                  tab.entity["ckshenz"] =
-                    typeof tab.entity.ckshenz !=
-                    "object"
-                      ? JSON.parse(tab.entity.ckshenz)
-                      : tab.entity.ckshenz;
-                  tab.entity["ckrut"] =
-                    typeof tab.entity.ckrut !=
-                    "object"
-                      ? JSON.parse(tab.entity.ckrut)
-                      : tab.entity.ckrut;
-                  tab.entity["ckjiazhx"] =
-                    typeof tab.entity
-                      .ckjiazhx !== "object"
-                      ? JSON.parse(tab.entity.ckjiazhx)
-                      : tab.entity.ckjiazhx;
-                  tab.entity["ckpifu"] =
-                    typeof tab.entity.ckpifu !=
-                    "object"
-                      ? JSON.parse(tab.entity.ckpifu)
-                      : tab.entity.ckpifu;
-                  tab.entity["ckpiz"] =
-                    typeof tab.entity.ckpiz !=
-                    "object"
-                      ? JSON.parse(tab.entity.ckpiz)
-                      : tab.entity.ckpiz;
-                  tab.entity["ckfuzh"] =
-                    typeof tab.entity.ckfuzh !=
-                    "object"
-                      ? JSON.parse(tab.entity.ckfuzh)
-                      : tab.entity.ckfuzh;
-                  tab.entity["nervousReflex"] =
-                    typeof tab.entity
-                      .nervousReflex != "object"
-                      ? JSON.parse( tab.entity.nervousReflex)
-                      : tab.entity.nervousReflex;
+                  tab.entity["ckbmi"] = common.getBMI( tab.entity["cktizh"], tab.entity["cksheng"] );
+                  tab.entity.ckpressure = typeof tab.entity.ckpressure === "object" 
+                                        ? tab.entity.ckpressure : [ tab.entity.ckshrinkpressure, tab.entity.ckdiastolicpressure ];
+                  tab.entity["vascularMurmur"] = typeof tab.entity.vascularMurmur != "object"
+                                        ? JSON.parse(tab.entity.vascularMurmur) : tab.entity.vascularMurmur;
+                  tab.entity["ckshenz"] = typeof tab.entity.ckshenz != "object" ? JSON.parse(tab.entity.ckshenz) : tab.entity.ckshenz;
+                  tab.entity["ckrut"] = typeof tab.entity.ckrut != "object" ? JSON.parse(tab.entity.ckrut) : tab.entity.ckrut;
+                  tab.entity["ckjiazhx"] = typeof tab.entity.ckjiazhx !== "object" ? JSON.parse(tab.entity.ckjiazhx) : tab.entity.ckjiazhx;
+                  tab.entity["ckpifu"] = typeof tab.entity.ckpifu != "object" ? JSON.parse(tab.entity.ckpifu) : tab.entity.ckpifu;
+                  tab.entity["ckpiz"] = typeof tab.entity.ckpiz != "object" ? JSON.parse(tab.entity.ckpiz) : tab.entity.ckpiz;
+                  tab.entity["ckfuzh"] = typeof tab.entity.ckfuzh != "object" ? JSON.parse(tab.entity.ckfuzh) : tab.entity.ckfuzh;
+                  tab.entity["nervousReflex"] = typeof tab.entity.nervousReflex != "object" ? JSON.parse( tab.entity.nervousReflex) : tab.entity.nervousReflex;
                   //病历反射
-                  tab.entity["vascularMurmurOther"] =
-                    typeof tab.entity
-                      .vascularMurmurOther !=
-                    "object"
-                      ? JSON.parse(tab.entity.vascularMurmurOther)
-                      : tab.entity.vascularMurmurOther;
-                  tab.entity["murmurs"] =
-                    typeof tab.entity.murmurs !=
-                    "object"
-                      ? JSON.parse(tab.entity.murmurs)
-                      : tab.entity.murmurs;
-                  tab.entity["ckganz"] =
-                    typeof tab.entity.ckganz !=
-                    "object"
-                      ? JSON.parse(tab.entity.ckganz)
-                      : tab.entity.ckganz;
-                  tab.entity["heart"] =
-                    typeof tab.entity.heart !=
-                    "object"
-                      ? JSON.parse(tab.entity.heart)
-                      : tab.entity.heart;
-                  tab.entity["ckjizh"] =
-                    typeof tab.entity.ckjizh !=
-                    "object"
-                      ? JSON.parse(tab.entity.ckjizh)
-                      : tab.entity.ckjizh;
-                  tab.entity["breathSounds"] =
-                    typeof tab.entity
-                      .breathSounds != "object"
-                      ? JSON.parse(tab.entity.breathSounds)
-                      : tab.entity.breathSounds;
+                  tab.entity["vascularMurmurOther"] = typeof tab.entity.vascularMurmurOther != "object"
+                                                    ? JSON.parse(tab.entity.vascularMurmurOther) : tab.entity.vascularMurmurOther;
+                  tab.entity["murmurs"] = typeof tab.entity.murmurs != "object" ? JSON.parse(tab.entity.murmurs) : tab.entity.murmurs;
+                  tab.entity["ckganz"] = typeof tab.entity.ckganz != "object" ? JSON.parse(tab.entity.ckganz) : tab.entity.ckganz;
+                  tab.entity["heart"] = typeof tab.entity.heart != "object" ? JSON.parse(tab.entity.heart) : tab.entity.heart;
+                  tab.entity["ckjizh"] = typeof tab.entity.ckjizh != "object" ? JSON.parse(tab.entity.ckjizh) : tab.entity.ckjizh;
+                  tab.entity["breathSounds"] = typeof tab.entity.breathSounds != "object" ? JSON.parse(tab.entity.breathSounds) : tab.entity.breathSounds;
                 } else if (tab.key === 'tab-7') {
                     tab.entity = res.object.specialityCheckUp
                     let ckjc = tab.entity.add_FIELD_ckjc;
@@ -258,6 +194,8 @@ export default class Patient extends Component {
                         ckjc = '';
                     }
                     tab.entity['add_FIELD_ckjc'] = (ckjc !== '' && typeof ckjc !== 'object') ? JSON.parse(ckjc) : ckjc;
+                } else if (tab.key === 'tab-9') {
+                    tab.entity = res.object.diagnosis
                 } else {
                     tab.entity = res.object;
                 }
@@ -340,7 +278,16 @@ export default class Patient extends Component {
                     var item = entity['preghiss'].pop();
                     entity['preghiss'].splice(-1, 0, item);
                 }
-            break;
+            break; 
+            case 'treatment':
+              entity['diagnosisHandle'] = value;
+            break; 
+            case 'nextRvisit':
+              if(value[0]) entity['xiacsftype'] = value[0].describe;
+              if(value[1]) entity['xiacsfdate'] = value[1].label;
+              if(value[2]) entity['nextRvisitWeek'] = value[2];
+              if(value[3]) entity['xiacsfdatearea'] = value[3].label;
+            break; 
         }
         this.change = true;
 
@@ -465,63 +412,21 @@ export default class Patient extends Component {
 
         return (
           <Page className="shouzhen pad-T-mid">
-            <Button
-              type="primary"
-              className="top-save-btn"
-              size="small"
-              onClick={() => alert("保存")}
-            >
-              保存
-            </Button>
-            <Button
-              type="primary"
-              className="top-savePDF-btn"
-              size="small"
-              onClick={() => printIvisit()}
-            >
-              打印
-            </Button>
+            <Button type="primary" className="top-save-btn" size="small" onClick={() => alert("保存")}>保存</Button>
+            <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
 
-            <div
-              className="bgWhite"
-              style={{
-                position: "fixed",
-                top: "7.65em",
-                left: "0",
-                right: "0",
-                bottom: "0"
-              }}
-            ></div>
-            <Tabs
-              type="card"
-              activeKey={step}
-              onChange={key => this.handleSave(key)}
-            >
+            <div className="bgWhite" style={{ position: "fixed", top: "7.65em", left: "0", right: "0", bottom: "0"}}></div>
+            <Tabs type="card" activeKey={step} onChange={key => this.handleSave(key)}>
               {tabs.map(({ key, title, entity, error, Content }) => (
-                <Tabs.TabPane
-                  key={key}
+                <Tabs.TabPane key={key}
                   tab={
                     <span style={error ? { color: "red" } : {}}>
-                      {error ? (
-                        <i className="anticon anticon-exclamation-circle" />
-                      ) : null}
+                      {error ? ( <i className="anticon anticon-exclamation-circle" />) : null}
                       {title}
                     </span>
-                  }
-                >
-                  <div
-                    className="bgWhite pad-mid "
-                    style={{ maxWidth: "1400px" }}
-                  >
-                    {step === key ? (
-                      <Content
-                        info={info}
-                        entity={{ ...entity }}
-                        onChange={(e, item) =>
-                          this.handleChange(e, item, entity)
-                        }
-                      />
-                    ) : null}
+                  }>
+                  <div className="bgWhite pad-mid " style={{ maxWidth: "1400px" }}>
+                    {step === key ? (<Content info={info} entity={{ ...entity }} onChange={(e, item) => this.handleChange(e, item, entity)}/>) : null}
                   </div>
                 </Tabs.TabPane>
               ))}
@@ -529,16 +434,7 @@ export default class Patient extends Component {
             <Row>
               <Col span={21} />
               <Col>
-                <Button
-                  className="shouzhen-bbtn"
-                  icon="save"
-                  type="primary"
-                  onClick={() =>
-                    setTimeout(() => {
-                      this.handleSave();
-                    }, 100)
-                  }
-                >
+                <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>
                   {step !== tabs[tabs.length - 1].key ? "下一页" : "保存"}
                 </Button>
               </Col>

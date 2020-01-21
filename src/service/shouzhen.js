@@ -19,7 +19,7 @@ export default {
     saveForm : function(tab, entity){
         let data = {};
         let uri = 'udpateDoc';
-        if(tab === 'tab-2'||tab === 'tab-7'||tab === 'tab-6'||tab === 'tab-8'){
+        if(tab === 'tab-2'||tab === 'tab-7'||tab === 'tab-6'||tab === 'tab-8'||tab === 'tab-9'){
             uri='saveivisit'
         }
         data = entity
