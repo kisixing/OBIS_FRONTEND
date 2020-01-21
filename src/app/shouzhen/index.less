@@ -5,6 +5,23 @@
   }
   /* 顶部对齐 */
   .form-item {
+    .form-label {
+      height: 32px;
+      line-height: 30px;
+      vertical-align: middle;
+    }
+
+    .form-content {
+      height: 32px;
+
+      & > div {
+        height: 100%;
+
+        // input {
+        //   height: 100%;
+        // }
+      }
+    }
     & > div {
       vertical-align: top;
     }
@@ -187,44 +204,44 @@
   }
 }
 
-.form-item {
-  .form-label {
-    height: 32px;
-    line-height: 30px;
-    vertical-align: middle;
-  }
+// .form-item {
+//   .form-label {
+//     height: 32px;
+//     line-height: 30px;
+//     vertical-align: middle;
+//   }
 
-  .form-content {
-    height: 32px;
+//   .form-content {
+//     height: 32px;
 
-    & > div {
-      height: 100%;
+//     & > div {
+//       height: 100%;
 
-      // input {
-      //   height: 100%;
-      // }
-    }
-  }
-}
+//       // input {
+//       //   height: 100%;
+//       // }
+//     }
+//   }
+// }
 
 // 孕产史table样式修改
-.table-wrapper {
-  .form-item {
-    .form-label {
-      height: 32px;
-      line-height: 30px;
-      vertical-align: top;
-    }
+// .table-wrapper {
+//   .form-item {
+//     .form-label {
+//       height: 32px;
+//       line-height: 30px;
+//       vertical-align: top;
+//     }
 
-    .form-content {
-      height: initial;
+//     .form-content {
+//       height: initial;
 
-      & > div {
-        height: 100%;
-      }
-    }
-  }
-}
+//       & > div {
+//         height: 100%;
+//       }
+//     }
+//   }
+// }
 
 .phar-modal {
   .title {
