@@ -5,6 +5,7 @@ import Page from '../../render/page';
 import { fireForm } from '../../render/form';
 import service from '../../service';
 import * as common from '../../utils/common';
+import * as util from '../fuzhen/util';
 
 import Yfxx from './yunfuxinxi';
 import Zfxx from './zhangfuxinxi';
@@ -196,6 +197,8 @@ export default class Patient extends Component {
                     tab.entity['add_FIELD_ckjc'] = (ckjc !== '' && typeof ckjc !== 'object') ? JSON.parse(ckjc) : ckjc;
                 } else if (tab.key === 'tab-9') {
                     tab.entity = res.object.diagnosis
+                    tab.entity['xiacsftype'] = JSON.parse(tab.entity.xiacsftype);
+                    tab.entity['xiacsfdatearea'] = JSON.parse(tab.entity.xiacsfdatearea);
                 } else {
                     tab.entity = res.object;
                 }
@@ -280,13 +283,10 @@ export default class Patient extends Component {
                 }
             break; 
             case 'treatment':
-              entity['diagnosisHandle'] = value;
+                entity['diagnosisHandle'] = value;
             break; 
-            case 'nextRvisit':
-              if(value[0]) entity['xiacsftype'] = value[0].describe;
-              if(value[1]) entity['xiacsfdate'] = value[1].label;
-              if(value[2]) entity['nextRvisitWeek'] = value[2];
-              if(value[3]) entity['xiacsfdatearea'] = value[3].label;
+            case 'nextRvisitWeek':
+                entity['xiacsfdate'] = util.futureDate(value.value);
             break; 
         }
         this.change = true;

@@ -24,7 +24,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'hbsAg[乙肝两对半]', type:'checkinput-5',valid: 'required', options: baseData.ygOptions,radio:true,span:15}
+            {name:'hbsAg[乙肝两对半]', className:' col-tg-sp', type:'checkinput-5',valid: 'required', options: baseData.ygOptions,radio:true,span:18}
           ]
         },
         {
