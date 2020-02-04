@@ -8,7 +8,7 @@ import * as baseData0 from './../shouzhen/data';
 import * as baseData from './../fuzhen/data';
 import * as util from '../fuzhen/util';
 import store from '../store';
-import { getAlertAction, showTrialAction, showPharAction, showPharCardAction} from '../store/actionCreators.js';
+import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction} from '../store/actionCreators.js';
 import RegForm from '../components/reg-form';
 import './index.less';
 import service from '../../service';
@@ -48,12 +48,8 @@ export default class extends Component{
       isShowRegForm: false,
       openTemplate: false,
       ...store.getState(),
-      templateTree1: [],
-      templateTree2: [],
-      checkedKeys: [],
-      allFormData: null,
-      chanc: 0,
-      yunc: 1
+      chanc: '',
+      yunc: ''
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -63,21 +59,17 @@ export default class extends Component{
   };
 
   componentDidMount(){
+    const { isMeetPhar } = this.state;
+    if(isMeetPhar) {
+      const action = showPharAction(true);
+      store.dispatch(action);
+    }
 
     service.fuzhen.treatTemp().then(res => this.setState({ treatTemp: res.object }));
 
     service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list }));
 
     service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
-
-    service.shouzhen.findTemplateTree(0).then(res => this.setState({templateTree1: res.object}));
-
-    service.shouzhen.findTemplateTree(1).then(res => this.setState({templateTree2: res.object}));
-
-    service.shouzhen.getAllForm().then(res => {
-      this.setState({allFormData: res.object});
-      this.setCheckedKeys(res.object);
-    });
 
     this.getGPTimes();
   }
@@ -126,7 +118,7 @@ export default class extends Component{
   }
 
   adddiagnosis() {
-    const { diagnosis, diagnosi, allFormData } = this.state;
+    const { diagnosis, diagnosi, checkedKeys } = this.state;
     if (diagnosi && !diagnosis.filter(i => i.data === diagnosi).length) {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
@@ -147,7 +139,15 @@ export default class extends Component{
             diagnosi: ''
         }, () => {
           if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
-            this.setCheckedKeys(allFormData);
+       
+            // let newCheckedKeys = checkedKeys;
+            // newCheckedKeys.push('1');
+            // const action1 = checkedKeysAction(newCheckedKeys);
+            // store.dispatch(action1);
+            // console.log(newCheckedKeys, '555')
+        
+            const action = showPharAction(true);
+            store.dispatch(action);
           }
         }));
       })
@@ -188,8 +188,8 @@ export default class extends Component{
   }
 
   getGPTimes() {
-    const {entity} = this.props;
-    const allPreghiss = entity.gestation.preghiss;
+    const { allData } = this.props;
+    const allPreghiss = allData.gestation.preghiss;
     this.setState({yunc: allPreghiss.length + 1});
     let times = 0;
     allPreghiss&&allPreghiss.map(item => {
@@ -386,118 +386,6 @@ export default class extends Component{
     );
   }
 
-  setCheckedKeys(params) {
-    const { checkedKeys, templateTree1, diagnosis } = this.state;
-    const bmi = params.checkUp.ckbmi;
-    const age = params.gravidaInfo.userage;
-    const preghiss = params.gestation.preghiss.length;
-    const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);
-
-    const show = () => {
-      const action = showPharAction(true);
-      store.dispatch(action);
-    }
-
-    const getKey = (val) => {
-      let ID = '';
-      templateTree1&&templateTree1.map(item => {
-        if(item.name === val) ID = item.id;
-      })
-      return ID.toString();
-    }
-
-    if(bmi>30) checkedKeys.push(getKey("肥胖（BMI>30kg/m  )"));
-    if(age>35) checkedKeys.push(getKey("年龄>35岁"));
-    if(preghiss>=3) checkedKeys.push(getKey("产次≥3"));
-    if(xiyan[0].label==="有") checkedKeys.push(getKey("吸烟"));
-
-    diagnosis.map(item => {
-      if(item.data.indexOf("血栓") !== -1) show();
-      if(item.data.indexOf("静脉曲张") !== -1) checkedKeys.push(getKey("静脉曲张"));
-      if(item.data === "妊娠子痫前期") checkedKeys.push(getKey("本次妊娠子痫前期"));
-      if(item.data === "多胎妊娠") checkedKeys.push(getKey("多胎妊娠"));
-    })
-    if(checkedKeys.length>0) show();
-  }
-
-  /**
-   * 孕期用药筛查表
-   */
-  renderPharModal() {
-    const { checkedKeys, templateTree1, templateTree2, isShowPharModal } = this.state;
-    const { info } = this.props;
-    let newTemplateTree1 = templateTree1;
-    let newTemplateTree2 = templateTree2;
-
-    const closeModal = (bool) => {
-      const action = showPharAction(false);
-      store.dispatch(action);
-      if (bool) {   
-        // 新增与诊疗计划关联
-        if (newTemplateTree2[3].selected === true) {
-          let data = {
-            "userid": "6",
-            "time": "",
-            "gestation": "28",
-            "item": "",
-            "event": "VTE预防用药"
-          };
-          data.time = util.getWeek(28, info.tuserweek);
-          service.fuzhen.addRecentRvisit(data).then(res => {})
-        }
-        Promise.all([
-          service.shouzhen.saveTemplateTreeUser(0, newTemplateTree1).then(res => {}),
-          service.shouzhen.saveTemplateTreeUser(1, newTemplateTree2).then(res => {})
-        ]).then(() => {
-          const action = showPharCardAction(true);
-          store.dispatch(action);
-        })
-      }
-    }
-
-    const initTree = (arr) => arr.map(node => (
-      <Tree.TreeNode key={node.id} title={node.name} ></Tree.TreeNode>
-    ));
-
-    const handleCheck1 = (keys, { checked }) => {
-      newTemplateTree1.forEach(tt => {
-        if (keys.indexOf(`${tt.id}`) !== -1) {
-          tt.selected = checked;
-        }else {
-          tt.selected = null;
-        }
-      })
-    };
-    const handleCheck2 = (keys, { checked }) => {
-      newTemplateTree2.forEach(tt => {
-        if (keys.indexOf(`${tt.id}`) !== -1) {
-          tt.selected = checked;
-        }else {
-          tt.selected = null;
-        }
-      })
-    };
-    const treeNodes1 = newTemplateTree1&&initTree(newTemplateTree1);
-    const treeNodes2 = newTemplateTree2&&initTree(newTemplateTree2);
-
-    return (
-      <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowPharModal} width={800} className="phar-modal"
-            onCancel={() => closeModal()} onOk={() => closeModal(true)}>
-        <Row>
-          <Col span={12}>
-            <div className="title">高危因素</div>
-            <Tree checkable defaultCheckedKeys={checkedKeys} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
-            {/* <p>建议用药：克赛0.4ml 皮下注射qd</p> */}
-          </Col>
-          <Col span={1}></Col>
-          <Col span={11}>
-            <div className="title">预防用药指导</div>
-            <Tree className="phar-right" checkable onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes2}</Tree>
-          </Col>
-        </Row>
-      </Modal>
-    )
-  }
 
   /**
    * 模板
@@ -565,7 +453,6 @@ export default class extends Component{
         <Button onClick={() =>this.openLisi()}>首检信息历史修改记录</Button>
         {this.renderTreatment()}
         {this.renderModal()}
-        {this.renderPharModal()}
         <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} />
       </div>
     )

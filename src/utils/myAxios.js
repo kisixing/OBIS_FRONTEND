@@ -13,6 +13,13 @@ const getUrl = function (url){
     }
 };
 
+const getQueryString = function (name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return r[2];
+    return null;
+}
+
 /**
  * 移除所有以$开头或者值为undefined的属性,用来模拟
  */
@@ -58,6 +65,7 @@ const myAxios = axios.create({
     timeout: 10000,
     headers: {'X-Requested-With': 'XMLHttpRequest'},
     headers: {'Content-Type': 'application/json;charset=utf-8'},
+    headers: {'User-Token': getQueryString('token')},
     // headers: {'Content-Type': 'application/x-www-form-urlencode;charset=utf-8'},
 });
 

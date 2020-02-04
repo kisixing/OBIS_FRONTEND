@@ -10,7 +10,7 @@ import * as baseData from './data';
 import editors from '../shouzhen/editors';
 
 import store from '../store';
-import { getAlertAction, showTrialAction } from '../store/actionCreators.js';
+import { getAlertAction, showTrialAction, showPharAction } from '../store/actionCreators.js';
 
 import "../index.less";
 import "./index.less";
@@ -122,6 +122,15 @@ export default class Patient extends Component {
         service.fuzhen.getdiagnosis().then(res => this.setState({
             diagnosis: res.object.list,
             diagnosi: ''
+        }, () => {
+          if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
+       
+            // const action1 = checkedKeysAction(checkedKeys);
+            // store.dispatch(action1);
+        
+            const action = showPharAction(true);
+            store.dispatch(action);
+          }
         }));
       })
     } else if (diagnosi) {

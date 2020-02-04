@@ -4,14 +4,17 @@ import { Row, Col, Input, Button, Select, Modal, Tree, Icon } from "antd";
 import router from "../utils/router";
 import bundle from "../utils/bundle";
 import service from '../service';
-
+import * as util from './fuzhen/util';
 import store from "./store";
 import {
   getAlertAction,
   closeAlertAction,
   showTrialAction,
   showTrialCardAction,
-  showPharAction
+  showPharAction,
+  showPharCardAction,
+  isMeetPharAction,
+  checkedKeysAction
 } from "./store/actionCreators.js";
 
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
@@ -46,6 +49,9 @@ export default class App extends Component {
       muneIndex: 0, // 从0开始
       ...store.getState(),
       templateTree: [],
+      templateTree1: [],
+      templateTree2: [],
+      allFormData: null,
     };
     store.subscribe(this.handleStoreChange);
 
@@ -74,6 +80,14 @@ export default class App extends Component {
     }))
 
     service.shouzhen.findTemplateTree(2).then(res => this.setState({templateTree: res.object}));
+
+    service.shouzhen.findTemplateTree(0).then(res => this.setState({templateTree1: res.object}));
+    service.shouzhen.findTemplateTree(1).then(res => this.setState({templateTree2: res.object}));
+
+    service.shouzhen.getAllForm().then(res => {
+      this.setState({allFormData: res.object});
+      this.setCheckedKeys(res.object);
+    });
   }
 
   handleStoreChange = () => {
@@ -242,6 +256,123 @@ export default class App extends Component {
         </Row>
       </Modal>
       : null
+    )
+  }
+
+
+  setCheckedKeys(params) {
+    const { checkedKeys, templateTree1 } = this.state;
+    const diagnosis = params.diagnosisList;
+    const bmi = params.checkUp.ckbmi;
+    const age = params.gravidaInfo.userage;
+    const preghiss = params.gestation.preghiss.length;
+    const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);
+
+    const getKey = (val) => {
+      let ID = '';
+      templateTree1&&templateTree1.map(item => {
+        if(item.name === val) ID = item.id;
+      })
+      return ID.toString();
+    }
+
+    if(bmi>30) checkedKeys.push(getKey("肥胖（BMI>30kg/m  )"));
+    if(age>35) checkedKeys.push(getKey("年龄>35岁"));
+    if(preghiss>=3) checkedKeys.push(getKey("产次≥3"));
+    if(xiyan[0].label==="有") checkedKeys.push(getKey("吸烟"));
+
+    if(checkedKeys.length > 0) {
+      const action = isMeetPharAction(true);
+      store.dispatch(action);
+    }
+
+    diagnosis.map(item => {
+      if(item.data.indexOf("静脉曲张") !== -1) checkedKeys.push(getKey("静脉曲张"));
+      if(item.data === "妊娠子痫前期") checkedKeys.push(getKey("本次妊娠子痫前期"));
+      if(item.data === "多胎妊娠") checkedKeys.push(getKey("多胎妊娠"));
+    })
+
+    const action = checkedKeysAction(checkedKeys);
+    store.dispatch(action);
+  }
+
+  /**
+   * 孕期用药筛查表
+   */
+  renderPharModal() {
+    const { checkedKeys, templateTree1, templateTree2, isShowPharModal, tuserweek } = this.state;
+    let newTemplateTree1 = templateTree1;
+    let newTemplateTree2 = templateTree2;
+
+    console.log(checkedKeys, '666')
+
+    const closeModal = (bool) => {
+      const action = showPharAction(false);
+      store.dispatch(action);
+      if (bool) {   
+        // 新增与诊疗计划关联
+        if (newTemplateTree2[3].selected === true) {
+          let data = {
+            "userid": "6",
+            "time": "",
+            "gestation": "28",
+            "item": "",
+            "event": "VTE预防用药"
+          };
+          data.time = util.getWeek(28, tuserweek);
+          service.fuzhen.addRecentRvisit(data).then(res => {})
+        }
+        Promise.all([
+          service.shouzhen.saveTemplateTreeUser(0, newTemplateTree1).then(res => {}),
+          service.shouzhen.saveTemplateTreeUser(1, newTemplateTree2).then(res => {})
+        ]).then(() => {
+          const action = showPharCardAction(true);
+          store.dispatch(action);
+        })
+      }
+    }
+
+    const initTree = (arr) => arr.map(node => (
+      <Tree.TreeNode key={node.id} title={node.name} ></Tree.TreeNode>
+    ));
+
+    const handleCheck1 = (keys, { checked }) => {
+      newTemplateTree1.forEach(tt => {
+        if (keys.indexOf(`${tt.id}`) !== -1) {
+          tt.selected = checked;
+        }else {
+          tt.selected = null;
+        }
+      })
+    };
+    const handleCheck2 = (keys, { checked }) => {
+      newTemplateTree2.forEach(tt => {
+        if (keys.indexOf(`${tt.id}`) !== -1) {
+          tt.selected = checked;
+        }else {
+          tt.selected = null;
+        }
+      })
+    };
+    const treeNodes1 = newTemplateTree1&&initTree(newTemplateTree1);
+    const treeNodes2 = newTemplateTree2&&initTree(newTemplateTree2);
+
+    return (
+      <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowPharModal} width={800} className="phar-modal"
+            onCancel={() => closeModal()} onOk={() => closeModal(true)}>
+        <Row>
+          <Col span={12}>
+            <div className="title">高危因素</div>
+            <Tree checkable defaultCheckedKeys={checkedKeys} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
+            {/* <p>建议用药：克赛0.4ml 皮下注射qd</p> */}
+          </Col>
+          <Col span={1}></Col>
+          <Col span={11}>
+            <div className="title">预防用药指导</div>
+            <Tree className="phar-right" checkable onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes2}</Tree>
+          </Col>
+        </Row>
+      </Modal>
     )
   }
 
@@ -486,6 +617,7 @@ export default class App extends Component {
         <div>{this.renderDanger()}</div>
         {this.renderHighrisk()}
         {this.renderTrialModal()}
+        {this.renderPharModal()}
       </div>
     );
   }

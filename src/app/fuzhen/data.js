@@ -421,10 +421,12 @@ export const rvisitOsTypeOptions = toOptions(['', '普通门诊', '高危门诊'
 /**
  * 上午/下午
  */
-export const ckappointmentAreaOptions = [
-	{ label: '上午', describe:'上', value: '1' },
-	{ label: '下午', describe:'下', value: '2' },
-];
+export const ckappointmentAreaOptions = toOptions(['上午', '下午'], (v,i)=>({value:i+1,describe:v.slice(0,1)}));;
+
+// export const ckappointmentAreaOptions = [
+// 	{ label: '上午', describe:'上', value: '1' },
+// 	{ label: '下午', describe:'下', value: '2' },
+// ];
 /**
  * 产检项目
  */

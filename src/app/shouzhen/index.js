@@ -38,7 +38,8 @@ export default class Patient extends Component {
         this.state = {
             info: {},
             tabs: tabs,
-            step: tabs[3].key // 从0开始
+            step: tabs[3].key, // 从0开始
+            allData: null,
         }
 
         this.componentWillUnmount = editors();
@@ -205,7 +206,7 @@ export default class Patient extends Component {
 
                 service.praseJSON(tab.entity);
                 console.log(tab.key, tab.entity);
-                this.setState({ step }, () => {
+                this.setState({ step, allData: res.object }, () => {
                   const form = document.querySelector(".shouzhen");
                   fireForm(form, "valid");
                 });
@@ -403,7 +404,7 @@ export default class Patient extends Component {
     }
 
     render() {
-        const { tabs, info, step } = this.state;
+        const { tabs, info, step, allData } = this.state;
         const printIvisit = () => {
             service.shouzhen.printPdfByFile().then(res => {
                 this.printPdf(res.object);
@@ -426,7 +427,7 @@ export default class Patient extends Component {
                     </span>
                   }>
                   <div className="bgWhite pad-mid " style={{ maxWidth: "1400px" }}>
-                    {step === key ? (<Content info={info} entity={{ ...entity }} onChange={(e, item) => this.handleChange(e, item, entity)}/>) : null}
+                    {step === key ? (<Content info={info} allData={allData} entity={{ ...entity }} onChange={(e, item) => this.handleChange(e, item, entity)}/>) : null}
                   </div>
                 </Tabs.TabPane>
               ))}

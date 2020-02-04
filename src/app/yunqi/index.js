@@ -29,6 +29,7 @@ export default class Patient extends Component {
 
       bmiNum: '',
       bmiTz: '',
+      bmiIntro: '',
       bmiList: [],
       pregList: [],
     };
@@ -47,6 +48,16 @@ export default class Patient extends Component {
     // })
 
     service.yunqi.getbmi().then(res => {
+      if(res.object.bmi < 18.5){
+        this.setState({bmiIntro: '体重过轻,建议孕期体重增长目标:12.5~18kg'})
+      }else if(res.object.bmi < 25){
+        this.setState({bmiIntro: '体重正常，建议增长体重增长目标11.5~16kg'})
+      }else if(res.object.bmi < 30){
+        this.setState({bmiIntro: '体重超重，建议增长体重增长目标7~11.5kg'})
+      }else if(res.object.bmi >= 30){
+        this.setState({bmiIntro: '体重肥胖，建议增长体重增长目标5~9kg'})
+      }
+
       this.setState({
         bmiNum: res.object.bmi,
         bmiTz: res.object.cktizh,
@@ -54,7 +65,7 @@ export default class Patient extends Component {
       }, () => { this.drawBmiCanvas() })
     })
 
-    this.drawPregCanvas();
+    // this.drawPregCanvas();
     this.drawBmiCanvas();
   }
 
@@ -118,83 +129,83 @@ export default class Patient extends Component {
     }
   }
 
-  drawPregCanvas() {
-    const { pregDashLine1, pregDashLine2, pregSolidLine1, pregSolidLine2, pregList } = this.state;
+  // drawPregCanvas() {
+  //   const { pregDashLine1, pregDashLine2, pregSolidLine1, pregSolidLine2, pregList } = this.state;
 
-    const resetItem = (item) => {
-      if(item.week.indexOf('+') !== -1) {
-        let arr = item.week.split('+');
-        item.week = parseInt(arr[0]) + parseInt(arr[1]) / 7;
-      }
-      item.week = item.week - 15;
-      item.gonggao = item.gonggao - 12;
-      return item;
-    }
+  //   const resetItem = (item) => {
+  //     if(item.week.indexOf('+') !== -1) {
+  //       let arr = item.week.split('+');
+  //       item.week = parseInt(arr[0]) + parseInt(arr[1]) / 7;
+  //     }
+  //     item.week = item.week - 15;
+  //     item.gonggao = item.gonggao - 12;
+  //     return item;
+  //   }
 
-    let newPregData = pregList.filter(i => i.week >= 15 && i.week <= 42 && i.gonggao >= 12 && i.gonggao <= 41);
-    newPregData && newPregData.map((item) => {
-      item = resetItem(item);
-    })
+  //   let newPregData = pregList.filter(i => i.week >= 15 && i.week <= 42 && i.gonggao >= 12 && i.gonggao <= 41);
+  //   newPregData && newPregData.map((item) => {
+  //     item = resetItem(item);
+  //   })
   
-    const canvas = document.getElementById('pregCanvas');
-    const context = canvas.getContext("2d");
-    canvas.width = '700';
-    canvas.height = '600';
-    const baseLeft = 100;
-    const baseTop = 70;
+  //   const canvas = document.getElementById('pregCanvas');
+  //   const context = canvas.getContext("2d");
+  //   canvas.width = '700';
+  //   canvas.height = '600';
+  //   const baseLeft = 100;
+  //   const baseTop = 70;
 
-    context.font = 'bold 18px sans-serif';
-    context.fillText('妊娠图', 350, 20);
-    context.font = 'normal 12px sans-serif';
+  //   context.font = 'bold 18px sans-serif';
+  //   context.fillText('妊娠图', 350, 20);
+  //   context.font = 'normal 12px sans-serif';
 
-    //x轴线
-    const setVertical = () => {
-      context.strokeStyle = 'gray'; // 横轴线
-      for (var i = 0; i < 30; i++) {
-        context.beginPath();
-        context.lineWidth = 0.5;
-        context.moveTo(baseLeft, baseTop + 15 * i);
-        context.lineTo(baseLeft + 540, baseTop + 15 * i);
-        if(i%2 == 0) {
-          context.textBaseline='middle';
-          context.fillText(13 + i, 80, 520 - (i + 1) * 15);
-        }
-        context.stroke();
-      }
-      context.fillText('宫高(cm)', 80, 55);
-    }
+  //   //x轴线
+  //   const setVertical = () => {
+  //     context.strokeStyle = 'gray'; // 横轴线
+  //     for (var i = 0; i < 30; i++) {
+  //       context.beginPath();
+  //       context.lineWidth = 0.5;
+  //       context.moveTo(baseLeft, baseTop + 15 * i);
+  //       context.lineTo(baseLeft + 540, baseTop + 15 * i);
+  //       if(i%2 == 0) {
+  //         context.textBaseline='middle';
+  //         context.fillText(13 + i, 80, 520 - (i + 1) * 15);
+  //       }
+  //       context.stroke();
+  //     }
+  //     context.fillText('宫高(cm)', 80, 55);
+  //   }
 
-    //y轴线
-    const setHorizontal = () => {
-      for (var i = 0; i < 28; i++) {
-        context.beginPath();
-        context.lineWidth = 0.5;
-        context.moveTo(20 * i + baseLeft, baseTop);
-        context.lineTo(20 * i + baseLeft, baseTop + 450);
-        if(i%2 == 0) {
-          context.textAlign='center';
-          context.fillText(16 + i, baseLeft + (i + 1) * 20, 535);
-        }
-        context.stroke();
-      }
-      context.fillText('孕周(周)', 670, 520);
-    }
+  //   //y轴线
+  //   const setHorizontal = () => {
+  //     for (var i = 0; i < 28; i++) {
+  //       context.beginPath();
+  //       context.lineWidth = 0.5;
+  //       context.moveTo(20 * i + baseLeft, baseTop);
+  //       context.lineTo(20 * i + baseLeft, baseTop + 450);
+  //       if(i%2 == 0) {
+  //         context.textAlign='center';
+  //         context.fillText(16 + i, baseLeft + (i + 1) * 20, 535);
+  //       }
+  //       context.stroke();
+  //     }
+  //     context.fillText('孕周(周)', 670, 520);
+  //   }
 
-    setVertical();
-    setHorizontal();
-    this.setVerRules(context, [baseLeft, baseTop + 450], 540, 'black', 1, 20, 5);
-    this.setHorRules(context, [baseLeft, baseTop + 450], 450, 'black', 1, 15, 5);
+  //   setVertical();
+  //   setHorizontal();
+  //   this.setVerRules(context, [baseLeft, baseTop + 450], 540, 'black', 1, 20, 5);
+  //   this.setHorRules(context, [baseLeft, baseTop + 450], 450, 'black', 1, 15, 5);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregDashLine1, ["week", "gonggao"], '#607b8b', [3]);
-    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregDashLine2, ["week", "gonggao"], '#607b8b', [3]);
-    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregSolidLine1, ["week", "gonggao"], '#607b8b', []);
-    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregSolidLine2, ["week", "gonggao"], '#607b8b', []);
+  //   this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregDashLine1, ["week", "gonggao"], '#607b8b', [3]);
+  //   this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregDashLine2, ["week", "gonggao"], '#607b8b', [3]);
+  //   this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregSolidLine1, ["week", "gonggao"], '#607b8b', []);
+  //   this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregSolidLine2, ["week", "gonggao"], '#607b8b', []);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], newPregData, ["week", "gonggao"], 'pink', []);
-  }
+  //   this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], newPregData, ["week", "gonggao"], 'pink', []);
+  // }
 
   drawBmiCanvas() {
-    const { bmiDashLine1, bmiDashLine2, bmiNum, bmiTz, bmiList } = this.state;
+    const { bmiDashLine1, bmiDashLine2, bmiNum, bmiTz, bmiList, bmiIntro } = this.state;
     let newBmiList = JSON.parse(JSON.stringify(bmiList));
     newBmiList && newBmiList.map((item, index) => {
       item.tizhong = item.tizhong - bmiTz;
@@ -225,7 +236,7 @@ export default class Patient extends Component {
     context.fillStyle = '#52aaff';
     context.font = 'normal 12px sans-serif';
     context.fillText(`孕前BMI: ${bmiNum} kg/m2`, canvas.width / 2, 40);
-    context.fillText('体重正常，建议增长体重增长目标11.5~16kg', canvas.width / 2, 55);
+    context.fillText(bmiIntro, canvas.width / 2, 55);
 
     context.fillStyle = '#000';
     //x轴线

@@ -1,5 +1,5 @@
 import { CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, SHOW_TRIAL_CARD, 
-        SHOW_PHAR_MODAL, SHOW_PHAR_CARD } from './actionTypes.js'
+        SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS } from './actionTypes.js'
  
 export const getAlertAction = (data) => ({
   type: CHECK_HIGHRISK_ALERT,
@@ -27,4 +27,12 @@ export const showPharAction = (bool) => ({
 export const showPharCardAction = (bool) => ({
   type: SHOW_PHAR_CARD,
   bool
+})
+export const isMeetPharAction = (bool) => ({
+  type: IS_MEET_PHAR,
+  bool
+})
+export const checkedKeysAction = (arr) => ({
+  type: CHECKED_KEYS,
+  arr
 })
