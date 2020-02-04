@@ -13,10 +13,9 @@ export default class extends Component {
     return {
       step: 1,
       rows: [
-        { label: "疾病史 : ", span: 2, className: "labelclass" },
         {
           columns: [
-            { span: 2 },
+            { span: 1 },
             {
               name: "add_FIELD_symptom[主@诉]",
               type: "select",
@@ -28,9 +27,10 @@ export default class extends Component {
             }
           ]
         },
+        { label: "疾病史", span: 12, className: "labelclass" },
         {
           columns: [
-            { span: 2 },
+            { span: 1 },
             {
               name: "add_FIELD_gaoxueya[高血压]",
               type: "checkinput",
@@ -43,7 +43,7 @@ export default class extends Component {
         },
         {
           columns: [
-            { span: 2 },
+            { span: 1 },
             {
               name: "add_FIELD_tangniaobing[糖尿病]",
               type: "checkinput",
@@ -56,7 +56,7 @@ export default class extends Component {
         },
         {
           columns: [
-            { span: 2 },
+            { span: 1 },
             {
               name: "add_FIELD_xinzangbing[心脏病]",
               type: "checkinput",
@@ -69,7 +69,7 @@ export default class extends Component {
         },
         {
           columns: [
-            { span: 2 },
+            { span: 1 },
             {
               name: "add_FIELD_qitabingshi[其@他]",
               type: "checkinput",
@@ -82,7 +82,7 @@ export default class extends Component {
         },
         {
           columns: [
-            { span: 2 },
+            { span: 1 },
             {
               name: "noneChecked1[ ]",
               type: "checkinput",
@@ -95,7 +95,7 @@ export default class extends Component {
         },
         {
           columns: [
-            { span: 2 },
+            { span: 1 },
             {
               name: "bsshoushuother[外伤史]",
               type: "checkinput",
@@ -108,6 +108,7 @@ export default class extends Component {
         },
         {
           columns: [
+            { span: 1 },
             {
               name: "operationHistory[手术史]",
               type: "table",
@@ -116,29 +117,34 @@ export default class extends Component {
               pagination: false,
               editable: true,
               options: baseData.shoushushiColumns,
-              className: "table-wrapper"
+              className: "table-wrapper",
+              span: 23
             }
           ]
         },
         {
           columns: [
+            { span: 1 },
             {
               name: "bsguomin[过敏史]",
               type: "checkinput",
               valid: "required",
               options: baseData.ywgmOptions,
-              unselect: "无"
+              unselect: "无",
+              span: 23
             }
           ]
         },
         {
           columns: [
+            { span: 1 },
             {
               name: "hobtabp[输血史]",
               type: "checkinput-4",
               valid: "required",
               radio: true,
-              options: baseData.sxsOptions
+              options: baseData.sxsOptions,
+              span: 23
             }
           ]
         }

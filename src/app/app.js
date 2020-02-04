@@ -304,7 +304,7 @@ export default class App extends Component {
     let newTemplateTree1 = templateTree1;
     let newTemplateTree2 = templateTree2;
 
-    console.log(checkedKeys, '666')
+    // console.log(checkedKeys, '666')
 
     const closeModal = (bool) => {
       const action = showPharAction(false);

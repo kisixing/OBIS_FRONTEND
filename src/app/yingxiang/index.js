@@ -35,7 +35,7 @@ export default class Patient extends Component {
       { title: '检查日期', dataIndex: 'sendDate', key: 'sendDate' },
       { title: '类型', dataIndex: 'type', key: 'type' },
       { title: '报告医生', dataIndex: 'reportDoctor', key: 'reportDoctor' },
-      { title: '诊断', dataIndex: 'diagnosis', key: 'diagnosis' },
+      { title: '诊断', dataIndex: 'diagnosis', key: 'diagnosis', width: 350 },
       { title: '查看报告', key: 'operation', render: (text, record) => <Button type="primary" onClick={() => handleBtnClick(text, record)}>查看</Button> },
     ];
 
@@ -64,7 +64,7 @@ export default class Patient extends Component {
     return (
       <Page className='yingxiang font-16 ant-col'>
         <Row>
-          <Col span={16}>
+          <Col span={18}>
             {this.renderTable()}
             {this.renderModal()}
           </Col>

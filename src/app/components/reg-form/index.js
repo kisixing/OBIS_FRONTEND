@@ -160,7 +160,9 @@ export default class RegForm extends Component {
     const handleRegSave = (form) => {
       let newRegFormEntity = regFormEntity;
       Object.keys(newRegFormEntity).forEach(key => {
-        newRegFormEntity[key] = typeof newRegFormEntity[key] === "string" ? newRegFormEntity[key] : JSON.stringify(newRegFormEntity[key]);
+        if(newRegFormEntity[key] !== null) {
+          newRegFormEntity[key] = typeof newRegFormEntity[key] === "string" ? newRegFormEntity[key] : JSON.stringify(newRegFormEntity[key]);
+        }
       })
       const hospitalized = newRegFormEntity.hospitalized;
       if(hospitalized && JSON.parse(hospitalized)[0].label === "是" && JSON.parse(hospitalized)[0].value !== "") {

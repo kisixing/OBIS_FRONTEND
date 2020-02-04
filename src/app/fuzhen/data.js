@@ -219,8 +219,10 @@ export const tableKey = () => [
 	{
 		title: '自觉症状',
 		key: 'ckzijzhz',
-		type: 'input',
+		type: 'select',
 		width: 80,
+		showSearch: true,
+		options: ckzijzhzOptions
 	},
 	{
 		title: '胎心率',
@@ -235,13 +237,6 @@ export const tableKey = () => [
 		]
 	},
 	{
-		title: '先露',
-		key: 'ckxianl',
-		type:'select',
-		width: 30,
-		options: xlOptions
-	},
-	{
 		title: '宫高',
 		key: 'ckgongg',
 		children:[
@@ -252,6 +247,14 @@ export const tableKey = () => [
 				type: 'input'
 			},
 		]
+	},
+	{
+		title: '先露',
+		key: 'ckxianl',
+		type:'select',
+		width: 30,
+		showSearch: true,
+		options: xlOptions
 	},
 	{
 		title: '下肢水肿',
@@ -401,7 +404,7 @@ export const yyfaOptions = [
 /**
  * 胎动好,无腹痛,无阴道流血
  */
-export const ckzijzhzOptions = toOptions(['胎动好', '无腹痛', '无阴道流血']);
+export const ckzijzhzOptions = toOptions(['无不适', '胎动好', '无不适，胎动好']);
 
 /**
  * 下次复诊 几周后
