@@ -117,12 +117,12 @@ export function checkinput$x(
   count,
   ...args
 ) {
-  // const optionList = (unselect?[{label:unselect,value:'unselect',unselect:true}]:[]).concat(options);
-  const optionList = unselect
-    ? options.concat([
-        { label: unselect, value: "unselect", unselect: true }
-      ])
-    : options;
+  const optionList = unselect?[{label:unselect,value:'unselect',unselect:true}].concat(options):options;
+  // const optionList = unselect
+  //   ? options.concat([
+  //       { label: unselect, value: "unselect", unselect: true }
+  //     ])
+  //   : options;
   const span = Math.floor(
     count ? 24 / count : Math.max(6, 24 / (optionList.length || 1))
   );
@@ -177,9 +177,9 @@ export function checkinput$x(
           .forEach(o => fn(getrealy(o.value || o)));
       } else {
         fn(optionList[0].value);
-        optionList.forEach((o, i) => {
-          i > optionList.length - 2 && fn(getrealy(o.value || o));
-        });
+        // optionList.forEach((o, i) => {
+        //   i > optionList.length - 2 && fn(getrealy(o.value || o));
+        // });
       }
     } else {
       optionList

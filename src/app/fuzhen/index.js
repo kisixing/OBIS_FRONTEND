@@ -8,7 +8,7 @@ import Page from '../../render/page';
 import service from '../../service';
 import * as baseData from './data';
 import editors from '../shouzhen/editors';
-
+import * as util from './util';
 import store from '../store';
 import { getAlertAction, showTrialAction, showPharAction } from '../store/actionCreators.js';
 
@@ -59,6 +59,7 @@ export default class Patient extends Component {
       jianyanReport: '血常规、尿常规、肝功、生化、甲功、乙肝、梅毒、艾滋、地贫',
       planData: [],
       initData: { ...baseData.formEntity },
+      hasRecord: false,
       modalState: [
         {
           "title": "糖尿病门诊预约",
@@ -80,7 +81,7 @@ export default class Patient extends Component {
   componentDidMount() {
     Promise.all([
     service.getuserDoc().then(res => this.setState({ info: res.object }, () => {
-      let param = {"ckweek": res.object.tuserweek};
+      let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
       this.setState({initData: {...this.state.initData, ...param}});
     })),
 
@@ -90,6 +91,11 @@ export default class Patient extends Component {
 
     service.fuzhen.getRecentRvisit().then(res => {
       res.object = res.object || [];
+      res.object&&res.object.map(item => {
+        if(item.checkdate == util.futureDate(0)) {
+          this.setState({hasRecord: true, initData: item})
+        }
+      })
       res.object.push(this.state.initData);
       this.setState({recentRvisit: res.object})
     })]).then(() => this.setState({ loading: false }));
@@ -157,9 +163,8 @@ export default class Patient extends Component {
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
-        let param = {"ckweek": info.tuserweek};
-        this.setState({initData: {...baseData.formEntity, ...param}});
         service.fuzhen.getRecentRvisit().then(res => {
+          this.setState({initData: res.object[0]})
           res.object.push(this.state.initData);
           this.setState({loading: false, recentRvisit: res.object})
         });
@@ -409,6 +414,11 @@ export default class Patient extends Component {
     }
 
     const handelTableChange = (type, row) => {
+      //血压
+      let ckpressure = row.ckpressure.split('/');
+      if(ckpressure[0]) row.ckshrinkpressure = ckpressure[0];
+      if(ckpressure[1]) row.ckdiastolicpressure = ckpressure[1];
+
       service.fuzhen.saveRvisitForm(row).then(res => {
         service.fuzhen.getRecentRvisit().then(res => {
           res.object.push(this.state.initData);
@@ -425,7 +435,7 @@ export default class Patient extends Component {
     const resetData = (obj) => {
       obj.map(item => {
         item.ckpressure = (!item.ckpressure||item.ckpressure === "") ?  item.ckshrinkpressure +'/'+ item.ckdiastolicpressure : item.ckpressure;
-        item.nextRvisitText = item.ckappointment.slice(5) + ' ' + item.ckappointmentArea + ' ' + item.rvisitOsType;
+        item.nextRvisitText = item.ckappointment.slice(5) + ' ' + item.ckappointmentArea.describe + ' ' + item.rvisitOsType.describe;
       })
     }
 
@@ -475,16 +485,14 @@ export default class Patient extends Component {
           </div>
         </Modal>
         <div className="clearfix">
-          {isShowMoreBtn 
-            ? (<Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button>)
-            : ( <br />)}
+          <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button>
         </div>
       </div>
     );
   }
 
   render() {
-    const { loading, diagnosis, relatedObj, info, modalState, initData } = this.state;
+    const { loading, diagnosis, relatedObj, info, modalState, initData, hasRecord } = this.state;
 
     return (
       <Page className="fuzhen font-16 ant-col">
@@ -498,6 +506,7 @@ export default class Patient extends Component {
             diagnosis={diagnosis}
             relatedObj={relatedObj}
             modalState={modalState}
+            hasRecord={hasRecord}
             onSave={data => this.saveForm(data)}
             onChangeInfo={this.onChangeInfo.bind(this)}
           />

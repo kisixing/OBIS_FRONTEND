@@ -7,6 +7,7 @@ import service from '../service';
 import * as util from './fuzhen/util';
 import store from "./store";
 import {
+  getUserDocAction,
   getAlertAction,
   closeAlertAction,
   showTrialAction,
@@ -56,23 +57,18 @@ export default class App extends Component {
     store.subscribe(this.handleStoreChange);
 
     service.getuserDoc().then(res =>
-      this.setState(
-        {
-          ...res.object,
-          loading: false,
-          highriskEntity: { ...res.object }
-        },
-        () => {
-          service.checkHighriskAlert(res.object.userid).then(res => {
-            let data = res.object;
-            if (data && data.length > 0) {
-              data.map(item => (item.visible = true));
-            }
-            const action = getAlertAction(data);
-            store.dispatch(action);
-          });
-        }
-      )
+      this.setState({ ...res.object, loading: false, highriskEntity: { ...res.object }}, () => { 
+        const action = getUserDocAction(res.object);
+        store.dispatch(action);
+        service.checkHighriskAlert(res.object.userid).then(res => {
+          let data = res.object;
+          if (data && data.length > 0) {
+            data.map(item => (item.visible = true));
+          }
+          const action = getAlertAction(data);
+          store.dispatch(action);
+        });
+      })
     );
 
     service.highrisk().then(res => this.setState({
@@ -124,67 +120,41 @@ export default class App extends Component {
       service.addHighrisk(userid, highrisk, level).then(res => {});
     };
 
-    return highriskAlert && highriskAlert.length > 0
-      ? highriskAlert.map((item, index) =>
-          item.alertMark == 1 && item.visible ? (
-            <div className="highrisk-wrapper">
-              <div>
-                <span className="exc-icon">
-                  <Icon
-                    type="exclamation-circle"
-                    style={{ color: "#FCCD68" }}
-                  />{" "}
-                  请注意！
-                </span>
-                <span
-                  className="close-icon pull-right"
-                  onClick={() => {
-                    handelClose(index);
-                  }}
-                >
-                  <Icon type="close" />
-                </span>
+    return highriskAlert && highriskAlert.length > 0 
+        ? highriskAlert.map((item, index) =>item.alertMark == 1 && item.visible ? (
+          <div className="highrisk-wrapper">
+            <div>
+              <span className="exc-icon">
+                <Icon type="exclamation-circle" style={{ color: "#FCCD68" }}/>{" "}
+                请注意！
+              </span>
+              <span className="close-icon pull-right" onClick={() => { handelClose(index) }}>
+                <Icon type="close" />
+              </span>
+            </div>
+            <div className="highrisk-content">
+              <div>孕妇诊断有<span className="highrisk-word">{item.content}</span>,请标记高危因素</div>
+              <div className="highrisk-item">
+                {item.items.map(subItem => (
+                  <Button className="blue-btn margin-R-1 margin-TB-mid" type="ghost"
+                          onClick={() => addHighrisk(subItem.highrisk, subItem.level, index)}>
+                    {subItem.name}
+                  </Button>
+                ))}
               </div>
-              <div className="highrisk-content">
-                <div>
-                  孕妇诊断有
-                  <span className="highrisk-word">{item.content}</span>
-                  ,请标记高危因素
-                </div>
-                <div className="highrisk-item">
-                  {item.items.map(subItem => (
-                    <Button
-                      className="blue-btn margin-R-1 margin-TB-mid"
-                      type="ghost"
-                      onClick={() =>
-                        addHighrisk(subItem.highrisk, subItem.level, index)
-                      }
-                    >
-                      {subItem.name}
-                    </Button>
-                  ))}
-                </div>
-                <div>
-                  <Button
-                    className="blue-btn colorGray margin-R-1"
-                    type="ghost"
-                    onClick={() => handelClose(index, item.content)}
-                  >
-                    关闭，不再提示
-                  </Button>
-                  <Button
-                    className="blue-btn colorGray"
-                    type="ghost"
-                    onClick={() => handelClose(index)}
-                  >
-                    关闭
-                  </Button>
-                </div>
+              <div>
+                <Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelClose(index, item.content)}>
+                  关闭，不再提示
+                </Button>
+                <Button className="blue-btn colorGray" type="ghost" onClick={() => handelClose(index)}>
+                  关闭
+                </Button>
               </div>
             </div>
-          ) : null
-        )
-      : null;
+          </div>
+        ) : null
+      )
+    : null;
   }
 
   /**
@@ -248,7 +218,7 @@ export default class App extends Component {
       templateTree.length>0 ?
       <Modal title="瘢痕子宫阴道试产表" visible={isShowTrialModal} width={800} className="trial-modal"
               footer={buttons} onCancel={() => closeModal()}>
-        <p>孕妇姓名：{username}</p>
+        <p className="trial-username">孕妇姓名：{username}</p>
         <Row>
           <Col span={24}>
             <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
@@ -358,12 +328,12 @@ export default class App extends Component {
     const treeNodes2 = newTemplateTree2&&initTree(newTemplateTree2);
 
     return (
-      <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowPharModal} width={800} className="phar-modal"
+      <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowPharModal} width={900} className="phar-modal"
             onCancel={() => closeModal()} onOk={() => closeModal(true)}>
         <Row>
           <Col span={12}>
             <div className="title">高危因素</div>
-            <Tree checkable defaultCheckedKeys={checkedKeys} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
+            <Tree className="phar-left" checkable defaultCheckedKeys={checkedKeys} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
             {/* <p>建议用药：克赛0.4ml 皮下注射qd</p> */}
           </Col>
           <Col span={1}></Col>
@@ -384,39 +354,17 @@ export default class App extends Component {
   }
 
   renderHeader() {
-    const { username, userage, tuserweek,tuseryunchan,gesexpect,usermcno,chanjno,risklevel,infectious,
-            isShowTrialCard, isShowPharCard } =this.state;
+    const { userDoc, isShowTrialCard, isShowPharCard } =this.state;
     return (
       <div className="main-header">
         <div className="patient-Info_title font-16">
-          <div>
-            <strong>姓名:</strong>
-            {username}
-          </div>
-          <div>
-            <strong>年龄:</strong>
-            {userage}
-          </div>
-          <div>
-            <strong>孕周:</strong>
-            {tuserweek}
-          </div>
-          <div>
-            <strong>孕产:</strong>
-            {tuseryunchan}
-          </div>
-          <div>
-            <strong>预产期:</strong>
-            {gesexpect}
-          </div>
-          <div>
-            <strong>就诊卡:</strong>
-            {usermcno}
-          </div>
-          <div>
-            <strong>产检编号:</strong>
-            {chanjno}
-          </div>
+          <div><strong>姓名:</strong>{userDoc.username}</div>
+          <div><strong>年龄:</strong>{userDoc.userage}</div>
+          <div><strong>孕周:</strong>{userDoc.tuserweek}</div>
+          <div><strong>孕产:</strong>{userDoc.tuseryunchan}</div>
+          <div><strong>预产期:</strong>{userDoc.gesexpect}</div>
+          <div><strong>就诊卡:</strong>{userDoc.usermcno}</div>
+          <div><strong>产检编号:</strong>{userDoc.chanjno}</div>
         </div>
         <p className="patient-Info_tab">
           {routers.map((item, i) => (
@@ -434,8 +382,8 @@ export default class App extends Component {
         </p>
         <div className="patient-Info_btnList">
           <ButtonGroup>
-            <Button className="danger-btn-5" onClick={()=>this.setState({highriskShow:true})}>{risklevel}</Button>
-            {infectious ? <Button className="danger-btn-infectin" onClick={()=>this.setState({highriskShow:true})}>{infectious}</Button> : null}
+            <Button className="danger-btn-5" onClick={()=>this.setState({highriskShow:true})}>{userDoc.risklevel}</Button>
+            {userDoc.infectious ? <Button className="danger-btn-infectin" onClick={()=>this.setState({highriskShow:true})}>{userDoc.infectious}</Button> : null}
             {isShowTrialCard ? <Button className="danger-btn-trial" onClick={() => this.handleCardClick('trial')}>疤</Button> : null}
             {isShowPharCard ? <Button className="danger-btn-phar" onClick={() => this.handleCardClick('phar')}>栓</Button> : null}
           </ButtonGroup>

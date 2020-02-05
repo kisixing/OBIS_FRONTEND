@@ -154,9 +154,9 @@ export default class Patient extends Component {
   //   const baseLeft = 100;
   //   const baseTop = 70;
 
-  //   context.font = 'bold 18px sans-serif';
+  //   context.font = 'bold 18px KaiTi';
   //   context.fillText('妊娠图', 350, 20);
-  //   context.font = 'normal 12px sans-serif';
+  //   context.font = 'normal 12px KaiTi';
 
   //   //x轴线
   //   const setVertical = () => {
@@ -229,12 +229,12 @@ export default class Patient extends Component {
     const xCount = 14;
     const yCount = 40;
 
-    context.font = 'bold 16px sans-serif';
+    context.font = 'bold 16px KaiTi';
     context.textAlign='center';
     context.fillText('BMI孕期体重管理曲线', canvas.width / 2, 20);
     
     context.fillStyle = '#52aaff';
-    context.font = 'normal 12px sans-serif';
+    context.font = 'normal 12px KaiTi';
     context.fillText(`孕前BMI: ${bmiNum} kg/m2`, canvas.width / 2, 40);
     context.fillText(bmiIntro, canvas.width / 2, 55);
 

@@ -96,6 +96,7 @@ export const formEntity = {
 	"ckdia": "",
 	"ckappointment": "",
 	"ckappointmentArea": "",
+	"ckappointmentWeek": "",
 	"ckweek": "",
 	"ckmove": "",
 	"cksheng": "",
@@ -222,6 +223,7 @@ export const tableKey = () => [
 		type: 'select',
 		width: 80,
 		showSearch: true,
+		autoInsert: true,
 		options: ckzijzhzOptions
 	},
 	{

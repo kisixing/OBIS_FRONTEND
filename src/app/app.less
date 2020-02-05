@@ -48,7 +48,7 @@
   position: fixed;
   left: 0;
   bottom: 0;
-  width: 520px;
+  width: 580px;
   background: #fffbe6;
   padding: 10px;
   z-index: 1000;
@@ -77,25 +77,51 @@
     background-color: #e6f7ff;
     border-bottom: 3px solid #6699ff;
   }
+  .trial-username {
+    font-size: 14px;
+  }
+  .ant-modal-title {
+    font-size: 18px;
+  }
+  .ant-tree li {
+    font-size: 14px;
+  }
 }
 
 .phar-modal {
+  .ant-modal-title {
+    font-size: 18px;
+  }
   .title {
     width: 100%;
     text-align: center;
     height: 30px;
     line-height: 30px;
     margin-bottom: 10px;
+    font-size: 16px;
     background-color: #e6f7ff;
     border-bottom: 3px solid #6699ff;
   }
+  .phar-left li {
+    white-space: pre-wrap;
+    &:first-child, &:nth-child(5) {
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #6699ff;
+    }
+  }
   .phar-right li {
-    &:first-child {
+    &:first-child, &:nth-child(2) {
       margin-bottom: 62px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #6699ff;
     }
     &:nth-child(2) {
-      margin-bottom: 140px;
+      padding-bottom: 106px;
+      margin-bottom: 115px;
     }
+  }
+  .ant-tree li {
+    font-size: 14px;
   }
 }
 

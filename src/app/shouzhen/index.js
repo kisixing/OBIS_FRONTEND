@@ -19,6 +19,9 @@ import Tgjc from './tigejiancha';
 import Zkjc from './zhuankejiancha';
 import Zdcl from './zhenduanchuli';
 
+import store from "../store";
+import { getUserDocAction } from "../store/actionCreators.js";
+
 import * as baseData from './data';
 import editors from './editors';
 import "./index.less";
@@ -354,6 +357,15 @@ export default class Patient extends Component {
                         service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
                             message.success('信息保存成功',3);
                             this.activeTab(key || next.key);
+                            /*修改预产期-B超 同步数据*/
+                            if(tab.key === 'tab-2') {
+                                service.getuserDoc().then(res => this.setState({
+                                    info: res.object
+                                }, () => {
+                                    const action = getUserDocAction(res.object);
+                                    store.dispatch(action);
+                                }))
+                            }
                         }, () => { // TODO: 仅仅在mock时候用
                             this.activeTab(key || next.key);
                         });

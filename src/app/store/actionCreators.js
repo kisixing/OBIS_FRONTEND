@@ -1,11 +1,15 @@
-import { CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, SHOW_TRIAL_CARD, 
+import { GET_USER_DOC, CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, SHOW_TRIAL_CARD, 
         SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS } from './actionTypes.js'
+
+export const getUserDocAction = (data) => ({
+  type: GET_USER_DOC,
+  data
+})
  
 export const getAlertAction = (data) => ({
   type: CHECK_HIGHRISK_ALERT,
   data
 })
-
 export const closeAlertAction = (index) => ({
   type: CLOSE_HIGHRISK_ALERT,
   index

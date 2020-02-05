@@ -47,11 +47,17 @@ export default class FuzhenForm extends Component {
     }));
   }
 
-  // componentWillReceiveProps(props) {
-  //   const { entity } = this.state;
-  //   let param = {"ckweek": util.countWeek(props.info.gesexpect)};
-  //   this.setState({entity: {...entity, ...param}});
-  // }
+  componentWillReceiveProps(props) {
+    if(props.hasRecord) {
+      let data = props.initData;
+      Object.keys(props.initData).forEach(key => {
+        if(typeof data[key] ==="string" && (data[key].indexOf('{') !== -1 || data[key].indexOf('[') !== -1)) {
+          data[key] = JSON.parse(data[key])
+        }
+      })
+      this.setState({entity: data})
+    }
+  }
 
   // 2 检测孕妇高危诊断，修改表格以及表单型式
   checkDiagnosisHighrisk(type) {
@@ -62,6 +68,7 @@ export default class FuzhenForm extends Component {
     diagnosis.map(item => { diagItem.push(item.data)});
     for (var k in relatedObj) { signItem = signItem.concat(relatedObj[k]) };
 
+    /*关联表单操作*/
     const searchParam = {
       'diabetes': {
         'diagKeyword': ['糖尿病'],
@@ -408,9 +415,6 @@ export default class FuzhenForm extends Component {
     if (name=='ckzijzhz' || name=='ckxianl' || name=='ckfuzh') {
       data = { [name]: value['label'] };
     }
-    if (name=='rvisitOsType' || name=='ckappointmentArea') {
-      data = { [name]: value['describe'] };
-    }
     switch (name) {
       case 'checkdate':
         data.ckweek = util.countWeek(value);
@@ -622,6 +626,7 @@ export default class FuzhenForm extends Component {
 
   render() {
     const { entity, isShowRegForm } = this.state;
+
     return (
       <div className="fuzhen-form">
         <strong className="fuzhen-form-TIT">本次产检记录</strong>

@@ -11,7 +11,6 @@ export default function(){
 
 function shouzhenyy({value, onChange, onBlur}, count, FormItemComponent){
   const data = value || {};
-  console.log(value);
   const options = count.split(',').map(i=>i.split('&'));
   const handleChange = (e, {name, value}) => {
     data[name] = value;
