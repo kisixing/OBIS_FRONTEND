@@ -29,8 +29,6 @@ export default class RegForm extends Component {
 
   getRegform() {
     const { allFormData } = this.state;
-
-    console.log(allFormData, '3u683');
     service.fuzhen.getRecordList().then(res => {
       let data = res.object;
       Object.keys(data).forEach(key => {

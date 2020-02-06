@@ -35,6 +35,7 @@ export default class extends Component {
               name: "add_FIELD_gaoxueya[高血压]",
               type: "checkinput",
               valid: "required",
+              className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
               span: 15
@@ -48,6 +49,7 @@ export default class extends Component {
               name: "add_FIELD_tangniaobing[糖尿病]",
               type: "checkinput",
               valid: "required",
+              className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
               span: 15
@@ -61,6 +63,7 @@ export default class extends Component {
               name: "add_FIELD_xinzangbing[心脏病]",
               type: "checkinput",
               valid: "required",
+              className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
               span: 15
@@ -74,6 +77,7 @@ export default class extends Component {
               name: "add_FIELD_qitabingshi[其@他]",
               type: "checkinput",
               valid: "required",
+              className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
               span: 15
@@ -100,6 +104,7 @@ export default class extends Component {
               name: "bsshoushuother[外伤史]",
               type: "checkinput",
               valid: "required",
+              className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
               span: 15

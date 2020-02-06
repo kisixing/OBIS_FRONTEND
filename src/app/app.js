@@ -274,8 +274,6 @@ export default class App extends Component {
     let newTemplateTree1 = templateTree1;
     let newTemplateTree2 = templateTree2;
 
-    // console.log(checkedKeys, '666')
-
     const closeModal = (bool) => {
       const action = showPharAction(false);
       store.dispatch(action);
@@ -307,6 +305,7 @@ export default class App extends Component {
     ));
 
     const handleCheck1 = (keys, { checked }) => {
+      this.setState({checkedKeys: keys})
       newTemplateTree1.forEach(tt => {
         if (keys.indexOf(`${tt.id}`) !== -1) {
           tt.selected = checked;
@@ -333,7 +332,7 @@ export default class App extends Component {
         <Row>
           <Col span={12}>
             <div className="title">高危因素</div>
-            <Tree className="phar-left" checkable defaultCheckedKeys={checkedKeys} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
+            <Tree className="phar-left" checkedKeys={checkedKeys} checkable onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
             {/* <p>建议用药：克赛0.4ml 皮下注射qd</p> */}
           </Col>
           <Col span={1}></Col>

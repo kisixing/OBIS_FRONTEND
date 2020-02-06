@@ -10,7 +10,7 @@ import * as baseData from './data';
 import editors from '../shouzhen/editors';
 import * as util from './util';
 import store from '../store';
-import { getAlertAction, showTrialAction, showPharAction } from '../store/actionCreators.js';
+import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction } from '../store/actionCreators.js';
 
 import "../index.less";
 import "./index.less";
@@ -72,11 +72,16 @@ export default class Patient extends Component {
           "options": ["预约1","预约2","预约3"],
           "counts": "3"
         }
-      ]
+      ],
+      ...store.getState(),
     };
-
+    store.subscribe(this.handleStoreChange);
     this.componentWillUnmount = editors();
   }
+
+  handleStoreChange = () => {
+    this.setState(store.getState());
+  };
 
   componentDidMount() {
     Promise.all([
@@ -91,12 +96,14 @@ export default class Patient extends Component {
 
     service.fuzhen.getRecentRvisit().then(res => {
       res.object = res.object || [];
+      let bool = false;
       res.object&&res.object.map(item => {
         if(item.checkdate == util.futureDate(0)) {
+          bool = true;
           this.setState({hasRecord: true, initData: item})
         }
       })
-      res.object.push(this.state.initData);
+      if(!bool) res.object.push(this.state.initData);
       this.setState({recentRvisit: res.object})
     })]).then(() => this.setState({ loading: false }));
 
@@ -130,10 +137,7 @@ export default class Patient extends Component {
             diagnosi: ''
         }, () => {
           if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
-       
-            // const action1 = checkedKeysAction(checkedKeys);
-            // store.dispatch(action1);
-        
+            this.updateCheckedKeys();
             const action = showPharAction(true);
             store.dispatch(action);
           }
@@ -144,11 +148,37 @@ export default class Patient extends Component {
     }
   }
 
-  deldiagnosis(id) {
+  updateCheckedKeys(data) {
+    const { checkedKeys, diagnosis } = this.state;
+    let newCheckedKeys = checkedKeys;
+
+    diagnosis.map(item => {
+      if(item.data.indexOf("静脉曲张") !== -1 && !newCheckedKeys.includes('11')) newCheckedKeys.push('11');
+      if(item.data === "妊娠子痫前期" && !newCheckedKeys.includes('10')) newCheckedKeys.push("10");
+      if(item.data === "多胎妊娠" && !newCheckedKeys.includes('14')) newCheckedKeys.push("14");
+    })
+
+    if(data && data.indexOf("静脉曲张") !== -1 && newCheckedKeys.includes('11')) {
+      newCheckedKeys.splice(newCheckedKeys.indexOf('11'), 1)
+    }
+    if(data && data === "妊娠子痫前期" && newCheckedKeys.includes('10')) {
+      newCheckedKeys.splice(newCheckedKeys.indexOf('10'), 1)
+    }
+    if(data && data === "多胎妊娠" && newCheckedKeys.includes('14')) {
+      newCheckedKeys.splice(newCheckedKeys.indexOf('14'), 1)
+    }
+
+    const action = checkedKeysAction(newCheckedKeys);
+    store.dispatch(action);
+  }
+
+  deldiagnosis(id, data) {
     service.fuzhen.deldiagnosis(id).then(() => {
       modal('info', '删除诊断信息成功');
       service.fuzhen.getdiagnosis().then(res => this.setState({
           diagnosis: res.object.list
+      }, () => {
+        this.updateCheckedKeys(data);
       }));
     })
   }
@@ -165,7 +195,6 @@ export default class Patient extends Component {
         modal('success', '诊断信息保存成功');
         service.fuzhen.getRecentRvisit().then(res => {
           this.setState({initData: res.object[0]})
-          res.object.push(this.state.initData);
           this.setState({loading: false, recentRvisit: res.object})
         });
         resolve();
@@ -183,7 +212,7 @@ export default class Patient extends Component {
         title: '您是否确认要删除这项诊断',
         width: '300',
         style: { left: '-300px', fontSize: '18px' },
-        onOk: () => this.deldiagnosis(item.id)
+        onOk: () => this.deldiagnosis(item.id, item.data)
       });
     };
 
@@ -397,7 +426,7 @@ export default class Patient extends Component {
   }
 
   renderTable() {
-    const { info, recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn } = this.state;
+    const { info, recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, hasRecord } = this.state;
 
     const handleMoreBtn = () => {
       service.fuzhen.getRvisitPage(pageCurrent).then(res => this.setState({
@@ -409,7 +438,7 @@ export default class Patient extends Component {
     }
 
     const handleSaveChange = (type, row) => {
-      row.ckweek = info.tuserweek;
+      // row.ckweek = info.tuserweek;
       this.setState({initData: row});
     }
 
@@ -421,7 +450,14 @@ export default class Patient extends Component {
 
       service.fuzhen.saveRvisitForm(row).then(res => {
         service.fuzhen.getRecentRvisit().then(res => {
-          res.object.push(this.state.initData);
+          let bool = false;
+          res.object&&res.object.map(item => {
+            if(item.checkdate == util.futureDate(0)) {
+              bool = true;
+              this.setState({hasRecord: true, initData: item})
+            }
+          })
+          if(!bool) res.object.push(this.state.initData);
           this.setState({recentRvisit: res.object})
         })
       })
@@ -434,8 +470,11 @@ export default class Patient extends Component {
 
     const resetData = (obj) => {
       obj.map(item => {
+        let describe1 = '', describe2 = '';
+        if(item.ckappointmentArea !== '') describe1 = JSON.parse(item.ckappointmentArea).describe;
+        if(item.rvisitOsType !== '' ) describe2 = JSON.parse(item.rvisitOsType).describe;
         item.ckpressure = (!item.ckpressure||item.ckpressure === "") ?  item.ckshrinkpressure +'/'+ item.ckdiastolicpressure : item.ckpressure;
-        item.nextRvisitText = item.ckappointment.slice(5) + ' ' + item.ckappointmentArea.describe + ' ' + item.rvisitOsType.describe;
+        item.nextRvisitText = item.ckappointment.slice(5) + ' ' + describe1 + ' ' + describe2;
       })
     }
 
@@ -459,8 +498,9 @@ export default class Patient extends Component {
           editable: true,
           className: "fuzhenTable",
           onClick: true,
+          hasRecord: hasRecord,
           scroll: { x: 1100, y: 220 },
-          iseditable: ({ row }) => row > recentRvisit.length - 2,
+          iseditable: ({ row }) => hasRecord ? row === 0 : row > recentRvisit.length - 2,
           onRowChange: handleSaveChange
         })}
         {/* {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null} */}

@@ -303,6 +303,7 @@ export const shoushushiColumns = [
 		title: '手术日期',
 		key: 'date',
 		type: 'input',
+		filterDate: true,
 		// mode:"ym"
 	},
   {
@@ -340,6 +341,7 @@ export const pregnanciesColumns = [
 		key: 'datagridYearMonth',
 		type: 'input',
 		width: '200',
+		filterDate: true,
 		// mode:"ym",
 	},
 	{

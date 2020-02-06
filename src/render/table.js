@@ -25,9 +25,9 @@ class TableItem extends Component {
   }
 
   componentDidMount(){
-    const { iseditable = () => true, entity, row, name, value, onClick } = this.props;
+    const { iseditable = () => true, entity, row, name, value, onClick, hasRecord } = this.props;
     const arr = ["cktizh", "ckzijzhz", "cktaix", "ckxianl", "ckgongg", "ckfuzh"];
-    if (iseditable({entity, row, name, value}) && onClick) {
+    if (iseditable({entity, row, name, value}) && onClick && !hasRecord) {
       if (arr.includes(name)) {
         this.setState({force:true});
       }

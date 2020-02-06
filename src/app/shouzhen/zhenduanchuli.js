@@ -118,7 +118,7 @@ export default class extends Component{
   }
 
   adddiagnosis() {
-    const { diagnosis, diagnosi, checkedKeys } = this.state;
+    const { diagnosis, diagnosi } = this.state;
     if (diagnosi && !diagnosis.filter(i => i.data === diagnosi).length) {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
@@ -139,13 +139,7 @@ export default class extends Component{
             diagnosi: ''
         }, () => {
           if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
-       
-            // let newCheckedKeys = checkedKeys;
-            // newCheckedKeys.push('1');
-            // const action1 = checkedKeysAction(newCheckedKeys);
-            // store.dispatch(action1);
-            // console.log(newCheckedKeys, '555')
-        
+            this.updateCheckedKeys();
             const action = showPharAction(true);
             store.dispatch(action);
           }
@@ -156,11 +150,37 @@ export default class extends Component{
     }
   }
 
-  deldiagnosis(id) {
+  updateCheckedKeys(data) {
+    const { checkedKeys, diagnosis } = this.state;
+    let newCheckedKeys = checkedKeys;
+
+    diagnosis.map(item => {
+      if(item.data.indexOf("静脉曲张") !== -1 && !newCheckedKeys.includes('11')) newCheckedKeys.push('11');
+      if(item.data === "妊娠子痫前期" && !newCheckedKeys.includes('10')) newCheckedKeys.push("10");
+      if(item.data === "多胎妊娠" && !newCheckedKeys.includes('14')) newCheckedKeys.push("14");
+    })
+
+    if(data && data.indexOf("静脉曲张") !== -1 && newCheckedKeys.includes('11')) {
+      newCheckedKeys.splice(newCheckedKeys.indexOf('11'), 1)
+    }
+    if(data && data === "妊娠子痫前期" && newCheckedKeys.includes('10')) {
+      newCheckedKeys.splice(newCheckedKeys.indexOf('10'), 1)
+    }
+    if(data && data === "多胎妊娠" && newCheckedKeys.includes('14')) {
+      newCheckedKeys.splice(newCheckedKeys.indexOf('14'), 1)
+    }
+
+    const action = checkedKeysAction(newCheckedKeys);
+    store.dispatch(action);
+  }
+
+  deldiagnosis(id, data) {
     service.fuzhen.deldiagnosis(id).then(() => {
       modal('info', '删除诊断信息成功');
       service.fuzhen.getdiagnosis().then(res => this.setState({
           diagnosis: res.object.list
+      }, () => {
+        this.updateCheckedKeys(data);
       }));
     })
   }
@@ -210,7 +230,7 @@ export default class extends Component{
         title: '您是否确认要删除这项诊断',
         width: '300',
         style: { left: '30%', fontSize: '18px' },
-        onOk: () => this.deldiagnosis(item.id)
+        onOk: () => this.deldiagnosis(item.id, item.data)
       });
     };
 
