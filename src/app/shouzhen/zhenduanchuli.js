@@ -429,7 +429,9 @@ export default class extends Component{
     const handleCheck = (keys, { checked }) => {
       treatTemp.forEach(tt => {
         if (keys.indexOf(`${tt.id}`) !== -1) {
-          tt.checked = checked;
+          tt.checked = true;
+        } else {
+          tt.checked = false;
         }
       })
     };

@@ -31,6 +31,12 @@ export default {
         return myAxios.get('/outpatientRestful/findHighriskTree')
     },
     /**
+     * 保存高危数据
+     */
+    savehighriskform: function(params){
+        return myAxios.put('/outpatientWriteRestful/savehighriskform', params)
+    },
+    /**
      * 高危弹出提醒判断
      */
     checkHighriskAlert: function(id){

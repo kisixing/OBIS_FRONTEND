@@ -55,6 +55,7 @@ export default class App extends Component {
       templateTree1: [],
       templateTree2: [],
       allFormData: null,
+      expandedKeys: [],
     };
     store.subscribe(this.handleStoreChange);
 
@@ -73,9 +74,15 @@ export default class App extends Component {
       })
     );
 
-    service.highrisk().then(res => this.setState({
-      highriskList: res.object
-    }))
+    service.highrisk().then(res => {
+      let list = res.object;
+      list && list.map(item => {
+        if (item.icon) {
+          item.level = item.icon.substring(item.icon.length-5, item.icon.length-4);
+        }
+      })
+      this.setState({highriskList: list})
+    })
 
     service.shouzhen.findTemplateTree(2).then(res => this.setState({templateTree: res.object}));
 
@@ -438,23 +445,44 @@ export default class App extends Component {
   }
 
   renderDanger() {
-    const { highriskList, highriskShow, highriskEntity } = this.state;
-    const searchList =
-      highriskEntity &&
-      highriskList.filter(
-        i =>
-          !highriskEntity.search || i.name.indexOf(highriskEntity.search) !== -1
-      );
+    const { highriskList, highriskShow, highriskEntity, expandedKeys } = this.state;
+    const searchList = highriskEntity && highriskList.filter(i  => !highriskEntity.search || i.name.indexOf(highriskEntity.search) !== -1);
+    let allExpandedKeys = [];
+    searchList && searchList.map(item => {
+      allExpandedKeys.push(item.id.toString())
+    })
+    
     const handleOk = () => {
       this.setState({ highriskShow: false });
-      console.log("保存高危数据: ", highriskEntity);
+      service.savehighriskform(highriskEntity).then(() => {})
     };
+
+    const handleClear = () => {
+      highriskEntity['risklevel'] = '';
+      highriskEntity['highrisk'] = '';
+      this.setState({ highriskEntity });
+    };
+
     const handleChange = (name, value) => {
       highriskEntity[name] = value;
       this.setState({ highriskEntity });
     };
+
+    const handleCheck = keys => {
+      this.setState({expandedKeys: keys})
+    }
+
     const handleSelect = keys => {
+      let initLevel = highriskEntity.risklevel;
+      initLevel = initLevel === 'Ⅰ' ? '1' : initLevel === 'Ⅱ' ? '2' : initLevel === 'Ⅲ' ? '3' : initLevel === 'Ⅳ' ? '4' : initLevel === 'Ⅴ' ? '5' : '0';
+
       const node = searchList.filter(i => i.id == keys[0]).pop();
+      if(node && node.level && node.level > initLevel) {
+        let newLevel = node.level;
+        newLevel = newLevel === '1' ? 'Ⅰ' : newLevel === '2' ? 'Ⅱ' : newLevel === '3' ? 'Ⅲ' : newLevel === '4' ? 'Ⅳ' : 'Ⅴ';
+        handleChange("risklevel", newLevel)
+      }
+      
       const gettitle = n => {
         const p = searchList.filter(i => i.id === n.pId).pop();
         if (p) {
@@ -462,43 +490,24 @@ export default class App extends Component {
         }
         return [n.name];
       };
-      if (
-        node &&
-        !searchList.filter(i => i.pId === node.id).length &&
-        highriskEntity.highrisk.split("\n").indexOf(node.name) === -1
-      ) {
-        handleChange(
-          "highrisk",
-          highriskEntity.highrisk.replace(/\n+$/, "") +
-            "\n" +
-            gettitle(node).join(":")
-        );
+      if ( node && !searchList.filter(i => i.pId === node.id).length &&
+           highriskEntity.highrisk && highriskEntity.highrisk.split("\n").indexOf(node.name) === -1) {
+        handleChange( "highrisk", highriskEntity.highrisk.replace(/\n+$/, "") + "\n" + gettitle(node).join(":") );
+      } else if (node && !searchList.filter(i => i.pId === node.id).length) {
+        handleChange( "highrisk", gettitle(node).join(":") );
       }
     };
+
     const initTree = (pid, level = 0) =>
-      searchList
-        .filter(i => i.pId === pid)
-        .map(node => (
-          <Tree.TreeNode
-            key={node.id}
-            title={node.name}
-            onClick={() => handleCheck(node)}
-            isLeaf={!searchList.filter(i => i.pId === node.id).length}
-          >
-            {level < 10 ? initTree(node.id, level + 1) : null}
-          </Tree.TreeNode>
-        ));
+      searchList.filter(i => i.pId === pid).map(node => (
+        <Tree.TreeNode key={node.id} title={node.name} onClick={() => handleCheck(node)} isLeaf={!searchList.filter(i => i.pId === node.id).length}>
+          {node.shorthand ? initTree(node.id, level + 1) : null}
+        </Tree.TreeNode>
+      ));
 
     return highriskEntity ? (
-      <Modal
-        className="highriskPop"
-        title="高危因素"
-        visible={highriskShow}
-        width={1000}
-        maskClosable={true}
-        onCancel={() => this.setState({ highriskShow: false })}
-        onOk={() => handleOk()}
-      >
+      <Modal className="highriskPop" title="高危因素" visible={highriskShow} width={1000} maskClosable={true}
+             onCancel={() => this.setState({ highriskShow: false })} onOk={() => handleOk()}>
         <div>
           <Row>
             <Col span={2}></Col>
@@ -506,33 +515,18 @@ export default class App extends Component {
               <Row>
                 <Col span={3}>高危等级：</Col>
                 <Col span={7}>
-                  <Select
-                    value={highriskEntity.risklevel}
-                    onChange={e => handleChange("risklevel", e)}
-                  >
+                  <Select value={highriskEntity.risklevel} onChange={e => handleChange("risklevel", e)}>
                     {"Ⅰ,Ⅱ,Ⅲ,Ⅳ,Ⅴ".split(",").map(i => (
-                      <Select.Option key={i} value={i}>
-                        {i}
-                      </Select.Option>
+                      <Select.Option key={i} value={i}>{i}</Select.Option>
                     ))}
                   </Select>
                 </Col>
                 <Col span={2}>传染病：</Col>
                 <Col span={10}>
-                  <Select
-                    multiple
-                    value={
-                      highriskEntity.infectious &&
-                      highriskEntity.infectious.split(",")
-                    }
-                    onChange={e => handleChange("infectious", e.join())}
-                  >
-                    {"<乙肝大三阳,乙肝小三阳,梅毒,HIV,结核病,重症感染性肺炎,特殊病毒感染（H1N7、寨卡等）,传染病：其他"
-                      .split(",")
-                      .map(i => (
-                        <Select.Option key={i} value={i}>
-                          {i}
-                        </Select.Option>
+                  <Select multiple value={ highriskEntity.infectious && highriskEntity.infectious.split(",")}
+                          onChange={e => handleChange("infectious", e.join())}>
+                    {"<乙肝大三阳,乙肝小三阳,梅毒,HIV,结核病,重症感染性肺炎,特殊病毒感染（H1N7、寨卡等）,传染病：其他".split(",").map(i => (
+                        <Select.Option key={i} value={i}>{i}</Select.Option>
                       ))}
                   </Select>
                 </Col>
@@ -541,57 +535,29 @@ export default class App extends Component {
               <Row>
                 <Col span={3}>高危因素：</Col>
                 <Col span={16}>
-                  <Input
-                    type="textarea"
-                    rows={5}
-                    value={highriskEntity.highrisk}
-                    onChange={e => handleChange("highrisk", e.target.value)}
-                  />
+                  <Input type="textarea" rows={5} value={highriskEntity.highrisk} onChange={e => handleChange("highrisk", e.target.value)}/>
                 </Col>
                 <Col span={1}></Col>
                 <Col span={2}>
-                  <Button
-                    size="small"
-                    onClick={() => handleChange("highrisk", "")}
-                  >
-                    重置
-                  </Button>
+                  <Button size="small" onClick={() => handleClear()}>重置</Button>
                 </Col>
               </Row>
               <br />
               <Row>
                 <Col span={16}>
-                  <Input
-                    value={highriskEntity.search}
-                    onChange={e => handleChange("search", e.target.value)}
-                    placeholder="输入模糊查找"
-                  />
+                  <Input value={highriskEntity.search} onChange={e => handleChange("search", e.target.value)} placeholder="输入模糊查找"/>
                 </Col>
                 <Col span={3}>
-                  <Button
-                    size="small"
-                    onClick={() => handleChange("expandAll", false)}
-                  >
-                    全部收齐
-                  </Button>
+                  <Button size="small" onClick={() => this.setState({expandedKeys: []})}>全部收齐</Button>
                 </Col>
                 <Col span={3}>
-                  <Button
-                    size="small"
-                    onClick={() => handleChange("expandAll", true)}
-                  >
-                    全部展开
-                  </Button>
+                  <Button size="small" onClick={() => this.setState({expandedKeys: allExpandedKeys})}>全部展开</Button>
                 </Col>
               </Row>
             </Col>
           </Row>
           <div style={{ height: 200, overflow: "auto", padding: "0 16px" }}>
-            <Tree
-              defaultExpandAll={highriskEntity.expandAll}
-              onSelect={handleSelect}
-              style={{ maxHeight: "90%" }}
-            >
+            <Tree expandedKeys={expandedKeys} onExpand={handleCheck} onSelect={handleSelect} style={{ maxHeight: "90%" }}>
               {initTree(0)}
             </Tree>
           </div>
