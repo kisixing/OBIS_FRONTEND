@@ -10,3 +10,8 @@ export const SHOW_PHAR_MODAL = 'show_phar_modal';
 export const SHOW_PHAR_CARD = 'show_phar_card';
 export const IS_MEET_PHAR = 'is_meet_phar';
 export const CHECKED_KEYS = 'checked_keys';
+
+export const SHOW_REMINDER_MODAL = 'show_reminder_modal';
+export const ALL_REMINDER_MODAL = 'all_reminder_modal';
+export const CLOSE_REMINDER_MODAL = 'close_reminder_modal';
+export const OPEN_MEDICAL_ADVICE = 'open_medical_advice';

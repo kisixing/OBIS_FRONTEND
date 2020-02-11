@@ -1,5 +1,6 @@
 import { GET_USER_DOC, CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, SHOW_TRIAL_CARD,  
-          SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS } from './actionTypes.js'
+          SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS, ALL_REMINDER_MODAL, CLOSE_REMINDER_MODAL, 
+          SHOW_REMINDER_MODAL, OPEN_MEDICAL_ADVICE } from './actionTypes.js'
 const defaultState = {
   userDoc: {},
   highriskAlert:[],
@@ -9,6 +10,9 @@ const defaultState = {
   isShowPharCard: false,
   isMeetPhar: false,
   checkedKeys: [],
+  allReminderModal: [],
+  isOpenMedicalAdvice: true,
+  isShowReminderModal: false,
 }
 
 export default (state = defaultState, action) => {
@@ -58,6 +62,27 @@ export default (state = defaultState, action) => {
     if(action.type === CHECKED_KEYS) {
       const newState = JSON.parse(JSON.stringify(state));
       newState.checkedKeys = action.arr;
+      return newState;
+    }
+    
+    if(action.type === ALL_REMINDER_MODAL) {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.allReminderModal = action.data;
+      return newState;
+    }
+    if(action.type === CLOSE_REMINDER_MODAL) {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.allReminderModal[action.index].visible = false;
+      return newState;
+    }
+    if(action.type === SHOW_REMINDER_MODAL) {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.isShowReminderModal = action.bool;
+      return newState;
+    }
+    if(action.type === OPEN_MEDICAL_ADVICE) {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.isOpenMedicalAdvice = action.bool;
       return newState;
     }
 

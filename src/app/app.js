@@ -15,7 +15,9 @@ import {
   showPharAction,
   showPharCardAction,
   isMeetPharAction,
-  checkedKeysAction
+  checkedKeysAction,
+  showReminderAction,
+  closeReminderAction,
 } from "./store/actionCreators.js";
 
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
@@ -158,6 +160,50 @@ export default class App extends Component {
   }
 
   /**
+   * 诊断提醒窗口
+   */
+  renderReminder() {
+    const { allReminderModal, isOpenMedicalAdvice } = this.state;
+
+    const handelClose = (index, item) => {
+      const action = closeReminderAction(index);
+      store.dispatch(action);
+
+      item && service.fuzhen.adddiagnosis(item.diagnosis).then(() => { })
+
+      if (index === 0) {
+        const action2 = showReminderAction(false);
+        store.dispatch(action2);
+      }
+    };
+
+    const footer = (index, item) => {
+      return (
+        <div>
+          {isOpenMedicalAdvice ? <Button onClick={() => handelClose(index)}>取消, 开立医嘱</Button> : null}
+          <Button onClick={() => handelClose(index)}>{isOpenMedicalAdvice ? '取消并返回' : '取消'}</Button>
+          <Button type="primary" onClick={() => handelClose(index, item)}>确定</Button>
+        </div>
+      )
+    }
+
+    return allReminderModal && allReminderModal.length > 0  ?
+    allReminderModal.map((item, index) => item.visible ? 
+      (
+        <Modal className="reminder-wrapper" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
+          visible={item.visible} footer={footer(index, item)} onCancel={() => handelClose(index)} >
+          <div className="reminder-content"><span className="reminder-word">{item.reminder}</span>,是否添加诊断</div>
+          <div className="reminder-item">
+            慢性活动
+          </div>
+        </Modal>
+      )
+      : null
+    )
+    : null;
+  }
+
+  /**
    * 瘢痕子宫阴道试产表
    */
   handleCardClick = (name) => {
@@ -235,7 +281,7 @@ export default class App extends Component {
     const diagnosis = params.diagnosisList;
     const bmi = params.checkUp.ckbmi;
     const age = params.gravidaInfo.userage;
-    const preghiss = params.gestation.preghiss.length;
+    const preghiss = params.gestation.preghiss ? params.gestation.preghiss.length : [];
     const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);
 
     const getKey = (val) => {
@@ -565,6 +611,7 @@ export default class App extends Component {
         {this.renderHighrisk()}
         {this.renderTrialModal()}
         {this.renderPharModal()}
+        {this.renderReminder()}
       </div>
     );
   }

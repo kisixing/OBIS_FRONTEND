@@ -22,15 +22,14 @@ export default class extends Component {
             { span: 2 },
             { name: 'yjchix[持续天数]', className: 'input_width_4', type: 'input', span: 5, valid: 'number|required' },
             { span: 1 },
-            { name: 'yjtongj[痛@@经]', type: 'checkinput', span: 6, valid: 'required', radio: true, options: baseData.plOptions },
+            { name: 'yjtongj[痛@@经]', type: 'checkinput', span: 7, valid: 'required', radio: true, options: baseData.plOptions },
           ]
         },
         {
           columns: [
             { span: 1 },
-            { name: 'maritalHistory[婚姻史]', type: 'checkinput', className:'col-xz-sp',span: 11,  radio: true, valid: 'required', options: baseData.hysOptions },
+            { name: 'maritalHistory[婚姻史]', className:'col-xz-sp hun-yin-shi', type: 'checkinput', span: 11, radio: true, valid: 'required', options: baseData.hysOptions },
             { name: 'userjiehn(岁)[本次结婚年龄]', className: 'input_width_4',  type: 'input', span: 5, valid: 'number|required' },
-            { span: 1 },
             { name: 'userjinqjh[近亲结婚]', className:'col-yjs-sp', type: 'checkinput', span: 5, radio: true, valid: 'required', options: baseData.jinqOptions },
           ]
         },

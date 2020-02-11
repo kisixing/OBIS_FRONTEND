@@ -48,8 +48,8 @@ export default class extends Component{
       isShowRegForm: false,
       openTemplate: false,
       ...store.getState(),
-      chanc: '',
-      yunc: ''
+      chanc: 0,
+      yunc: 0
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -210,16 +210,18 @@ export default class extends Component{
   getGPTimes() {
     const { allData } = this.props;
     const allPreghiss = allData.gestation.preghiss;
-    this.setState({yunc: allPreghiss.length + 1});
-    let times = 0;
-    allPreghiss&&allPreghiss.map(item => {
-      if(item.zuych === true) {
-        times++;
-      } else if (item.zaoch !== "") {
-        times++;
-      }
-    })
-    this.setState({chanc: times});
+    if(allPreghiss) {
+      this.setState({yunc: allPreghiss.length + 1});
+      let times = 0;
+      allPreghiss&&allPreghiss.map(item => {
+        if(item.zuych === true) {
+          times++;
+        } else if (item.zaoch !== "") {
+          times++;
+        }
+      })
+      this.setState({chanc: times});
+    }
   }
 
   renderZD(){

@@ -14,51 +14,60 @@ export function input({onChange, onBlur, value, filterDate, ...props}){
   const handleBlur = e => {
     if (filterDate) {
       const nowYear = new Date().getFullYear();
-      const num1 = nowYear.toString().substring(0, 2);
-      const num2 = nowYear.toString().substring(2);
-      const iptValue = e.target.value.replace(/[^0-9]+/g, '');
+      const nuwCentury = nowYear.toString().substring(0, 2);
+      const numYear = nowYear.toString().substring(2);
+      const initValue = e.target.value;
+      const iptValue = initValue.replace(/[^0-9]+/g, '');
 
       const getCentury = (v) => {
-        const century = v > num2 ? num1 - 1 : num1;
+        const century = v > numYear ? nuwCentury - 1 : nuwCentury;
         return century;
       }
 
-      let finalDate = '', str1 = '', str2 = '';
+      let finalDate = '', finalYear = '', finalMonth = '';
 
       if(iptValue.length === 2) {
         finalDate = getCentury(iptValue) + iptValue;
       } else if (iptValue.length === 3) {
-        str1 = iptValue.substring(0, 2);
-        str2 = iptValue.substring(2);
+        finalYear = iptValue.substring(0, 2);
+        finalMonth = iptValue.substring(2);
 
-        str1 = getCentury(str1) + str1;
-        str2 = str2 > 10 ? str2 : '0' + str2;
-        finalDate = str1 + '-' + str2;
-      } else if (iptValue.length === 4) {
-        str1 = iptValue.substring(0, 2);
-        str2 = iptValue.substring(2);
+        finalYear = getCentury(finalYear) + finalYear;
+        finalMonth = finalMonth > 10 ? finalMonth : '0' + finalMonth;
+        finalDate = finalYear + '-' + finalMonth;
+      } else if (iptValue.length === 4 && initValue.length === 4) {
+        finalDate = iptValue;
+      } else if (iptValue.length === 4 && initValue.length !== 4) {
+        finalYear = iptValue.substring(0, 2);
+        finalMonth = iptValue.substring(2);
 
-        str1 = getCentury(str1) + str1;
-        finalDate = str1 + '-' + str2;
+        finalYear = getCentury(finalYear) + finalYear;
+        finalDate = finalYear + '-' + finalMonth;
       } else if (iptValue.length === 5) {
-        str1 = iptValue.substring(0, 4);
-        str2 = iptValue.substring(4);
+        finalYear = iptValue.substring(0, 4);
+        finalMonth = iptValue.substring(4);
 
-        str1 = str1;
-        str2 = str2 > 10 ? str2 : '0' + str2;
-        finalDate = str1 + '-' + str2;
+        finalYear = finalYear;
+        finalMonth = finalMonth > 10 ? finalMonth : '0' + finalMonth;
+        finalDate = finalYear + '-' + finalMonth;
       } else if (iptValue.length === 6) {
-        str1 = iptValue.substring(0, 4);
-        str2 = iptValue.substring(4);
+        finalYear = iptValue.substring(0, 4);
+        finalMonth = iptValue.substring(4);
 
-        finalDate = str1 + '-' + str2;
+        finalDate = finalYear + '-' + finalMonth;
       } else {
         message.error('输入格式错误！');
         return;
       }
+      
+      if((finalDate < 1900 || finalDate > nowYear) || (finalMonth !== '' && finalMonth < 1 || finalMonth > 12)) {
+        message.error(`输入日期为${finalDate}, 输入日期错误！`);
+        return;
+      }
 
-      onChange(e, finalDate)
-      onBlur(e)
+      onChange(e, finalDate).then(() => {
+         onBlur(e)
+      })
     } else {
       onBlur(e)
     }

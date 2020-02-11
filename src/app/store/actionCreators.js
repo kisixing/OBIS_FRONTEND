@@ -1,5 +1,6 @@
 import { GET_USER_DOC, CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, SHOW_TRIAL_CARD, 
-        SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS } from './actionTypes.js'
+        SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS, ALL_REMINDER_MODAL, CLOSE_REMINDER_MODAL, 
+        SHOW_REMINDER_MODAL, OPEN_MEDICAL_ADVICE } from './actionTypes.js'
 
 export const getUserDocAction = (data) => ({
   type: GET_USER_DOC,
@@ -39,4 +40,21 @@ export const isMeetPharAction = (bool) => ({
 export const checkedKeysAction = (arr) => ({
   type: CHECKED_KEYS,
   arr
+})
+
+export const allReminderAction = (data) => ({
+  type: ALL_REMINDER_MODAL,
+  data
+})
+export const closeReminderAction = (index) => ({
+  type: CLOSE_REMINDER_MODAL,
+  index
+})
+export const showReminderAction = (bool) => ({
+  type: SHOW_REMINDER_MODAL,
+  bool
+})
+export const openMedicalAction = (bool) => ({
+  type: OPEN_MEDICAL_ADVICE,
+  bool
 })

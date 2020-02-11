@@ -20,7 +20,7 @@ import Zkjc from './zhuankejiancha';
 import Zdcl from './zhenduanchuli';
 
 import store from "../store";
-import { getUserDocAction } from "../store/actionCreators.js";
+import { getUserDocAction, allReminderAction, showReminderAction, openMedicalAction } from "../store/actionCreators.js";
 
 import * as baseData from './data';
 import editors from './editors';
@@ -43,7 +43,9 @@ export default class Patient extends Component {
             tabs: tabs,
             step: tabs[3].key, // 从0开始
             allData: null,
+            ...store.getState(),
         }
+        store.subscribe(this.handleStoreChange);
 
         this.componentWillUnmount = editors();
 
@@ -52,6 +54,10 @@ export default class Patient extends Component {
         }))
         this.activeTab(this.state.step);
     }
+
+    handleStoreChange = () => {
+        this.setState(store.getState());
+    };
 
     activeTab(step) {
         const { tabs } = this.state;
@@ -300,8 +306,8 @@ export default class Patient extends Component {
         this.timeout = setTimeout(() => this.forceUpdate(), 200);
     }
 
-    handleSave(key) {
-        const { tabs, step } = this.state;
+    handleSave(isShowReminderModal, key) {
+        const { tabs, step, allData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
@@ -309,6 +315,15 @@ export default class Patient extends Component {
 
         message.destroy();
         const hide = message.loading('正在执行中...', 0);
+
+        let allReminderModal = [];
+        const getAllReminder = (modalObj) => {
+            let bool = true;
+            allData.diagnosisList.map(item => {
+                if(item.data === modalObj.diagnosis) bool = false;
+            })
+            if(bool) allReminderModal.push(modalObj);
+        }
 
         fireForm(form, 'valid').then((valid) => {
             // 数据提交前再对数据进行一些处理，请实现entitySave方法，请参考tab-0：yunfuxinxi.js这个文件
@@ -343,7 +358,55 @@ export default class Patient extends Component {
                             tab.entity.add_FIELD_ogtt_gdm_empty = tab.entity.ogtt[0].value.input0;
                             tab.entity.add_FIELD_ogtt_gdm_1h = tab.entity.ogtt[0].value.input1;
                             tab.entity.add_FIELD_ogtt_gdm_2h = tab.entity.ogtt[0].value.input2;
+                            
+                            let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
+                            getAllReminder(modalObj);
                         }
+
+                        if(tab.entity.add_FIELD_hbsAg_ALT > 80) {
+                            let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
+                            getAllReminder(modalObj);
+                        }
+                        if(tab.entity.hbsAg[0].label === '小三阳') {
+                            let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
+                            getAllReminder(modalObj);
+                        }
+                        if(tab.entity.hbsAg[0].label === '大三阳') {
+                            let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
+                            getAllReminder(modalObj);
+                        }
+                        if(tab.entity.hcvAb[0].label === '阳性') {
+                            let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+                            getAllReminder(modalObj);
+                        }
+                        if(tab.entity.add_FIELD_hcvAb_RNA[0].label === '阳性') {
+                            let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+                            getAllReminder(modalObj);
+                        }
+                        if(tab.entity.rpr[0].label === '阳性') {
+                            let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
+                            getAllReminder(modalObj);
+                        }
+                        if(tab.entity.thalassemia[0].label === '甲型') {
+                            let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
+                            getAllReminder(modalObj);
+                        }
+                        if(tab.entity.thalassemia[0].label === '乙型') {
+                            let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
+                            getAllReminder(modalObj);
+                        }
+
+                        if(allReminderModal.length > 0) {
+                            const action1 = openMedicalAction(false);
+                            store.dispatch(action1);
+
+                            const action2 = allReminderAction(allReminderModal);
+                            store.dispatch(action2);
+
+                            const action3 = showReminderAction(true);
+                            store.dispatch(action3);
+                        }
+    
                     }
                     if (tab.key !== 'tab-5') {
                         if(tab.key === 'tab-3'){
@@ -354,7 +417,8 @@ export default class Patient extends Component {
                                 this.activeTab(key || next.key);
                             });
                         }
-                        service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
+                        console.log(isShowReminderModal, '43666')
+                        !isShowReminderModal && service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
                             message.success('信息保存成功',3);
                             this.activeTab(key || next.key);
                             /*修改预产期-B超 同步数据*/
@@ -416,7 +480,7 @@ export default class Patient extends Component {
     }
 
     render() {
-        const { tabs, info, step, allData } = this.state;
+        const { tabs, info, step, allData, isShowReminderModal } = this.state;
         const printIvisit = () => {
             service.shouzhen.printPdfByFile().then(res => {
                 this.printPdf(res.object);
@@ -429,7 +493,7 @@ export default class Patient extends Component {
             <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
 
             <div className="bgWhite" style={{ position: "fixed", top: "7.65em", left: "0", right: "0", bottom: "0"}}></div>
-            <Tabs type="card" activeKey={step} onChange={key => this.handleSave(key)}>
+            <Tabs type="card" activeKey={step} onChange={key => this.handleSave(isShowReminderModal, key)}>
               {tabs.map(({ key, title, entity, error, Content }) => (
                 <Tabs.TabPane key={key}
                   tab={
@@ -447,7 +511,7 @@ export default class Patient extends Component {
             <Row>
               <Col span={21} />
               <Col>
-                <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>
+                <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(isShowReminderModal) }, 100)}>
                   {step !== tabs[tabs.length - 1].key ? "下一页" : "保存"}
                 </Button>
               </Col>
