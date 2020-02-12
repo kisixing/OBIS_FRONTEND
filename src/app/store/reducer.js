@@ -1,8 +1,10 @@
-import { GET_USER_DOC, CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, SHOW_TRIAL_CARD,  
-          SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS, ALL_REMINDER_MODAL, CLOSE_REMINDER_MODAL, 
-          SHOW_REMINDER_MODAL, OPEN_MEDICAL_ADVICE } from './actionTypes.js'
+import { GET_USER_DOC, ALL_FORM_DATA, IS_FORM_CHANGE, CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, 
+        SHOW_TRIAL_CARD, SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS, ALL_REMINDER_MODAL, CLOSE_REMINDER_MODAL, 
+        SHOW_REMINDER_MODAL, OPEN_MEDICAL_ADVICE } from './actionTypes.js'
 const defaultState = {
   userDoc: {},
+  allFormData: null,
+  isFormChange: false,
   highriskAlert:[],
   isShowTrialModal: false,
   isShowTrialCard: false,
@@ -19,6 +21,18 @@ export default (state = defaultState, action) => {
     if(action.type === GET_USER_DOC) {
       const newState = JSON.parse(JSON.stringify(state));
       newState.userDoc = action.data;
+      return newState;
+    }
+
+    if(action.type === ALL_FORM_DATA) {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.allFormData = action.data;
+      return newState;
+    }
+
+    if(action.type === IS_FORM_CHANGE) {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.isFormChange = action.bool;
       return newState;
     }
 

@@ -372,35 +372,35 @@ export const xlOptions = [
  * 位置
  */
 export const wzOptions = [
-	{ label: '左', value: '1' },
-	{ label: '上', value: '2' },
-	{ label: '右下', value: '3' },
-	{ label: '左下', value: '4' },
+	{ label: '左', value: '左' },
+	{ label: '上', value: '上' },
+	{ label: '右下', value: '右下' },
+	{ label: '左下', value: '左下' },
 ];
 
 /**
  * 浮肿
  */
 export const ckfuzhOptions = [
-	{ label: '-', value: '1' },
-	{ label: '+', value: '2' },
-	{ label: '++', value: '3' },
-	{ label: '+++', value: '4' },
-	{ label: '++++', value: '5' },
+	{ label: '-', value: '-' },
+	{ label: '+', value: '+' },
+	{ label: '++', value: '++' },
+	{ label: '+++', value: '+++' },
+	{ label: '++++', value: '++++' },
 ];
 
 /**
  * 浮肿
  */
 export const yyfaOptions = [
-	{ label: '一天一次', value: '1' },
-	{ label: '一天两次', value: '2' },
-	{ label: '一天三次', value: '3' },
-	{ label: '一天四次', value: '4' },
-	{ label: '每四小时一次', value: '5' },
-	{ label: '每六小时一次', value: '6' },
-	{ label: '每八小时一次', value: '7' },
-	{ label: '每晚一次', value: '8' },
+	{ label: '一天一次', value: '一天一次' },
+	{ label: '一天两次', value: '一天两次' },
+	{ label: '一天三次', value: '一天三次' },
+	{ label: '一天四次', value: '一天四次' },
+	{ label: '每四小时一次', value: '每四小时一次' },
+	{ label: '每六小时一次', value: '每六小时一次' },
+	{ label: '每八小时一次', value: '每八小时一次' },
+	{ label: '每晚一次', value: '每晚一次' },
 ];
 
 /**
@@ -413,15 +413,15 @@ export const ckzijzhzOptions = toOptions(['无不适', '胎动好', '无不适�
  */
 export const nextRvisitWeekOptions = [
 	{ label: '', value: '' },
-	{ label: '1周后', value: '1' },
-	{ label: '2周后', value: '2' },
-	{ label: '4周后', value: '4' },
+	{ label: '1周后', value: '1周后' },
+	{ label: '2周后', value: '2周后' },
+	{ label: '4周后', value: '4周后' },
 ];
 
 /**
  * 门诊
  */
-export const rvisitOsTypeOptions = toOptions(['', '普通门诊', '高危门诊', '入院'], (v,i)=>({value:i+1,describe:v.slice(0,1)}));
+export const rvisitOsTypeOptions = toOptions(['', '普通门诊', '高危门诊', '入院'], (v,i)=>({value:i-1,describe:v.slice(0,1)}));
 
 /**
  * 上午/下午
@@ -436,14 +436,14 @@ export const ckappointmentAreaOptions = toOptions(['上午', '下午'], (v,i)=>(
  * 产检项目
  */
 export const cjOptions = [
-	{ label: '胎监', value: '1' },
-	{ label: '尿蛋白', value: '2' },
+	{ label: '胎监', value: '胎监' },
+	{ label: '尿蛋白', value: '尿蛋白' },
 ];
 /**
  * 胎监选项
  */
 export const tjOptions = [
-	{ label: '有反应', value: '1' },
-	{ label: '可疑，复查', value: '2' },
-	{ label: '异常，入院治疗', value: '3' },
+	{ label: '有反应', value: '有反应' },
+	{ label: '可疑，复查', value: '可疑，复查' },
+	{ label: '异常，入院治疗', value: '异常，入院治疗' },
 ];

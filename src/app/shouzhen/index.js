@@ -20,7 +20,13 @@ import Zkjc from './zhuankejiancha';
 import Zdcl from './zhenduanchuli';
 
 import store from "../store";
-import { getUserDocAction, allReminderAction, showReminderAction, openMedicalAction } from "../store/actionCreators.js";
+import { getUserDocAction,
+        getAllFormDataAction,
+        isFormChangeAction, 
+        allReminderAction, 
+        showReminderAction, 
+        openMedicalAction,
+    } from "../store/actionCreators.js";
 
 import * as baseData from './data';
 import editors from './editors';
@@ -64,6 +70,8 @@ export default class Patient extends Component {
         const tab = tabs.filter(t => t.key === step).pop() || {};
         // if (!tab.init) {
             service.shouzhen.getForm(tab.key).then(res => {
+                const action = getAllFormDataAction(res.object);
+                store.dispatch(action);
                 // 如果想要使下面的数据转换放到对应的tab文件里面去，请实现entityParse这个方法，参考tab-0：yunfuxinxi.js这个文件
                 const entityParse = tab.entityParse || (i => i);
                 tab.entity = entityParse(res.object);
@@ -300,6 +308,8 @@ export default class Patient extends Component {
             break; 
         }
         this.change = true;
+        const action = isFormChangeAction(true);
+        store.dispatch(action);
 
         // 避免200ms内界面渲染多次
         clearTimeout(this.timeout);
@@ -319,7 +329,7 @@ export default class Patient extends Component {
         let allReminderModal = [];
         const getAllReminder = (modalObj) => {
             let bool = true;
-            allData.diagnosisList.map(item => {
+            allData.diagnosisList && allData.diagnosisList.map(item => {
                 if(item.data === modalObj.diagnosis) bool = false;
             })
             if(bool) allReminderModal.push(modalObj);
@@ -337,6 +347,8 @@ export default class Patient extends Component {
                 // 修复喝酒不触发API问题
                 if(tab.key === 'tab-1'&& tab.entity.add_FIELD_husband_drink != tab.entity.add_FIELD_husband_drink_data[1]){
                     this.change=true;
+                    const action = isFormChangeAction(true);
+                    store.dispatch(action);
                 }
                 console.log("888888888888888", tab.key);
                 if (this.change) {
@@ -449,6 +461,8 @@ export default class Patient extends Component {
                     this.activeTab(key || next.key);
                 }
                 this.change = false;
+                const action = isFormChangeAction(false);
+                store.dispatch(action);
             } else {
                 message.error('必填项不能为空！');
                 if (key === 'openPDF') {

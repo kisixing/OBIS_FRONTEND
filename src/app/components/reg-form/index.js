@@ -6,6 +6,7 @@ import formRender, {fireForm} from '../../../render/form';
 import {valid} from '../../../render/common';
 import service from '../../../service';
 import './index.less';
+import store from '../../store';
 
 
 export default class RegForm extends Component {
@@ -14,28 +15,22 @@ export default class RegForm extends Component {
     this.state = {
       regFormEntity: {...baseData.regFormEntity},
       yunz: '孕20+6周',
-      allFormData: {},
+      ...store.getState(),
     }
-    
+    store.subscribe(this.handleStoreChange);
   }
 
+  handleStoreChange = () => {
+    this.setState(store.getState());
+  };
+
   componentDidMount() {
-    service.shouzhen.getAllForm().then(res => {
-      this.setState({allFormData: res.object}, () => {
-        this.getRegform();
-      })
-    });
+    this.getRegform();
   }
 
   getRegform() {
-    const { allFormData } = this.state;
     service.fuzhen.getRecordList().then(res => {
-      let data = res.object;
-      Object.keys(data).forEach(key => {
-        if(typeof data[key] ==="string" && data[key].indexOf('{') !== -1) {
-          data[key] = JSON.parse(data[key])
-        }
-      })
+      let data = service.praseJSON(res.object);
       this.setState({regFormEntity: data})
     })
   }
@@ -146,6 +141,7 @@ export default class RegForm extends Component {
     const handleClick = () => { this.props.closeRegForm() };
     const handleRegChange = (e, { name, value, valid }) => {
       let data = {[name]: value};
+      console.log(data, value, '123')
       this.setState({
         regFormEntity: {...regFormEntity, ...data}
       })

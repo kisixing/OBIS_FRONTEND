@@ -10,6 +10,11 @@ import service from '../../service';
 import modal from '../../utils/modal';
 import {loadWidget} from '../../utils/common';
 import './form.less';
+import store from '../store';
+import { isFormChangeAction,
+        allReminderAction,
+        showReminderAction,
+      } from '../store/actionCreators.js';
 
 import RegForm from '../components/reg-form';
 import chartDemoData from './chart-demo';
@@ -39,22 +44,27 @@ export default class FuzhenForm extends Component {
       treatTemp: [],
       modalState: {},
       getPacsGrowth: {},
+      ...store.getState(),
     }
-
+    store.subscribe(this.handleStoreChange);
     this.renderChart = renderChart();
     service.fuzhen.treatTemp().then(res => this.setState({
       treatTemp: res.object
     }));
   }
 
+  handleStoreChange = () => {
+    this.setState(store.getState());
+  };
+
   componentWillReceiveProps(props) {
     if(props.hasRecord) {
-      let data = props.initData;
-      Object.keys(props.initData).forEach(key => {
-        if(typeof data[key] ==="string" && (data[key].indexOf('{') !== -1 || data[key].indexOf('[') !== -1)) {
-          data[key] = JSON.parse(data[key])
-        }
-      })
+      let data = service.praseJSON(props.initData);
+      // Object.keys(props.initData).forEach(key => {
+      //   if(typeof data[key] ==="string" && (data[key].indexOf('{') !== -1 || data[key].indexOf('[') !== -1)) {
+      //     data[key] = JSON.parse(data[key])
+      //   }
+      // })
       this.setState({entity: data})
     }
   }
@@ -440,13 +450,71 @@ export default class FuzhenForm extends Component {
         ...errorData
       }
     })
+    const action = isFormChangeAction(true);
+    store.dispatch(action);
   }
 
   handleSave(form, act) {
     const { onSave, initData } = this.props;
-    const { entity } = this.state;
+    const { entity, allFormData } = this.state;
     let newEntity = {...entity};
     let ckpressure = initData.ckpressure.split('/');
+
+    const getReminder = () => {
+      if(act) {
+        const lis = service.praseJSON(allFormData.lis);
+        let allReminderModal = [];
+        const getAllReminder = (modalObj) => {
+            let bool = true;
+            allFormData.diagnosisList && allFormData.diagnosisList.map(item => {
+                if(item.data === modalObj.diagnosis) bool = false;
+            })
+            if(bool) allReminderModal.push(modalObj);
+        }
+  
+        if (lis.ogtt[0].label === "GDM") {
+          let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
+          getAllReminder(modalObj);
+        }
+        if(lis.add_FIELD_hbsAg_ALT > 80) {
+          let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
+          getAllReminder(modalObj);
+        }
+        if(lis.hbsAg[0].label === '小三阳') {
+          let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
+          getAllReminder(modalObj);
+        }
+        if(lis.hbsAg[0].label === '大三阳') {
+          let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
+          getAllReminder(modalObj);
+        }
+        if(lis.hcvAb[0].label === '阳性') {
+          let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+          getAllReminder(modalObj);
+        }
+        if(lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
+          let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+          getAllReminder(modalObj);
+        }
+        if(lis.rpr[0].label === '阳性') {
+          let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
+          getAllReminder(modalObj);
+        }
+        if(lis.thalassemia[0].label === '甲型') {
+          let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
+          getAllReminder(modalObj);
+        }
+        if(lis.thalassemia[0].label === '乙型') {
+          let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
+          getAllReminder(modalObj);
+        }
+  
+        if(allReminderModal.length > 0) {
+          const action = allReminderAction(allReminderModal);
+          store.dispatch(action);
+        }
+      }
+    }
 
     newEntity.checkdate = initData.checkdate;
     newEntity.ckweek = initData.ckweek;
@@ -476,12 +544,11 @@ export default class FuzhenForm extends Component {
         onSave(newEntity).then(() => this.setState({
           entity: { ...baseData.formEntity },
           error: {}
+        }, () => {
+          getReminder();
         }));
       }
     });
-    if(act === "open") {
-      window.print();
-    }
   }
 
   /**

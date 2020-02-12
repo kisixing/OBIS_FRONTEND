@@ -1,4 +1,6 @@
 export const GET_USER_DOC = 'get_user_doc';
+export const ALL_FORM_DATA = 'all_form_data';
+export const IS_FORM_CHANGE = 'is_form_change';
 
 export const CHECK_HIGHRISK_ALERT = 'check_highrisk_alert';
 export const CLOSE_HIGHRISK_ALERT = 'close_highrisk_alert';

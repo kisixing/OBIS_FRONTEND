@@ -10,7 +10,12 @@ import * as baseData from './data';
 import editors from '../shouzhen/editors';
 import * as util from './util';
 import store from '../store';
-import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction } from '../store/actionCreators.js';
+import { getAlertAction,
+        showTrialAction, 
+        showPharAction,
+        checkedKeysAction,
+        isFormChangeAction,
+  } from '../store/actionCreators.js';
 
 import "../index.less";
 import "./index.less";
@@ -190,6 +195,8 @@ export default class Patient extends Component {
   saveForm(entity) {
     const { info } = this.state;
     this.setState({ loading: true });
+    const action = isFormChangeAction(false);
+    store.dispatch(action);
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
@@ -440,6 +447,8 @@ export default class Patient extends Component {
     const handleSaveChange = (type, row) => {
       // row.ckweek = info.tuserweek;
       this.setState({initData: row});
+      const action = isFormChangeAction(true);
+      store.dispatch(action);
     }
 
     const handelTableChange = (type, row) => {
@@ -471,8 +480,8 @@ export default class Patient extends Component {
     const resetData = (obj) => {
       obj.map(item => {
         let describe1 = '', describe2 = '';
-        if(item.ckappointmentArea !== '') describe1 = JSON.parse(item.ckappointmentArea).describe;
-        if(item.rvisitOsType !== '' ) describe2 = JSON.parse(item.rvisitOsType).describe;
+        if(typeof item.ckappointmentArea === 'object') describe1 = item.ckappointmentArea.describe;
+        if(typeof item.rvisitOsType === 'object') describe2 = item.rvisitOsType.describe;
         item.ckpressure = (!item.ckpressure||item.ckpressure === "") ?  item.ckshrinkpressure +'/'+ item.ckdiastolicpressure : item.ckpressure;
         item.nextRvisitText = item.ckappointment.slice(5) + ' ' + describe1 + ' ' + describe2;
       })
@@ -481,9 +490,11 @@ export default class Patient extends Component {
     let newRecentRvisit = recentRvisit;
     let newRecentRvisitAll = recentRvisitAll;
     if (recentRvisit) {
+      service.praseJSON(newRecentRvisit)
       resetData(newRecentRvisit);
     };
     if (recentRvisitAll) {
+      service.praseJSON(recentRvisitAll)
       resetData(newRecentRvisitAll);
     };
 

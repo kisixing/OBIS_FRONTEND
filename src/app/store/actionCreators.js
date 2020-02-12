@@ -1,10 +1,20 @@
-import { GET_USER_DOC, CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, SHOW_TRIAL_CARD, 
-        SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS, ALL_REMINDER_MODAL, CLOSE_REMINDER_MODAL, 
+import { GET_USER_DOC, ALL_FORM_DATA, IS_FORM_CHANGE, CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, 
+        SHOW_TRIAL_CARD, SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS, ALL_REMINDER_MODAL, CLOSE_REMINDER_MODAL, 
         SHOW_REMINDER_MODAL, OPEN_MEDICAL_ADVICE } from './actionTypes.js'
 
 export const getUserDocAction = (data) => ({
   type: GET_USER_DOC,
   data
+})
+
+export const getAllFormDataAction = (data) => ({
+  type: ALL_FORM_DATA,
+  data
+})
+
+export const isFormChangeAction = (bool) => ({
+  type: IS_FORM_CHANGE,
+  bool
 })
  
 export const getAlertAction = (data) => ({

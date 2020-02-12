@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Prompt } from 'react-router-dom';
 import { Row, Col, Input, Button, Select, Modal, Tree, Icon } from "antd";
 
 import router from "../utils/router";
@@ -8,6 +9,7 @@ import * as util from './fuzhen/util';
 import store from "./store";
 import {
   getUserDocAction,
+  isFormChangeAction,
   getAlertAction,
   closeAlertAction,
   showTrialAction,
@@ -54,7 +56,6 @@ export default class App extends Component {
       templateTree: [],
       templateTree1: [],
       templateTree2: [],
-      allFormData: null,
       expandedKeys: [],
     };
     store.subscribe(this.handleStoreChange);
@@ -90,7 +91,6 @@ export default class App extends Component {
     service.shouzhen.findTemplateTree(1).then(res => this.setState({templateTree2: res.object}));
 
     service.shouzhen.getAllForm().then(res => {
-      this.setState({allFormData: res.object});
       this.setCheckedKeys(res.object);
     });
   }
@@ -171,12 +171,34 @@ export default class App extends Component {
    */
   renderReminder() {
     const { allReminderModal, isOpenMedicalAdvice } = this.state;
-
+    
+    const closeWebPage = () => {
+      if (navigator.userAgent.indexOf("MSIE") > 0) {//close IE
+        if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
+          window.opener = null;
+          window.close();
+        } else {
+          window.open('', '_top');
+          window.top.close();
+        }
+      } else if (navigator.userAgent.indexOf("Firefox") > 0) {//close firefox
+        window.location.href = 'about:blank ';
+      } else {//close chrome;It is effective when it is only one.
+        window.opener = null;
+        window.open('', '_self');
+        window.close();
+      }
+    }
+ 
     const handelClose = (index, item) => {
       const action = closeReminderAction(index);
       store.dispatch(action);
 
-      item && service.fuzhen.adddiagnosis(item.diagnosis).then(() => { })
+      item && service.fuzhen.adddiagnosis(item.diagnosis).then(() => { 
+        if (index === 0 && isOpenMedicalAdvice) {
+          closeWebPage();
+        }
+      })
 
       if (index === 0) {
         const action2 = showReminderAction(false);
@@ -187,7 +209,7 @@ export default class App extends Component {
     const footer = (index, item) => {
       return (
         <div>
-          {isOpenMedicalAdvice ? <Button onClick={() => handelClose(index)}>取消, 开立医嘱</Button> : null}
+          {isOpenMedicalAdvice ? <Button onClick={() => closeWebPage()}>取消, 开立医嘱</Button> : null}
           <Button onClick={() => handelClose(index)}>{isOpenMedicalAdvice ? '取消并返回' : '取消'}</Button>
           <Button type="primary" onClick={() => handelClose(index, item)}>确定</Button>
         </div>
@@ -567,6 +589,22 @@ export default class App extends Component {
   }
 
   render() {
+    const { isFormChange, muneIndex } = this.state;
+    const alertConfirm = () => {
+      if (!isFormChange) {
+        return true;
+      } else {
+        let leave = window.confirm("有未保存的更新，是否离开？")
+        if(leave) {
+          const action = isFormChangeAction(false);
+          store.dispatch(action);
+          return true
+        } 
+      }
+        this.setState({muneIndex})
+        return false;
+      }
+    
     return (
       <div className="main-body">
         {this.renderHeader()}
@@ -578,6 +616,7 @@ export default class App extends Component {
         {this.renderTrialModal()}
         {this.renderPharModal()}
         {this.renderReminder()}
+        <Prompt message={alertConfirm} when={isFormChange}/>
       </div>
     );
   }
