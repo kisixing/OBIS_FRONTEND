@@ -47,7 +47,7 @@ export default class Patient extends Component {
         this.state = {
             info: {},
             tabs: tabs,
-            step: tabs[3].key, // 从0开始
+            step: tabs[0].key, // 从0开始
             allData: null,
             ...store.getState(),
         }
@@ -526,8 +526,14 @@ export default class Patient extends Component {
               <Col span={21} />
               <Col>
                 <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(isShowReminderModal) }, 100)}>
-                  {step !== tabs[tabs.length - 1].key ? "下一页" : "保存"}
+                  {step !== tabs[tabs.length - 1].key ? "下一页" : "保存并开医嘱"}
                 </Button>
+                {step === tabs[tabs.length - 1].key ?
+                    <Button className="shouzhen-bbtn2" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(isShowReminderModal) }, 100)}>
+                        保存
+                    </Button>
+                    : null
+                }
               </Col>
             </Row>
           </Page>

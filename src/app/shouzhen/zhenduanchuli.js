@@ -30,6 +30,8 @@ export default class extends Component{
       isMouseIn: false,
       isShowSetModal: false,
       openYy: false,
+      adviceList: [],
+      openAdvice: false,
       modalState: [
         {
           "title": "糖尿病门诊预约",
@@ -49,7 +51,7 @@ export default class extends Component{
       openTemplate: false,
       ...store.getState(),
       chanc: 0,
-      yunc: 0
+      yunc: 1
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -70,6 +72,10 @@ export default class extends Component{
     service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list }));
 
     service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
+
+    service.shouzhen.getAdviceTextList().then(res => {
+      res.object.length > 0 && this.setState({adviceList: res.object, openAdvice: true})
+    });
 
     this.getGPTimes();
   }
@@ -408,6 +414,41 @@ export default class extends Component{
     );
   }
 
+  /**
+   * 医嘱弹窗
+   */
+  renderAdviceModal() {
+    const { openAdvice, adviceList } = this.state;
+    const handelShow = (e, items=[]) => {
+      this.setState({openAdvice: false});
+      this.addTreatment(e, items.map(i => i.name).join('\n'));
+    }
+
+    const initTree = (pid) => adviceList.filter(i => i.pid === pid).map(node => (
+      <Tree.TreeNode key={node.id} title={node.name}>
+        {node.pid === 0 ? initTree(node.id) : null}
+      </Tree.TreeNode>
+    ));
+
+    const handleCheck = (keys) => {
+      adviceList.forEach(tt => {
+        if (keys.indexOf(`${tt.id}`) !== -1) {
+          tt.checked = true;
+        } else {
+          tt.checked = false;
+        }
+      })
+    };
+    const treeNodes = initTree(0);
+
+    return ( openAdvice ? 
+      <Modal className="adviceModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 是否添加以下医嘱到处理措施？</span>}
+              visible={openAdvice} onOk={e=> handelShow(e, adviceList.filter(i => i.checked && i.pid!==0))} onCancel={e => handelShow(e)} >
+        <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
+      </Modal> 
+      : null
+    );
+  }
 
   /**
    * 模板
@@ -439,7 +480,7 @@ export default class extends Component{
     const treeNodes = initTree(0);
 
     return (
-      <Modal title="处理模板" closable visible={openTemplate} width={800} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked))}>
+      <Modal title="处理模板" closable visible={openTemplate} width={800} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
         <Row>
           <Col span={12}>
             <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
@@ -469,7 +510,7 @@ export default class extends Component{
 
   render(){
     const { isShowRegForm } = this.state;
-    const { entity, onChange } = this.props;
+    const { entity } = this.props;
     return (
       <div>
         {this.renderZD()}
@@ -477,7 +518,8 @@ export default class extends Component{
         <Button onClick={() =>this.openLisi()}>首检信息历史修改记录</Button>
         {this.renderTreatment()}
         {this.renderModal()}
-        <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} />
+        {this.renderAdviceModal()}
+        <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>
       </div>
     )
   }

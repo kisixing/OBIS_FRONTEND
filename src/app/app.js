@@ -324,7 +324,7 @@ export default class App extends Component {
     if(bmi>30) checkedKeys.push(getKey("肥胖（BMI>30kg/m  )"));
     if(age>35) checkedKeys.push(getKey("年龄>35岁"));
     if(preghiss>=3) checkedKeys.push(getKey("产次≥3"));
-    if(xiyan[0].label==="有") checkedKeys.push(getKey("吸烟"));
+    if(xiyan && xiyan[0].label==="有") checkedKeys.push(getKey("吸烟"));
 
     if(checkedKeys.length > 0) {
       const action = isMeetPharAction(true);

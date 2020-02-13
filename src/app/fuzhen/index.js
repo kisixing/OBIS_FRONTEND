@@ -105,7 +105,7 @@ export default class Patient extends Component {
       res.object&&res.object.map(item => {
         if(item.checkdate == util.futureDate(0)) {
           bool = true;
-          this.setState({hasRecord: true, initData: item})
+          this.setState({hasRecord: true, initData: service.praseJSON(item)})
         }
       })
       if(!bool) res.object.push(this.state.initData);
@@ -192,6 +192,11 @@ export default class Patient extends Component {
     this.setState({ info: info }, () => service.fuzhen.fireWatch(info));
   }
 
+  handleChange(e, data) {
+    const { initData } = this.state;
+    this.setState({initData: {...initData, ...data}})
+  }
+
   saveForm(entity) {
     const { info } = this.state;
     this.setState({ loading: true });
@@ -201,7 +206,7 @@ export default class Patient extends Component {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
         service.fuzhen.getRecentRvisit().then(res => {
-          this.setState({initData: res.object[0]})
+          this.setState({initData: service.praseJSON(res.object[0])})
           this.setState({loading: false, recentRvisit: res.object})
         });
         resolve();
@@ -445,6 +450,7 @@ export default class Patient extends Component {
     }
 
     const handleSaveChange = (type, row) => {
+      console.log(type, row, '1234')
       // row.ckweek = info.tuserweek;
       this.setState({initData: row});
       const action = isFormChangeAction(true);
@@ -463,7 +469,7 @@ export default class Patient extends Component {
           res.object&&res.object.map(item => {
             if(item.checkdate == util.futureDate(0)) {
               bool = true;
-              this.setState({hasRecord: true, initData: item})
+              this.setState({hasRecord: true, initData: service.praseJSON(item)})
             }
           })
           if(!bool) res.object.push(this.state.initData);
@@ -559,6 +565,7 @@ export default class Patient extends Component {
             modalState={modalState}
             hasRecord={hasRecord}
             onSave={data => this.saveForm(data)}
+            onChange={this.handleChange.bind(this)}
             onChangeInfo={this.onChangeInfo.bind(this)}
           />
           <p className="pad_ie">

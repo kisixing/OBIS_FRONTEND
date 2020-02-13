@@ -392,11 +392,11 @@ function drawscale(scale, name, namey) {
 }
 
 function printline() {
-  var canvas = document.getElementById('canvas2');
-  if (canvas == null)
-    return false;
-  context = canvas.getContext('2d');
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  // var canvas = document.getElementById('canvas2');
+  // if (canvas == null)
+  //   return false;
+  // context = canvas.getContext('2d');
+  // context.clearRect(0, 0, canvas.width, canvas.height);
   var lastx, lasty1, lasty2, lasty3 = 0;
   for (var i = 0; i < demodata.length; i++) {
     var curx = i * 40 + 200;//baseleft+converttime(start,demodata[i].checktime)*35;

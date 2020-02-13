@@ -129,4 +129,10 @@ export default {
     printPdfByFile: function(){
         return this.userId().then(r => myAxios.get(`/print/printPdfByFileRestful?userid=${r.object.userid}&modelType=ivisit`));
     },
+    /**
+     * 获取医嘱接口
+    */
+   getAdviceTextList: function(){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getAdviceTextList?userid=${r.object.userid}`));
+    },
 };

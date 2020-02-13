@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Button, Table, Collapse, Modal, Input, Select } from "antd";
 import Page from '../../render/page';
-import tableRender from "../../render/table";
 import service from '../../service';
 import "./index.less";
 
@@ -17,28 +16,6 @@ export default class Patient extends Component {
       repSign: '',
       repId: '',
       repAmy: true,
-      tableKey: [
-        {
-          title: '检验项目',
-          key: 'item',
-        },
-        {
-          title: '结果',
-          key: 'result',
-        },
-        {
-          title: '单位',
-          key: 'unit',
-        },
-        {
-          title: '参考值',
-          key: 'reference',
-        },
-        {
-          title: '状态',
-          key: 'status',
-        }
-      ],
     }
   }
 
@@ -90,10 +67,24 @@ export default class Patient extends Component {
   }
 
   renderRight() {
-    const {tableKey, isShowModal, detailData, repAmy} = this.state;
-    const initTable = data => tableRender(tableKey, data, { pagination: false, buttons: null, editable: true});
+    const { isShowModal, detailData, repAmy} = this.state;
 
     const renderTable = () => {
+      const columns = [
+        { title: '检验项目', dataIndex: 'item', key: 'item' },
+        { title: '结果', dataIndex: 'result', key: 'result' },
+        { title: '单位', dataIndex: 'unit', key: 'unit', className: 'aa' },
+        { title: '参考值', dataIndex: 'reference', key: 'reference' },
+        { title: '状态', dataIndex: 'status', key: 'status' },
+      ];
+
+      const setClassName = (record, index) => {
+          if(record.status=="↑" || record.status=="异常" || record.status=="↓") {
+            return 'redClass';
+          }
+          return '';
+        }
+
       return (
         <div className="right-wrapper">
           <div className="right-title">
@@ -112,7 +103,9 @@ export default class Patient extends Component {
             <li className="msg-item">年龄: {detailData.age}</li>
             <li className="msg-item">标本部位: {detailData.specimen}</li>
           </ul>
-          <div>{!repAmy ? initTable(detailData.lisDetails) : null}</div>
+          <div>{!repAmy ? <Table columns={columns} dataSource={detailData.lisDetails} pagination={false}
+                rowClassName={(record, index) => setClassName(record, index)}/> 
+                : null}</div>
         </div>
       )
     }

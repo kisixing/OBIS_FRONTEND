@@ -39,6 +39,7 @@ export default class Patient extends Component {
     service.yunqi.getPacsGrowth().then(res => {
       demodata = res.object;
       drawgrid('canvas');
+      printline();
     });
 
     // service.yunqi.getPreg().then(res => {
@@ -215,7 +216,7 @@ export default class Patient extends Component {
       }
       item.week = item.week - 1;
     })
-
+    console.log(newBmiList, '31')
     newBmiList = newBmiList.filter(i => i.week >= 0 && i.week <= 39 && i.tizhong >= -6 && i.tizhong <= 20);
 
     const canvas = document.getElementById('bmiCanvas');
@@ -282,20 +283,20 @@ export default class Patient extends Component {
 
     this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine1, ["week", "tizhong"], '#52aaff', [8]);
     this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine2, ["week", "tizhong"], '#52aaff', [8]);
-
-    // this.drawScaleLine(context, [baseLeft, baseTop + 300],  [15, 15], newBmiList, ["week", "tizhong"], 'pink', []);
+    console.log(newBmiList, '3122')
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], newBmiList, ["week", "tizhong"], 'pink', [8]);
   }
 
   render() {
     return (
       <Page className="yunqi font-16 ant-col">
-        <canvas id="canvas" style={{border: "1px solid gray", marginRight: "10px"}}>
+        <canvas id="canvas" className='canvas'>
           您的浏览器不支持canvas，请更换浏览器.
         </canvas>
         {/* <canvas id="pregCanvas" style={{border: "1px solid gray"}}>
           您的浏览器不支持canvas，请更换浏览器.
         </canvas> */}
-        <canvas id="bmiCanvas" style={{border: "1px solid gray"}}>
+        <canvas id="bmiCanvas" className='bmiCanvas'>
           您的浏览器不支持canvas，请更换浏览器.
         </canvas>
       </Page>

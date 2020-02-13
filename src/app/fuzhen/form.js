@@ -38,7 +38,8 @@ export default class FuzhenForm extends Component {
       openQX: false,
       openTemplate: false,
       openYy: false,
-      entity: { ...baseData.formEntity },
+      adviceList: [],
+      openAdvice: false,
       isShowRegForm: false,
       error: {},
       treatTemp: [],
@@ -57,17 +58,23 @@ export default class FuzhenForm extends Component {
     this.setState(store.getState());
   };
 
-  componentWillReceiveProps(props) {
-    if(props.hasRecord) {
-      let data = service.praseJSON(props.initData);
-      // Object.keys(props.initData).forEach(key => {
-      //   if(typeof data[key] ==="string" && (data[key].indexOf('{') !== -1 || data[key].indexOf('[') !== -1)) {
-      //     data[key] = JSON.parse(data[key])
-      //   }
-      // })
-      this.setState({entity: data})
-    }
+  componentDidMount() {
+    service.shouzhen.getAdviceTextList().then(res => {
+      res.object.length > 0 && this.setState({adviceList: res.object, openAdvice: true})
+    });
   }
+
+  // componentWillReceiveProps(props) {
+  //   if(props.hasRecord) {
+  //     let data = service.praseJSON(props.initData);
+  //     Object.keys(props.initData).forEach(key => {
+  //       if(typeof data[key] ==="string" && (data[key].indexOf('{') !== -1 || data[key].indexOf('[') !== -1)) {
+  //         data[key] = JSON.parse(data[key])
+  //       }
+  //     })
+  //     this.setState({entity: data})
+  //   }
+  // }
 
   // 2 检测孕妇高危诊断，修改表格以及表单型式
   checkDiagnosisHighrisk(type) {
@@ -379,14 +386,14 @@ export default class FuzhenForm extends Component {
   }
 
   handleBtnChange(e, params, index) {
-    const { entity } = this.state;
-    let newEntity = entity;
+    const { initData, onChange } = this.props;
+    let newEntity = initData;
     if (/^\d$/.test(index)) {
       newEntity[params] = newEntity[params].filter((v, i) => i !== index);
     } else {
       newEntity[params].push({});
     }
-    this.setState({entity: newEntity})
+    onChange(e, newEntity);
   }
 
   handleYz() {
@@ -395,10 +402,10 @@ export default class FuzhenForm extends Component {
   }
 
   addTreatment(e, value){
-    const { entity } = this.state;
+    const { initData } = this.props;
     this.handleChange(e, {
       name: 'treatment',
-      value: entity.treatment + (entity.treatment ? '\n' : '') + value
+      value: initData.treatment + (initData.treatment ? '\n' : '') + value
     })
   }
 
@@ -419,7 +426,8 @@ export default class FuzhenForm extends Component {
   handleChange(e, { name, value, valid }) {
     console.log(name, '11')
     console.log(value, '22')
-    const { entity, error } = this.state;
+    const { error } = this.state;
+    const { onChange } = this.props;
     let data = { [name]: value };
     let errorData = { [name]: valid };
     if (name=='ckzijzhz' || name=='ckxianl' || name=='ckfuzh') {
@@ -440,11 +448,8 @@ export default class FuzhenForm extends Component {
           data.ckappointment = util.futureDate(value.value);
         break;
     }
+    onChange(e, data);
     this.setState({
-      entity: {
-        ...entity,
-        ...data
-      },
       error:{
         ...error,
         ...errorData
@@ -456,8 +461,8 @@ export default class FuzhenForm extends Component {
 
   handleSave(form, act) {
     const { onSave, initData } = this.props;
-    const { entity, allFormData } = this.state;
-    let newEntity = {...entity};
+    const { allFormData } = this.state;
+    let newEntity = initData;
     let ckpressure = initData.ckpressure.split('/');
 
     const getReminder = () => {
@@ -542,7 +547,6 @@ export default class FuzhenForm extends Component {
       if(valid){
         console.log(newEntity, '可以保存')
         onSave(newEntity).then(() => this.setState({
-          entity: { ...baseData.formEntity },
           error: {}
         }, () => {
           getReminder();
@@ -646,8 +650,40 @@ export default class FuzhenForm extends Component {
     this.setState({isShowRegForm: false})
   }
 
-  resetEntity = (entity) => {
-    this.setState({entity: entity})
+    /**
+   * 医嘱弹窗
+   */
+  renderAdviceModal() {
+    const { openAdvice, adviceList } = this.state;
+    const handelShow = (e, items=[]) => {
+      this.setState({openAdvice: false});
+      this.addTreatment(e, items.map(i => i.name).join('\n'));
+    }
+
+    const initTree = (pid) => adviceList.filter(i => i.pid === pid).map(node => (
+      <Tree.TreeNode key={node.id} title={node.name}>
+        {node.pid === 0 ? initTree(node.id) : null}
+      </Tree.TreeNode>
+    ));
+
+    const handleCheck = (keys) => {
+      adviceList.forEach(tt => {
+        if (keys.indexOf(`${tt.id}`) !== -1) {
+          tt.checked = true;
+        } else {
+          tt.checked = false;
+        }
+      })
+    };
+    const treeNodes = initTree(0);
+
+    return ( openAdvice ? 
+      <Modal className="adviceModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 是否添加以下医嘱到处理措施？</span>}
+              visible={openAdvice} onOk={e=> handelShow(e, adviceList.filter(i => i.checked && i.pid!==0))} onCancel={e => handelShow(e)} >
+        <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
+      </Modal> 
+      : null
+    );
   }
 
   /**
@@ -680,7 +716,7 @@ export default class FuzhenForm extends Component {
     const treeNodes = initTree(0);
 
     return (
-      <Modal title="处理模板" closable visible={openTemplate} width={800} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked))}>
+      <Modal title="处理模板" closable visible={openTemplate} width={800} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
         <Row>
           <Col span={12}>
             <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
@@ -694,12 +730,12 @@ export default class FuzhenForm extends Component {
   }
 
   render() {
-    const { entity, isShowRegForm } = this.state;
-
+    const { isShowRegForm } = this.state;
+    const { initData } = this.props;
     return (
       <div className="fuzhen-form">
         <strong className="fuzhen-form-TIT">本次产检记录</strong>
-        {formRender(entity, this.formConfig(), this.handleChange.bind(this))}
+        {formRender(initData, this.formConfig(), this.handleChange.bind(this))}
         <div style={{ minHeight: '32px', textAlign: 'right' }}>
           <Button className="blue-btn" type="ghost" style={{ marginRight: '12px' }}
             onClick={() => this.handleSave(document.querySelector(".fuzhen-form"))}>
@@ -714,7 +750,8 @@ export default class FuzhenForm extends Component {
         {this.renderTreatment()}
         {this.renderYCQ()}
         {this.renderModal()}
-        <RegForm isShowRegForm={isShowRegForm} entity={entity} closeRegForm={this.closeRegForm} resetEntity={() => this.resetEntity(entity)} />
+        {this.renderAdviceModal()}
+        <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />
       </div>
     );
   }

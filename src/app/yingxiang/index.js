@@ -40,12 +40,7 @@ export default class Patient extends Component {
     ];
 
     return (
-      <Table
-        title={title}
-        columns={columns}
-        dataSource={tableData}
-        pagination={false}
-      />
+      <Table title={title} columns={columns} dataSource={tableData} pagination={false}/>
     )
   }
 

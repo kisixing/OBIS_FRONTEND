@@ -2,19 +2,19 @@ import React, { Component } from "react";
 import { Row, Col, Input, Icon, Select, Button, message, Table, Modal, Spin, Tree, DatePicker } from 'antd';
 import addrOptions from '../../../utils/cascader-address-options';
 import * as baseData from './data';
+import * as util from '../../fuzhen/util';
 import formRender, {fireForm} from '../../../render/form';
 import {valid} from '../../../render/common';
 import service from '../../../service';
 import './index.less';
 import store from '../../store';
 
-
 export default class RegForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       regFormEntity: {...baseData.regFormEntity},
-      yunz: '孕20+6周',
+      yunz: '',
       ...store.getState(),
     }
     store.subscribe(this.handleStoreChange);
@@ -52,7 +52,7 @@ export default class RegForm extends Component {
           columns: [
             { name: 'dept[住院科室]', type: 'select', valid: 'required', span: 6, options: baseData.zyksOptions },
             { span: 1 },
-            { name: `dateHos[入院日期]((${yunz}))`, type: 'date', valid: 'required', span: 7 },
+            { name: `dateHos[入院日期](${yunz})`, type: 'date', valid: 'required', span: 7 },
           ]
         },
         {
@@ -136,9 +136,9 @@ export default class RegForm extends Component {
 
   // 入院登记表
   showRegForm() {
-    const { regFormEntity } = this.state;
-    const { entity, isShowRegForm } = this.props;
-    const handleClick = () => { this.props.closeRegForm() };
+    const { regFormEntity, allFormData } = this.state;
+    const { isShowRegForm, closeRegForm, getDateHos } = this.props;
+    const handleClick = () => { closeRegForm() };
     const handleRegChange = (e, { name, value, valid }) => {
       let data = {[name]: value};
       console.log(data, value, '123')
@@ -146,12 +146,15 @@ export default class RegForm extends Component {
         regFormEntity: {...regFormEntity, ...data}
       })
       if(name === "dateHos") {
-        let newEntity = entity;
-        newEntity.ckappointment = value;
-        this.props.resetEntity(newEntity);
+        const countNum = util.countWeek(allFormData.pregnantInfo.gesexpectrv, value);
+        const finalNum = `（孕${util.getWeek(40, countNum)}周）`;
+
+        // this.setState({yunz: finalNum}, () => {
+        //   this.showRegForm()
+        // })
       }
     }
-    const handleRegSave = (form) => {
+    const handleRegSave = (e, form) => {
       let newRegFormEntity = regFormEntity;
       Object.keys(newRegFormEntity).forEach(key => {
         if(newRegFormEntity[key] !== null) {
@@ -166,7 +169,9 @@ export default class RegForm extends Component {
         if(valid) {
           service.fuzhen.postRecordList(newRegFormEntity).then(() => {
             this.setState({regFormEntity: {...baseData.regFormEntity}})
-            this.props.closeRegForm();
+            getDateHos(e, {name: 'xiacsfdate', value: newRegFormEntity.dateHos})
+            getDateHos(e, {name: 'ckappointment', value: newRegFormEntity.dateHos})
+            closeRegForm();
             this.getRegform()
           })
         }else {
@@ -183,14 +188,14 @@ export default class RegForm extends Component {
         <span>入院登记表</span>
         <div className="reg-btns">
           <Button className="pull-right blue-btn margin-R-2" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
-            <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={() => handleRegSave(document.querySelector('.reg-form'))}>保存</Button>
+            <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={e => handleRegSave(e, document.querySelector('.reg-form'))}>保存</Button>
         </div>
       </div>
     ]
 
     return (
       <Modal width="80%" title={title} footer={null} className="reg-form"
-        visible={isShowRegForm} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+        visible={isShowRegForm} onCancel={() => handleClick()}>
         {formRender(regFormEntity, this.regFormConfig(), handleRegChange)}
       </Modal>
     )
