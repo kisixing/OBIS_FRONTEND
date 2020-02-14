@@ -214,7 +214,7 @@ export default class Patient extends Component {
         let arr = item.week.split('+');
         item.week = parseInt(arr[0]) + parseInt(arr[1]) / 7;
       }
-      item.week = item.week - 1;
+      // item.week = item.week - 1;
     })
     console.log(newBmiList, '31')
     newBmiList = newBmiList.filter(i => i.week >= 0 && i.week <= 39 && i.tizhong >= -6 && i.tizhong <= 20);

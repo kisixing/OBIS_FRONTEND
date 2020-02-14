@@ -490,7 +490,7 @@ export default class Patient extends Component {
             }, 1);
           };
         }
-        iframe.src = url;
+        iframe.src = service.getUrl(url);
     }
 
     render() {

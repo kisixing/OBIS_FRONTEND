@@ -193,8 +193,13 @@ export default class Patient extends Component {
   }
 
   handleChange(e, data) {
-    const { initData } = this.state;
-    this.setState({initData: {...initData, ...data}})
+    const { initData, recentRvisit } = this.state;
+    let newInitData = initData;
+    let newRecentRvisit = recentRvisit;
+    newInitData = {...newInitData, ...data} 
+    newRecentRvisit.pop();
+    newRecentRvisit.push(newInitData)
+    this.setState({initData: newInitData, recentRvisit: newRecentRvisit})
   }
 
   saveForm(entity) {
@@ -206,7 +211,6 @@ export default class Patient extends Component {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
         service.fuzhen.getRecentRvisit().then(res => {
-          this.setState({initData: service.praseJSON(res.object[0])})
           this.setState({loading: false, recentRvisit: res.object})
         });
         resolve();
@@ -420,7 +424,7 @@ export default class Patient extends Component {
             <p className="pad-small">{jianyanReport || '无'}</p>
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
-            <Timeline className="pad-small" pending={planData&&planData.length>0 ? <Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button> : null}>
+            <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>
               {planData&&planData.length>0 ? planData.map((item, index) => (
                 <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
                   <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
@@ -439,7 +443,6 @@ export default class Patient extends Component {
 
   renderTable() {
     const { info, recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, hasRecord } = this.state;
-
     const handleMoreBtn = () => {
       service.fuzhen.getRvisitPage(pageCurrent).then(res => this.setState({
         recentRvisitAll: res.object.list,
@@ -517,7 +520,7 @@ export default class Patient extends Component {
           onClick: true,
           hasRecord: hasRecord,
           scroll: { x: 1100, y: 220 },
-          iseditable: ({ row }) => hasRecord ? row === 0 : row > recentRvisit.length - 2,
+          iseditable: ({ row }) => hasRecord ? row === 1 : row > recentRvisit.length - 2,
           onRowChange: handleSaveChange
         })}
         {/* {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null} */}
@@ -549,7 +552,7 @@ export default class Patient extends Component {
   }
 
   render() {
-    const { loading, diagnosis, relatedObj, info, modalState, initData, hasRecord } = this.state;
+    const { loading, diagnosis, relatedObj, info, modalState, initData } = this.state;
 
     return (
       <Page className="fuzhen font-16 ant-col">
@@ -563,7 +566,6 @@ export default class Patient extends Component {
             diagnosis={diagnosis}
             relatedObj={relatedObj}
             modalState={modalState}
-            hasRecord={hasRecord}
             onSave={data => this.saveForm(data)}
             onChange={this.handleChange.bind(this)}
             onChangeInfo={this.onChangeInfo.bind(this)}

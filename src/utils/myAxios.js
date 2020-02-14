@@ -3,7 +3,7 @@ import Qs from 'qs';
 import {Modal} from 'antd';
 import modal from './modal';
 
-const getUrl = function (url){
+export const getUrl = function (url){
     if(location.search){
         return 'http://127.0.0.1:8899/Obcloud' + url;
         // return 'http://168.168.250.31:8899/rapi' + url;

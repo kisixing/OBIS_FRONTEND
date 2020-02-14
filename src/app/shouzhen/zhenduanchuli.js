@@ -73,8 +73,8 @@ export default class extends Component{
 
     service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
 
-    service.shouzhen.getAdviceTextList().then(res => {
-      res.object.length > 0 && this.setState({adviceList: res.object, openAdvice: true})
+    service.shouzhen.getAdviceTreeList().then(res => {
+      res.object.length > 1 && this.setState({adviceList: res.object, openAdvice: true})
     });
 
     this.getGPTimes();

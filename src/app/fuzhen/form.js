@@ -45,6 +45,7 @@ export default class FuzhenForm extends Component {
       treatTemp: [],
       modalState: {},
       getPacsGrowth: {},
+      // entity: { ...baseData.formEntity },
       ...store.getState(),
     }
     store.subscribe(this.handleStoreChange);
@@ -59,8 +60,8 @@ export default class FuzhenForm extends Component {
   };
 
   componentDidMount() {
-    service.shouzhen.getAdviceTextList().then(res => {
-      res.object.length > 0 && this.setState({adviceList: res.object, openAdvice: true})
+    service.shouzhen.getAdviceTreeList().then(res => {
+      res.object.length > 1 && this.setState({adviceList: res.object, openAdvice: true})
     });
   }
 
@@ -732,6 +733,7 @@ export default class FuzhenForm extends Component {
   render() {
     const { isShowRegForm } = this.state;
     const { initData } = this.props;
+    console.log(initData, '22')
     return (
       <div className="fuzhen-form">
         <strong className="fuzhen-form-TIT">本次产检记录</strong>

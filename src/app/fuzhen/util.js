@@ -32,5 +32,6 @@ export function getWeek(param1, param2) {
     day2 = parseInt(param2) * 7;
   }
   let days = day1 - day2;
+  if(days % 7 === 0) return Math.floor(days / 7);
   return `${Math.floor(days / 7)}+${days % 7}`;
 }

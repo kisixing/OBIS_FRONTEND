@@ -429,6 +429,17 @@ export default class App extends Component {
 
   renderHeader() {
     const { userDoc, isShowTrialCard, isShowPharCard } =this.state;
+    const handleDanger = () => {
+      service.highrisk().then(res => {
+        let list = res.object;
+        list && list.map(item => {
+          if (item.icon) {
+            item.level = item.icon.substring(item.icon.length-5, item.icon.length-4);
+          }
+        })
+        this.setState({highriskList: list, highriskShow:true})
+      })
+    }
     return (
       <div className="main-header">
         <div className="patient-Info_title font-16">
@@ -456,8 +467,8 @@ export default class App extends Component {
         </p>
         <div className="patient-Info_btnList">
           <ButtonGroup>
-            <Button className="danger-btn-5" onClick={()=>this.setState({highriskShow:true})}>{userDoc.risklevel}</Button>
-            {userDoc.infectious ? <Button className="danger-btn-infectin" onClick={()=>this.setState({highriskShow:true})}>{userDoc.infectious}</Button> : null}
+            <Button className="danger-btn-5" onClick={()=>handleDanger()}>{userDoc.risklevel}</Button>
+            {userDoc.infectious ? <Button className="danger-btn-infectin" onClick={()=>handleDanger()}>{userDoc.infectious}</Button> : null}
             {isShowTrialCard ? <Button className="danger-btn-trial" onClick={() => this.handleCardClick('trial')}>疤</Button> : null}
             {isShowPharCard ? <Button className="danger-btn-phar" onClick={() => this.handleCardClick('phar')}>栓</Button> : null}
           </ButtonGroup>

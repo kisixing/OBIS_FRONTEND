@@ -52,7 +52,7 @@ export default class RegForm extends Component {
           columns: [
             { name: 'dept[住院科室]', type: 'select', valid: 'required', span: 6, options: baseData.zyksOptions },
             { span: 1 },
-            { name: `dateHos[入院日期](${yunz})`, type: 'date', valid: 'required', span: 7 },
+            { name: `dateHos[入院日期](${yunz})`, className: 'reg-date', type: 'date', valid: 'required', span: 6 },
           ]
         },
         {
@@ -149,9 +149,7 @@ export default class RegForm extends Component {
         const countNum = util.countWeek(allFormData.pregnantInfo.gesexpectrv, value);
         const finalNum = `（孕${util.getWeek(40, countNum)}周）`;
 
-        // this.setState({yunz: finalNum}, () => {
-        //   this.showRegForm()
-        // })
+        this.setState({yunz: finalNum})
       }
     }
     const handleRegSave = (e, form) => {
@@ -162,11 +160,12 @@ export default class RegForm extends Component {
         }
       })
       const hospitalized = newRegFormEntity.hospitalized;
-      if(hospitalized && JSON.parse(hospitalized)[0].label === "是" && JSON.parse(hospitalized)[0].value !== "") {
-        newRegFormEntity.inpatientNo = JSON.parse(newRegFormEntity.hospitalized)[0].value.input0;
+      if(hospitalized && hospitalized[0].label === "是" && hospitalized[0].value !== "") {
+        newRegFormEntity.inpatientNo = newRegFormEntity.hospitalized[0].value.input0;
       }
       fireForm(form, 'valid').then((valid) => {
         if(valid) {
+          console.log(valid)
           service.fuzhen.postRecordList(newRegFormEntity).then(() => {
             this.setState({regFormEntity: {...baseData.regFormEntity}})
             getDateHos(e, {name: 'xiacsfdate', value: newRegFormEntity.dateHos})
@@ -188,7 +187,7 @@ export default class RegForm extends Component {
         <span>入院登记表</span>
         <div className="reg-btns">
           <Button className="pull-right blue-btn margin-R-2" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
-            <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={e => handleRegSave(e, document.querySelector('.reg-form'))}>保存</Button>
+          <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={e => handleRegSave(e, document.querySelector('.reg-form'))}>保存</Button>
         </div>
       </div>
     ]

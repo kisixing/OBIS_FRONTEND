@@ -132,7 +132,7 @@ export default {
     /**
      * 获取医嘱接口
     */
-   getAdviceTextList: function(){
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/getAdviceTextList?userid=${r.object.userid}`));
+   getAdviceTreeList: function(){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getAdviceTreeList?userid=${r.object.userid}`));
     },
 };

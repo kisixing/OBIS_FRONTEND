@@ -391,54 +391,80 @@ function drawscale(scale, name, namey) {
   context.fillText(name, textposition, namey);
 }
 
+// function printline() {
+//   // var canvas = document.getElementById('canvas2');
+//   // if (canvas == null)
+//   //   return false;
+//   // context = canvas.getContext('2d');
+//   // context.clearRect(0, 0, canvas.width, canvas.height);
+//   var lastx, lasty1, lasty2, lasty3 = 0;
+//   for (var i = 0; i < demodata.length; i++) {
+//     var curx = i * 40 + 200;//baseleft+converttime(start,demodata[i].checktime)*35;
+//     var cury1 = 825 - Number(demodata[i].ac);
+//     var cury2 = 825 - demodata[i].fl;
+//     var cury3 = 825 - demodata[i].bpd;
+//     if (lastx != 0) {
+//       var canvas = document.getElementById('canvas');
+//       if (canvas == null)
+//         return false;
+//       context.beginPath();
+//       context.lineWidth = 2.5;
+//       context.strokeStyle = 'green';
+//       context.moveTo(lastx, lasty1);
+//       context.lineTo(curx, cury1);
+//       context.stroke();
+//       context.beginPath();
+//       context.lineWidth = 2.5;
+//       context.strokeStyle = 'green';
+//       context.moveTo(lastx, lasty2);
+//       context.lineTo(curx, cury2);
+//       context.stroke();
+//       context.beginPath();
+//       context.lineWidth = 2.5;
+//       context.strokeStyle = 'green';
+//       context.moveTo(lastx, lasty3);
+//       context.lineTo(curx, cury3);
+//       context.stroke();
+//     }
+//     lastx = curx;
+//     lasty1 = cury1;
+//     lasty2 = cury2;
+//     lasty3 = cury3;
+//   }
+// }
+
 function printline() {
-  // var canvas = document.getElementById('canvas2');
-  // if (canvas == null)
-  //   return false;
-  // context = canvas.getContext('2d');
-  // context.clearRect(0, 0, canvas.width, canvas.height);
-  var lastx, lasty1, lasty2, lasty3 = 0;
+  var bpdArr = [];
+  var flArr = [];
+  var acArr = [];
   for (var i = 0; i < demodata.length; i++) {
-    var curx = i * 40 + 200;//baseleft+converttime(start,demodata[i].checktime)*35;
-    var cury1 = 825 - Number(demodata[i].ac);
-    var cury2 = 825 - demodata[i].fl;
-    var cury3 = 825 - demodata[i].bpd;
-    if (lastx != 0) {
-      var canvas = document.getElementById('canvas');
-      if (canvas == null)
-        return false;
-      context.beginPath();
-      context.lineWidth = 2.5;
-      context.strokeStyle = 'green';
-      context.moveTo(lastx, lasty1);
-      context.lineTo(curx, cury1);
-      context.stroke();
-      context.beginPath();
-      context.lineWidth = 2.5;
-      context.strokeStyle = 'green';
-      context.moveTo(lastx, lasty2);
-      context.lineTo(curx, cury2);
-      context.stroke();
-      context.beginPath();
-      context.lineWidth = 2.5;
-      context.strokeStyle = 'green';
-      context.moveTo(lastx, lasty3);
-      context.lineTo(curx, cury3);
-      context.stroke();
-    }
-    lastx = curx;
-    lasty1 = cury1;
-    lasty2 = cury2;
-    lasty3 = cury3;
+    var bpdObj = {};
+    var flObj = {};
+    var acObj = {};
+    bpdObj.x = calculateX(parseInt(demodata[i].yunzh));
+    bpdObj.y = calculateY(parseInt(demodata[i].bpd));
+    bpdArr.push(bpdObj);
+
+    flObj.x = calculateX(parseInt(demodata[i].yunzh));
+    flObj.y = calculateY(parseInt(demodata[i].fl));
+    flArr.push(flObj);
+
+    acObj.x = calculateX(parseInt(demodata[i].yunzh));
+    acObj.y = calculateY(parseInt(demodata[i].ac));
+    acArr.push(acObj);
   }
+
+  console.log(bpdArr, flArr, acArr, '321')
+
+  drawscaleLine(bpdArr, 'BPD', 90, '3');
+  drawscaleLine(flArr, 'FL', 420, '3');
+  drawscaleLine(acArr, 'AC', 650, '3');
 }
 
 //获取生长曲线数据
 // drawgrid('canvas');
 
 function drawscaleLine(scale, name, namey, style) {
-  console.log('drawscaleAC');
-
   var x0 = scale[0].x;
   var y0 = scale[0].y;
   context.beginPath();
@@ -446,8 +472,11 @@ function drawscaleLine(scale, name, namey, style) {
   for (var i = 1; i < scale.length; i++) {
     var x = scale[i].x;
     var y = scale[i].y;
-
-    if (style == '2') {
+    if (style === '3') {
+      context.lineWidth = 2;
+      context.strokeStyle = 'green';
+      console.log(scale, '567')
+    } else if (style == '2') {
       context.lineWidth = 3;
       context.strokeStyle = 'black';
     } else {
