@@ -333,17 +333,15 @@ export const pregnanciesColumns = [
 	{
 		title: '孕次',
 		key: 'pregnum',
-		type: 'input',
 		width: '60',
 		// format: (v, { row }) => row + 1
 	},
 	{
 		title: '年-月',
 		key: 'datagridYearMonth',
-		type: 'date',
+		type: 'input',
 		width: '160',
 		filterDate: true,
-		mode: "ym",
 	},
 	{
 		title: '流产',
@@ -458,9 +456,7 @@ export const pregnanciesColumns = [
 			{
 				title: '死亡时间',
 				key: 'siw',
-				type: 'date',
-				mode: "ym",
-				width: 128
+				type: 'input',
 			},
 			{
 				title: '死亡原因',

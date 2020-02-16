@@ -215,10 +215,11 @@ export default class extends Component{
 
   getGPTimes() {
     const { allData } = this.props;
-    const allPreghiss = allData.gestation.preghiss;
-    if(allPreghiss) {
-      this.setState({yunc: allPreghiss.length + 1});
+    const allPreghiss = allData.gestation.preghiss || [];
+    if(allPreghiss.length > 0) {
+      let newYunc =  allPreghiss[allPreghiss.length - 1].pregnum;   
       let times = 0;
+      this.setState({yunc: newYunc});
       allPreghiss&&allPreghiss.map(item => {
         if(item.zuych === true) {
           times++;

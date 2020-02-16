@@ -25,7 +25,7 @@ class TableItem extends Component {
   }
 
   componentDidMount(){
-    const { iseditable = () => true, entity, row, name, value, onClick, hasRecord } = this.props;
+    const { iseditable = () => true, entity, row, name, value, onClick, hasRecord, style } = this.props;
     const arr = ["cktizh", "ckzijzhz", "cktaix", "ckxianl", "ckgongg", "ckfuzh"];
     if (iseditable({entity, row, name, value}) && onClick && !hasRecord) {
       if (arr.includes(name)) {
@@ -33,6 +33,9 @@ class TableItem extends Component {
       }
     }
     this.refs.tableItem.parentNode.ondbclick = ()=>this.setState({force:true});
+    if(style) {
+      this.refs.tableItem.parentNode.style.display = 'none';
+    }
   }
 
   onDbClick = () => {
@@ -223,6 +226,49 @@ export default function(
             if(item.$type === dateType.MODIFY){
               item.$type = '';
               onRowChange('modify', item, row-rows.length);
+            }
+          }
+        }
+        if(dataSource.length > 1 && item.pregnum) {
+          const numArr = [14, 15, 16, 17, 18, 19];
+          if (row >= rows.length && row < dataSource.length && item.pregnum === dataSource[row - 1].pregnum && !numArr.includes(column)) {
+            let countNum = 0;
+            dataSource.map(newItem => (
+              newItem.pregnum === item.pregnum ? countNum++ : null
+            ))
+            return {
+              children: <TableItem
+                {...props}
+                {...rest}
+                row={row-rows.length}
+                entity={item}
+                name={key}
+                editable={editable}
+                value={value}
+                isEditor={holdeditor || item.$type===dateType.CREATE}
+                onChange={handleChange}
+              />,
+              props:{
+                rowSpan: countNum
+              }
+            }
+          } else if (row >= rows.length && row !== 2 && row <= dataSource.length && item.pregnum === dataSource[row - 3].pregnum && !numArr.includes(column)) {
+            return {
+              children: <TableItem
+                {...props}
+                {...rest}
+                row={row-rows.length}
+                entity={item}
+                name={key}
+                editable={editable}
+                value={value}
+                isEditor={holdeditor || item.$type===dateType.CREATE}
+                onChange={handleChange}
+                style={{display: 'none'}}
+              />,
+              props:{
+                rowSpan: 1
+              }
             }
           }
         }

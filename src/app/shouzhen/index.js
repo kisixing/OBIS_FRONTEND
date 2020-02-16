@@ -47,7 +47,7 @@ export default class Patient extends Component {
         this.state = {
             info: {},
             tabs: tabs,
-            step: tabs[5].key, // 从0开始
+            step: tabs[0].key, // 从0开始
             allData: null,
             ...store.getState(),
         }
@@ -133,6 +133,11 @@ export default class Patient extends Component {
                     tab.entity = [];
                     // preghiss
                     tab.entity['preghiss'] = (res.object.gestation.preghiss!=null)?res.object.gestation.preghiss:[];
+                    let pregNum = 1
+                    if(tab.entity['preghiss'].length > 0) {
+                        pregNum = parseInt(tab.entity['preghiss'][tab.entity['preghiss'].length - 1].pregnum) + 1;
+                    }
+                    baseData.initYCData.pregnum = pregNum;
                     tab.entity['preghiss'].push(baseData.initYCData);
                     // tab.entity['preghis'] ={"preghis": [{
                     //     "id":1,
@@ -445,6 +450,25 @@ export default class Patient extends Component {
                         });
                     } else {
                         tab.entity.preghiss.pop();
+                        tab.entity.preghiss.forEach((item, index) => {
+                            if(index > 0 && tab.entity.preghiss[index].pregnum === tab.entity.preghiss[index-1].pregnum) {
+                                item.datagridYearMonth = tab.entity.preghiss[index-1].datagridYearMonth;
+                                item.zir = tab.entity.preghiss[index-1].zir;
+                                item.removalUterus = tab.entity.preghiss[index-1].removalUterus;
+                                item.reng = tab.entity.preghiss[index-1].reng;
+                                item.yinch = tab.entity.preghiss[index-1].yinch;
+                                item.sit = tab.entity.preghiss[index-1].sit;
+                                item.zaoch = tab.entity.preghiss[index-1].zaoch;
+                                item.zuych = tab.entity.preghiss[index-1].zuych;
+                                item.shunch = tab.entity.preghiss[index-1].shunch;
+                                item.shouShuChanType = tab.entity.preghiss[index-1].shouShuChanType;
+                                item.chuxue = tab.entity.preghiss[index-1].chuxue;
+                                item.chanrure = tab.entity.preghiss[index-1].chanrure;
+                                item.bingfzh = tab.entity.preghiss[index-1].bingfzh;
+                                item.hospital = tab.entity.preghiss[index-1].hospital;
+                                item.xinseother = tab.entity.preghiss[index-1].xinseother;
+                            }
+                        })
                         service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
                             message.success('信息保存成功',3);
                             tab.entity.preghiss.push(baseData.initYCData);

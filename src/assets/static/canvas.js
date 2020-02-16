@@ -456,9 +456,9 @@ function printline() {
 
   console.log(bpdArr, flArr, acArr, '321')
 
-  drawscaleLine(bpdArr, 'BPD', 90, '3');
-  drawscaleLine(flArr, 'FL', 420, '3');
-  drawscaleLine(acArr, 'AC', 650, '3');
+  bpdArr.length>0 && drawscaleLine(bpdArr, 'BPD', 90, '3');
+  flArr.length>0 && drawscaleLine(flArr, 'FL', 420, '3');
+  acArr.length>0 && drawscaleLine(acArr, 'AC', 650, '3');
 }
 
 //获取生长曲线数据

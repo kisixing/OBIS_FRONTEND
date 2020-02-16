@@ -116,6 +116,7 @@ export default class Patient extends Component {
       
       ctx.beginPath();
       ctx.setLineDash(shape);
+      ctx.lineWidth = 2;
       if(i < data.length - 1) {
         ctx.moveTo(oringin[0] + steps[0] * data[i][params[0]], oringin[1] - steps[1] * data[i][params[1]]);
         ctx.lineTo(oringin[0] + steps[0] * data[i + 1][params[0]], oringin[1] - steps[1] * data[i + 1][params[1]]);
@@ -214,9 +215,14 @@ export default class Patient extends Component {
         let arr = item.week.split('+');
         item.week = parseInt(arr[0]) + parseInt(arr[1]) / 7;
       }
-      // item.week = item.week - 1;
+      item.week = item.week - 1;
     })
     console.log(newBmiList, '31')
+    let bmiColor = 'green';
+    let lastBmi = newBmiList[newBmiList.length-1];
+    if(lastBmi && (lastBmi.week < 0 || lastBmi.week >39 || lastBmi.tizhong < -6 || lastBmi.tizhong > 20)) {
+      bmiColor = 'red';
+    }
     newBmiList = newBmiList.filter(i => i.week >= 0 && i.week <= 39 && i.tizhong >= -6 && i.tizhong <= 20);
 
     const canvas = document.getElementById('bmiCanvas');
@@ -284,7 +290,7 @@ export default class Patient extends Component {
     this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine1, ["week", "tizhong"], '#52aaff', [8]);
     this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine2, ["week", "tizhong"], '#52aaff', [8]);
     console.log(newBmiList, '3122')
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], newBmiList, ["week", "tizhong"], 'pink', [8]);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], newBmiList, ["week", "tizhong"], bmiColor, [8]);
   }
 
   render() {

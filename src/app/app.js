@@ -331,7 +331,7 @@ export default class App extends Component {
       store.dispatch(action);
     }
 
-    diagnosis.map(item => {
+    diagnosis && diagnosis.map(item => {
       if(item.data.indexOf("静脉曲张") !== -1) checkedKeys.push(getKey("静脉曲张"));
       if(item.data === "妊娠子痫前期") checkedKeys.push(getKey("本次妊娠子痫前期"));
       if(item.data === "多胎妊娠") checkedKeys.push(getKey("多胎妊娠"));
