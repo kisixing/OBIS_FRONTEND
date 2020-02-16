@@ -332,21 +332,22 @@ export const shoushushiColumns = [
 export const pregnanciesColumns = [
 	{
 		title: '孕次',
-		key: 'index',
+		key: 'pregnum',
+		type: 'input',
 		width: '60',
-		format: (v,{row})=>row+1
+		// format: (v, { row }) => row + 1
 	},
 	{
-		title: '   年-月    ',
+		title: '年-月',
 		key: 'datagridYearMonth',
-		type: 'input',
-		width: '200',
+		type: 'date',
+		width: '160',
 		filterDate: true,
-		// mode:"ym",
+		mode: "ym",
 	},
 	{
 		title: '流产',
-		children:[
+		children: [
 			{
 				title: '自然',
 				key: 'zir',
@@ -389,7 +390,7 @@ export const pregnanciesColumns = [
 	},
 	{
 		title: '分娩方式',
-		children:[
+		children: [
 			{
 				title: '顺产',
 				key: 'shunch',
@@ -401,13 +402,14 @@ export const pregnanciesColumns = [
 				key: 'shouShuChanType',
 				type: 'select',
 				showSearch: true,
+				dropdownMatchSelectWidth: false,
 				options: sscsOptions
 			}
 		]
 	},
 	{
 		title: '产后情况',
-		children:[
+		children: [
 			{
 				title: '出血',
 				key: 'chuxue',
@@ -430,7 +432,7 @@ export const pregnanciesColumns = [
 	},
 	{
 		title: '小孩情况',
-		children:[
+		children: [
 			{
 				title: '性别',
 				key: 'xingb',
@@ -456,17 +458,19 @@ export const pregnanciesColumns = [
 			{
 				title: '死亡时间',
 				key: 'siw',
-				type: 'input'
+				type: 'date',
+				mode: "ym",
+				width: 128
 			},
 			{
 				title: '死亡原因',
 				key: 'deathCause',
-				type: 'input'
+				type: 'input',
 			},
 			{
 				title: '后遗症',
 				key: 'sequela',
-				type: 'input'
+				type: 'input',
 			},
 			{
 				title: '出生体重(kg)',
@@ -483,6 +487,7 @@ export const pregnanciesColumns = [
 		showSearch: true,
 		options: fmyyOptions,
 		autoInsert: true,
+		dropdownMatchSelectWidth: false,
 		width: 160
 	},
 	{
