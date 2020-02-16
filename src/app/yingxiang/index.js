@@ -24,7 +24,8 @@ export default class Patient extends Component {
     const {tableData} = this.state;
     const title = () => '影像检查报告';
     const handleBtnClick = (text, record) => {
-      this.setState({pdfPath: record.pdfPath}, () => {
+      const pdfPath = service.getUrl(record.pdfPath)
+      this.setState({pdfPath}, () => {
         this.setState({isShowModal: true})
       })
     }
