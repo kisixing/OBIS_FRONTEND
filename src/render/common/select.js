@@ -10,6 +10,7 @@ export function select({
   onBlur = () => {},
   style,
   autoInsert,
+  dropdownMatchSelectWidth = false,
   ...props
 }) {
   const getValue = () => {
@@ -33,6 +34,7 @@ export function select({
     <Select
       {...props}
       value={getValue()}
+      dropdownMatchSelectWidth={dropdownMatchSelectWidth}
       options={options}
       onChange={handleChange}
       onSearch={handleSearch}

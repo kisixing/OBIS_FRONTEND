@@ -47,7 +47,7 @@ export default class Patient extends Component {
         this.state = {
             info: {},
             tabs: tabs,
-            step: tabs[0].key, // 从0开始
+            step: tabs[5].key, // 从0开始
             allData: null,
             ...store.getState(),
         }
@@ -350,9 +350,7 @@ export default class Patient extends Component {
                     const action = isFormChangeAction(true);
                     store.dispatch(action);
                 }
-                console.log("888888888888888", tab.key);
                 if (this.change) {
-                  console.log("89898989898", tab.key, tab.entity.root, tab.entity.address);
                     if (tab.key === "tab-0") {
                       tab.entity.userconstant = `${tab.entity.root[0].join(' ')},${tab.entity.root[1]}`;
                       tab.entity.useraddress = `${tab.entity.address[0].join(' ')},${tab.entity.address[1]}`;
