@@ -13,7 +13,6 @@ import './form.less';
 import store from '../store';
 import { isFormChangeAction,
         allReminderAction,
-        showReminderAction,
       } from '../store/actionCreators.js';
 
 import RegForm from '../components/reg-form';
@@ -33,9 +32,9 @@ export default class FuzhenForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ycq: '',
-      openYCQ: false,
-      openQX: false,
+      // ycq: '',
+      // openYCQ: false,
+      // openQX: false,
       openTemplate: false,
       openYy: false,
       adviceList: [],
@@ -43,9 +42,9 @@ export default class FuzhenForm extends Component {
       isShowRegForm: false,
       error: {},
       treatTemp: [],
-      modalState: {},
       getPacsGrowth: {},
-      // entity: { ...baseData.formEntity },
+      openMenzhen: false,
+      menzhenData: new Date(),
       ...store.getState(),
     }
     store.subscribe(this.handleStoreChange);
@@ -411,16 +410,12 @@ export default class FuzhenForm extends Component {
   }
 
   handleTreatmentClick(e, {text,index},resolve){
-    const { modalState } = this.props;
     text==='更多'?this.setState({openTemplate:resolve}):this.addTreatment(e, text);
     if(text==='糖尿病日间门诊') {
-      this.setState({modalState: modalState[0]}, () => {
-        this.setState({openYy: true});
-      })
+      this.setState({openMenzhen: true});
     }else if (text==='产前诊断') {
-      this.setState({modalState: modalState[1]}, () => {
-        this.setState({openYy: true});
-      })
+      this.setState({openMenzhen: true});
+
     }
   }
 
@@ -582,32 +577,32 @@ export default class FuzhenForm extends Component {
     );
   }
 
-
   /**
    *预约窗口
    */
-  renderModal() {
-    const { openYy, modalState } = this.state;
+  renderMenZhen() {
+    const { openMenzhen, menzhenData } = this.state;
     const handelShow = (isShow) => {
-      this.setState({openYy: false});
+      this.setState({openMenzhen: false});
       if(isShow) {
-        console.log("预约成功!")
+        service.shouzhen.makeAppointment(1, menzhenData).then(res => console.log(res))
       };
     }
+    const panelChange = (date, dateString) => {
+      this.setState({menzhenData: dateString})
+    }
 
-    return (openYy ?
+    return (
       <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
-              visible={openYy} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
-        <span>{modalState.title}: </span>
-        <Select defaultValue={modalState.options[0]} style={{ width: 120 }}>
-          {modalState.options.map((item) => (
-            <Option value={item}>{item}</Option>
-          ))}
+              visible={openMenzhen} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
+        <span>糖尿病门诊预约</span>
+        <Select defaultValue={"本周五"} style={{ width: 120 }}>
+          <Select.Option value={"本周五"}>本周五</Select.Option>
+          <Select.Option value={"下周五"}>下周五</Select.Option>
+          <Select.Option value={"下下周五"}>下下周五</Select.Option>
         </Select>
-        <DatePicker defaultValue={modalState.gesmoc} />
-        {modalState.counts ? <p>（已约：{modalState.counts}）</p> : null}
+        <DatePicker defaultValue={menzhenData} onChange={(date, dateString) => panelChange(date, dateString)}/>
       </Modal>
-      : null
     );
   }
 
@@ -733,7 +728,6 @@ export default class FuzhenForm extends Component {
   render() {
     const { isShowRegForm } = this.state;
     const { initData } = this.props;
-    console.log(initData, '22')
     return (
       <div className="fuzhen-form">
         <strong className="fuzhen-form-TIT">本次产检记录</strong>
@@ -750,8 +744,8 @@ export default class FuzhenForm extends Component {
         </div>
         {/* {this.renderQX()} */}
         {this.renderTreatment()}
-        {this.renderYCQ()}
-        {this.renderModal()}
+        {/* {this.renderYCQ()} */}
+        {this.renderMenZhen()}
         {this.renderAdviceModal()}
         <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />
       </div>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Select, Button, Popover, Input, Tabs, Tree, Modal, Icon, Spin, Timeline, Collapse, message } from 'antd';
+import { Select, Button, Popover, Input, Tabs, Tree, Modal, Icon, Spin, Timeline, Collapse, message, DatePicker } from 'antd';
 
 import tableRender from '../../render/table';
 import FuzhenForm from './form';
@@ -15,6 +15,7 @@ import { getAlertAction,
         showPharAction,
         checkedKeysAction,
         isFormChangeAction,
+        openYCQAction,
   } from '../store/actionCreators.js';
 
 import "../index.less";
@@ -65,19 +66,7 @@ export default class Patient extends Component {
       planData: [],
       initData: { ...baseData.formEntity },
       hasRecord: false,
-      modalState: [
-        {
-          "title": "糖尿病门诊预约",
-          "gesmoc": "2019-07-03",
-          "options": ["本周五", "下周五","下下周五",""]
-        },
-        {
-          "title": "产前诊断预约",
-          "gesmoc": "2019-07-31",
-          "options": ["预约1","预约2","预约3"],
-          "counts": "3"
-        }
-      ],
+      ycq: '',
       ...store.getState(),
     };
     store.subscribe(this.handleStoreChange);
@@ -90,7 +79,7 @@ export default class Patient extends Component {
 
   componentDidMount() {
     Promise.all([
-    service.getuserDoc().then(res => this.setState({ info: res.object }, () => {
+    service.getuserDoc().then(res => this.setState({ info: res.object, ycq: res.object.gesexpect }, () => {
       let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
       this.setState({initData: {...this.state.initData, ...param}});
     })),
@@ -452,13 +441,16 @@ export default class Patient extends Component {
       });
     }
 
-    const handleSaveChange = (type, row) => {
-      console.log(type, row, '1234')
-      // row.ckweek = info.tuserweek;
-      this.setState({initData: row});
+    const handleSaveChange = (e, {item, value, key}) => {
+      if(key === "checkdate") {
+        item.ckweek = util.getWeek(40, util.countWeek(info.gesexpect, item.checkdate));
+      }
+      this.setState({initData: item});
       const action = isFormChangeAction(true);
       store.dispatch(action);
     }
+
+    const handleRowChange = ()=> {}
 
     const handelTableChange = (type, row) => {
       //血压
@@ -517,11 +509,12 @@ export default class Patient extends Component {
           pagination: false,
           editable: true,
           className: "fuzhenTable",
-          onClick: true,
+          onEdit: true,
           hasRecord: hasRecord,
           scroll: { x: 1100, y: 220 },
           iseditable: ({ row }) => hasRecord ? row === 1 : row > recentRvisit.length - 2,
-          onRowChange: handleSaveChange
+          onChange: handleSaveChange,
+          onRowChange: handleRowChange
         })}
         {/* {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null} */}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
@@ -551,9 +544,34 @@ export default class Patient extends Component {
     );
   }
 
-  render() {
-    const { loading, diagnosis, relatedObj, info, modalState, initData } = this.state;
+  /**
+   * 孕产期
+   */
+  renderYCQ(){
+    const { openYCQ, info, ycq, initData, recentRvisit } = this.state;
+    const handelClick = (e, isOk) => {
+      const action = openYCQAction(false);
+      store.dispatch(action);
+      if(isOk){
+        let newInitData = initData;
+        let newRecentRvisit = recentRvisit;
+        newInitData.ckweek = util.getWeek(40, util.countWeek(ycq, newInitData.checkdate))+'(修)';
+        newRecentRvisit.pop();
+        newRecentRvisit.push(newInitData)
+        this.setState({initData: newInitData, recentRvisit: newRecentRvisit})
+      }
+    }
+    return (
+      <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
+             width={600} closable visible={openYCQ} onCancel={e => handelClick(e, false)} onOk={e => handelClick(e, true)}>
+        <span>是否修改预产期-超声:</span>
+        <DatePicker defaultValue={info.gesexpect} value={ycq} onChange={(e,v)=>{this.setState({ycq:v})}}/>
+      </Modal>
+    );
+  }
 
+  render() {
+    const { loading, diagnosis, relatedObj, info, initData } = this.state;
     return (
       <Page className="fuzhen font-16 ant-col">
         <div className="bgDOM"></div>
@@ -565,7 +583,6 @@ export default class Patient extends Component {
             initData={initData}
             diagnosis={diagnosis}
             relatedObj={relatedObj}
-            modalState={modalState}
             onSave={data => this.saveForm(data)}
             onChange={this.handleChange.bind(this)}
             onChangeInfo={this.onChangeInfo.bind(this)}
@@ -574,6 +591,7 @@ export default class Patient extends Component {
             &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>
           </p>
         </div>
+        {this.renderYCQ()}
       </Page>
     );
   }

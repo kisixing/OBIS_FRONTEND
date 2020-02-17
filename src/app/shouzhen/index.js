@@ -26,6 +26,8 @@ import { getUserDocAction,
         allReminderAction, 
         showReminderAction, 
         openMedicalAction,
+        isMeetPharAction,
+        checkedKeysAction,
     } from "../store/actionCreators.js";
 
 import * as baseData from './data';
@@ -49,6 +51,7 @@ export default class Patient extends Component {
             tabs: tabs,
             step: tabs[0].key, // 从0开始
             allData: null,
+            templateTree1: [],
             ...store.getState(),
         }
         store.subscribe(this.handleStoreChange);
@@ -58,6 +61,7 @@ export default class Patient extends Component {
         service.getuserDoc().then(res => this.setState({
             info: res.object
         }))
+        service.shouzhen.findTemplateTree(0).then(res => this.setState({templateTree1: res.object}));
         this.activeTab(this.state.step);
     }
 
@@ -65,11 +69,48 @@ export default class Patient extends Component {
         this.setState(store.getState());
     };
 
+    setCheckedKeys(params) {
+        const { checkedKeys, templateTree1 } = this.state;
+        const diagnosis = params.diagnosisList;
+        const bmi = params.checkUp.ckbmi;
+        const age = params.gravidaInfo.userage;
+        const preghiss = params.gestation.preghiss ? params.gestation.preghiss.length : [];
+        const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);
+    
+        const getKey = (val) => {
+          let ID = '';
+          templateTree1&&templateTree1.map(item => {
+            if(item.name === val) ID = item.id;
+          })
+          return ID.toString();
+        }
+    
+        if(bmi>30) checkedKeys.push(getKey("肥胖（BMI>30kg/m  )"));
+        if(age>35) checkedKeys.push(getKey("年龄>35岁"));
+        if(preghiss>=3) checkedKeys.push(getKey("产次≥3"));
+        if(xiyan && xiyan[0].label==="有") checkedKeys.push(getKey("吸烟"));
+    
+        if(checkedKeys.length > 0) {
+          const action = isMeetPharAction(true);
+          store.dispatch(action);
+        }
+    
+        diagnosis && diagnosis.map(item => {
+          if(item.data.indexOf("静脉曲张") !== -1) checkedKeys.push(getKey("静脉曲张"));
+          if(item.data === "妊娠子痫前期") checkedKeys.push(getKey("本次妊娠子痫前期"));
+          if(item.data === "多胎妊娠") checkedKeys.push(getKey("多胎妊娠"));
+        })
+    
+        const action = checkedKeysAction(checkedKeys);
+        store.dispatch(action);
+      }
+
     activeTab(step) {
         const { tabs } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         // if (!tab.init) {
             service.shouzhen.getForm(tab.key).then(res => {
+                this.setCheckedKeys(res.object);
                 const action = getAllFormDataAction(res.object);
                 store.dispatch(action);
                 // 如果想要使下面的数据转换放到对应的tab文件里面去，请实现entityParse这个方法，参考tab-0：yunfuxinxi.js这个文件
@@ -321,7 +362,7 @@ export default class Patient extends Component {
         this.timeout = setTimeout(() => this.forceUpdate(), 200);
     }
 
-    handleSave(isShowReminderModal, key) {
+    handleSave(key) {
         const { tabs, step, allData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
@@ -432,8 +473,7 @@ export default class Patient extends Component {
                                 this.activeTab(key || next.key);
                             });
                         }
-                        console.log(isShowReminderModal, '43666')
-                        !isShowReminderModal && service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
+                        service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
                             message.success('信息保存成功',3);
                             this.activeTab(key || next.key);
                             /*修改预产期-B超 同步数据*/
@@ -516,7 +556,7 @@ export default class Patient extends Component {
     }
 
     render() {
-        const { tabs, info, step, allData, isShowReminderModal } = this.state;
+        const { tabs, info, step, allData } = this.state;
         const printIvisit = () => {
             service.shouzhen.printPdfByFile().then(res => {
                 this.printPdf(res.object);
@@ -529,7 +569,7 @@ export default class Patient extends Component {
             <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
 
             <div className="bgWhite" style={{ position: "fixed", top: "7.65em", left: "0", right: "0", bottom: "0"}}></div>
-            <Tabs type="card" activeKey={step} onChange={key => this.handleSave(isShowReminderModal, key)}>
+            <Tabs type="card" activeKey={step} onChange={key => this.handleSave(key)}>
               {tabs.map(({ key, title, entity, error, Content }) => (
                 <Tabs.TabPane key={key}
                   tab={
@@ -547,11 +587,11 @@ export default class Patient extends Component {
             <Row>
               <Col span={21} />
               <Col>
-                <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(isShowReminderModal) }, 100)}>
+                <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>
                   {step !== tabs[tabs.length - 1].key ? "下一页" : "保存并开医嘱"}
                 </Button>
                 {step === tabs[tabs.length - 1].key ?
-                    <Button className="shouzhen-bbtn2" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(isShowReminderModal) }, 100)}>
+                    <Button className="shouzhen-bbtn2" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>
                         保存
                     </Button>
                     : null

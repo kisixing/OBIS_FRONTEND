@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Button, Table } from 'antd';
 
 import {events, types, editors, valid as validFn} from './common';
+import store from '../app/store';
+import { openYCQAction } from '../app/store/actionCreators.js';
 
 import './table.less';
 
@@ -25,9 +27,9 @@ class TableItem extends Component {
   }
 
   componentDidMount(){
-    const { iseditable = () => true, entity, row, name, value, onClick, hasRecord, style } = this.props;
+    const { iseditable = () => true, entity, row, name, value, onEdit, hasRecord, style } = this.props;
     const arr = ["cktizh", "ckzijzhz", "cktaix", "ckxianl", "ckgongg", "ckfuzh"];
-    if (iseditable({entity, row, name, value}) && onClick && !hasRecord) {
+    if (iseditable({entity, row, name, value}) && onEdit && !hasRecord) {
       if (arr.includes(name)) {
         this.setState({force:true});
       }
@@ -39,12 +41,16 @@ class TableItem extends Component {
   }
 
   onDbClick = () => {
-    const { iseditable = ()=> true, entity, row, name, value } = this.props;
+    const { iseditable = ()=> true, entity, row, name, value, onEdit } = this.props;
     if(iseditable({entity, row, name, value})){
       this.setState({force:true}, ()=>{
         const input = this.refs.tableItem.querySelector(types.join());
         if(input)input.focus();
       });
+      if(onEdit && name==="ckweek") {
+        const action = openYCQAction(true);
+        store.dispatch(action);
+      }
     }
   }
 
@@ -86,14 +92,13 @@ class TableItem extends Component {
   }
 
   render(){
-    const { type, format = i=>i, isEditor, onClick, editable, ...props } = this.props;
+    const { type, format = i=>i, isEditor, editable, ...props } = this.props;
     const { value, error, force } = this.state;
     const editor = editors[type] || type;
     return (
       <span
         ref="tableItem"
         title={error}
-        // onClick={onClick ? this.onDbClick.bind(this) : null}
         onDoubleClick={this.onDbClick.bind(this)}
         className={`table-item table-item-${type} ${(force && "table-force") ||
           (error && "table-error") ||
@@ -230,7 +235,7 @@ export default function(
           }
         }
         if(dataSource.length > 1 && item.pregnum) {
-          const numArr = [14, 15, 16, 17, 18, 19];
+          const numArr = [15, 16, 17, 18, 19, 20];
           if (row >= rows.length && row < dataSource.length && item.pregnum === dataSource[row - 1].pregnum && !numArr.includes(column)) {
             let countNum = 0;
             dataSource.map(newItem => (

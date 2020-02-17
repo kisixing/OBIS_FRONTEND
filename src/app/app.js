@@ -16,10 +16,9 @@ import {
   showTrialCardAction,
   showPharAction,
   showPharCardAction,
-  isMeetPharAction,
-  checkedKeysAction,
   showReminderAction,
   closeReminderAction,
+  getDiagnisisAction,
 } from "./store/actionCreators.js";
 
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
@@ -89,10 +88,6 @@ export default class App extends Component {
 
     service.shouzhen.findTemplateTree(0).then(res => this.setState({templateTree1: res.object}));
     service.shouzhen.findTemplateTree(1).then(res => this.setState({templateTree2: res.object}));
-
-    service.shouzhen.getAllForm().then(res => {
-      this.setCheckedKeys(res.object);
-    });
   }
 
   handleStoreChange = () => {
@@ -195,7 +190,12 @@ export default class App extends Component {
       store.dispatch(action);
 
       item && service.fuzhen.adddiagnosis(item.diagnosis).then(() => { 
-        if (index === 0 && isOpenMedicalAdvice) {
+        if (index === 0) {
+          service.fuzhen.getdiagnosis().then(res => {
+            const action = getDiagnisisAction(res.object.list);
+            store.dispatch(action);
+          });
+        }else if(index === 0 && isOpenMedicalAdvice) {
           closeWebPage();
         }
       })
@@ -302,43 +302,6 @@ export default class App extends Component {
       </Modal>
       : null
     )
-  }
-
-
-  setCheckedKeys(params) {
-    const { checkedKeys, templateTree1 } = this.state;
-    const diagnosis = params.diagnosisList;
-    const bmi = params.checkUp.ckbmi;
-    const age = params.gravidaInfo.userage;
-    const preghiss = params.gestation.preghiss ? params.gestation.preghiss.length : [];
-    const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);
-
-    const getKey = (val) => {
-      let ID = '';
-      templateTree1&&templateTree1.map(item => {
-        if(item.name === val) ID = item.id;
-      })
-      return ID.toString();
-    }
-
-    if(bmi>30) checkedKeys.push(getKey("肥胖（BMI>30kg/m  )"));
-    if(age>35) checkedKeys.push(getKey("年龄>35岁"));
-    if(preghiss>=3) checkedKeys.push(getKey("产次≥3"));
-    if(xiyan && xiyan[0].label==="有") checkedKeys.push(getKey("吸烟"));
-
-    if(checkedKeys.length > 0) {
-      const action = isMeetPharAction(true);
-      store.dispatch(action);
-    }
-
-    diagnosis && diagnosis.map(item => {
-      if(item.data.indexOf("静脉曲张") !== -1) checkedKeys.push(getKey("静脉曲张"));
-      if(item.data === "妊娠子痫前期") checkedKeys.push(getKey("本次妊娠子痫前期"));
-      if(item.data === "多胎妊娠") checkedKeys.push(getKey("多胎妊娠"));
-    })
-
-    const action = checkedKeysAction(checkedKeys);
-    store.dispatch(action);
   }
 
   /**

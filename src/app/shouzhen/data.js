@@ -429,6 +429,11 @@ export const pregnanciesColumns = [
 		width: '200',
 	},
 	{
+		title: '胎数',
+		key: 'births',
+		type: 'input',
+	},
+	{
 		title: '小孩情况',
 		children: [
 			{

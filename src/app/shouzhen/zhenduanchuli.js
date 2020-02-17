@@ -8,7 +8,12 @@ import * as baseData0 from './../shouzhen/data';
 import * as baseData from './../fuzhen/data';
 import * as util from '../fuzhen/util';
 import store from '../store';
-import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction} from '../store/actionCreators.js';
+import { getAlertAction, 
+        showTrialAction, 
+        showPharAction, 
+        checkedKeysAction, 
+        getDiagnisisAction,
+      } from '../store/actionCreators.js';
 import RegForm from '../components/reg-form';
 import './index.less';
 import service from '../../service';
@@ -29,23 +34,24 @@ export default class extends Component{
       isShowZhenduan: false,
       isMouseIn: false,
       isShowSetModal: false,
-      openYy: false,
       adviceList: [],
       openAdvice: false,
-      modalState: [
-        {
-          "title": "糖尿病门诊预约",
-          "gesmoc": "2019-07-03",
-          "options": ["本周五", "下周五","下下周五",""]
-        },
-        {
-          "title": "产前诊断预约",
-          "gesmoc": "2019-07-31",
-          "options": ["预约1","预约2","预约3"],
-          "counts": "3"
-        }
-      ],
-      modalData: {},
+      openMenzhen: false,
+      menzhenData: new Date(),
+      // modalState: [
+      //   {
+      //     "title": "糖尿病门诊预约",
+      //     "gesmoc": "2019-07-03",
+      //     "options": ["本周五", "下周五","下下周五",""]
+      //   },
+      //   {
+      //     "title": "产前诊断预约",
+      //     "gesmoc": "2019-07-31",
+      //     "options": ["预约1","预约2","预约3"],
+      //     "counts": "3"
+      //   }
+      // ],
+      // modalData: {},
       treatTemp: [],
       isShowRegForm: false,
       openTemplate: false,
@@ -69,7 +75,10 @@ export default class extends Component{
 
     service.fuzhen.treatTemp().then(res => this.setState({ treatTemp: res.object }));
 
-    service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list }));
+    service.fuzhen.getdiagnosis().then(res => {
+      const action = getDiagnisisAction(res.object.list);
+      store.dispatch(action);
+    });
 
     service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
 
@@ -124,8 +133,8 @@ export default class extends Component{
   }
 
   adddiagnosis() {
-    const { diagnosis, diagnosi } = this.state;
-    if (diagnosi && !diagnosis.filter(i => i.data === diagnosi).length) {
+    const { diagList, diagnosi } = this.state;
+    if (diagnosi && !diagList.filter(i => i.data === diagnosi).length) {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
         if (diagnosi==='瘢痕子宫' || diagnosi==='疤痕子宫') {
@@ -140,8 +149,10 @@ export default class extends Component{
           const action = getAlertAction(data);
           store.dispatch(action);
         })
-        service.fuzhen.getdiagnosis().then(res => this.setState({
-            diagnosis: res.object.list,
+        service.fuzhen.getdiagnosis().then(res => {
+          const action = getDiagnisisAction(res.object.list);
+          store.dispatch(action);
+          this.setState({
             diagnosi: ''
         }, () => {
           if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
@@ -149,7 +160,7 @@ export default class extends Component{
             const action = showPharAction(true);
             store.dispatch(action);
           }
-        }));
+        })});
       })
     } else if (diagnosi) {
       modal('warning', '添加数据重复');
@@ -157,10 +168,10 @@ export default class extends Component{
   }
 
   updateCheckedKeys(data) {
-    const { checkedKeys, diagnosis } = this.state;
+    const { checkedKeys, diagList } = this.state;
     let newCheckedKeys = checkedKeys;
 
-    diagnosis.map(item => {
+    diagList.map(item => {
       if(item.data.indexOf("静脉曲张") !== -1 && !newCheckedKeys.includes('11')) newCheckedKeys.push('11');
       if(item.data === "妊娠子痫前期" && !newCheckedKeys.includes('10')) newCheckedKeys.push("10");
       if(item.data === "多胎妊娠" && !newCheckedKeys.includes('14')) newCheckedKeys.push("14");
@@ -183,11 +194,16 @@ export default class extends Component{
   deldiagnosis(id, data) {
     service.fuzhen.deldiagnosis(id).then(() => {
       modal('info', '删除诊断信息成功');
-      service.fuzhen.getdiagnosis().then(res => this.setState({
-          diagnosis: res.object.list
-      }, () => {
+      service.fuzhen.getdiagnosis().then(res => {
+        const action = getDiagnisisAction(res.object.list);
+        store.dispatch(action);
         this.updateCheckedKeys(data);
-      }));
+      })
+      // service.fuzhen.getdiagnosis().then(res => this.setState({
+      //     diagnosis: res.object.list
+      // }, () => {
+      //   this.updateCheckedKeys(data);
+      // }));
     })
   }
 
@@ -200,16 +216,11 @@ export default class extends Component{
   }
 
   handleTreatmentClick(e, {text,index},resolve){
-    const { modalState, modalData } = this.state;
     text==='更多'?this.setState({openTemplate:resolve}):this.addTreatment(e, text);
     if(text==='糖尿病日间门诊') {
-      this.setState({modalData: modalState[0]}, () => {
-        this.setState({openYy: true});
-      })
+      this.setState({openMenzhen: true});
     }else if (text==='产前诊断') {
-      this.setState({modalData: modalState[1]}, () => {
-        this.setState({openYy: true});
-      })
+      this.setState({openMenzhen: true});
     }
   }
 
@@ -217,7 +228,7 @@ export default class extends Component{
     const { allData } = this.props;
     const allPreghiss = allData.gestation.preghiss || [];
     if(allPreghiss.length > 0) {
-      let newYunc =  allPreghiss[allPreghiss.length - 1].pregnum;   
+      let newYunc = parseInt(allPreghiss[allPreghiss.length - 1].pregnum) + 1;   
       let times = 0;
       this.setState({yunc: newYunc});
       allPreghiss&&allPreghiss.map(item => {
@@ -233,7 +244,7 @@ export default class extends Component{
 
   renderZD(){
     const { info = {} } = this.props;
-    const { diagnosi, diagnosis, diagnosislist, isMouseIn, isShowZhenduan, chanc, yunc } = this.state;
+    const { diagnosi, diagList, diagnosislist, isMouseIn, isShowZhenduan, chanc, yunc } = this.state;
     const delConfirm = (item) => {
       Modal.confirm({
         title: '您是否确认要删除这项诊断',
@@ -248,24 +259,26 @@ export default class extends Component{
       const handleHighriskmark = () => {
         let highriskmark = item.highriskmark == 1 ? 0 : 1;
         service.fuzhen.updateHighriskmark(item.id, highriskmark).then(() => {
-          service.fuzhen.getdiagnosis().then(res => this.setState({
-            diagnosis: res.object.list
-          }))
+          service.fuzhen.getdiagnosis().then(res => {
+            const action = getDiagnisisAction(res.object.list);
+            store.dispatch(action);
+          })
         })
       }
 
       const handleVisibleChange = fx => () => {
         service.fuzhen.updateSort(item.id, fx).then(() => {
-          service.fuzhen.getdiagnosis().then(res => this.setState({
-            diagnosis: res.object.list
-          }))
+          service.fuzhen.getdiagnosis().then(res => {
+            const action = getDiagnisisAction(res.object.list);
+            store.dispatch(action);
+          })
         })
       }
       return (
         <div>
           <p className="pad-small"><a className="font-16" onClick={handleHighriskmark}>{item.highriskmark == 1 ? '高危诊断 √' : '高危诊断'}</a></p>
           {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('up')}>上 移</a></p> : null}
-          {i + 1 < diagnosis.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>下 移</a></p> : null}
+          {i + 1 < diagList.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>下 移</a></p> : null}
         </div>
       );
     }
@@ -315,7 +328,7 @@ export default class extends Component{
               {info.doctor}
             </Col>
           </Row>
-          {diagnosis&&diagnosis.map((item, i) => (
+          {diagList&&diagList.map((item, i) => (
             <Row key={`diagnos-${item.id}-${Date.now()}`}>
               <Col span={8}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
@@ -390,28 +403,29 @@ export default class extends Component{
     /**
    *预约窗口
    */
-  renderModal() {
-    const { openYy, modalData } = this.state;
+  renderMenZhen() {
+    const { openMenzhen, menzhenData } = this.state;
     const handelShow = (isShow) => {
-      this.setState({openYy: false});
+      this.setState({openMenzhen: false});
       if(isShow) {
-        console.log("预约成功!")
+        service.shouzhen.makeAppointment(1, menzhenData).then(res => console.log(res))
       };
     }
+    const panelChange = (date, dateString) => {
+      this.setState({menzhenData: dateString})
+    }
 
-    return (openYy ?
+    return (
       <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
-              visible={openYy} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
-        <span>{modalData.title}: </span>
-        <Select defaultValue={modalData.options[0]} style={{ width: 120 }}>
-          {modalData.options.map((item) => (
-            <Option value={item}>{item}</Option>
-          ))}
+              visible={openMenzhen} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
+        <span>糖尿病门诊预约</span>
+        <Select defaultValue={"本周五"} style={{ width: 120 }}>
+          <Select.Option value={"本周五"}>本周五</Select.Option>
+          <Select.Option value={"下周五"}>下周五</Select.Option>
+          <Select.Option value={"下下周五"}>下下周五</Select.Option>
         </Select>
-        <DatePicker defaultValue={modalData.gesmoc} />
-        {modalData.counts ? <p>（已约：{modalData.counts}）</p> : null}
+        <DatePicker defaultValue={menzhenData} onChange={(date, dateString) => panelChange(date, dateString)}/>
       </Modal>
-      : null
     );
   }
 
@@ -518,7 +532,7 @@ export default class extends Component{
         {formRender(entity, this.config(), this.handleChange.bind(this))}
         <Button onClick={() =>this.openLisi()}>首检信息历史修改记录</Button>
         {this.renderTreatment()}
-        {this.renderModal()}
+        {this.renderMenZhen()}
         {this.renderAdviceModal()}
         <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>
       </div>

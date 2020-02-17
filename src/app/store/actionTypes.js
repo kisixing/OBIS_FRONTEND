@@ -17,3 +17,7 @@ export const SHOW_REMINDER_MODAL = 'show_reminder_modal';
 export const ALL_REMINDER_MODAL = 'all_reminder_modal';
 export const CLOSE_REMINDER_MODAL = 'close_reminder_modal';
 export const OPEN_MEDICAL_ADVICE = 'open_medical_advice';
+
+export const GET_DIAGNOSIS = 'get_diagnosis';
+
+export const OPEN_YCQ = 'open_ycq';
