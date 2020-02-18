@@ -120,7 +120,6 @@ class FormItem extends Component {
   resize() {
     const { width } = this.props;
     const { formItem, formItemlabel = {}, formItemEditor, formItemUnit = {} } = this.refs;
-
     setTimeout(() => {
       if (formItemEditor) {
         const panelWidth = Math.min(formItem.offsetWidth, width || formItem.offsetWidth);
@@ -137,6 +136,25 @@ class FormItem extends Component {
 
   componentDidMount() {
     this.componentWillUnmount = AddResize(() => this.resize())
+    this.refs.formItem.fireReact = (type, ...args) => {
+      return new Promise(resolve => {
+        switch (type) {
+          case 'valid':
+            this.onBlur(...args).then(resolve)
+            this.setState({error: ''})
+            break;
+          case 'reset':
+            this.setState({
+              dirty: false,
+              error: ''
+            }, resolve);
+            break;
+        }
+      });
+    }
+  }
+
+  componentDidUpdate() {
     this.refs.formItem.fireReact = (type, ...args) => {
       return new Promise(resolve => {
         switch (type) {

@@ -571,7 +571,7 @@ export default class Patient extends Component {
   }
 
   render() {
-    const { loading, diagnosis, relatedObj, info, initData } = this.state;
+    const { loading, diagnosis, relatedObj, info, initData, ycq } = this.state;
     return (
       <Page className="fuzhen font-16 ant-col">
         <div className="bgDOM"></div>
@@ -579,6 +579,7 @@ export default class Patient extends Component {
         <div className="fuzhen-right ant-col-19 pad-mid">
           {this.renderTable()}
           <FuzhenForm
+            ycq={ycq}
             info={info}
             initData={initData}
             diagnosis={diagnosis}

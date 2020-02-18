@@ -13,6 +13,7 @@ import './form.less';
 import store from '../store';
 import { isFormChangeAction,
         allReminderAction,
+        getUserDocAction
       } from '../store/actionCreators.js';
 
 import RegForm from '../components/reg-form';
@@ -63,18 +64,6 @@ export default class FuzhenForm extends Component {
       res.object.length > 1 && this.setState({adviceList: res.object, openAdvice: true})
     });
   }
-
-  // componentWillReceiveProps(props) {
-  //   if(props.hasRecord) {
-  //     let data = service.praseJSON(props.initData);
-  //     Object.keys(props.initData).forEach(key => {
-  //       if(typeof data[key] ==="string" && (data[key].indexOf('{') !== -1 || data[key].indexOf('[') !== -1)) {
-  //         data[key] = JSON.parse(data[key])
-  //       }
-  //     })
-  //     this.setState({entity: data})
-  //   }
-  // }
 
   // 2 检测孕妇高危诊断，修改表格以及表单型式
   checkDiagnosisHighrisk(type) {
@@ -396,10 +385,10 @@ export default class FuzhenForm extends Component {
     onChange(e, newEntity);
   }
 
-  handleYz() {
-    const { openYCQ } = this.state;
-    this.setState({openYCQ: true});
-  }
+  // handleYz() {
+  //   const { openYCQ } = this.state;
+  //   this.setState({openYCQ: true});
+  // }
 
   addTreatment(e, value){
     const { initData } = this.props;
@@ -456,11 +445,11 @@ export default class FuzhenForm extends Component {
   }
 
   handleSave(form, act) {
-    const { onSave, initData } = this.props;
+    const { onSave, initData, ycq } = this.props;
     const { allFormData } = this.state;
     let newEntity = initData;
     let ckpressure = initData.ckpressure.split('/');
-
+    console.log(ycq, '23')
     const getReminder = () => {
       if(act) {
         const lis = service.praseJSON(allFormData.lis);
@@ -542,11 +531,17 @@ export default class FuzhenForm extends Component {
     fireForm(form,'valid').then((valid)=>{
       if(valid){
         console.log(newEntity, '可以保存')
-        onSave(newEntity).then(() => this.setState({
-          error: {}
-        }, () => {
-          getReminder();
-        }));
+        onSave(newEntity).then(() =>{
+          this.setState({ error: {} }, () => {
+            getReminder();
+          })
+          service.fuzhen.updateDocGesexpectrv(ycq).then(() => {
+            service.getuserDoc().then(res => {
+              const action = getUserDocAction(res.object);
+              store.dispatch(action)
+            })
+          })
+        });
       }
     });
   }
@@ -554,28 +549,28 @@ export default class FuzhenForm extends Component {
   /**
    * 孕产期
    */
-  renderYCQ(){
-    const { info, onChangeInfo } = this.props;
-    const { openYCQ, ycq } = this.state;
+  // renderYCQ(){
+  //   const { info, onChangeInfo } = this.props;
+  //   const { openYCQ, ycq } = this.state;
 
-    const handelClick = (e, isOk) => {
-      this.setState({openYCQ:false},()=>{
-        // openYCQ();
-        if(isOk){
-          onChangeInfo({...info, gesexpect:ycq });
-          this.handleChange(e, {name: 'checkdate', value: ycq});
-        }
-      });
-    }
+  //   const handelClick = (e, isOk) => {
+  //     this.setState({openYCQ:false},()=>{
+  //       // openYCQ();
+  //       if(isOk){
+  //         onChangeInfo({...info, gesexpect:ycq });
+  //         this.handleChange(e, {name: 'checkdate', value: ycq});
+  //       }
+  //     });
+  //   }
 
-    return (
-      <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
-             width={600} closable visible={!!openYCQ} onCancel={e => handelClick(e, false)} onOk={e => handelClick(e, true)}>
-        <span>是否修改孕产期：</span>
-        <DatePicker defaultValue={info.gesexpect} value={ycq} onChange={(e,v)=>{this.setState({ycq:v})}}/>
-      </Modal>
-    );
-  }
+  //   return (
+  //     <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
+  //            width={600} closable visible={!!openYCQ} onCancel={e => handelClick(e, false)} onOk={e => handelClick(e, true)}>
+  //       <span>是否修改孕产期：</span>
+  //       <DatePicker defaultValue={info.gesexpect} value={ycq} onChange={(e,v)=>{this.setState({ycq:v})}}/>
+  //     </Modal>
+  //   );
+  // }
 
   /**
    *预约窗口
@@ -609,38 +604,38 @@ export default class FuzhenForm extends Component {
   /**
    * 曲线
    */
-  renderQX(e,text,resolve){
-    const canvas = 'canvas';
-    const canvas2 = 'canvas2';
-    console.log(demodata, '111')
+  // renderQX(e,text,resolve){
+  //   const canvas = 'canvas';
+  //   const canvas2 = 'canvas2';
+  //   console.log(demodata, '111')
 
-    service.fuzhen.getPacsGrowth().then(res => {
-      if (res.code === '10') {
-        demodata = [];
-        modal({
-          title: text,
-          className: "canvasContent",
-          content:[<canvas id={canvas} style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>,
-                  // <canvas id={canvas2} className="z3" style={{height: 450, width: '40%'}}><p>Your browserdoes not support the canvas element.</p></canvas>,
-                  <canvas style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>],
-          footer:'',
-          width:'90%',
-          maskClosable:true,
-          onCancel:resolve
-        }).then(() => {
-          setTimeout(
-            ()=>{
-              drawgrid('canvas');
-              drawgrid('canvas2');
-              // printline();
-            },200)
-          }
-        );
-      } else {
+  //   service.fuzhen.getPacsGrowth().then(res => {
+  //     if (res.code === '10') {
+  //       demodata = [];
+  //       modal({
+  //         title: text,
+  //         className: "canvasContent",
+  //         content:[<canvas id={canvas} style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>,
+  //                 // <canvas id={canvas2} className="z3" style={{height: 450, width: '40%'}}><p>Your browserdoes not support the canvas element.</p></canvas>,
+  //                 <canvas style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>],
+  //         footer:'',
+  //         width:'90%',
+  //         maskClosable:true,
+  //         onCancel:resolve
+  //       }).then(() => {
+  //         setTimeout(
+  //           ()=>{
+  //             drawgrid('canvas');
+  //             drawgrid('canvas2');
+  //             // printline();
+  //           },200)
+  //         }
+  //       );
+  //     } else {
 
-      }
-    })
-  }
+  //     }
+  //   })
+  // }
 
   closeRegForm = () => {
     this.setState({isShowRegForm: false})

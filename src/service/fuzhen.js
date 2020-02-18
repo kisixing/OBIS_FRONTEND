@@ -167,4 +167,11 @@ export default {
     postRecordList: function(entity){
         return this.userId().then(r => myAxios.post('/hospitalization/registerRecord', entity));
     },
+
+    /**
+     * 修改预产期-超声
+     */
+    updateDocGesexpectrv: function(params){
+        return this.userId().then(r => myAxios.post('/outpatient/updateDocGesexpectrv', {userid: r.object.userid, gesexpectrv: params}));
+    },
 }
