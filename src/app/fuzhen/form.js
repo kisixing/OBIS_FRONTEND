@@ -198,7 +198,7 @@ export default class FuzhenForm extends Component {
                             filter: entity => entity.fetalCondition.length !== 1&&check('multiple'),
                             onClick: (e, text, resolve) => {
                               Modal.confirm({
-                                title: '您是否确认要删除改记录',
+                                title: '您是否确认要删除该记录',
                                 width: '300',
                                 style: {top:'50%', left: '30%', fontSize: '18px' },
                                 onOk: () => this.handleBtnChange(e, 'fetalCondition', index)
@@ -231,7 +231,7 @@ export default class FuzhenForm extends Component {
                     filter: entity => entity.fetalUltrasound.length !== 1&&check('multiple'),
                     onClick: (e, text, resolve) => {
                       Modal.confirm({
-                        title: '您是否确认要删除改记录',
+                        title: '您是否确认要删除该记录',
                         width: '300',
                         style: {top:'50%', left: '30%', fontSize: '18px' },
                         onOk: () => this.handleBtnChange(e, 'fetalUltrasound', index)
@@ -283,7 +283,7 @@ export default class FuzhenForm extends Component {
                         filter: entity => entity.medicationPlan.length !== 1,
                         onClick: (e, text, resolve) => {
                           Modal.confirm({
-                            title: '您是否确认要删除改记录',
+                            title: '您是否确认要删除该记录',
                             width: '300',
                             style: {top:'50%', left: '30%', fontSize: '18px' },
                             onOk: () => this.handleBtnChange(e, 'medicationPlan', index)
@@ -319,7 +319,7 @@ export default class FuzhenForm extends Component {
                             filter: entity => entity.medicationPlan.length !== 1,
                             onClick: (e, text, resolve) => {
                               Modal.confirm({
-                                title: '您是否确认要删除改记录',
+                                title: '您是否确认要删除该记录',
                                 width: '300',
                                 style: {top:'50%', left: '30%', fontSize: '18px' },
                                 onOk: () => this.handleBtnChange(e, 'medicationPlan', index)

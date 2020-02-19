@@ -71,7 +71,7 @@ export default class extends Component {
                     filter: entity => entity.add_FIELD_ckjc.length !== 1,
                     onClick: (e, text, resolve) => {
                       Modal.confirm({
-                        title: '您是否确认要删除改记录',
+                        title: '您是否确认要删除该记录',
                         width: '300',
                         style: {top:'50%', left: '30%', fontSize: '18px' },
                         onOk: () => this.handleChange(e, resolve, index)

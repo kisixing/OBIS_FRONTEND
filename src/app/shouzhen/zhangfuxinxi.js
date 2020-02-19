@@ -28,7 +28,7 @@ export default class extends Component {
             { span: 2 },
             { name: "userhpeople[民族]", type: "input", span: 6 },
             { span: 1 },
-            { name: "userhoccupation[职业]", type: "input", span: 6 }
+            { name: "userhoccupation[职业]", type: "select", span: 6, options: baseData.zyOptions }
           ]
         },
         {

@@ -75,7 +75,8 @@ export default class extends Component {
             { span: 1 },
             {
               name: "useroccupation[职业]",
-              type: "input",
+              type: "select",
+              options: baseData.zyOptions,
               span: 6,
               valid: "required"
             }

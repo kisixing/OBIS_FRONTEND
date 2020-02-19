@@ -45,7 +45,7 @@ export const remove$Property = function (obj){
  */
 export const praseJSON = function(data){
     for(var p in data){
-        if(typeof data[p] === 'string'){
+        if(typeof data[p] === 'string' && (data[p].indexOf('{') !== -1 || data[p].indexOf('[') !== -1)){
             try{
                 data[p] = JSON.parse(data[p]);
             }catch(e){

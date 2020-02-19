@@ -40,6 +40,13 @@ class TableItem extends Component {
     }
   }
 
+  componentDidUpdate() {
+    const { style } = this.props;
+    if(style) {
+      this.refs.tableItem.parentNode.style.display = 'none';
+    }
+  }
+
   onDbClick = () => {
     const { iseditable = ()=> true, entity, row, name, value, onEdit } = this.props;
     if(iseditable({entity, row, name, value})){
@@ -234,13 +241,10 @@ export default function(
             }
           }
         }
-        if(dataSource.length > 1 && item.pregnum) {
+        if(dataSource.length >  1 && row > 1 && item.pregnum && row <= dataSource.length) {
           const numArr = [15, 16, 17, 18, 19, 20];
-          if (row >= rows.length && row < dataSource.length && item.pregnum === dataSource[row - 1].pregnum && !numArr.includes(column)) {
-            let countNum = 0;
-            dataSource.map(newItem => (
-              newItem.pregnum === item.pregnum ? countNum++ : null
-            ))
+          if ((row === 2 && item.pregnum === dataSource[row - 1].pregnum && !numArr.includes(column)) ||
+          (row > 2 && item.pregnum === dataSource[row - 1].pregnum && item.pregnum !== dataSource[row - 3].pregnum && !numArr.includes(column))) {
             return {
               children: <TableItem
                 {...props}
@@ -254,10 +258,11 @@ export default function(
                 onChange={handleChange}
               />,
               props:{
-                rowSpan: countNum
+                rowSpan: item.births
               }
             }
-          } else if (row >= rows.length && row !== 2 && row <= dataSource.length && item.pregnum === dataSource[row - 3].pregnum && !numArr.includes(column)) {
+          } else if ((row !== 2 && item.pregnum === dataSource[row - 3].pregnum && !numArr.includes(column)) || 
+                    (row !== 2 && item.pregnum === dataSource[row - 3].pregnum && item.pregnum === dataSource[row - 1].pregnum && !numArr.includes(column))) {
             return {
               children: <TableItem
                 {...props}

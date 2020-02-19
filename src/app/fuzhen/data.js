@@ -177,6 +177,34 @@ export const formEntity = {
 };
 
 /**
+ * 产后复诊记录表单初始数据
+ */
+export const fzFormEntity = {
+	"sfri": "",
+	"fmri": "",
+	"fmyy": "本院",
+	"zs": "",
+	"ckpressure": "",
+	"tz": "",
+	"bmi": "",
+	"jkzk": "",
+	"xlzk": "",
+	"xsewy": "",
+	"rf": "",
+	"el": "",
+	"hy": "",
+	"yd": "",
+	"zg": "",
+	"fj": "",
+	"pdpf": "",
+	"pdhf": "",
+	"qt": "",
+	"gwzw": "",
+	"zd": "",
+	"zhd": "",
+	"cl": "",
+}
+/**
  * 表格当表头
  */
 export const tableKey = () => [
@@ -447,3 +475,40 @@ export const tjOptions = [
 	{ label: '可疑，复查', value: '可疑，复查' },
 	{ label: '异常，入院治疗', value: '异常，入院治疗' },
 ];
+
+/**
+ * 健康状况
+ */
+export const jkzkOptions = toOptions('健康,良好,一般,较差');
+/**
+ * 心里状况
+ */
+export const xlzkOptions = toOptions('平稳,焦虑,抑郁');
+/**
+ * 新生儿喂养
+ */
+export const xsewyOptions = toOptions('母乳,混合,人工');
+/**
+ * 乳房
+ */
+export const rfOptions = toOptions('未见异常,硬结,红肿');
+/**
+ * 恶露
+ */
+export const elOptions = toOptions('干净,未净');
+/**
+ * 会阴
+ */
+export const sfycOptions = toOptions('未见异常,异常');
+/**
+ * 盆底恢复
+ */
+export const pdhfOptions = toOptions('未见异常,压力性尿失禁,其它类型尿失禁,脱垂,尿频,粪失禁,盆腔疼痛');
+/**
+ * 高危转危
+ */
+export const gwzwOptions = toOptions('痊愈,好转，定期复查,转专科治疗');
+/**
+ * 诊断
+ */
+export const zdOptions = toOptions('常规产后随诊,子宫复旧不良,伤口愈合不良,盆地功能障碍');

@@ -296,9 +296,7 @@ class FormItem extends Component {
         <div className="form-content">
           <div ref="formItemEditor">{this.renderEditor()}</div>
           {unit ? (
-            <div ref="formItemUnit" className="form-unit">
-              {unit}
-            </div>
+            <div ref="formItemUnit" className="form-unit" dangerouslySetInnerHTML={{__html: unit}}></div>
           ) : null}
           {error ? <div className="form-message">{error}</div> : null}
         </div>

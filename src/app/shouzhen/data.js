@@ -296,6 +296,11 @@ export const sscsOptions = toOptions('剖宫产, 吸引, 钳产, 臀助产');
 export const fmyyOptions = toOptions('中山一院, 中山二院, 中山三院, 广医一院, 广医三院, 省妇幼, 市妇幼');
 
 /**
+ * 职业
+ */
+export const zyOptions = toOptions('国家公务员,专业技术人员,企业管理人员,自由职业者,工人,现役军人,个体经营者,职员,农民,学生,退（离）休人员,其他');
+
+/**
  * 手术史表头
  */
 export const shoushushiColumns = [
@@ -303,6 +308,7 @@ export const shoushushiColumns = [
 		title: '手术日期',
 		key: 'date',
 		type: 'input',
+		placeholder: '仅能输入年或年月',
 		filterDate: true,
 		// mode:"ym"
 	},
@@ -333,6 +339,7 @@ export const pregnanciesColumns = [
 	{
 		title: '孕次',
 		key: 'pregnum',
+		type: 'input',
 		width: '60',
 		// format: (v, { row }) => row + 1
 	},

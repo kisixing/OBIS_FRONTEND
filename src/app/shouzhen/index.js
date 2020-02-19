@@ -490,25 +490,36 @@ export default class Patient extends Component {
                         });
                     } else {
                         tab.entity.preghiss.pop();
-                        tab.entity.preghiss.forEach((item, index) => {
-                            if(index > 0 && tab.entity.preghiss[index].pregnum === tab.entity.preghiss[index-1].pregnum) {
-                                item.datagridYearMonth = tab.entity.preghiss[index-1].datagridYearMonth;
-                                item.zir = tab.entity.preghiss[index-1].zir;
-                                item.removalUterus = tab.entity.preghiss[index-1].removalUterus;
-                                item.reng = tab.entity.preghiss[index-1].reng;
-                                item.yinch = tab.entity.preghiss[index-1].yinch;
-                                item.sit = tab.entity.preghiss[index-1].sit;
-                                item.zaoch = tab.entity.preghiss[index-1].zaoch;
-                                item.zuych = tab.entity.preghiss[index-1].zuych;
-                                item.shunch = tab.entity.preghiss[index-1].shunch;
-                                item.shouShuChanType = tab.entity.preghiss[index-1].shouShuChanType;
-                                item.chuxue = tab.entity.preghiss[index-1].chuxue;
-                                item.chanrure = tab.entity.preghiss[index-1].chanrure;
-                                item.bingfzh = tab.entity.preghiss[index-1].bingfzh;
-                                item.hospital = tab.entity.preghiss[index-1].hospital;
-                                item.xinseother = tab.entity.preghiss[index-1].xinseother;
-                            }
+                        // 孕产史数据同步
+                        tab.entity.preghiss.forEach((item) => {
+                            let bool = true;
+                            let countNum = 0;
+                            tab.entity.preghiss.forEach(newItem => (
+                              newItem.pregnum == item.pregnum ? countNum++ : null
+                            ))
+                            item.births = countNum;
+                            tab.entity.preghiss.forEach((subItem) => {
+                                if (item.pregnum == subItem.pregnum && bool) {
+                                    item.datagridYearMonth = subItem.datagridYearMonth;
+                                    item.zir = subItem.zir;
+                                    item.removalUterus = subItem.removalUterus;
+                                    item.reng = subItem.reng;
+                                    item.yinch = subItem.yinch;
+                                    item.sit = subItem.sit;
+                                    item.zaoch = subItem.zaoch;
+                                    item.zuych = subItem.zuych;
+                                    item.shunch = subItem.shunch;
+                                    item.shouShuChanType = subItem.shouShuChanType;
+                                    item.chuxue = subItem.chuxue;
+                                    item.chanrure = subItem.chanrure;
+                                    item.bingfzh = subItem.bingfzh;
+                                    item.hospital = subItem.hospital;
+                                    item.xinseother = subItem.xinseother;
+                                    bool = false;
+                                }
+                            })
                         })
+
                         service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
                             message.success('信息保存成功',3);
                             tab.entity.preghiss.push(baseData.initYCData);
@@ -565,7 +576,7 @@ export default class Patient extends Component {
 
         return (
           <Page className="shouzhen pad-T-mid">
-            <Button type="primary" className="top-save-btn" size="small" onClick={() => alert("保存")}>保存</Button>
+            <Button type="primary" className="top-save-btn" size="small" onClick={() => this.handleSave(step)}>保存</Button>
             <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
 
             <div className="bgWhite" style={{ position: "fixed", top: "7.65em", left: "0", right: "0", bottom: "0"}}></div>
