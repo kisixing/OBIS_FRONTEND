@@ -281,6 +281,11 @@ export const wjjOptions = toOptions('已查,拒绝检查');
 export const gwwjjOptions = toOptions('未做检查');
 
 /**
+ * 专科检查未见异常
+ */
+export const wjycOptions = toOptions('未见异常');
+
+/**
  * 手术医院
  */
 export const ssyyOptions = toOptions('中山一院, 中山二院, 中山三院, 广医一院, 广医三院, 省中医院, 省妇幼, 市妇幼');
@@ -339,7 +344,6 @@ export const pregnanciesColumns = [
 	{
 		title: '孕次',
 		key: 'pregnum',
-		type: 'input',
 		width: '60',
 		// format: (v, { row }) => row + 1
 	},
@@ -438,7 +442,6 @@ export const pregnanciesColumns = [
 	{
 		title: '胎数',
 		key: 'births',
-		type: 'input',
 	},
 	{
 		title: '小孩情况',

@@ -25,7 +25,9 @@ export function select({
     );
   };
   const handleSearch = e => {
-    autoInsert ? onChange(e, e).then(() =>  {}) : null;  
+    if(e) {
+      autoInsert ? onChange(e, e).then(() =>  {}) : null;  
+    }
   };
   const handleBlur = e => {
     onBlur({ checkedChange: true })

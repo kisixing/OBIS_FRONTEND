@@ -202,7 +202,9 @@ export default class Patient extends Component {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
         service.fuzhen.getRecentRvisit().then(res => {
-          this.setState({loading: false, recentRvisit: res.object})
+          let newInitData = service.praseJSON(res.object[res.object.length - 1]);
+          console.log(newInitData, '543')
+          this.setState({loading: false, recentRvisit: res.object, initData: newInitData})
         });
         resolve();
       }, () => this.setState({ loading: false }));

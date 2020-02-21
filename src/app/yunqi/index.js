@@ -107,27 +107,22 @@ export default class Patient extends Component {
   //绘制曲线
   drawScaleLine(ctx, oringin, steps, data, params, color, shape) {
     for (let i = 0; i < data.length; i++) {
-
-      ctx.beginPath();
-      ctx.setLineDash([]);
-      ctx.arc(oringin[0] + steps[0] * data[i][params[0]], oringin[1] - steps[1] * data[i][params[1]], 1, 0, 2*Math.PI);
-      ctx.strokeStyle = 'red';
-      ctx.stroke();
-      
+      //绘制曲线
       ctx.beginPath();
       ctx.setLineDash(shape);
       ctx.lineWidth = 2;
       if(i < data.length - 1) {
         ctx.moveTo(oringin[0] + steps[0] * data[i][params[0]], oringin[1] - steps[1] * data[i][params[1]]);
         ctx.lineTo(oringin[0] + steps[0] * data[i + 1][params[0]], oringin[1] - steps[1] * data[i + 1][params[1]]);
-
-        // ctx.quadraticCurveTo(((oringin[0] + steps[0] * data[i][params[0]]) + (oringin[0] + steps[0] * data[i + 1][params[0]])) / 2, 
-        //                     ((oringin[1] - steps[1] * data[i][params[1]]) + (oringin[1] - steps[1] * data[i + 1][params[1]])) / 2, 
-        //                     oringin[0] + steps[0] * data[i + 1][params[0]], oringin[1] - steps[1] * data[i + 1][params[1]]);
       }
-
       ctx.strokeStyle = color;
       ctx.stroke();
+      //绘制红点
+      ctx.beginPath();
+      ctx.setLineDash([]);
+      ctx.arc(oringin[0] + steps[0] * data[i][params[0]], oringin[1] - steps[1] * data[i][params[1]], 3, 0, 2*Math.PI);
+      ctx.fillStyle = 'red';
+      ctx.fill();
     }
   }
 
@@ -218,7 +213,7 @@ export default class Patient extends Component {
       item.week = item.week - 1;
     })
     console.log(newBmiList, '31')
-    let bmiColor = 'green';
+    let bmiColor = '#6BB6FF';
     let lastBmi = newBmiList[newBmiList.length-1];
     if(lastBmi && (lastBmi.week < 0 || lastBmi.week >39 || lastBmi.tizhong < -6 || lastBmi.tizhong > 20)) {
       bmiColor = 'red';
@@ -256,8 +251,9 @@ export default class Patient extends Component {
         context.lineTo(baseLeft + (yCount - 1) * yStep, baseTop + xStep * i);
        
         context.textBaseline='middle';
+        context.fillStyle = '#003366';
+        context.font = 'bold 12px consolas';
         context.fillText(i * 2 + (-6), baseLeft - 20, (xCount - 1) * xStep + baseTop - i * xStep);
-
         context.stroke();
       }
       context.fillText('体重增长(kg)', baseLeft - 20, 55);
@@ -274,7 +270,9 @@ export default class Patient extends Component {
         context.lineTo(yStep * i + baseLeft, baseTop + xStep * (xCount - 1));
         if(count === 1 || count === 4) {
           count = count === 4 ? 1 : count;
-          context.textAlign='center';
+          context.textAlign = 'center';
+          context.fillStyle = '#003366';
+          context.font = 'bold 12px consolas';
           context.fillText(i + 1, baseLeft + i * yStep, xStep * xCount + baseTop - 15);
         }
         context.stroke();
@@ -287,8 +285,8 @@ export default class Patient extends Component {
     this.setVerRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (yCount - 1) * yStep, 'black', 1, yStep, 5);
     this.setHorRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (xCount - 1) * xStep, 'black', 1, xStep, 5);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine1, ["week", "tizhong"], '#52aaff', [8]);
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine2, ["week", "tizhong"], '#52aaff', [8]);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine1, ["week", "tizhong"], 'gray', [8]);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine2, ["week", "tizhong"], 'gray', [8]);
     console.log(newBmiList, '3122')
     this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], newBmiList, ["week", "tizhong"], bmiColor, [0]);
   }

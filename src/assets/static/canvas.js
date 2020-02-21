@@ -1,115 +1,11 @@
 /* eslint-disable linebreak-style */
-var maxindex = 750;
 var context = null;
 var lastx = 0;
 var lasty = 0;
 var baseleft = 50;
 var basetop = 5;
-var max = 210;
-var start = '2019-09-01 05:30';
 var demodata = [];
-var acscale = [[{ 'x': 105, 'y': 800 }, { 'x': 600, 'y': 590 }], [{ 'x': 105, 'y': 788 }, { 'x': 600, 'y': 575 }], [{ 'x': 105, 'y': 780 }, { 'x': 600, 'y': 560 }]];
-var flscale = [[{ 'x': 40, 'y': 809 }, { 'x': 600, 'y': 322 }], [{ 'x': 40, 'y': 780 }, { 'x': 600, 'y': 285 }], [{ 'x': 40, 'y': 755 }, { 'x': 600, 'y': 250 }]];
-var bpdscale = [[{ 'x': 40, 'y': 711 }, { 'x': 600, 'y': 172 }], [{ 'x': 40, 'y': 675 }, { 'x': 600, 'y': 120 }], [{ 'x': 40, 'y': 635 }, { 'x': 600, 'y': 70 }]];
-var lastcurrx = 0;
-var currentx = 10;
 var textposition = 550;
-function formatDate(date, format) {
-  if (!date) return;
-  if (!format) format = 'yyyy-MM-dd';
-  switch (typeof date) {
-  case 'string':
-    date = new Date(date.replace(/-/, '/'));
-    break;
-  case 'number':
-    date = new Date(date);
-    break;
-  }
-  if (!(date instanceof Date)) return;
-  var dict = {
-    'yyyy': date.getFullYear(),
-    'M': date.getMonth() + 1,
-    'd': date.getDate(),
-    'H': date.getHours(),
-    'm': date.getMinutes(),
-    's': date.getSeconds(),
-    'MM': ('' + (date.getMonth() + 101)).substr(1),
-    'dd': ('' + (date.getDate() + 100)).substr(1),
-    'HH': ('' + (date.getHours() + 100)).substr(1),
-    'mm': ('' + (date.getMinutes() + 100)).substr(1),
-    'ss': ('' + (date.getSeconds() + 100)).substr(1),
-  };
-  return format.replace(/(yyyy|MM?|dd?|HH?|ss?|mm?)/g, function () {
-    return dict[arguments[0]];
-  });
-}
-
-
-var starttime = formatDate(new Date(), 'HH:mm');
-function getEventPosition(ev) {
-  var x, y;
-  if (ev.layerX || ev.layerX == 0) {
-    x = ev.layerX;
-    y = ev.layerY;
-  } else if (ev.offsetX || ev.offsetX == 0) {
-    x = ev.offsetX;
-    y = ev.offsetY;
-  }
-  //return {x: x, y: y};
-  return x + '-' + y;
-}
-
-// canvas = document.getElementById('canvas');
-// canvas.addEventListener('click', function (e) {
-//     p = getEventPosition(e);
-//     alert(p);
-// }, false);
-
-function showcur(x, fhr, toco) {
-  context.font = 'bold 10px consolas';
-  context.textAlign = 'left';
-  context.textBaseline = 'top';
-  context.font = 'bold 16px arial';
-  context.fillStyle = 'blue';
-  var title = document.getElementById('curtitle');
-  title.innerHTML = 'FHR1:' + fhr + '  ' + 'TOCO:' + toco;
-}
-
-function showbase() {
-
-}
-
-function selectfrom(lowValue, highValue) {
-  var choice = highValue - lowValue + 1;
-  return Math.floor(Math.random() * choice + lowValue);
-}
-
-function drawarc(x, y) {
-  context.beginPath();
-  context.arc(x, y, 8, 0, 2 * Math.PI);
-  context.fillStyle = 'red';
-  context.strokeStyle = 'red';
-  context.fill();
-  context.stroke();
-}
-
-function drawcross(x, y) {
-  context.beginPath();
-  context.fillStyle = '#394a6d';
-  context.strokeStyle = '#394a6d';
-  context.lineWidth = 0;
-  context.moveTo(x, y);
-  context.lineTo(x + 5, y);
-  context.lineTo(x + 20, y + 15);
-  context.lineTo(x + 15, y + 15);
-  context.lineTo(x, y);
-  context.moveTo(x + 15, y);
-  context.lineTo(x + 20, y);
-  context.lineTo(x + 5, y + 15);
-  context.lineTo(x, y + 15);
-  context.lineTo(x + 15, y);
-  context.fill();
-}
 
 //缩放
 function scaleContext(context) {
@@ -146,18 +42,6 @@ function sethrules() {
     if (i % 5 == 0)
       context.fillText(i + 10, baseleft + i * 20, basetop + 825 + 10);
   }
-  //手动绘制X坐标
-  // context.fillText(10, baseleft+(10-10)*20, basetop+825+10);
-  // context.fillText(12, baseleft+(12-10)*20, basetop+825+10);//90
-  // // context.fillText(15, baseleft+5*20, basetop+825+10);
-  // context.fillText(15.5, baseleft+(15.5-10)*20, basetop+825+10);//160
-  // context.fillText(20, baseleft+(20-10)*20, basetop+825+10);//250
-  // context.fillText(25, baseleft+(25-10)*20, basetop+825+10);//350
-  // context.fillText(30, baseleft+(30-10)*20, basetop+825+10);//450
-  // context.fillText(35, baseleft+(35-10)*20, basetop+825+10);//550
-  // context.fillText(37.5, baseleft+(37.5-10)*20, basetop+825+10);//600
-  // context.fillText(40, baseleft+(40-10)*20, basetop+825+10);//650
-
   context.stroke();
 }
 //x轴线
@@ -223,16 +107,6 @@ function setrrules(x, align) {
   context.textAlign = align;
   context.textBaseline = 'top';
   context.fillStyle = 'rgba(0,51,102,1)'; // 轴数
-  // for (var i = 10; i < 21; i++) {
-  //     if(i%5==0)
-  //         context.fillText(i*2, x, (55-i) * 15);
-  // }
-  // context.fillText('+2SD', x, 65);
-  // context.fillText('Mean', x, 120);
-  // context.fillText('-2SD', x, 170);
-  // context.fillText('+2SD', x, 250);
-  // context.fillText('Mean', x, 280);
-  // context.fillText('-2SD', x, 310);
 
   //手动绘制标尺最右端点
   //BPD
@@ -255,7 +129,6 @@ function setrrules(x, align) {
 }
 
 function ac() {
-  // drawscale(acscale,'AC',650);
 
   var topscale = [
     { 'x': calculateX(15.5), 'y': calculateY(10.5) },
@@ -289,8 +162,6 @@ function ac() {
 }
 
 function fl() {
-  // drawscale(flscale,'FL',420);
-
   var topscale = [
     { 'x': calculateX(12), 'y': calculateY(9) },
     { 'x': calculateX(15.5), 'y': calculateY(20.7) },
@@ -326,7 +197,6 @@ function fl() {
 }
 
 function bpd() {
-  // drawscale(bpdscale,'BPD', 90);
 
   var topscale = [
     { 'x': calculateX(12), 'y': calculateY(25) },
@@ -454,15 +324,12 @@ function printline() {
     acArr.push(acObj);
   }
 
-  console.log(bpdArr, flArr, acArr, '321')
+  // console.log(bpdArr, flArr, acArr, '321')
 
   bpdArr.length>0 && drawscaleLine(bpdArr, 'BPD', 90, '3');
   flArr.length>0 && drawscaleLine(flArr, 'FL', 420, '3');
   acArr.length>0 && drawscaleLine(acArr, 'AC', 650, '3');
 }
-
-//获取生长曲线数据
-// drawgrid('canvas');
 
 function drawscaleLine(scale, name, namey, style) {
   var x0 = scale[0].x;
@@ -473,12 +340,12 @@ function drawscaleLine(scale, name, namey, style) {
     var x = scale[i].x;
     var y = scale[i].y;
     if (style === '3') {
-      context.lineWidth = 2;
-      context.strokeStyle = 'green';
-      console.log(scale, '567')
+      context.lineWidth = 6;
+      context.strokeStyle = '#6BB6FF';
+      // console.log(scale, '567')
     } else if (style == '2') {
       context.lineWidth = 3;
-      context.strokeStyle = 'black';
+      context.strokeStyle = '#787878';
     } else {
       context.lineWidth = 1.2;
       context.strokeStyle = 'gray';

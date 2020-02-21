@@ -75,11 +75,6 @@ export default class extends Component{
 
     service.fuzhen.treatTemp().then(res => this.setState({ treatTemp: res.object }));
 
-    service.fuzhen.getdiagnosis().then(res => {
-      const action = getDiagnisisAction(res.object.list);
-      store.dispatch(action);
-    });
-
     service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
 
     service.shouzhen.getAdviceTreeList().then(res => {
@@ -95,7 +90,7 @@ export default class extends Component{
       rows: [
         {
           columns: [
-            { name: "treatment[处理措施]", type: "textarea", span: 8, className: "table-wrapper" },
+            { name: "diagnosisHandle[处理措施]", type: "textarea", span: 8, className: "table-wrapper" },
             {
               name: "treatment[模板]",
               type: "buttons",
@@ -210,8 +205,8 @@ export default class extends Component{
   addTreatment(e, value){
     const { entity, onChange } = this.props;
     onChange(e, {
-      name: 'treatment',
-      value: (entity.treatment||'') + (entity.treatment ? '\n' : '') + value
+      name: 'diagnosisHandle',
+      value: (entity.diagnosisHandle||'') + value + '； '
     })
   }
 
@@ -473,7 +468,7 @@ export default class extends Component{
     const closeDialog = (e, items = []) => {
       this.setState({ openTemplate: false }, ()=>openTemplate&&openTemplate());
       items.forEach(i => i.checked = false);
-      this.addTreatment(e, items.map(i => i.content).join('\n'));
+      this.addTreatment(e, items.map(i => i.content).join('； '));
     }
 
     const initTree = (pid, level = 0) => treatTemp.filter(i => i.pid === pid).map(node => (

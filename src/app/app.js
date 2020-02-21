@@ -19,6 +19,8 @@ import {
   showReminderAction,
   closeReminderAction,
   getDiagnisisAction,
+  isMeetPharAction,
+  checkedKeysAction,
 } from "./store/actionCreators.js";
 
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
@@ -39,7 +41,7 @@ const routers = [
   { name: "血糖记录", path: "/xt", component: bundle(Xuetang) },
   { name: "影像报告", path: "/yx", component: bundle(Yingxiang) },
   { name: "检验报告", path: "/jy", component: bundle(Jianyan) },
-  { name: "胎监记录", path: "/tj", component: null }
+  // { name: "胎监记录", path: "/tj", component: null }
 ];
 
 export default class App extends Component {
@@ -56,6 +58,7 @@ export default class App extends Component {
       templateTree1: [],
       templateTree2: [],
       expandedKeys: [],
+      isShowXTRouter: false,
     };
     store.subscribe(this.handleStoreChange);
 
@@ -94,9 +97,59 @@ export default class App extends Component {
     this.setState(store.getState());
   };
 
+  setCheckedKeys(params) {
+    const { checkedKeys, templateTree1 } = this.state;
+    const diagnosis = params.diagnosisList;
+    const bmi = params.checkUp.ckbmi;
+    const age = params.gravidaInfo.userage;
+    const preghiss = params.gestation.preghiss ? params.gestation.preghiss.length : [];
+    const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);
+
+    const getKey = (val) => {
+      let ID = '';
+      templateTree1&&templateTree1.map(item => {
+        if(item.name === val) ID = item.id;
+      })
+      return ID.toString();
+    }
+
+    if(bmi>30) checkedKeys.push(getKey("肥胖（BMI>30kg/m  )"));
+    if(age>35) checkedKeys.push(getKey("年龄>35岁"));
+    if(preghiss>=3) checkedKeys.push(getKey("产次≥3"));
+    if(xiyan && xiyan[0].label==="有") checkedKeys.push(getKey("吸烟"));
+
+    if(checkedKeys.length > 0) {
+      const action = isMeetPharAction(true);
+      store.dispatch(action);
+    }
+
+    diagnosis && diagnosis.map(item => {
+      if(item.data.indexOf("静脉曲张") !== -1) checkedKeys.push(getKey("静脉曲张"));
+      if(item.data === "妊娠子痫前期") checkedKeys.push(getKey("本次妊娠子痫前期"));
+      if(item.data === "多胎妊娠") checkedKeys.push(getKey("多胎妊娠"));
+    })
+
+    const action = checkedKeysAction(checkedKeys);
+    store.dispatch(action);
+  }
+
   componentDidMount() {
     const { location = {} } = this.props;
     const { muneIndex } = this.state;
+    service.fuzhen.getdiagnosis().then(res => {
+      res.object.list && res.object.list.map(item => {
+        if(item.data === '妊娠期糖尿病') {
+          this.setState({isShowXTRouter: true})
+        }
+      })
+      const action = getDiagnisisAction(res.object.list);
+      store.dispatch(action);
+    });
+
+    service.shouzhen.getAllForm().then(res => {
+      this.setCheckedKeys(res.object);
+    })
+
     if (location.pathname !== routers[muneIndex].path) {
       this.props.history.push(routers[muneIndex].path);
     }
@@ -122,6 +175,9 @@ export default class App extends Component {
       const action = closeAlertAction(index);
       store.dispatch(action);
       service.addHighrisk(userid, highrisk, level).then(res => {});
+      service.getuserDoc().then(res => {
+        this.setState({ ...res.object, highriskEntity: { ...res.object }})
+      })
     };
 
     return highriskAlert && highriskAlert.length > 0 
@@ -315,6 +371,8 @@ export default class App extends Component {
     const closeModal = (bool) => {
       const action = showPharAction(false);
       store.dispatch(action);
+      const action2 = isMeetPharAction(false);
+      store.dispatch(action2);
       if (bool) {   
         // 新增与诊疗计划关联
         if (newTemplateTree2[3].selected === true) {
@@ -391,7 +449,7 @@ export default class App extends Component {
   }
 
   renderHeader() {
-    const { userDoc, isShowTrialCard, isShowPharCard } =this.state;
+    const { userDoc, isShowTrialCard, isShowPharCard, isShowXTRouter } =this.state;
     const handleDanger = () => {
       service.highrisk().then(res => {
         let list = res.object;
@@ -416,7 +474,8 @@ export default class App extends Component {
         </div>
         <p className="patient-Info_tab">
           {routers.map((item, i) => (
-            <Button
+            item.name === '血糖记录' && !isShowXTRouter ? null
+            : <Button
               key={"mune" + i}
               type={this.state.muneIndex != i ? "dashed" : "primary"}
               onClick={() => {
@@ -497,7 +556,7 @@ export default class App extends Component {
     const initTree = (pid, level = 0) =>
       searchList.filter(i => i.pId === pid).map(node => (
         <Tree.TreeNode key={node.id} title={node.name} onClick={() => handleCheck(node)} isLeaf={!searchList.filter(i => i.pId === node.id).length}>
-          {node.shorthand ? initTree(node.id, level + 1) : null}
+          {level < 10 ? initTree(node.id, level + 1) : null}
         </Tree.TreeNode>
       ));
 

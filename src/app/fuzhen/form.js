@@ -394,7 +394,7 @@ export default class FuzhenForm extends Component {
     const { initData } = this.props;
     this.handleChange(e, {
       name: 'treatment',
-      value: initData.treatment + (initData.treatment ? '\n' : '') + value
+      value: initData.treatment + value + '； '
     })
   }
 
@@ -462,41 +462,41 @@ export default class FuzhenForm extends Component {
             if(bool) allReminderModal.push(modalObj);
         }
   
-        if (lis.ogtt[0].label === "GDM") {
+        if (lis.ogtt && lis.ogtt[0] && lis.ogtt[0].label === "GDM") {
           let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
           getAllReminder(modalObj);
         }
-        if(lis.add_FIELD_hbsAg_ALT > 80) {
+        if(lis.add_FIELD_hbsAg_ALT && lis.add_FIELD_hbsAg_ALT > 80) {
           let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
           getAllReminder(modalObj);
         }
-        if(lis.hbsAg[0].label === '小三阳') {
-          let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
-          getAllReminder(modalObj);
+        if(lis.hbsA && lis.hbsAg[0] && lis.hbsAg[0].label === '小三阳') {
+            let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
+            getAllReminder(modalObj);
         }
-        if(lis.hbsAg[0].label === '大三阳') {
-          let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
-          getAllReminder(modalObj);
+        if(lis.hbsA && lis.hbsAg[0] && lis.hbsAg[0].label === '大三阳') {
+            let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
+            getAllReminder(modalObj);
         }
-        if(lis.hcvAb[0].label === '阳性') {
-          let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-          getAllReminder(modalObj);
+        if(lis.hcvAb && lis.hcvAb[0] && lis.hcvAb[0].label === '阳性') {
+            let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+            getAllReminder(modalObj);
         }
-        if(lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
-          let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-          getAllReminder(modalObj);
+        if(lis.add_FIELD_hcvAb_RNA && lis.add_FIELD_hcvAb_RNA[0] && lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
+            let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+            getAllReminder(modalObj);
         }
-        if(lis.rpr[0].label === '阳性') {
-          let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
-          getAllReminder(modalObj);
+        if(lis.rpr && lis.rpr[0] && lis.rpr[0].label === '阳性') {
+            let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
+            getAllReminder(modalObj);
         }
-        if(lis.thalassemia[0].label === '甲型') {
-          let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
-          getAllReminder(modalObj);
+        if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === '甲型') {
+            let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
+            getAllReminder(modalObj);
         }
-        if(lis.thalassemia[0].label === '乙型') {
-          let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
-          getAllReminder(modalObj);
+        if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === '乙型') {
+            let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
+            getAllReminder(modalObj);
         }
   
         if(allReminderModal.length > 0) {
@@ -685,7 +685,7 @@ export default class FuzhenForm extends Component {
     const closeDialog = (e, items = []) => {
       this.setState({ openTemplate: false }, ()=>openTemplate&&openTemplate());
       items.forEach(i => i.checked = false);
-      this.addTreatment(e, items.map(i => i.content).join('\n'));
+      this.addTreatment(e, items.map(i => i.content).join('； '));
     }
 
     const initTree = (pid, level = 0) => treatTemp.filter(i => i.pid === pid).map(node => (

@@ -26,8 +26,6 @@ import { getUserDocAction,
         allReminderAction, 
         showReminderAction, 
         openMedicalAction,
-        isMeetPharAction,
-        checkedKeysAction,
     } from "../store/actionCreators.js";
 
 import * as baseData from './data';
@@ -51,7 +49,6 @@ export default class Patient extends Component {
             tabs: tabs,
             step: tabs[0].key, // 从0开始
             allData: null,
-            templateTree1: [],
             ...store.getState(),
         }
         store.subscribe(this.handleStoreChange);
@@ -61,7 +58,6 @@ export default class Patient extends Component {
         service.getuserDoc().then(res => this.setState({
             info: res.object
         }))
-        service.shouzhen.findTemplateTree(0).then(res => this.setState({templateTree1: res.object}));
         this.activeTab(this.state.step);
     }
 
@@ -69,48 +65,11 @@ export default class Patient extends Component {
         this.setState(store.getState());
     };
 
-    setCheckedKeys(params) {
-        const { checkedKeys, templateTree1 } = this.state;
-        const diagnosis = params.diagnosisList;
-        const bmi = params.checkUp.ckbmi;
-        const age = params.gravidaInfo.userage;
-        const preghiss = params.gestation.preghiss ? params.gestation.preghiss.length : [];
-        const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);
-    
-        const getKey = (val) => {
-          let ID = '';
-          templateTree1&&templateTree1.map(item => {
-            if(item.name === val) ID = item.id;
-          })
-          return ID.toString();
-        }
-    
-        if(bmi>30) checkedKeys.push(getKey("肥胖（BMI>30kg/m  )"));
-        if(age>35) checkedKeys.push(getKey("年龄>35岁"));
-        if(preghiss>=3) checkedKeys.push(getKey("产次≥3"));
-        if(xiyan && xiyan[0].label==="有") checkedKeys.push(getKey("吸烟"));
-    
-        if(checkedKeys.length > 0) {
-          const action = isMeetPharAction(true);
-          store.dispatch(action);
-        }
-    
-        diagnosis && diagnosis.map(item => {
-          if(item.data.indexOf("静脉曲张") !== -1) checkedKeys.push(getKey("静脉曲张"));
-          if(item.data === "妊娠子痫前期") checkedKeys.push(getKey("本次妊娠子痫前期"));
-          if(item.data === "多胎妊娠") checkedKeys.push(getKey("多胎妊娠"));
-        })
-    
-        const action = checkedKeysAction(checkedKeys);
-        store.dispatch(action);
-      }
-
     activeTab(step) {
         const { tabs } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         // if (!tab.init) {
             service.shouzhen.getForm(tab.key).then(res => {
-                this.setCheckedKeys(res.object);
                 const action = getAllFormDataAction(res.object);
                 store.dispatch(action);
                 // 如果想要使下面的数据转换放到对应的tab文件里面去，请实现entityParse这个方法，参考tab-0：yunfuxinxi.js这个文件
@@ -346,9 +305,6 @@ export default class Patient extends Component {
                     entity['preghiss'].splice(-1, 0, item);
                 }
             break; 
-            case 'treatment':
-                entity['diagnosisHandle'] = value;
-            break; 
             case 'nextRvisitWeek':
                 entity['xiacsfdate'] = util.futureDate(value.value);
             break; 
@@ -362,7 +318,7 @@ export default class Patient extends Component {
         this.timeout = setTimeout(() => this.forceUpdate(), 200);
     }
 
-    handleSave(key) {
+    handleSave(key, bool) {
         const { tabs, step, allData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
@@ -389,159 +345,144 @@ export default class Patient extends Component {
             // 异步手动移除
             setTimeout(hide, 2000);
 
-            if (valid) {
-                // 修复喝酒不触发API问题
-                if(tab.key === 'tab-1'&& tab.entity.add_FIELD_husband_drink != tab.entity.add_FIELD_husband_drink_data[1]){
-                    this.change=true;
-                    const action = isFormChangeAction(true);
-                    store.dispatch(action);
-                }
-                if (this.change) {
-                    if (tab.key === "tab-0") {
-                      tab.entity.userconstant = `${tab.entity.root[0].join(' ')},${tab.entity.root[1]}`;
-                      tab.entity.useraddress = `${tab.entity.address[0].join(' ')},${tab.entity.address[1]}`;
-                    }
-                    if (tab.key === 'tab-1') {
-                        tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink_data[0] || '';
-                        tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1] || '';
-                    }
-                    if (tab.key === 'tab-6') {
-                        tab.entity.ckdiastolicpressure = tab.entity.ckpressure[0];
-                        tab.entity.ckshrinkpressure = tab.entity.ckpressure[1];
-                    }
-                    if (tab.key === 'tab-8') {
-                        if (tab.entity.ogtt[0].label === "GDM") {
-                            tab.entity.add_FIELD_ogtt_gdm_empty = tab.entity.ogtt[0].value.input0;
-                            tab.entity.add_FIELD_ogtt_gdm_1h = tab.entity.ogtt[0].value.input1;
-                            tab.entity.add_FIELD_ogtt_gdm_2h = tab.entity.ogtt[0].value.input2;
-                            
-                            let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
-                            getAllReminder(modalObj);
-                        }
-
-                        if(tab.entity.add_FIELD_hbsAg_ALT > 80) {
-                            let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
-                            getAllReminder(modalObj);
-                        }
-                        if(tab.entity.hbsAg[0].label === '小三阳') {
-                            let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
-                            getAllReminder(modalObj);
-                        }
-                        if(tab.entity.hbsAg[0].label === '大三阳') {
-                            let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
-                            getAllReminder(modalObj);
-                        }
-                        if(tab.entity.hcvAb[0].label === '阳性') {
-                            let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-                            getAllReminder(modalObj);
-                        }
-                        if(tab.entity.add_FIELD_hcvAb_RNA[0].label === '阳性') {
-                            let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-                            getAllReminder(modalObj);
-                        }
-                        if(tab.entity.rpr[0].label === '阳性') {
-                            let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
-                            getAllReminder(modalObj);
-                        }
-                        if(tab.entity.thalassemia[0].label === '甲型') {
-                            let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
-                            getAllReminder(modalObj);
-                        }
-                        if(tab.entity.thalassemia[0].label === '乙型') {
-                            let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
-                            getAllReminder(modalObj);
-                        }
-
-                        if(allReminderModal.length > 0) {
-                            const action1 = openMedicalAction(false);
-                            store.dispatch(action1);
-
-                            const action2 = allReminderAction(allReminderModal);
-                            store.dispatch(action2);
-
-                            const action3 = showReminderAction(true);
-                            store.dispatch(action3);
-                        }
-    
-                    }
-                    if (tab.key !== 'tab-5') {
-                        if(tab.key === 'tab-3'){
-                            service.shouzhen.saveOperations(tab.key, entitySave(tab.entity)).then(() => {
-                                message.success('信息保存成功',3);
-                                this.activeTab(key || next.key);
-                            }, () => { // TODO: 仅仅在mock时候用
-                                this.activeTab(key || next.key);
-                            });
-                        }
-                        service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
-                            message.success('信息保存成功',3);
-                            this.activeTab(key || next.key);
-                            /*修改预产期-B超 同步数据*/
-                            if(tab.key === 'tab-2') {
-                                service.getuserDoc().then(res => this.setState({
-                                    info: res.object
-                                }, () => {
-                                    const action = getUserDocAction(res.object);
-                                    store.dispatch(action);
-                                }))
-                            }
-                        }, () => { // TODO: 仅仅在mock时候用
-                            this.activeTab(key || next.key);
-                        });
-                    } else {
-                        tab.entity.preghiss.pop();
-                        // 孕产史数据同步
-                        tab.entity.preghiss.forEach((item) => {
-                            let bool = true;
-                            let countNum = 0;
-                            tab.entity.preghiss.forEach(newItem => (
-                              newItem.pregnum == item.pregnum ? countNum++ : null
-                            ))
-                            item.births = countNum;
-                            tab.entity.preghiss.forEach((subItem) => {
-                                if (item.pregnum == subItem.pregnum && bool) {
-                                    item.datagridYearMonth = subItem.datagridYearMonth;
-                                    item.zir = subItem.zir;
-                                    item.removalUterus = subItem.removalUterus;
-                                    item.reng = subItem.reng;
-                                    item.yinch = subItem.yinch;
-                                    item.sit = subItem.sit;
-                                    item.zaoch = subItem.zaoch;
-                                    item.zuych = subItem.zuych;
-                                    item.shunch = subItem.shunch;
-                                    item.shouShuChanType = subItem.shouShuChanType;
-                                    item.chuxue = subItem.chuxue;
-                                    item.chanrure = subItem.chanrure;
-                                    item.bingfzh = subItem.bingfzh;
-                                    item.hospital = subItem.hospital;
-                                    item.xinseother = subItem.xinseother;
-                                    bool = false;
-                                }
-                            })
-                        })
-
-                        service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
-                            message.success('信息保存成功',3);
-                            tab.entity.preghiss.push(baseData.initYCData);
-                            this.activeTab(key || next.key);
-                            return;
-                        }, () => { // TODO: 仅仅在mock时候用
-                            this.activeTab(key || next.key);
-                            return;
-                        });
-                    }
-                } else {
-                    this.activeTab(key || next.key);
-                }
-                this.change = false;
-                const action = isFormChangeAction(false);
+            // 修复喝酒不触发API问题
+            if(tab.key === 'tab-1'&& tab.entity.add_FIELD_husband_drink != tab.entity.add_FIELD_husband_drink_data[1]){
+                this.change=true;
+                const action = isFormChangeAction(true);
                 store.dispatch(action);
+            }
+            if (this.change) {
+                if (tab.key === "tab-0") {
+                    tab.entity.userconstant = `${tab.entity.root[0].join(' ')},${tab.entity.root[1]}`;
+                    tab.entity.useraddress = `${tab.entity.address[0].join(' ')},${tab.entity.address[1]}`;
+                }
+                if (tab.key === 'tab-1') {
+                    tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink_data[0] || '';
+                    tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1] || '';
+                }
+                if (tab.key === 'tab-6') {
+                    tab.entity.ckdiastolicpressure = tab.entity.ckpressure[0];
+                    tab.entity.ckshrinkpressure = tab.entity.ckpressure[1];
+                }
+                if (tab.key === 'tab-8') {
+                    if (tab.entity.ogtt && tab.entity.ogtt[0] && tab.entity.ogtt[0].label === "GDM") {
+                        tab.entity.add_FIELD_ogtt_gdm_empty = tab.entity.ogtt[0].value.input0;
+                        tab.entity.add_FIELD_ogtt_gdm_1h = tab.entity.ogtt[0].value.input1;
+                        tab.entity.add_FIELD_ogtt_gdm_2h = tab.entity.ogtt[0].value.input2;
+                        
+                        let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
+                        getAllReminder(modalObj);
+                    }
+
+                    if(tab.entity.add_FIELD_hbsAg_ALT && tab.entity.add_FIELD_hbsAg_ALT > 80) {
+                        let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
+                        getAllReminder(modalObj);
+                    }
+                    if(tab.entity.hbsA && tab.entity.hbsAg[0] && tab.entity.hbsAg[0].label === '小三阳') {
+                        let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
+                        getAllReminder(modalObj);
+                    }
+                    if(tab.entity.hbsA && tab.entity.hbsAg[0] && tab.entity.hbsAg[0].label === '大三阳') {
+                        let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
+                        getAllReminder(modalObj);
+                    }
+                    if(tab.entity.hcvAb && tab.entity.hcvAb[0] && tab.entity.hcvAb[0].label === '阳性') {
+                        let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+                        getAllReminder(modalObj);
+                    }
+                    if(tab.entity.add_FIELD_hcvAb_RNA && tab.entity.add_FIELD_hcvAb_RNA[0] && tab.entity.add_FIELD_hcvAb_RNA[0].label === '阳性') {
+                        let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+                        getAllReminder(modalObj);
+                    }
+                    if(tab.entity.rpr && tab.entity.rpr[0] && tab.entity.rpr[0].label === '阳性') {
+                        let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
+                        getAllReminder(modalObj);
+                    }
+                    if(tab.entity.thalassemia && tab.entity.thalassemia[0] && tab.entity.thalassemia[0].label === '甲型') {
+                        let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
+                        getAllReminder(modalObj);
+                    }
+                    if(tab.entity.thalassemia && tab.entity.thalassemia[0] && tab.entity.thalassemia[0].label === '乙型') {
+                        let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
+                        getAllReminder(modalObj);
+                    }
+
+                    if(allReminderModal.length > 0) {
+                        const action1 = openMedicalAction(false);
+                        store.dispatch(action1);
+
+                        const action2 = allReminderAction(allReminderModal);
+                        store.dispatch(action2);
+
+                        const action3 = showReminderAction(true);
+                        store.dispatch(action3);
+                    }
+
+                }
+                if (tab.key !== 'tab-5') {
+                    if(tab.key === 'tab-3'){
+                        service.shouzhen.saveOperations(tab.key, entitySave(tab.entity)).then(() => {
+                            message.success('信息保存成功',3);
+                            valid && this.activeTab(key || next.key);
+                        });
+                    }
+                    service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
+                        message.success('信息保存成功',3);
+                        valid && this.activeTab(key || next.key);
+                        /*修改预产期-B超 同步数据*/
+                        if(tab.key === 'tab-2') {
+                            service.getuserDoc().then(res => this.setState({
+                                info: res.object
+                            }, () => {
+                                const action = getUserDocAction(res.object);
+                                store.dispatch(action);
+                            }))
+                        }
+                    });
+                } else {
+                    tab.entity.preghiss.pop();
+                    // 孕产史数据同步
+                    tab.entity.preghiss.forEach((item) => {
+                        let bool = true;
+                        tab.entity.preghiss.forEach((subItem) => {
+                            if (item.datagridYearMonth == subItem.datagridYearMonth && bool) {
+                                item.zir = subItem.zir;
+                                item.removalUterus = subItem.removalUterus;
+                                item.reng = subItem.reng;
+                                item.yinch = subItem.yinch;
+                                item.sit = subItem.sit;
+                                item.zaoch = subItem.zaoch;
+                                item.zuych = subItem.zuych;
+                                item.shunch = subItem.shunch;
+                                item.shouShuChanType = subItem.shouShuChanType;
+                                item.chuxue = subItem.chuxue;
+                                item.chanrure = subItem.chanrure;
+                                item.bingfzh = subItem.bingfzh;
+                                item.hospital = subItem.hospital;
+                                item.xinseother = subItem.xinseother;
+                                bool = false;
+                            }
+                        })
+                    })
+
+                    service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
+                        message.success('信息保存成功',3);
+                        tab.entity.preghiss.push(baseData.initYCData);
+                        valid && this.activeTab(key || next.key);
+                        return;
+                    });
+                }
             } else {
+                valid && this.activeTab(key || next.key);
+            }
+            this.change = false;
+            const action = isFormChangeAction(false);
+            store.dispatch(action);
+
+            if (!valid && !bool) {
                 message.error('必填项不能为空！');
-                if (key === 'openPDF') {
-                    window.open("http://www.baidu.com?" + step, tab.entity, '_blank');
-                } else if (key) {
-                    this.activeTab(key);
+                if (key) {
+                    // this.activeTab(key);
                 } else {
                     this.forceUpdate();
                 }
@@ -576,7 +517,7 @@ export default class Patient extends Component {
 
         return (
           <Page className="shouzhen pad-T-mid">
-            <Button type="primary" className="top-save-btn" size="small" onClick={() => this.handleSave(step)}>保存</Button>
+            <Button type="primary" className="top-save-btn" size="small" onClick={() => this.handleSave(step, true)}>保存</Button>
             <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
 
             <div className="bgWhite" style={{ position: "fixed", top: "7.65em", left: "0", right: "0", bottom: "0"}}></div>
