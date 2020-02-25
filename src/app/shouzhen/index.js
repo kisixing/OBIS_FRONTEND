@@ -323,6 +323,10 @@ export default class Patient extends Component {
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
+        let isJump = false;
+        if (key) {
+            isJump = key.slice(-1) > step.slice(-1) ? false : true;
+        }
         console.log('handleSave', key, step, tab.entity);
 
         message.destroy();
@@ -378,11 +382,11 @@ export default class Patient extends Component {
                         let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
                         getAllReminder(modalObj);
                     }
-                    if(tab.entity.hbsA && tab.entity.hbsAg[0] && tab.entity.hbsAg[0].label === '小三阳') {
+                    if(tab.entity.hbsAg && tab.entity.hbsAg[0] && tab.entity.hbsAg[0].label === '小三阳') {
                         let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
                         getAllReminder(modalObj);
                     }
-                    if(tab.entity.hbsA && tab.entity.hbsAg[0] && tab.entity.hbsAg[0].label === '大三阳') {
+                    if(tab.entity.hbsAg && tab.entity.hbsAg[0] && tab.entity.hbsAg[0].label === '大三阳') {
                         let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
                         getAllReminder(modalObj);
                     }
@@ -480,9 +484,9 @@ export default class Patient extends Component {
             store.dispatch(action);
 
             if (!valid && !bool) {
-                message.error('必填项不能为空！');
-                if (key) {
-                    // this.activeTab(key);
+                !isJump && message.error('必填项不能为空！');
+                if (key && isJump) {
+                    this.activeTab(key);
                 } else {
                     this.forceUpdate();
                 }

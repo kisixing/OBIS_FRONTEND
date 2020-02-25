@@ -516,7 +516,7 @@ export default class Patient extends Component {
           onEdit: true,
           hasRecord: hasRecord,
           scroll: { x: 1100, y: 220 },
-          iseditable: ({ row }) => hasRecord ? row === 1 : row > recentRvisit.length - 2,
+          iseditable: ({ row }) => hasRecord ? row === 0 : row > recentRvisit.length - 2,
           onChange: handleSaveChange,
           onRowChange: handleRowChange
         })}

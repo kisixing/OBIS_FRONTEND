@@ -49,9 +49,9 @@ export default class Patient extends Component {
     const { isShowModal, pdfPath } = this.state;
     const handleClick = () => { this.setState({isShowModal: false})}
     return (
-      <Modal width="80%" footer={null} visible={isShowModal} title="影像检查报告"
+      <Modal width="60%" footer={null} visible={isShowModal} title="影像检查报告"
              onOk={() => handleClick(true)} onCancel={() => handleClick()}>
-        <embed src={pdfPath} width="2000" height="1200" />
+        <embed src={pdfPath} width="100%" height="1200" />
       </Modal>
     )
   }

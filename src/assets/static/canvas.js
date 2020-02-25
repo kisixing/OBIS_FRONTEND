@@ -307,6 +307,58 @@ function printline() {
   var bpdArr = [];
   var flArr = [];
   var acArr = [];
+  var bdpPoints = [
+    { 'x': calculateX(12), 'y': calculateY(25) },
+    { 'x': calculateX(15.5), 'y': calculateY(38) },
+    { 'x': calculateX(20), 'y': calculateY(53.5) },
+    { 'x': calculateX(25), 'y': calculateY(69.2) },
+    { 'x': calculateX(30), 'y': calculateY(82.5) },
+    { 'x': calculateX(35), 'y': calculateY(93.4) },
+    { 'x': calculateX(37.5), 'y': calculateY(97.6) },
+    { 'x': calculateX(40), 'y': calculateY(100.8) },
+    { 'x': calculateX(40), 'y': calculateY(87) },
+    { 'x': calculateX(37.5), 'y': calculateY(84.7) },
+    { 'x': calculateX(35), 'y': calculateY(80.8) },
+    { 'x': calculateX(30), 'y': calculateY(70) },
+    { 'x': calculateX(25), 'y': calculateY(56.5) },
+    { 'x': calculateX(20), 'y': calculateY(41.5) },
+    { 'x': calculateX(15.5), 'y': calculateY(26.7) },
+    { 'x': calculateX(12), 'y': calculateY(14.8) },
+    { 'x': calculateX(12), 'y': calculateY(25) }
+  ];
+  var flPoints = [
+    { 'x': calculateX(12), 'y': calculateY(9) },
+    { 'x': calculateX(15.5), 'y': calculateY(20.7) },
+    { 'x': calculateX(20), 'y': calculateY(34) },
+    { 'x': calculateX(25), 'y': calculateY(47.5) },
+    { 'x': calculateX(30), 'y': calculateY(58.5) },
+    { 'x': calculateX(35), 'y': calculateY(68.8) },
+    { 'x': calculateX(40), 'y': calculateY(77) },
+    { 'x': calculateX(40), 'y': calculateY(67) },
+    { 'x': calculateX(35), 'y': calculateY(59.2) },
+    { 'x': calculateX(30), 'y': calculateY(49.5) },
+    { 'x': calculateX(25), 'y': calculateY(38.6) },
+    { 'x': calculateX(20), 'y': calculateY(26.4) },
+    { 'x': calculateX(15.5), 'y': calculateY(13.3) },
+    { 'x': calculateX(12), 'y': calculateY(2.5) },
+    { 'x': calculateX(12), 'y': calculateY(9) },
+  ];
+  var acPoints = [
+    { 'x': calculateX(15.5), 'y': calculateY(10.5) },
+    { 'x': calculateX(20), 'y': calculateY(15.8) },
+    { 'x': calculateX(25), 'y': calculateY(22) },
+    { 'x': calculateX(30), 'y': calculateY(27.7) },
+    { 'x': calculateX(35), 'y': calculateY(32.8) },
+    { 'x': calculateX(40), 'y': calculateY(37) },
+    { 'x': calculateX(40), 'y': calculateY(31) },
+    { 'x': calculateX(35), 'y': calculateY(27.2) },
+    { 'x': calculateX(30), 'y': calculateY(22.8) },
+    { 'x': calculateX(25), 'y': calculateY(18) },
+    { 'x': calculateX(20), 'y': calculateY(12.8) },
+    { 'x': calculateX(15.5), 'y': calculateY(8) },
+    { 'x': calculateX(15.5), 'y': calculateY(10.5) },
+  ];
+
   for (var i = 0; i < demodata.length; i++) {
     var bpdObj = {};
     var flObj = {};
@@ -324,14 +376,23 @@ function printline() {
     acArr.push(acObj);
   }
 
-  // console.log(bpdArr, flArr, acArr, '321')
+  if (bpdArr.length > 0) {
+    var bpdColor = judge(bpdArr[bpdArr.length - 1], bdpPoints) ? '#6BB6FF' : 'red';
+    drawscaleLine(bpdArr, 'BPD', 90, '3', bpdColor);
+  }
 
-  bpdArr.length>0 && drawscaleLine(bpdArr, 'BPD', 90, '3');
-  flArr.length>0 && drawscaleLine(flArr, 'FL', 420, '3');
-  acArr.length>0 && drawscaleLine(acArr, 'AC', 650, '3');
+  if (flArr.length > 0) {
+    var flColor = judge(flArr[flArr.length - 1], flPoints) ? '#6BB6FF' : 'red';
+    drawscaleLine(flArr, 'FL', 420, '3', flColor);
+  }
+
+  if (acArr.length > 0) {
+    var acColor = judge(acArr[acArr.length - 1], acPoints) ? '#6BB6FF' : 'red';
+    drawscaleLine(acArr, 'AC', 650, '3', acColor);
+  }
 }
 
-function drawscaleLine(scale, name, namey, style) {
+function drawscaleLine(scale, name, namey, style, color) {
   var x0 = scale[0].x;
   var y0 = scale[0].y;
   context.beginPath();
@@ -341,8 +402,7 @@ function drawscaleLine(scale, name, namey, style) {
     var y = scale[i].y;
     if (style === '3') {
       context.lineWidth = 6;
-      context.strokeStyle = '#6BB6FF';
-      // console.log(scale, '567')
+      context.strokeStyle = color;
     } else if (style == '2') {
       context.lineWidth = 3;
       context.strokeStyle = '#787878';
@@ -366,3 +426,37 @@ function calculateX(x) {
 function calculateY(y) {
   return (55 - (y / 2.0625)) * 15;
 }
+
+
+// 判断某个点是否在多边形内部
+function judge(dot,coordinates) {
+  var x = dot.x,y=dot.y;
+  var crossNum = 0;
+  for(var i=0;i<coordinates.length-1;i++){
+     var start = coordinates[i];
+     var end = coordinates[i+1];
+      
+     // 起点、终点斜率不存在的情况
+     if(start.x===end.x) {
+        // 因为射线向右水平，此处说明不相交
+        if(x>start.x) continue;
+         
+        if((end.y>start.y&&y>=start.y && y<=end.y) || (end.y<start.y&&y>=end.y && y<=start.y)){
+           crossNum++;
+        }
+        continue;
+     }
+     // 斜率存在的情况，计算斜率
+     var k=(end.y-start.y)/(end.x-start.x);
+     // 交点的x坐标
+     var x0 = (y-start.y)/k+start.x;
+     // 因为射线向右水平，此处说明不相交
+     if(x>x0) continue;
+      
+     if((end.x>start.x&&x0>=start.x && x0<=end.x) || (end.x<start.x&&x0>=end.x && x0<=start.x)){
+        crossNum++;
+     }
+  }
+  
+  return crossNum%2===1;
+};

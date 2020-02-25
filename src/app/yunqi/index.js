@@ -8,24 +8,28 @@ export default class Patient extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bmiDashLine1: [{ 'week': 0, 'tizhong': 0 }, { 'week': 12, 'tizhong': 1.5 }, { 'week': 39, 'tizhong': 11.5 }],
-      bmiDashLine2: [{ 'week': 0, 'tizhong': 0 }, { 'week': 12, 'tizhong': 3 }, { 'week': 39, 'tizhong': 16 }],
+      bmiDashLine1: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 11.5 }],
+      bmiDashLine2: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 3 }, { 'x': 39, 'y': 16 }],
+      bmiDashPoints: [
+        { 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 11.5 },
+        { 'x': 39, 'y': 16 }, { 'x': 12, 'y': 3 }, { 'x': 0, 'y': 0 }
+      ],
 
-      pregSolidLine1: [{ 'week': 1, 'gonggao': 0 }, { 'week': 3, 'gonggao': 1 }, { 'week': 5, 'gonggao': 3 }, { 'week': 7, 'gonggao': 4.5 }, { 'week': 9, 'gonggao': 6 },
-                      { 'week': 11, 'gonggao': 7 }, { 'week': 13, 'gonggao': 8.5 }, { 'week': 15, 'gonggao': 10.5 }, { 'week': 17, 'gonggao': 12.5 }, { 'week': 19, 'gonggao': 13.5 },
-                      { 'week': 21, 'gonggao': 15 }, { 'week': 23, 'gonggao': 16 }, { 'week': 25, 'gonggao': 17.5 }, { 'week': 27, 'gonggao': 17 }],
+      // pregSolidLine1: [{ 'week': 1, 'gonggao': 0 }, { 'week': 3, 'gonggao': 1 }, { 'week': 5, 'gonggao': 3 }, { 'week': 7, 'gonggao': 4.5 }, { 'week': 9, 'gonggao': 6 },
+      //                 { 'week': 11, 'gonggao': 7 }, { 'week': 13, 'gonggao': 8.5 }, { 'week': 15, 'gonggao': 10.5 }, { 'week': 17, 'gonggao': 12.5 }, { 'week': 19, 'gonggao': 13.5 },
+      //                 { 'week': 21, 'gonggao': 15 }, { 'week': 23, 'gonggao': 16 }, { 'week': 25, 'gonggao': 17.5 }, { 'week': 27, 'gonggao': 17 }],
 
-      pregDashLine1: [{ 'week': 1, 'gonggao': 1.5 }, { 'week': 3, 'gonggao': 2.5 }, { 'week': 5, 'gonggao': 4.5 }, { 'week': 7, 'gonggao': 6 }, { 'week': 9, 'gonggao': 7.5 },
-                      { 'week': 11, 'gonggao': 8.5 }, { 'week': 13, 'gonggao': 10 }, { 'week': 15, 'gonggao': 12.5 }, { 'week': 17, 'gonggao': 14.5 }, { 'week': 19, 'gonggao': 14.5 },
-                      { 'week': 21, 'gonggao': 16 }, { 'week': 23, 'gonggao': 17.5 }, { 'week': 25, 'gonggao': 18.5 }, { 'week': 26, 'gonggao': 18 }, { 'week': 27, 'gonggao': 17.5 }],
+      // pregDashLine1: [{ 'week': 1, 'gonggao': 1.5 }, { 'week': 3, 'gonggao': 2.5 }, { 'week': 5, 'gonggao': 4.5 }, { 'week': 7, 'gonggao': 6 }, { 'week': 9, 'gonggao': 7.5 },
+      //                 { 'week': 11, 'gonggao': 8.5 }, { 'week': 13, 'gonggao': 10 }, { 'week': 15, 'gonggao': 12.5 }, { 'week': 17, 'gonggao': 14.5 }, { 'week': 19, 'gonggao': 14.5 },
+      //                 { 'week': 21, 'gonggao': 16 }, { 'week': 23, 'gonggao': 17.5 }, { 'week': 25, 'gonggao': 18.5 }, { 'week': 26, 'gonggao': 18 }, { 'week': 27, 'gonggao': 17.5 }],
 
-      pregSolidLine2: [{ 'week': 1, 'gonggao': 7 },{ 'week': 2, 'gonggao': 8 }, { 'week': 3, 'gonggao': 8 }, { 'week': 5, 'gonggao': 10 }, { 'week': 7, 'gonggao': 11.5 }, { 'week': 9, 'gonggao': 13.5 },
-                      { 'week': 11, 'gonggao': 15 }, { 'week': 13, 'gonggao': 16.5 }, { 'week': 15, 'gonggao': 18 }, { 'week': 17, 'gonggao': 19.5 }, { 'week': 19, 'gonggao': 20.5 },
-                      { 'week': 21, 'gonggao': 21.5 }, { 'week': 23, 'gonggao': 22.5 }, { 'week': 25, 'gonggao': 23.5 }, { 'week': 26, 'gonggao': 23 }, { 'week': 27, 'gonggao': 23 }],
+      // pregSolidLine2: [{ 'week': 1, 'gonggao': 7 },{ 'week': 2, 'gonggao': 8 }, { 'week': 3, 'gonggao': 8 }, { 'week': 5, 'gonggao': 10 }, { 'week': 7, 'gonggao': 11.5 }, { 'week': 9, 'gonggao': 13.5 },
+      //                 { 'week': 11, 'gonggao': 15 }, { 'week': 13, 'gonggao': 16.5 }, { 'week': 15, 'gonggao': 18 }, { 'week': 17, 'gonggao': 19.5 }, { 'week': 19, 'gonggao': 20.5 },
+      //                 { 'week': 21, 'gonggao': 21.5 }, { 'week': 23, 'gonggao': 22.5 }, { 'week': 25, 'gonggao': 23.5 }, { 'week': 26, 'gonggao': 23 }, { 'week': 27, 'gonggao': 23 }],
 
-      pregDashLine2: [{ 'week': 1, 'gonggao': 5.5 },{ 'week': 2, 'gonggao': 7 }, { 'week': 3, 'gonggao': 7 }, { 'week': 5, 'gonggao': 8.5 }, { 'week': 7, 'gonggao': 10 }, { 'week': 9, 'gonggao': 12 },
-                      { 'week': 11, 'gonggao': 13.5 }, { 'week': 13, 'gonggao': 15 }, { 'week': 15, 'gonggao': 16.5 }, { 'week': 17, 'gonggao': 18.5 }, { 'week': 19, 'gonggao': 19 },
-                      { 'week': 21, 'gonggao': 20.5 }, { 'week': 23, 'gonggao': 21 }, { 'week': 25, 'gonggao': 22.5 }, { 'week': 26, 'gonggao': 22 }, { 'week': 27, 'gonggao': 22 }],
+      // pregDashLine2: [{ 'week': 1, 'gonggao': 5.5 },{ 'week': 2, 'gonggao': 7 }, { 'week': 3, 'gonggao': 7 }, { 'week': 5, 'gonggao': 8.5 }, { 'week': 7, 'gonggao': 10 }, { 'week': 9, 'gonggao': 12 },
+      //                 { 'week': 11, 'gonggao': 13.5 }, { 'week': 13, 'gonggao': 15 }, { 'week': 15, 'gonggao': 16.5 }, { 'week': 17, 'gonggao': 18.5 }, { 'week': 19, 'gonggao': 19 },
+      //                 { 'week': 21, 'gonggao': 20.5 }, { 'week': 23, 'gonggao': 21 }, { 'week': 25, 'gonggao': 22.5 }, { 'week': 26, 'gonggao': 22 }, { 'week': 27, 'gonggao': 22 }],
 
       bmiNum: '',
       bmiTz: '',
@@ -47,7 +51,6 @@ export default class Patient extends Component {
     //     this.drawPregCanvas();
     //   })
     // })
-
     service.yunqi.getbmi().then(res => {
       if(res.object.bmi < 18.5){
         this.setState({bmiIntro: '体重过轻,建议孕期体重增长目标:12.5~18kg'})
@@ -202,7 +205,7 @@ export default class Patient extends Component {
   // }
 
   drawBmiCanvas() {
-    const { bmiDashLine1, bmiDashLine2, bmiNum, bmiTz, bmiList, bmiIntro } = this.state;
+    const { bmiDashLine1, bmiDashLine2, bmiDashPoints, bmiNum, bmiTz, bmiList, bmiIntro } = this.state;
     let newBmiList = JSON.parse(JSON.stringify(bmiList));
     newBmiList && newBmiList.map((item, index) => {
       item.tizhong = item.tizhong - bmiTz;
@@ -213,12 +216,13 @@ export default class Patient extends Component {
       item.week = item.week - 1;
     })
     console.log(newBmiList, '31')
-    let bmiColor = '#6BB6FF';
-    let lastBmi = newBmiList[newBmiList.length-1];
-    if(lastBmi && (lastBmi.week < 0 || lastBmi.week >39 || lastBmi.tizhong < -6 || lastBmi.tizhong > 20)) {
-      bmiColor = 'red';
-    }
     newBmiList = newBmiList.filter(i => i.week >= 0 && i.week <= 39 && i.tizhong >= -6 && i.tizhong <= 20);
+    // 统一曲线 x,y 表示
+    newBmiList.length > 0 && newBmiList.map(item => {
+      item.x = item.week;
+      item.y = item.tizhong;
+    })
+    const bmiColor = newBmiList.length > 0 && judge(newBmiList[newBmiList.length-1], bmiDashPoints) ? '#6BB6FF' : 'red';
 
     const canvas = document.getElementById('bmiCanvas');
     const context = canvas.getContext("2d");
@@ -285,10 +289,10 @@ export default class Patient extends Component {
     this.setVerRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (yCount - 1) * yStep, 'black', 1, yStep, 5);
     this.setHorRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (xCount - 1) * xStep, 'black', 1, xStep, 5);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine1, ["week", "tizhong"], 'gray', [8]);
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine2, ["week", "tizhong"], 'gray', [8]);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine1, ["x", "y"], 'gray', [8]);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine2, ["x", "y"], 'gray', [8]);
     console.log(newBmiList, '3122')
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], newBmiList, ["week", "tizhong"], bmiColor, [0]);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], newBmiList, ["x", "y"], bmiColor, [0]);
   }
 
   render() {

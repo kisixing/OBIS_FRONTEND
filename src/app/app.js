@@ -278,9 +278,7 @@ export default class App extends Component {
         <Modal className="reminder-wrapper" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
           visible={item.visible} footer={footer(index, item)} onCancel={() => handelClose(index)} >
           <div className="reminder-content"><span className="reminder-word">{item.reminder}</span>,是否添加诊断</div>
-          <div className="reminder-item">
-            慢性活动
-          </div>
+          <div className="reminder-item">{item.diagnosis}</div>
         </Modal>
       )
       : null

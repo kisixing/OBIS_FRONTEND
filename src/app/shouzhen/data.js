@@ -441,6 +441,7 @@ export const pregnanciesColumns = [
 	},
 	{
 		title: '胎数',
+		type: 'input',
 		key: 'births',
 	},
 	{
@@ -470,7 +471,7 @@ export const pregnanciesColumns = [
 			},
 			{
 				title: '死亡时间',
-				key: 'siw',
+				key: 'deathTime',
 				type: 'input',
 			},
 			{

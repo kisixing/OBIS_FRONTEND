@@ -43,6 +43,8 @@ export default class FuzhenForm extends Component {
       isShowRegForm: false,
       error: {},
       treatTemp: [],
+      treatKey1: [],
+      treatKey2: [],
       getPacsGrowth: {},
       openMenzhen: false,
       menzhenData: new Date(),
@@ -470,11 +472,11 @@ export default class FuzhenForm extends Component {
           let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
           getAllReminder(modalObj);
         }
-        if(lis.hbsA && lis.hbsAg[0] && lis.hbsAg[0].label === '小三阳') {
+        if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '小三阳') {
             let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
             getAllReminder(modalObj);
         }
-        if(lis.hbsA && lis.hbsAg[0] && lis.hbsAg[0].label === '大三阳') {
+        if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '大三阳') {
             let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
             getAllReminder(modalObj);
         }
@@ -681,11 +683,10 @@ export default class FuzhenForm extends Component {
    * 模板
    */
   renderTreatment() {
-    const { treatTemp, openTemplate } = this.state;
+    const { treatTemp, openTemplate, treatKey1, treatKey2 } = this.state;
     const closeDialog = (e, items = []) => {
-      this.setState({ openTemplate: false }, ()=>openTemplate&&openTemplate());
-      items.forEach(i => i.checked = false);
-      this.addTreatment(e, items.map(i => i.content).join('； '));
+      this.setState({ openTemplate: false, treatKey1: [], treatKey2: [] });
+      items.length > 0 && this.addTreatment(e, items.map(i => i.content).join('； '));
     }
 
     const initTree = (pid, level = 0) => treatTemp.filter(i => i.pid === pid).map(node => (
@@ -694,9 +695,21 @@ export default class FuzhenForm extends Component {
       </Tree.TreeNode>
     ));
 
-    const handleCheck = (keys, { checked }) => {
+    const handleCheck1 = (keys) => {
+      this.setState({treatKey1: keys});
       treatTemp.forEach(tt => {
-        if (keys.indexOf(`${tt.id}`) !== -1) {
+        if (keys.indexOf(`${tt.id}`) !== -1 || treatKey2.indexOf(`${tt.id}`) !== -1) {
+          tt.checked = true;
+        } else {
+          tt.checked = false;
+        }
+      })
+    };
+
+    const handleCheck2 = (keys) => {
+      this.setState({treatKey2: keys});
+      treatTemp.forEach(tt => {
+        if (keys.indexOf(`${tt.id}`) !== -1 || treatKey1.indexOf(`${tt.id}`) !== -1) {
           tt.checked = true;
         } else {
           tt.checked = false;
@@ -710,10 +723,10 @@ export default class FuzhenForm extends Component {
       <Modal title="处理模板" closable visible={openTemplate} width={800} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
         <Row>
           <Col span={12}>
-            <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
+            <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
           </Col>
           <Col span={12}>
-            <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes.slice(treeNodes.length/2)}</Tree>
+            <Tree checkable defaultExpandAll checkedKeys={treatKey2} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes.slice(treeNodes.length/2)}</Tree>
           </Col>
         </Row>
       </Modal>
