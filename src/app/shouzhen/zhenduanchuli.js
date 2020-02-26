@@ -196,11 +196,6 @@ export default class extends Component{
         store.dispatch(action);
         this.updateCheckedKeys(data);
       })
-      // service.fuzhen.getdiagnosis().then(res => this.setState({
-      //     diagnosis: res.object.list
-      // }, () => {
-      //   this.updateCheckedKeys(data);
-      // }));
     })
   }
 

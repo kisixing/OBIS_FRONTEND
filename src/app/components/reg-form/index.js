@@ -29,8 +29,30 @@ export default class RegForm extends Component {
   }
 
   getRegform() {
+    const { allFormData, userDoc } = this.state;
+    const allPreghiss = allFormData.gestation.preghiss || [];
+    const diagnosisList = allFormData.diagnosisList || [];
+    let chanc = 0
+    let yunc = 1;
+    let diagnosisStr = [];
+    if(allPreghiss.length > 0) {
+      yunc = parseInt(allPreghiss[allPreghiss.length - 1].pregnum) + 1;   
+      allPreghiss&&allPreghiss.map(item => {
+        if(item.zuych === true) {
+          chanc++;
+        } else if (item.zaoch !== "") {
+          chanc++;
+        }
+      })
+    }
+    diagnosisList.map(item => {
+      diagnosisStr.push(item.data);
+    })
+    diagnosisStr = diagnosisStr.join('，');
+
     service.fuzhen.getRecordList().then(res => {
       let data = service.praseJSON(res.object);
+      data.note = `G ${yunc}；P ${chanc}；妊娠${userDoc.tuserweek}周；${diagnosisStr}`;
       this.setState({regFormEntity: data})
     })
   }
@@ -165,7 +187,6 @@ export default class RegForm extends Component {
       }
       fireForm(form, 'valid').then((valid) => {
         if(valid) {
-          console.log(valid)
           service.fuzhen.postRecordList(newRegFormEntity).then(() => {
             this.setState({regFormEntity: {...baseData.regFormEntity}})
             getDateHos(e, {name: 'xiacsfdate', value: newRegFormEntity.dateHos})

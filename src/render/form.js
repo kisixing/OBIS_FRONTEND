@@ -137,39 +137,26 @@ class FormItem extends Component {
   componentDidMount() {
     this.componentWillUnmount = AddResize(() => this.resize())
     this.refs.formItem.fireReact = (type, ...args) => {
-      return new Promise(resolve => {
-        switch (type) {
-          case 'valid':
-            this.onBlur(...args).then(resolve)
-            this.setState({error: ''})
-            break;
-          case 'reset':
-            this.setState({
-              dirty: false,
-              error: ''
-            }, resolve);
-            break;
-        }
-      });
-    }
-  }
-
-  componentDidUpdate() {
-    this.refs.formItem.fireReact = (type, ...args) => {
-      return new Promise(resolve => {
-        switch (type) {
-          case 'valid':
-            this.onBlur(...args).then(resolve)
-            break;
-          case 'reset':
-            this.setState({
-              dirty: false,
-              error: ''
-            }, resolve);
-            break;
-        }
-      });
-    }
+      // if(this.refs.formItem.className.indexOf('ckpressure') !== -1 ||
+      // this.refs.formItem.className.indexOf('add_FIELD_pulse') !== -1 ||
+      // this.refs.formItem.className.indexOf('cksheng') !== -1 || 
+      // this.refs.formItem.className.indexOf('ckbmi') !== -1) {
+        return new Promise(resolve => {
+          switch (type) {
+            case 'valid':
+              this.onBlur(...args).then(resolve)
+              // this.setState({error: ''})
+              break;
+            case 'reset':
+              this.setState({
+                dirty: false,
+                error: ''
+              }, resolve);
+              break;
+          }
+        });
+      }
+    // }
   }
 
   componentWillReceiveProps(newProps) {

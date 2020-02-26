@@ -13,7 +13,8 @@ import './form.less';
 import store from '../store';
 import { isFormChangeAction,
         allReminderAction,
-        getUserDocAction
+        getUserDocAction,
+        openMedicalAction,
       } from '../store/actionCreators.js';
 
 import RegForm from '../components/reg-form';
@@ -69,11 +70,11 @@ export default class FuzhenForm extends Component {
 
   // 2 检测孕妇高危诊断，修改表格以及表单型式
   checkDiagnosisHighrisk(type) {
-    const { diagnosis, relatedObj } = this.props;
+    const { diagList, relatedObj } = this.props;
 
     let diagItem = [];
     let signItem = [];
-    diagnosis.map(item => { diagItem.push(item.data)});
+    diagList.map(item => { diagItem.push(item.data)});
     for (var k in relatedObj) { signItem = signItem.concat(relatedObj[k]) };
 
     /*关联表单操作*/
@@ -448,63 +449,67 @@ export default class FuzhenForm extends Component {
 
   handleSave(form, act) {
     const { onSave, initData, ycq } = this.props;
-    const { allFormData } = this.state;
+    const { allFormData, isFormChange } = this.state;
     let newEntity = initData;
     let ckpressure = initData.ckpressure.split('/');
-    console.log(ycq, '23')
     const getReminder = () => {
       if(act) {
-        const lis = service.praseJSON(allFormData.lis);
-        let allReminderModal = [];
-        const getAllReminder = (modalObj) => {
-            let bool = true;
-            allFormData.diagnosisList && allFormData.diagnosisList.map(item => {
-                if(item.data === modalObj.diagnosis) bool = false;
-            })
-            if(bool) allReminderModal.push(modalObj);
-        }
-  
-        if (lis.ogtt && lis.ogtt[0] && lis.ogtt[0].label === "GDM") {
-          let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
+        const action = openMedicalAction(true);
+        store.dispatch(action);
+      } else {
+        const action = openMedicalAction(false);
+        store.dispatch(action);
+      }
+      const lis = service.praseJSON(allFormData.lis);
+      let allReminderModal = [];
+      const getAllReminder = (modalObj) => {
+          let bool = true;
+          allFormData.diagnosisList && allFormData.diagnosisList.map(item => {
+              if(item.data === modalObj.diagnosis) bool = false;
+          })
+          if(bool) allReminderModal.push(modalObj);
+      }
+
+      if (lis.ogtt && lis.ogtt[0] && lis.ogtt[0].label === "GDM") {
+        let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
+        getAllReminder(modalObj);
+      }
+      if(lis.add_FIELD_hbsAg_ALT && lis.add_FIELD_hbsAg_ALT > 80) {
+        let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
+        getAllReminder(modalObj);
+      }
+      if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '小三阳') {
+          let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
           getAllReminder(modalObj);
-        }
-        if(lis.add_FIELD_hbsAg_ALT && lis.add_FIELD_hbsAg_ALT > 80) {
-          let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
+      }
+      if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '大三阳') {
+          let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
           getAllReminder(modalObj);
-        }
-        if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '小三阳') {
-            let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
-            getAllReminder(modalObj);
-        }
-        if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '大三阳') {
-            let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
-            getAllReminder(modalObj);
-        }
-        if(lis.hcvAb && lis.hcvAb[0] && lis.hcvAb[0].label === '阳性') {
-            let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-            getAllReminder(modalObj);
-        }
-        if(lis.add_FIELD_hcvAb_RNA && lis.add_FIELD_hcvAb_RNA[0] && lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
-            let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-            getAllReminder(modalObj);
-        }
-        if(lis.rpr && lis.rpr[0] && lis.rpr[0].label === '阳性') {
-            let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
-            getAllReminder(modalObj);
-        }
-        if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === '甲型') {
-            let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
-            getAllReminder(modalObj);
-        }
-        if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === '乙型') {
-            let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
-            getAllReminder(modalObj);
-        }
-  
-        if(allReminderModal.length > 0) {
-          const action = allReminderAction(allReminderModal);
-          store.dispatch(action);
-        }
+      }
+      if(lis.hcvAb && lis.hcvAb[0] && lis.hcvAb[0].label === '阳性') {
+          let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+          getAllReminder(modalObj);
+      }
+      if(lis.add_FIELD_hcvAb_RNA && lis.add_FIELD_hcvAb_RNA[0] && lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
+          let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+          getAllReminder(modalObj);
+      }
+      if(lis.rpr && lis.rpr[0] && lis.rpr[0].label === '阳性') {
+          let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
+          getAllReminder(modalObj);
+      }
+      if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === '甲型') {
+          let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
+          getAllReminder(modalObj);
+      }
+      if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === '乙型') {
+          let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
+          getAllReminder(modalObj);
+      }
+
+      if(allReminderModal.length > 0) {
+        const action = allReminderAction(allReminderModal);
+        store.dispatch(action);
       }
     }
 
@@ -531,7 +536,7 @@ export default class FuzhenForm extends Component {
     if(newEntity.riSl[1]) newEntity.riSlDosage = newEntity.riSl[1];
 
     fireForm(form,'valid').then((valid)=>{
-      if(valid){
+      if(valid && isFormChange){
         console.log(newEntity, '可以保存')
         onSave(newEntity).then(() =>{
           this.setState({ error: {} }, () => {

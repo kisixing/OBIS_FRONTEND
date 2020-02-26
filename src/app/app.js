@@ -174,10 +174,7 @@ export default class App extends Component {
     const addHighrisk = (highrisk, level, index) => {
       const action = closeAlertAction(index);
       store.dispatch(action);
-      service.addHighrisk(userid, highrisk, level).then(res => {});
-      service.getuserDoc().then(res => {
-        this.setState({ ...res.object, highriskEntity: { ...res.object }})
-      })
+      service.addHighrisk(userid, `\n${highrisk}`, level).then(res => {});
     };
 
     return highriskAlert && highriskAlert.length > 0 
@@ -245,21 +242,26 @@ export default class App extends Component {
       const action = closeReminderAction(index);
       store.dispatch(action);
 
-      item && service.fuzhen.adddiagnosis(item.diagnosis).then(() => { 
+      item && service.fuzhen.adddiagnosis(item.diagnosis).then(() => {
+        service.fuzhen.checkHighriskAlert(item.diagnosis).then(res => {
+          let data = res.object;
+          if(data.length > 0) {
+            data.map(item => ( item.visible = true ))
+          }
+          const action = getAlertAction(data);
+          store.dispatch(action);
+        })
         if (index === 0) {
           service.fuzhen.getdiagnosis().then(res => {
             const action = getDiagnisisAction(res.object.list);
             store.dispatch(action);
           });
+          const action2 = showReminderAction(false);
+          store.dispatch(action2);
         }else if(index === 0 && isOpenMedicalAdvice) {
           closeWebPage();
         }
       })
-
-      if (index === 0) {
-        const action2 = showReminderAction(false);
-        store.dispatch(action2);
-      }
     };
 
     const footer = (index, item) => {
@@ -325,6 +327,7 @@ export default class App extends Component {
     ));
 
     const handleCheck = (keys, { checked }) => {
+      console.log(keys, '123')
       newTemplateTree.forEach(tt => {
         tt.child.forEach(item => {
           if (keys.indexOf(`${item.id}`) !== -1) {
@@ -399,6 +402,7 @@ export default class App extends Component {
     ));
 
     const handleCheck1 = (keys, { checked }) => {
+      console.log(keys, '23')
       this.setState({checkedKeys: keys})
       newTemplateTree1.forEach(tt => {
         if (keys.indexOf(`${tt.id}`) !== -1) {
@@ -409,6 +413,7 @@ export default class App extends Component {
       })
     };
     const handleCheck2 = (keys, { checked }) => {
+      console.log(keys, '34')
       newTemplateTree2.forEach(tt => {
         if (keys.indexOf(`${tt.id}`) !== -1) {
           tt.selected = checked;
@@ -457,6 +462,9 @@ export default class App extends Component {
           }
         })
         this.setState({highriskList: list, highriskShow:true})
+      })
+      service.getuserDoc().then(res => {
+        this.setState({ ...res.object, highriskEntity: { ...res.object }})
       })
     }
     return (
@@ -545,7 +553,7 @@ export default class App extends Component {
       };
       if ( node && !searchList.filter(i => i.pId === node.id).length &&
            highriskEntity.highrisk && highriskEntity.highrisk.split("\n").indexOf(node.name) === -1) {
-        handleChange( "highrisk", highriskEntity.highrisk.replace(/\n+$/, "") + "\n" + gettitle(node).join(":") );
+        handleChange( "highrisk", (highriskEntity.highrisk || '').replace(/\n+$/, "") + "\n" + gettitle(node).join(":") );
       } else if (node && !searchList.filter(i => i.pId === node.id).length) {
         handleChange( "highrisk", gettitle(node).join(":") );
       }

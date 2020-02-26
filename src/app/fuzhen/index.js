@@ -17,6 +17,7 @@ import { getAlertAction,
         checkedKeysAction,
         isFormChangeAction,
         openYCQAction,
+        getDiagnisisAction,
   } from '../store/actionCreators.js';
 
 import "../index.less";
@@ -46,7 +47,6 @@ export default class Patient extends Component {
       activeElement: '',
       info: {},
       diagnosi: '',
-      diagnosis: [],
       diagnosislist: {},
       relatedObj: {},
       recentRvisit: null,
@@ -86,7 +86,10 @@ export default class Patient extends Component {
       this.setState({initData: {...this.state.initData, ...param}});
     })),
 
-    service.fuzhen.getdiagnosis().then(res => this.setState({ diagnosis: res.object.list })),
+    service.fuzhen.getdiagnosis().then(res => {
+      const action = getDiagnisisAction(res.object.list);
+      store.dispatch(action);
+    }),
 
     service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object})),
 
@@ -112,8 +115,8 @@ export default class Patient extends Component {
   }
 
   adddiagnosis() {
-    const { diagnosis, diagnosi } = this.state;
-    if (diagnosi && !diagnosis.filter(i => i.data === diagnosi).length) {
+    const { diagList, diagnosi } = this.state;
+    if (diagnosi && !diagList.filter(i => i.data === diagnosi).length) {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
         if (diagnosi==='瘢痕子宫' || diagnosi==='疤痕子宫') {
@@ -128,8 +131,10 @@ export default class Patient extends Component {
           const action = getAlertAction(data);
           store.dispatch(action);
         })
-        service.fuzhen.getdiagnosis().then(res => this.setState({
-            diagnosis: res.object.list,
+        service.fuzhen.getdiagnosis().then(res => {
+          const action = getDiagnisisAction(res.object.list);
+          store.dispatch(action);
+          this.setState({
             diagnosi: ''
         }, () => {
           if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
@@ -137,7 +142,7 @@ export default class Patient extends Component {
             const action = showPharAction(true);
             store.dispatch(action);
           }
-        }));
+        })});
       })
     } else if (diagnosi) {
       modal('warning', '添加数据重复');
@@ -145,10 +150,10 @@ export default class Patient extends Component {
   }
 
   updateCheckedKeys(data) {
-    const { checkedKeys, diagnosis } = this.state;
+    const { checkedKeys, diagList } = this.state;
     let newCheckedKeys = checkedKeys;
 
-    diagnosis.map(item => {
+    diagList.map(item => {
       if(item.data.indexOf("静脉曲张") !== -1 && !newCheckedKeys.includes('11')) newCheckedKeys.push('11');
       if(item.data === "妊娠子痫前期" && !newCheckedKeys.includes('10')) newCheckedKeys.push("10");
       if(item.data === "多胎妊娠" && !newCheckedKeys.includes('14')) newCheckedKeys.push("14");
@@ -171,11 +176,11 @@ export default class Patient extends Component {
   deldiagnosis(id, data) {
     service.fuzhen.deldiagnosis(id).then(() => {
       modal('info', '删除诊断信息成功');
-      service.fuzhen.getdiagnosis().then(res => this.setState({
-          diagnosis: res.object.list
-      }, () => {
+      service.fuzhen.getdiagnosis().then(res => {
+        const action = getDiagnisisAction(res.object.list);
+        store.dispatch(action);
         this.updateCheckedKeys(data);
-      }));
+      })
     })
   }
 
@@ -215,7 +220,7 @@ export default class Patient extends Component {
    * 诊断列表
    */
   renderZD() {
-    const { diagnosi, diagnosis, diagnosislist, isShowZhenduan, isMouseIn, relatedObj } = this.state;
+    const { diagnosi, diagList, diagnosislist, isShowZhenduan, isMouseIn, relatedObj } = this.state;
     const delConfirm = (item) => {
       Modal.confirm({
         title: '您是否确认要删除这项诊断',
@@ -230,17 +235,19 @@ export default class Patient extends Component {
       const handleHighriskmark = () => {
         let highriskmark = item.highriskmark == 1 ? 0 : 1;
         service.fuzhen.updateHighriskmark(item.id, highriskmark).then(() => {
-          service.fuzhen.getdiagnosis().then(res => this.setState({
-            diagnosis: res.object.list
-          }))
+          service.fuzhen.getdiagnosis().then(res => {
+            const action = getDiagnisisAction(res.object.list);
+            store.dispatch(action);
+          })
         })
       }
 
       const handleVisibleChange = fx => () => {
         service.fuzhen.updateSort(item.id, fx).then(() => {
-          service.fuzhen.getdiagnosis().then(res => this.setState({
-            diagnosis: res.object.list
-          }))
+          service.fuzhen.getdiagnosis().then(res => {
+            const action = getDiagnisisAction(res.object.list);
+            store.dispatch(action);
+          })
         })
       }
 
@@ -272,7 +279,7 @@ export default class Patient extends Component {
             </div>
           : null}
           {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('up')}>上 移</a></p> : null}
-          {i + 1 < diagnosis.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>下 移</a></p> : null}
+          {i + 1 < diagList.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>下 移</a></p> : null}
         </div>
       );
     }
@@ -320,7 +327,7 @@ export default class Patient extends Component {
     return (
       <div className="fuzhen-left-zd">
         <ol>
-          {diagnosis&&diagnosis.map((item, i) => (
+          {diagList&&diagList.map((item, i) => (
             <li key={`diagnos-${item.id}-${Date.now()}`}>
               <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                 <div title={title(item)}>
@@ -679,7 +686,7 @@ export default class Patient extends Component {
   }
 
   render() {
-    const { loading, diagnosis, relatedObj, info, initData, ycq, fzEntity } = this.state;
+    const { loading, diagList, relatedObj, info, initData, ycq, fzEntity } = this.state;
     return (
       <Page className="fuzhen font-16 ant-col">
         <div className="bgDOM"></div>
@@ -690,7 +697,7 @@ export default class Patient extends Component {
             ycq={ycq}
             info={info}
             initData={initData}
-            diagnosis={diagnosis}
+            diagList={diagList}
             relatedObj={relatedObj}
             onSave={data => this.saveForm(data)}
             onChange={this.handleChange.bind(this)}

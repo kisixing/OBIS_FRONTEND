@@ -54,11 +54,11 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'add_FIELD_TSH[TSH]', type:'input', span:5},
+            {name:'add_FIELD_TSH[TSH](uIU/ml)', type:'input', span:5},
             {span:1},
-            {name:'add_FIELD_free_t3[游离T3]', type:'input', span:5},
+            {name:'add_FIELD_free_t3[游离T3](pmol/L)', type:'input', span:5},
             {span:1},
-            {name:'add_FIELD_free_t4[游离T4]',type:'input', span:5}
+            {name:'add_FIELD_free_t4[游离T4](pmol/L)',type:'input', span:5}
           ]
         },
         {

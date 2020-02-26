@@ -318,7 +318,7 @@ export default class Patient extends Component {
         this.timeout = setTimeout(() => this.forceUpdate(), 200);
     }
 
-    handleSave(key, bool) {
+    handleSave(key, type) {
         const { tabs, step, allData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
@@ -365,64 +365,71 @@ export default class Patient extends Component {
                     tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1] || '';
                 }
                 if (tab.key === 'tab-6') {
-                    tab.entity.ckdiastolicpressure = tab.entity.ckpressure[0];
-                    tab.entity.ckshrinkpressure = tab.entity.ckpressure[1];
+                    tab.entity.ckshrinkpressure = tab.entity.ckpressure[0];
+                    tab.entity.ckdiastolicpressure = tab.entity.ckpressure[1];
                 }
                 if (tab.key === 'tab-8') {
                     if (tab.entity.ogtt && tab.entity.ogtt[0] && tab.entity.ogtt[0].label === "GDM") {
                         tab.entity.add_FIELD_ogtt_gdm_empty = tab.entity.ogtt[0].value.input0;
                         tab.entity.add_FIELD_ogtt_gdm_1h = tab.entity.ogtt[0].value.input1;
                         tab.entity.add_FIELD_ogtt_gdm_2h = tab.entity.ogtt[0].value.input2;
-                        
+                    }
+                }
+
+                if (tab.key === 'tab-9' && key === 'tab-9') {
+                    if(type === 'open') {
+                        const action = openMedicalAction(true);
+                        store.dispatch(action);
+                    } else {
+                        const action = openMedicalAction(false);
+                        store.dispatch(action);
+                    }
+                    const Lis = service.praseJSON(allData.lis);
+                    if (Lis.ogtt && Lis.ogtt[0] && Lis.ogtt[0].label === "GDM") {
                         let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
                         getAllReminder(modalObj);
                     }
-
-                    if(tab.entity.add_FIELD_hbsAg_ALT && tab.entity.add_FIELD_hbsAg_ALT > 80) {
+                    if(Lis.add_FIELD_hbsAg_ALT && Lis.add_FIELD_hbsAg_ALT > 80) {
                         let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
                         getAllReminder(modalObj);
                     }
-                    if(tab.entity.hbsAg && tab.entity.hbsAg[0] && tab.entity.hbsAg[0].label === '小三阳') {
+                    if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '小三阳') {
                         let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
                         getAllReminder(modalObj);
                     }
-                    if(tab.entity.hbsAg && tab.entity.hbsAg[0] && tab.entity.hbsAg[0].label === '大三阳') {
+                    if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '大三阳') {
                         let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
                         getAllReminder(modalObj);
                     }
-                    if(tab.entity.hcvAb && tab.entity.hcvAb[0] && tab.entity.hcvAb[0].label === '阳性') {
+                    if(Lis.hcvAb && Lis.hcvAb[0] && Lis.hcvAb[0].label === '阳性') {
                         let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
                         getAllReminder(modalObj);
                     }
-                    if(tab.entity.add_FIELD_hcvAb_RNA && tab.entity.add_FIELD_hcvAb_RNA[0] && tab.entity.add_FIELD_hcvAb_RNA[0].label === '阳性') {
+                    if(Lis.add_FIELD_hcvAb_RNA && Lis.add_FIELD_hcvAb_RNA[0] && Lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
                         let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
                         getAllReminder(modalObj);
                     }
-                    if(tab.entity.rpr && tab.entity.rpr[0] && tab.entity.rpr[0].label === '阳性') {
+                    if(Lis.rpr && Lis.rpr[0] && Lis.rpr[0].label === '阳性') {
                         let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
                         getAllReminder(modalObj);
                     }
-                    if(tab.entity.thalassemia && tab.entity.thalassemia[0] && tab.entity.thalassemia[0].label === '甲型') {
+                    if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === '甲型') {
                         let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
                         getAllReminder(modalObj);
                     }
-                    if(tab.entity.thalassemia && tab.entity.thalassemia[0] && tab.entity.thalassemia[0].label === '乙型') {
+                    if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === '乙型') {
                         let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
                         getAllReminder(modalObj);
                     }
 
                     if(allReminderModal.length > 0) {
-                        const action1 = openMedicalAction(false);
-                        store.dispatch(action1);
-
                         const action2 = allReminderAction(allReminderModal);
                         store.dispatch(action2);
 
                         const action3 = showReminderAction(true);
                         store.dispatch(action3);
                     }
-
-                }
+                }        
                 if (tab.key !== 'tab-5') {
                     if(tab.key === 'tab-3'){
                         service.shouzhen.saveOperations(tab.key, entitySave(tab.entity)).then(() => {
@@ -444,6 +451,8 @@ export default class Patient extends Component {
                         }
                     });
                 } else {
+                    //删除空数据以及去掉本孕一行
+                    tab.entity.preghiss = tab.entity.preghiss.filter(item => Object.keys(item).length !== 1)
                     tab.entity.preghiss.pop();
                     // 孕产史数据同步
                     tab.entity.preghiss.forEach((item) => {
@@ -483,7 +492,7 @@ export default class Patient extends Component {
             const action = isFormChangeAction(false);
             store.dispatch(action);
 
-            if (!valid && !bool) {
+            if (!valid && type !== 'save') {
                 !isJump && message.error('必填项不能为空！');
                 if (key && isJump) {
                     this.activeTab(key);
@@ -521,7 +530,7 @@ export default class Patient extends Component {
 
         return (
           <Page className="shouzhen pad-T-mid">
-            <Button type="primary" className="top-save-btn" size="small" onClick={() => this.handleSave(step, true)}>保存</Button>
+            <Button type="primary" className="top-save-btn" size="small" onClick={() => this.handleSave(step, 'save')}>保存</Button>
             <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
 
             <div className="bgWhite" style={{ position: "fixed", top: "7.65em", left: "0", right: "0", bottom: "0"}}></div>
@@ -543,14 +552,12 @@ export default class Patient extends Component {
             <Row>
               <Col span={21} />
               <Col>
-                <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>
-                  {step !== tabs[tabs.length - 1].key ? "下一页" : "保存并开医嘱"}
-                </Button>
-                {step === tabs[tabs.length - 1].key ?
-                    <Button className="shouzhen-bbtn2" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>
-                        保存
-                    </Button>
-                    : null
+                { step !== tabs[tabs.length - 1].key
+                    ? <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>下一页</Button>
+                    : <div>
+                        <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(step, 'open') }, 100)}>保存并开医嘱</Button>
+                        <Button className="shouzhen-bbtn2" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>保存</Button>
+                      </div>
                 }
               </Col>
             </Row>
