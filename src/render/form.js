@@ -137,15 +137,14 @@ class FormItem extends Component {
   componentDidMount() {
     this.componentWillUnmount = AddResize(() => this.resize())
     this.refs.formItem.fireReact = (type, ...args) => {
-      // if(this.refs.formItem.className.indexOf('ckpressure') !== -1 ||
-      // this.refs.formItem.className.indexOf('add_FIELD_pulse') !== -1 ||
-      // this.refs.formItem.className.indexOf('cksheng') !== -1 || 
-      // this.refs.formItem.className.indexOf('ckbmi') !== -1) {
+      if(this.refs.formItem.className.indexOf('ckpressure') !== -1 ||
+      this.refs.formItem.className.indexOf('add_FIELD_pulse') !== -1 ||
+      this.refs.formItem.className.indexOf('cksheng') !== -1 || 
+      this.refs.formItem.className.indexOf('ckbmi') !== -1) {
         return new Promise(resolve => {
           switch (type) {
             case 'valid':
               this.onBlur(...args).then(resolve)
-              // this.setState({error: ''})
               break;
             case 'reset':
               this.setState({
@@ -156,12 +155,27 @@ class FormItem extends Component {
           }
         });
       }
-    // }
+    }
   }
 
   componentWillReceiveProps(newProps) {
     const { name } = this.state;
     const { entity, width } = this.props;
+    this.refs.formItem.fireReact = (type, ...args) => {
+      return new Promise(resolve => {
+        switch (type) {
+          case 'valid':
+            this.onBlur(...args).then(resolve)
+            break;
+          case 'reset':
+            this.setState({
+              dirty: false,
+              error: ''
+            }, resolve);
+            break;
+        }
+      });
+    }
 
     if (!entity || (JSON.stringify(entity && entity[name]) !== JSON.stringify(newProps.entity[name]))) {
       this.setState({

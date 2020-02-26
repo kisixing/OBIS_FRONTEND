@@ -57,6 +57,11 @@ export default class App extends Component {
       templateTree: [],
       templateTree1: [],
       templateTree2: [],
+      trialVisible: false,
+      pharVisible1: false,
+      pharVisible2: false,
+      trialKeys: [],
+      pharKeys: [],
       expandedKeys: [],
       isShowXTRouter: false,
     };
@@ -87,10 +92,44 @@ export default class App extends Component {
       this.setState({highriskList: list})
     })
 
-    service.shouzhen.findTemplateTree(2).then(res => this.setState({templateTree: res.object}));
+    service.shouzhen.findTemplateTree(2).then(res => {
+      let keys = [];
+      res.object.data.map(item => {
+        item.child.map(subItem => {
+          if (subItem.note == 'true') {
+            keys.push(String(subItem.id))
+          }
+        })
+      })
+      this.setState({templateTree: res.object.data, trialVisible: res.object.vislble, trialKeys: keys})
+    });
 
-    service.shouzhen.findTemplateTree(0).then(res => this.setState({templateTree1: res.object}));
-    service.shouzhen.findTemplateTree(1).then(res => this.setState({templateTree2: res.object}));
+    service.shouzhen.findTemplateTree(0).then(res => {
+      let keys = [];
+      res.object.data.map(item => {
+        if (item.selected === true) {
+          keys.push(String(item.id))
+        }
+      })
+      const action = checkedKeysAction(keys);
+      store.dispatch(action);
+      this.setState({templateTree1: res.object.data, pharVisible1: res.object.vislble})
+      if(!res.object.vislble) { 
+        service.shouzhen.getAllForm().then(res => {
+          this.setCheckedKeys(res.object);
+        })
+      }
+    });
+
+    service.shouzhen.findTemplateTree(1).then(res => {
+      let keys = [];
+      res.object.data.map(item => {
+        if (item.selected === true) {
+          keys.push(String(item.id))
+        }
+      })
+      this.setState({templateTree2: res.object.data, pharVisible2: res.object.vislble, pharKeys: keys})
+    });
   }
 
   handleStoreChange = () => {
@@ -102,7 +141,7 @@ export default class App extends Component {
     const diagnosis = params.diagnosisList;
     const bmi = params.checkUp.ckbmi;
     const age = params.gravidaInfo.userage;
-    const preghiss = params.gestation.preghiss ? params.gestation.preghiss.length : [];
+    const preghiss = params.gestation.preghiss || [];
     const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);
 
     const getKey = (val) => {
@@ -113,10 +152,10 @@ export default class App extends Component {
       return ID.toString();
     }
 
-    if(bmi>30) checkedKeys.push(getKey("肥胖（BMI>30kg/m  )"));
-    if(age>35) checkedKeys.push(getKey("年龄>35岁"));
-    if(preghiss>=3) checkedKeys.push(getKey("产次≥3"));
-    if(xiyan && xiyan[0].label==="有") checkedKeys.push(getKey("吸烟"));
+    if(bmi > 30) checkedKeys.push(getKey("肥胖（BMI>30kg/m)"));
+    if(age > 35) checkedKeys.push(getKey("年龄>35岁"));
+    if(preghiss.length >= 3) checkedKeys.push(getKey("产次≥3"));
+    if(xiyan && xiyan[0].label ===" 有") checkedKeys.push(getKey("吸烟"));
 
     if(checkedKeys.length > 0) {
       const action = isMeetPharAction(true);
@@ -145,10 +184,6 @@ export default class App extends Component {
       const action = getDiagnisisAction(res.object.list);
       store.dispatch(action);
     });
-
-    service.shouzhen.getAllForm().then(res => {
-      this.setCheckedKeys(res.object);
-    })
 
     if (location.pathname !== routers[muneIndex].path) {
       this.props.history.push(routers[muneIndex].path);
@@ -304,9 +339,8 @@ export default class App extends Component {
     }
   }
   renderTrialModal() {
-    const { templateTree, isShowTrialModal, username } = this.state;
+    const { templateTree, isShowTrialModal, username, trialKeys } = this.state;
     let newTemplateTree = templateTree;
-
     const closeModal = (bool) => {
       const action = showTrialAction(false);
       store.dispatch(action);
@@ -327,7 +361,7 @@ export default class App extends Component {
     ));
 
     const handleCheck = (keys, { checked }) => {
-      console.log(keys, '123')
+      this.setState({trialKeys: keys});
       newTemplateTree.forEach(tt => {
         tt.child.forEach(item => {
           if (keys.indexOf(`${item.id}`) !== -1) {
@@ -353,7 +387,7 @@ export default class App extends Component {
         <p className="trial-username">孕妇姓名：{username}</p>
         <Row>
           <Col span={24}>
-            <Tree checkable defaultExpandAll onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
+            <Tree checkable defaultExpandAll checkedKeys={trialKeys} onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
           </Col>
         </Row>
       </Modal>
@@ -365,9 +399,14 @@ export default class App extends Component {
    * 孕期用药筛查表
    */
   renderPharModal() {
-    const { checkedKeys, templateTree1, templateTree2, isShowPharModal, tuserweek } = this.state;
+    const {userDoc, checkedKeys, templateTree1, templateTree2, isShowPharModal, tuserweek, pharKeys } = this.state;
     let newTemplateTree1 = templateTree1;
     let newTemplateTree2 = templateTree2;
+    newTemplateTree1.forEach(item => {
+      if(checkedKeys.includes(String(item.id))) {
+        item.selected = true;
+      }
+    })
 
     const closeModal = (bool) => {
       const action = showPharAction(false);
@@ -378,7 +417,7 @@ export default class App extends Component {
         // 新增与诊疗计划关联
         if (newTemplateTree2[3].selected === true) {
           let data = {
-            "userid": "6",
+            "userid": userDoc.userid,
             "time": "",
             "gestation": "28",
             "item": "",
@@ -391,8 +430,13 @@ export default class App extends Component {
           service.shouzhen.saveTemplateTreeUser(0, newTemplateTree1).then(res => {}),
           service.shouzhen.saveTemplateTreeUser(1, newTemplateTree2).then(res => {})
         ]).then(() => {
-          const action = showPharCardAction(true);
-          store.dispatch(action);
+          if(checkedKeys.length > 0 || pharKeys.length > 0) {
+            const action = showPharCardAction(true);
+            store.dispatch(action);
+          } else {
+            const action = showPharCardAction(false);
+            store.dispatch(action);
+          }
         })
       }
     }
@@ -402,23 +446,23 @@ export default class App extends Component {
     ));
 
     const handleCheck1 = (keys, { checked }) => {
-      console.log(keys, '23')
-      this.setState({checkedKeys: keys})
-      newTemplateTree1.forEach(tt => {
-        if (keys.indexOf(`${tt.id}`) !== -1) {
-          tt.selected = checked;
+      const action = checkedKeysAction(keys);
+      store.dispatch(action);
+      newTemplateTree1.forEach(item => {
+        if (keys.indexOf(`${item.id}`) !== -1) {
+          item.selected = checked;
         }else {
-          tt.selected = null;
+          item.selected = null;
         }
       })
     };
     const handleCheck2 = (keys, { checked }) => {
-      console.log(keys, '34')
-      newTemplateTree2.forEach(tt => {
-        if (keys.indexOf(`${tt.id}`) !== -1) {
-          tt.selected = checked;
+      this.setState({pharKeys: keys})
+      newTemplateTree2.forEach(item => {
+        if (keys.indexOf(`${item.id}`) !== -1) {
+          item.selected = checked;
         }else {
-          tt.selected = null;
+          item.selected = null;
         }
       })
     };
@@ -431,13 +475,13 @@ export default class App extends Component {
         <Row>
           <Col span={12}>
             <div className="title">高危因素</div>
-            <Tree className="phar-left" checkedKeys={checkedKeys} checkable onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
+            <Tree className="phar-left" checkable checkedKeys={checkedKeys} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes1}</Tree>
             {/* <p>建议用药：克赛0.4ml 皮下注射qd</p> */}
           </Col>
           <Col span={1}></Col>
           <Col span={11}>
             <div className="title">预防用药指导</div>
-            <Tree className="phar-right" checkable onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes2}</Tree>
+            <Tree className="phar-right" checkable checkedKeys={pharKeys} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes2}</Tree>
           </Col>
         </Row>
       </Modal>
@@ -452,7 +496,7 @@ export default class App extends Component {
   }
 
   renderHeader() {
-    const { userDoc, isShowTrialCard, isShowPharCard, isShowXTRouter } =this.state;
+    const { userDoc, isShowTrialCard, isShowPharCard, isShowXTRouter, trialVisible, pharVisible1, pharVisible2, checkedKeys, pharKeys } =this.state;
     const handleDanger = () => {
       service.highrisk().then(res => {
         let list = res.object;
@@ -497,8 +541,9 @@ export default class App extends Component {
           <ButtonGroup>
             <Button className="danger-btn-5" onClick={()=>handleDanger()}>{userDoc.risklevel}</Button>
             {userDoc.infectious ? <Button className="danger-btn-infectin" onClick={()=>handleDanger()}>{userDoc.infectious}</Button> : null}
-            {isShowTrialCard ? <Button className="danger-btn-trial" onClick={() => this.handleCardClick('trial')}>疤</Button> : null}
-            {isShowPharCard ? <Button className="danger-btn-phar" onClick={() => this.handleCardClick('phar')}>栓</Button> : null}
+            {trialVisible || isShowTrialCard ? <Button className="danger-btn-trial" onClick={() => this.handleCardClick('trial')}>疤</Button> : null}
+            {(pharVisible1 && checkedKeys.length > 0) || (pharVisible2 && pharKeys.length > 0) || isShowPharCard ? 
+              <Button className="danger-btn-phar" onClick={() => this.handleCardClick('phar')}>栓</Button> : null}
           </ButtonGroup>
         </div>
       </div>
