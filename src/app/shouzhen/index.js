@@ -319,7 +319,7 @@ export default class Patient extends Component {
     }
 
     handleSave(key, type) {
-        const { tabs, step, allData } = this.state;
+        const { tabs, step, allData, diagList } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
@@ -335,7 +335,7 @@ export default class Patient extends Component {
         let allReminderModal = [];
         const getAllReminder = (modalObj) => {
             let bool = true;
-            allData.diagnosisList && allData.diagnosisList.map(item => {
+            diagList && diagList.map(item => {
                 if(item.data === modalObj.diagnosis) bool = false;
             })
             if(bool) allReminderModal.push(modalObj);

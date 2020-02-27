@@ -235,74 +235,6 @@ function bpd() {
   drawscaleLine(bottomscale, 'BPD', 90, '1');
 }
 
-function drawscale(scale, name, namey) {
-  for (var k = 0; k < scale.length; k++) {
-    for (var i = 0; i < scale[k].length - 1; i++) {
-      // 起点
-      var x0 = scale[k][i].x;
-      var y0 = scale[k][i].y;
-      // 终点
-      var x2 = scale[k][i + 1].x;
-      var y2 = scale[k][i + 1].y;
-      var curveness = -0.4;
-      context.lineWidth = 1.5;
-      context.strokeStyle = 'black';
-      // 贝塞尔曲线中间点 curveness曲率
-      var x1 = (x0 + x2) / 2 - (y0 - y2) * curveness;
-      var y1 = (y0 + y2) / 2 - (y2 - y0) * curveness;
-      context.beginPath();
-      context.moveTo(baseleft + x0, y0);
-      context.bezierCurveTo(baseleft + x0, y0, baseleft + x1, y1, baseleft + x2, y2);
-      context.stroke();
-    }
-  }
-  context.font = 'bold 25px consolas';
-  context.textAlign = 'center';
-  context.fillText(name, textposition, namey);
-}
-
-// function printline() {
-//   // var canvas = document.getElementById('canvas2');
-//   // if (canvas == null)
-//   //   return false;
-//   // context = canvas.getContext('2d');
-//   // context.clearRect(0, 0, canvas.width, canvas.height);
-//   var lastx, lasty1, lasty2, lasty3 = 0;
-//   for (var i = 0; i < demodata.length; i++) {
-//     var curx = i * 40 + 200;//baseleft+converttime(start,demodata[i].checktime)*35;
-//     var cury1 = 825 - Number(demodata[i].ac);
-//     var cury2 = 825 - demodata[i].fl;
-//     var cury3 = 825 - demodata[i].bpd;
-//     if (lastx != 0) {
-//       var canvas = document.getElementById('canvas');
-//       if (canvas == null)
-//         return false;
-//       context.beginPath();
-//       context.lineWidth = 2.5;
-//       context.strokeStyle = 'green';
-//       context.moveTo(lastx, lasty1);
-//       context.lineTo(curx, cury1);
-//       context.stroke();
-//       context.beginPath();
-//       context.lineWidth = 2.5;
-//       context.strokeStyle = 'green';
-//       context.moveTo(lastx, lasty2);
-//       context.lineTo(curx, cury2);
-//       context.stroke();
-//       context.beginPath();
-//       context.lineWidth = 2.5;
-//       context.strokeStyle = 'green';
-//       context.moveTo(lastx, lasty3);
-//       context.lineTo(curx, cury3);
-//       context.stroke();
-//     }
-//     lastx = curx;
-//     lasty1 = cury1;
-//     lasty2 = cury2;
-//     lasty3 = cury3;
-//   }
-// }
-
 function printline() {
   var bpdArr = [];
   var flArr = [];
@@ -393,13 +325,8 @@ function printline() {
 }
 
 function drawscaleLine(scale, name, namey, style, color) {
-  var x0 = scale[0].x;
-  var y0 = scale[0].y;
-  context.beginPath();
-  context.moveTo(x0, y0);
-  for (var i = 1; i < scale.length; i++) {
-    var x = scale[i].x;
-    var y = scale[i].y;
+  for (var i = 0; i < scale.length; i++) {
+     context.beginPath();
     if (style === '3') {
       context.lineWidth = 6;
       context.strokeStyle = color;
@@ -410,10 +337,22 @@ function drawscaleLine(scale, name, namey, style, color) {
       context.lineWidth = 1.2;
       context.strokeStyle = 'gray';
     }
-    context.lineTo(x, y);
+    if (i < scale.length - 1) {
+      context.moveTo(scale[i].x, scale[i].y);
+      context.lineTo(scale[i + 1].x, scale[i + 1].y);
+    }
+    context.stroke();
+    //绘制红点
+    if (style === '3') {
+      context.beginPath();
+      context.arc(scale[i].x, scale[i].y, 6, 0, 2*Math.PI);
+      context.fillStyle = 'red';
+      context.fill();
+      context.closePath();
+    }
   }
-  context.stroke();
 
+  context.fillStyle = 'rgba(0,51,102,1)';
   context.font = 'bold 25px consolas';
   context.textAlign = 'center';
   context.fillText(name, textposition, namey);

@@ -449,7 +449,7 @@ export default class FuzhenForm extends Component {
 
   handleSave(form, act) {
     const { onSave, initData, ycq } = this.props;
-    const { allFormData, isFormChange } = this.state;
+    const { allFormData, isFormChange, diagList } = this.state;
     let newEntity = initData;
     let ckpressure = initData.ckpressure.split('/');
     const getReminder = () => {
@@ -464,7 +464,7 @@ export default class FuzhenForm extends Component {
       let allReminderModal = [];
       const getAllReminder = (modalObj) => {
           let bool = true;
-          allFormData.diagnosisList && allFormData.diagnosisList.map(item => {
+          diagList && diagList.map(item => {
               if(item.data === modalObj.diagnosis) bool = false;
           })
           if(bool) allReminderModal.push(modalObj);

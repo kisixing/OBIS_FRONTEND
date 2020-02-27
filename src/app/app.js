@@ -286,11 +286,11 @@ export default class App extends Component {
           const action = getAlertAction(data);
           store.dispatch(action);
         })
+        service.fuzhen.getdiagnosis().then(res => {
+          const action = getDiagnisisAction(res.object.list);
+          store.dispatch(action);
+        });
         if (index === 0) {
-          service.fuzhen.getdiagnosis().then(res => {
-            const action = getDiagnisisAction(res.object.list);
-            store.dispatch(action);
-          });
           const action2 = showReminderAction(false);
           store.dispatch(action2);
         }else if(index === 0 && isOpenMedicalAdvice) {
