@@ -16,7 +16,7 @@ export function formateDate() {
 
 export function futureDate(param) {
   let date = new Date();
-  date.setDate(date.getDate() + 7*parseInt(param));
+  date.setDate(date.getDate() + parseInt(param));
   let getMonth = (date.getMonth()+1 > 10) ? date.getMonth()+1 : "0" + (date.getMonth()+1);
   let getDate = (date.getDate()+1 > 10) ? date.getDate() : "0" + date.getDate();
   return date.getFullYear() +"-"+ getMonth +"-"+ getDate;

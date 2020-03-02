@@ -45,36 +45,36 @@ export default class extends Component{
           columns:[
             {name:'ckpifu[皮肤黏膜]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
             {name:'ckjiazhx[甲 状 腺 ]', type:'checkinput-3', valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'vascularMurmur[血管杂音]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'vascularMurmur[血管杂音]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
             {name:'ckrut[乳@@房 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
             {name:'breathSounds[呼 吸 音 ]', type:'checkinput-3',valid: 'required', options: baseData.coOptions,radio:true,span:8},
-            {name:'breathSoundsOther[啰@@音 ]', type:'checkinput-3',valid: 'required', options: baseData.neOptions,radio:true,span:8},
+            {name:'breathSoundsOther[啰@@音 ]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
             {name:'cardiac(次/分)[心@@率 ]', type:'input',valid: 'required|number', span:4},
             {span:4},
-            {name:'heart[心@@律 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'murmurs[杂@@音 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'heart[心@@律 ]', type:'checkinput-3',valid: 'required', options: baseData.xinlvOptions,radio:true,span:8},
+            {name:'murmurs[杂@@音 ]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            {name:'ckganz[肝@@脏 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'ckpiz[脾@@脏 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'ckshenz[肾区叩痛]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'ckganz[肝@@脏 ]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:8},
+            {name:'ckpiz[脾@@脏 ]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:8},
+            {name:'ckshenz[肾区叩痛]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
             {name:'ckjizh[脊@@柱 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
             {name:'nervousReflex[生理反射]', type:'checkinput-3', valid: 'required', options: baseData.slfsOptions,radio:true,span:8},
-            {name:'vascularMurmurOther[病理反射]', type:'checkinput-3', valid: 'required', options: baseData.blfsOptions,radio:true,span:8},
+            {name:'vascularMurmurOther[病理反射]', type:'checkinput-3', valid: 'required', options: baseData.nhOptions,radio:true,span:8},
             // {name:'nervousReflex[双膝反射]', type:'checkinput', className:'col-97-sp', valid: 'required', options: baseData.sxfOptions,radio:true,span:9},
           ]
         },

@@ -13,20 +13,6 @@ export default class extends Component {
     return {
       step: 1,
       rows: [
-        {
-          columns: [
-            { span: 1 },
-            {
-              name: "add_FIELD_symptom[主@诉]",
-              type: "select",
-              valid: "required",
-              options: baseData.zsOptions,
-              autoInsert: true,
-              showSearch: true,
-              span: 15
-            }
-          ]
-        },
         { label: "疾病史", span: 12, className: "labelclass" },
         {
           columns: [
@@ -38,13 +24,8 @@ export default class extends Component {
               className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 15
-            }
-          ]
-        },
-        {
-          columns: [
-            { span: 1 },
+              span: 8
+            },
             {
               name: "add_FIELD_tangniaobing[糖尿病]",
               type: "checkinput",
@@ -52,13 +33,8 @@ export default class extends Component {
               className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 15
-            }
-          ]
-        },
-        {
-          columns: [
-            { span: 1 },
+              span: 8
+            },
             {
               name: "add_FIELD_xinzangbing[心脏病]",
               type: "checkinput",
@@ -66,7 +42,7 @@ export default class extends Component {
               className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 15
+              span: 7
             }
           ]
         },
@@ -77,7 +53,7 @@ export default class extends Component {
               name: "add_FIELD_qitabingshi[其@他]",
               type: "checkinput",
               valid: "required",
-              className: 'long-ipt',
+              className: 'long-ipt-2',
               radio: true,
               options: baseData.wssOptions,
               span: 15
@@ -97,20 +73,20 @@ export default class extends Component {
             }
           ]
         },
-        {
-          columns: [
-            { span: 1 },
-            {
-              name: "bsshoushuother[外伤史]",
-              type: "checkinput",
-              valid: "required",
-              className: 'long-ipt',
-              radio: true,
-              options: baseData.wssOptions,
-              span: 15
-            }
-          ]
-        },
+        // {
+        //   columns: [
+        //     { span: 1 },
+        //     {
+        //       name: "bsshoushuother[外伤史]",
+        //       type: "checkinput",
+        //       valid: "required",
+        //       className: 'long-ipt-2',
+        //       radio: true,
+        //       options: baseData.wssOptions,
+        //       span: 15
+        //     }
+        //   ]
+        // },
         {
           columns: [
             { span: 1 },
@@ -152,7 +128,20 @@ export default class extends Component {
               span: 23
             }
           ]
-        }
+        },
+        {
+          columns: [
+            { span: 1 },
+            {
+              name: "add_FIELD_symptom[其@他]",
+              type: "select",
+              options: baseData.zsOptions,
+              autoInsert: true,
+              showSearch: true,
+              span: 15
+            }
+          ]
+        },
       ]
     };
   }

@@ -39,7 +39,7 @@ export default class RegForm extends Component {
     if(allPreghiss.length > 0) {
       yunc = parseInt(allPreghiss[allPreghiss.length - 1].pregnum) + 1;   
       allPreghiss&&allPreghiss.map(item => {
-        if(item.zuych === true) {
+        if(item.zuych === 'true') {
           chanc++;
         } else if (item.zaoch !== "") {
           chanc++;

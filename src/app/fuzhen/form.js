@@ -277,9 +277,9 @@ export default class FuzhenForm extends Component {
                 rows: [
                   {
                     columns:[
-                      { name: `name[药物]`, span: 7, type: 'input' },
-                      { name: `frequency[频率]`, span: 7, type: 'select', showSearch: true, options: baseData.yyfaOptions },
-                      { name: `dosages[剂量]`, span: 7, type: 'input' },
+                      { name: `name[用药${index + 1}]`, span: 18, type: 'input' },
+                      // { name: `frequency[频率]`, span: 7, type: 'select', showSearch: true, options: baseData.yyfaOptions },
+                      // { name: `dosages[剂量]`, span: 7, type: 'input' },
                       { span: 1 },
                       {
                         name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
@@ -313,9 +313,9 @@ export default class FuzhenForm extends Component {
                     rows: [
                       {
                         columns:[
-                          { name: `name[药物]`, span: 6, type: 'input' },
-                          { name: `frequency[频率]`, span: 6, type: 'select', showSearch: true, options: baseData.yyfaOptions },
-                          { name: `dosages[剂量]`, span: 6, type: 'input' },
+                          { name: `name[用药${index + 1}]`, span: 18, type: 'input' },
+                          // { name: `frequency[频率]`, span: 6, type: 'select', showSearch: true, options: baseData.yyfaOptions },
+                          // { name: `dosages[剂量]`, span: 6, type: 'input' },
                           { span: 1 },
                           {
                             name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',

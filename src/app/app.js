@@ -6,6 +6,7 @@ import router from "../utils/router";
 import bundle from "../utils/bundle";
 import service from '../service';
 import * as util from './fuzhen/util';
+import * as common from '../utils/common';
 import store from "./store";
 import {
   getUserDocAction,
@@ -67,69 +68,83 @@ export default class App extends Component {
     };
     store.subscribe(this.handleStoreChange);
 
-    service.getuserDoc().then(res =>
-      this.setState({ ...res.object, loading: false, highriskEntity: { ...res.object }}, () => { 
-        const action = getUserDocAction(res.object);
-        store.dispatch(action);
-        service.checkHighriskAlert(res.object.userid).then(res => {
-          let data = res.object;
-          if (data && data.length > 0) {
-            data.map(item => (item.visible = true));
-          }
-          const action = getAlertAction(data);
+    service.authorize(service.getQueryString('doctorId')).then(res => {
+      common.setCookie('docToken', res.code, 1);
+      service.getuserDoc().then(res =>
+        this.setState({ ...res.object, loading: false, highriskEntity: { ...res.object }}, () => { 
+          const action = getUserDocAction(res.object);
           store.dispatch(action);
-        });
-      })
-    );
+          service.checkHighriskAlert(res.object.userid).then(res => {
+            let data = res.object;
+            if (data && data.length > 0) {
+              data.map(item => (item.visible = true));
+            }
+            const action = getAlertAction(data);
+            store.dispatch(action);
+          });
+        })
+      );
 
-    service.highrisk().then(res => {
-      let list = res.object;
-      list && list.map(item => {
-        if (item.icon) {
-          item.level = item.icon.substring(item.icon.length-5, item.icon.length-4);
-        }
-      })
-      this.setState({highriskList: list})
-    })
-
-    service.shouzhen.findTemplateTree(2).then(res => {
-      let keys = [];
-      res.object.data.map(item => {
-        item.child.map(subItem => {
-          if (subItem.note == 'true') {
-            keys.push(String(subItem.id))
+      service.highrisk().then(res => {
+        let list = res.object;
+        list && list.map(item => {
+          if (item.icon) {
+            item.level = item.icon.substring(item.icon.length-5, item.icon.length-4);
           }
         })
+        this.setState({highriskList: list})
       })
-      this.setState({templateTree: res.object.data, trialVisible: res.object.vislble, trialKeys: keys})
-    });
 
-    service.shouzhen.findTemplateTree(0).then(res => {
-      let keys = [];
-      res.object.data.map(item => {
-        if (item.selected === true) {
-          keys.push(String(item.id))
-        }
-      })
-      const action = checkedKeysAction(keys);
-      store.dispatch(action);
-      this.setState({templateTree1: res.object.data, pharVisible1: res.object.vislble})
-      if(!res.object.vislble) { 
-        service.shouzhen.getAllForm().then(res => {
-          this.setCheckedKeys(res.object);
+      service.shouzhen.findTemplateTree(2).then(res => {
+        let keys = [];
+        res.object.data.map(item => {
+          item.child.map(subItem => {
+            if (subItem.note == 'true') {
+              keys.push(String(subItem.id))
+            }
+          })
         })
-      }
-    });
+        this.setState({templateTree: res.object.data, trialVisible: res.object.vislble, trialKeys: keys})
+      });
 
-    service.shouzhen.findTemplateTree(1).then(res => {
-      let keys = [];
-      res.object.data.map(item => {
-        if (item.selected === true) {
-          keys.push(String(item.id))
+      service.shouzhen.findTemplateTree(0).then(res => {
+        let keys = [];
+        res.object.data.map(item => {
+          if (item.selected === true) {
+            keys.push(String(item.id))
+          }
+        })
+        const action = checkedKeysAction(keys);
+        store.dispatch(action);
+        this.setState({templateTree1: res.object.data, pharVisible1: res.object.vislble})
+        if(!res.object.vislble) { 
+          service.shouzhen.getAllForm().then(res => {
+            this.setCheckedKeys(res.object);
+          })
         }
-      })
-      this.setState({templateTree2: res.object.data, pharVisible2: res.object.vislble, pharKeys: keys})
-    });
+      });
+
+      service.shouzhen.findTemplateTree(1).then(res => {
+        let keys = [];
+        res.object.data.map(item => {
+          if (item.selected === true) {
+            keys.push(String(item.id))
+          }
+        })
+        this.setState({templateTree2: res.object.data, pharVisible2: res.object.vislble, pharKeys: keys})
+      });
+
+      service.fuzhen.getdiagnosis().then(res => {
+        res.object.list && res.object.list.map(item => {
+          if(item.data === '妊娠期糖尿病') {
+            this.setState({isShowXTRouter: true})
+          }
+        })
+        const action = getDiagnisisAction(res.object.list);
+        store.dispatch(action);
+      });
+
+    })
   }
 
   handleStoreChange = () => {
@@ -139,21 +154,6 @@ export default class App extends Component {
   componentDidMount() {
     const { location = {} } = this.props;
     const { muneIndex } = this.state;
-    const doctorId = service.getQueryString('doctorId');
-
-    service.authorize(doctorId).then(res => {
-      window.sessionStorage.setItem('docToken', res.object);
-    })
-
-    service.fuzhen.getdiagnosis().then(res => {
-      res.object.list && res.object.list.map(item => {
-        if(item.data === '妊娠期糖尿病') {
-          this.setState({isShowXTRouter: true})
-        }
-      })
-      const action = getDiagnisisAction(res.object.list);
-      store.dispatch(action);
-    });
 
     if (location.pathname !== routers[muneIndex].path) {
       this.props.history.push(routers[muneIndex].path);

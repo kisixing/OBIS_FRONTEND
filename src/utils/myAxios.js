@@ -2,6 +2,7 @@ import axios from 'axios';
 import Qs from 'qs';
 import {Modal} from 'antd';
 import modal from './modal';
+import * as common from './common';
 
 export const getUrl = function (url){
     if(location.search){
@@ -65,7 +66,7 @@ const myAxios = axios.create({
     timeout: 10000,
     headers: {'X-Requested-With': 'XMLHttpRequest'},
     headers: {'Content-Type': 'application/json;charset=utf-8'},
-    headers: {'User-Token': window.sessionStorage.getItem('docToken')},
+    headers: {'User-Token': common.getCookie('docToken')},
     // headers: {'Content-Type': 'application/x-www-form-urlencode;charset=utf-8'},
 });
 

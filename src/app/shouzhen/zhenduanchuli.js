@@ -109,20 +109,6 @@ export default class extends Component{
             { name: 'nextRvisitWeek', type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
             { name: 'xiacsfdate', type:'date', valid: 'required', span: 4 },
             { name: 'xiacsfdatearea', type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
-            // {
-            //   name: "nextRvisit[下次复诊]",
-            //   span: 15,
-            //   type: [
-            //     {
-            //       type: "select",
-            //       showSearch: true,
-            //       options: baseData.rvisitOsTypeOptions,
-            //     },
-            //     { type: "select", showSearch: true, options: baseData.nextRvisitWeekOptions },
-            //     "date",
-            //     { type: "select", showSearch: true, options: baseData.ckappointmentAreaOptions }
-            //   ]
-            // }
           ]
         }
       ]
@@ -217,17 +203,24 @@ export default class extends Component{
   }
 
   getGPTimes() {
-    const { allData } = this.props;
-    const allPreghiss = allData.gestation.preghiss || [];
+    const { allFormData } = this.state;
+    const allPreghiss = allFormData.gestation.preghiss || [];
     if(allPreghiss.length > 0) {
-      let newYunc = parseInt(allPreghiss[allPreghiss.length - 1].pregnum) + 1;   
+      let newYunc = parseInt(allPreghiss[allPreghiss.length - 1].pregnum) + 1;  
       let times = 0;
+      let bool = true;
+      let preg = 0;
       this.setState({yunc: newYunc});
       allPreghiss&&allPreghiss.map(item => {
-        if(item.zuych === true) {
+        if(item.births == 1) {
           times++;
-        } else if (item.zaoch !== "") {
+        } else if(item.births > 1 && bool) {
           times++;
+          bool = false;
+          preg = item.pregnum;
+        }
+        if(preg !== item.pregnum) {
+          bool = true;
         }
       })
       this.setState({chanc: times});
@@ -237,14 +230,14 @@ export default class extends Component{
   renderZD(){
     const { info = {} } = this.props;
     const { diagnosi, diagList, diagnosislist, isMouseIn, isShowZhenduan, chanc, yunc } = this.state;
-    const delConfirm = (item) => {
-      Modal.confirm({
-        title: '您是否确认要删除这项诊断',
-        width: '300',
-        style: { left: '30%', fontSize: '18px' },
-        onOk: () => this.deldiagnosis(item.id, item.data)
-      });
-    };
+    // const delConfirm = (item) => {
+    //   Modal.confirm({
+    //     title: '您是否确认要删除这项诊断',
+    //     width: '300',
+    //     style: { left: '30%', fontSize: '18px' },
+    //     onOk: () => this.deldiagnosis(item.id, item.data)
+    //   });
+    // };
 
     // 诊断小弹窗操作
     const content = (item, i) => {
@@ -282,6 +275,8 @@ export default class extends Component{
       this.setState({
         isMouseIn: false,
         diagnosi: item
+      }, () => {
+        if(!param) this.adddiagnosis();
       })
       if(param) {
         if (this.timer) clearTimeout(this.timer);
@@ -333,7 +328,7 @@ export default class extends Component{
               <Col span={6}>{item.createdate}</Col>
               <Col span={6}>{item.doctor||info.doctor}</Col>
               <Col span={4}>
-                <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => delConfirm(item)} />
+                <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => this.deldiagnosis(item.id, item.data)} />
               </Col>
             </Row>
           ))}

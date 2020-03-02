@@ -20,36 +20,13 @@ export default class extends Component {
       rows: [
         {
           className: 'zhuanke-group', columns: [
-            { name: 'add_FIELD_gynecological_examination[妇科检查]', type: 'checkinput', radio: true, options: baseData.wjjOptions, span: 8 }
-          ]
-        },
-        {
-          filter: entity => !entity.add_FIELD_gynecological_examination || isShow(entity.add_FIELD_gynecological_examination), columns: [
-            { span: 1 },
-            { name: 'ckwaiy[外阴]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
-            { span: 1 },
-            { name: 'ckyind[阴道]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
-            { span: 1 },
-            { name: 'ckgongj[宫颈]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
-            { span: 1 },
-            { name: 'ckgongt[子宫]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions }
-          ]
-        },
-        {
-          filter: entity => !entity.add_FIELD_gynecological_examination || isShow(entity.add_FIELD_gynecological_examination), columns: [
-            { span: 1 },
-            { name: 'ckfuj[附件]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
-          ]
-        },
-        {
-          className: 'zhuanke-group', columns: [
             { name: 'ckjc[产科检查]', type: '**', span: 8 },
           ]
         },
         {
           columns:[
             { span: 1 },
-            { name: 'ckgongg[宫高](cm)', type: 'input', span: 4, valid: 'required' },
+            { name: 'ckgongg[宫高](cm)', type: 'input', span: 4 },
             { span: 1 },
             // {name:'ckfuw[腹围](cm)', type:'input', span:5}
           ]
@@ -60,9 +37,9 @@ export default class extends Component {
               {
                 columns: [
                   { span: 1, className: 'noContent', name: `[胎${index + 1}]`, type: '**' },
-                  { name: 'tx(bpm)[胎心率]', type: 'input', span: 4 },
+                  { name: 'tx(bpm)[胎心率]', type: 'input', span: 4, valid: 'required' },
                   { span: 1 },
-                  { name: 'xl[先露]', type: 'select', span: 4, valid: 'required', options: baseData2.xlOptions },
+                  { name: 'xl[先露]', type: 'select', span: 4, options: baseData2.xlOptions },
                   { span: 1 },
                   // { name: 'tw[胎位]', type: 'input', span: 5 },
                   // { span: 1 },
@@ -87,6 +64,29 @@ export default class extends Component {
               },
             ]
           })
+        },
+        {
+          className: 'zhuanke-group', columns: [
+            { name: 'add_FIELD_gynecological_examination[妇科检查]', type: 'checkinput', radio: true, options: baseData.wjjOptions, span: 8 }
+          ]
+        },
+        {
+          filter: entity => !entity.add_FIELD_gynecological_examination || isShow(entity.add_FIELD_gynecological_examination), columns: [
+            { span: 1 },
+            { name: 'ckwaiy[外阴]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
+            { span: 1 },
+            { name: 'ckyind[阴道]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
+            { span: 1 },
+            { name: 'ckgongj[宫颈]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
+            { span: 1 },
+            { name: 'ckgongt[子宫]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions }
+          ]
+        },
+        {
+          filter: entity => !entity.add_FIELD_gynecological_examination || isShow(entity.add_FIELD_gynecological_examination), columns: [
+            { span: 1 },
+            { name: 'ckfuj[附件]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
+          ]
         },
         // {
         //   className: 'zhuanke-group', columns: [

@@ -440,10 +440,18 @@ export const ckzijzhzOptions = toOptions(['无不适', '胎动好', '无不适�
  * 下次复诊 几周后
  */
 export const nextRvisitWeekOptions = [
-	{ label: '', value: '' },
-	{ label: '1周后', value: '1周后' },
-	{ label: '2周后', value: '2周后' },
-	{ label: '4周后', value: '4周后' },
+	{ label: '', value: '0' },
+	{ label: '1周后', value: '7' },
+	{ label: '2周后', value: '14' },
+	{ label: '3周后', value: '21' },
+	{ label: '4周后', value: '28' },
+	{ label: '5周后', value: '35' },
+	{ label: '1天后', value: '1' },
+	{ label: '2天后', value: '2' },
+	{ label: '3天后', value: '3' },
+	{ label: '4天后', value: '4' },
+	{ label: '5天后', value: '5' },
+	{ label: '6天后', value: '6' },
 ];
 
 /**

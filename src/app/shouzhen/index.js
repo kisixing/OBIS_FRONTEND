@@ -48,17 +48,19 @@ export default class Patient extends Component {
             info: {},
             tabs: tabs,
             step: tabs[0].key, // 从0开始
-            allData: null,
             ...store.getState(),
         }
         store.subscribe(this.handleStoreChange);
 
         this.componentWillUnmount = editors();
 
-        service.getuserDoc().then(res => this.setState({
-            info: res.object
-        }))
-        this.activeTab(this.state.step);
+        service.authorize(service.getQueryString('doctorId')).then(res => {
+            common.setCookie('docToken', res.code);
+            service.getuserDoc().then(res => this.setState({
+                info: res.object
+            }))
+            this.activeTab(this.state.step);
+        })
     }
 
     handleStoreChange = () => {
@@ -228,7 +230,7 @@ export default class Patient extends Component {
 
                 service.praseJSON(tab.entity);
                 console.log(tab.key, tab.entity);
-                this.setState({ step, allData: res.object }, () => {
+                this.setState({ step }, () => {
                   const form = document.querySelector(".shouzhen");
                   fireForm(form, "valid");
                 });
@@ -319,7 +321,7 @@ export default class Patient extends Component {
     }
 
     handleSave(key, type) {
-        const { tabs, step, allData, diagList } = this.state;
+        const { tabs, step, allFormData, diagList } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
@@ -384,7 +386,7 @@ export default class Patient extends Component {
                         const action = openMedicalAction(false);
                         store.dispatch(action);
                     }
-                    const Lis = service.praseJSON(allData.lis);
+                    const Lis = service.praseJSON(allFormData.lis);
                     if (Lis.ogtt && Lis.ogtt[0] && Lis.ogtt[0].label === "GDM") {
                         let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
                         getAllReminder(modalObj);
@@ -521,7 +523,7 @@ export default class Patient extends Component {
     }
 
     render() {
-        const { tabs, info, step, allData } = this.state;
+        const { tabs, info, step } = this.state;
         const printIvisit = () => {
             service.shouzhen.printPdfByFile().then(res => {
                 this.printPdf(res.object);
@@ -544,7 +546,7 @@ export default class Patient extends Component {
                     </span>
                   }>
                   <div className="bgWhite pad-mid " style={{ maxWidth: "1400px" }}>
-                    {step === key ? (<Content info={info} allData={allData} entity={{ ...entity }} onChange={(e, item) => this.handleChange(e, item, entity)}/>) : null}
+                    {step === key ? (<Content info={info} entity={{ ...entity }} onChange={(e, item) => this.handleChange(e, item, entity)}/>) : null}
                   </div>
                 </Tabs.TabPane>
               ))}

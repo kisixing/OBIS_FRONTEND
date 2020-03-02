@@ -184,12 +184,12 @@ export const zsOptions = toOptions('无不适,胎动好,无不适，胎动好');
 /**
  *心率
 */
-export const xlOptions = toOptions('齐,不齐{#FF3300}(input)');
+export const xinlvOptions = toOptions('齐,不齐{#FF3300}(input)');
 
 /**
  *触及
 */
-export const cjOptions = toOptions('未触及,可触及');
+export const cjOptions = toOptions('未触及,可触及{#FF3300}(input)');
 
 /**
  *肾区叩痛

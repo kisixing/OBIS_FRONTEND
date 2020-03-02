@@ -48,8 +48,10 @@ export default class extends Component {
                   value: common.countWeek(value)
                 })
             },
-            { name: "ckztingj(周)[停@@经]", type: "input", span: 6 },
-            { name: "ckzweek(周)[如@@孕]", type: "input", span: 6 },
+            { name: "ckztingj(周)[停@@经]", type: "input", span: 4 },
+            { name: "ckzcrl(mm)[CRL]", type: "input", span: 4 },
+            { name: "ckzbpd(mm)[NT]", type: "input", span: 4 },
+            { name: "ckzweek(周)[如@@孕]", type: "input", span: 4 },
           ]
         },
         // {

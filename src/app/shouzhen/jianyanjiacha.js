@@ -18,8 +18,7 @@ export default class extends Component{
             {name:'ckxuex[女方血型]', icon:'female-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
             {name:'ckrh[]', type: 'select',span:2, options: baseData.xuexing2Options},
             {span:2},
-            {name:'husbandCkxuex[男方血型]', icon:'male-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
-            {name:'husbandRh[]', type: 'select',span:2, options: baseData.xuexing2Options},
+            {name:'thalassemia[女方地贫]', icon:'female-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
         {
@@ -63,16 +62,6 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'thalassemia[女方地贫]', icon:'female-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
-          ]
-        },
-        {
-          columns:[
-            {name:'husbandThalassemia[男方地贫]', icon:'male-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
-          ]
-        },
-        {
-          columns:[
             {name:'add_FIELD_ndb[尿蛋白]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dbnOptions,span:15}
           ]
         },
@@ -93,6 +82,14 @@ export default class extends Component{
         {
           columns:[
             {name:'add_FIELD_GBS[GBS]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:15}
+          ]
+        },
+        {
+          columns:[
+            {name:'husbandCkxuex[男方血型]', icon:'male-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
+            {name:'husbandRh[]', type: 'select',span:2, options: baseData.xuexing2Options},
+            {span: 2},
+            {name:'husbandThalassemia[男方地贫]', icon:'male-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
         {

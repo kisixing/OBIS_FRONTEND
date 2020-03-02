@@ -12,14 +12,8 @@
     }
 
     .form-content {
-      // height: 32px;
-
       & > div {
         height: 100%;
-
-        // input {
-        //   height: 100%;
-        // }
       }
     }
     & > div {
@@ -53,13 +47,10 @@
         height: 32px;
         line-height: 30px;
         vertical-align: top;
-        // border: 1px solid #999;
       }
 
       .form-content {
         height: initial;
-        // border: 1px solid #999;
-
         & > div {
           height: 100%;
         }
@@ -155,13 +146,29 @@
   .ant-col-12 {
     width: 25%;
   }
-   .ant-col-36{
+  .ant-col-36{
     display: block;
     width: 25%;
     float: left;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
+  }
+  .long-ipt {
+    .form-item .form-content .form-item .form-content > div {
+      width: 292px !important;
+    }
+    .ant-col-12 {
+      width: 14%;
+    }
+  } 
+  .long-ipt-2 {
+    .form-item .form-content .form-item .form-content > div {
+      width: 470px !important;
+    }
+    .ant-col-12 {
+      width: 6.6%;
+    }
   }
 }
 
@@ -176,8 +183,6 @@
   .shouzhen-pop {
     position: relative;
     .shouzhen-list {
-      // position: absolute;
-      // z-index: 10;
       background-color: #f9f9f9;
     }
     .ant-tabs-tabpane {
@@ -203,45 +208,6 @@
       vertical-align: middle;
   }
 }
-
-// .form-item {
-//   .form-label {
-//     height: 32px;
-//     line-height: 30px;
-//     vertical-align: middle;
-//   }
-
-//   .form-content {
-//     height: 32px;
-
-//     & > div {
-//       height: 100%;
-
-//       // input {
-//       //   height: 100%;
-//       // }
-//     }
-//   }
-// }
-
-// 孕产史table样式修改
-// .table-wrapper {
-//   .form-item {
-//     .form-label {
-//       height: 32px;
-//       line-height: 30px;
-//       vertical-align: top;
-//     }
-
-//     .form-content {
-//       height: initial;
-
-//       & > div {
-//         height: 100%;
-//       }
-//     }
-//   }
-// }
 
 .yun-can-shi {
   .ant-table-small .ant-table-tbody>tr>td {

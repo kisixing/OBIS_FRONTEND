@@ -221,14 +221,14 @@ export default class Patient extends Component {
    */
   renderZD() {
     const { diagnosi, diagList, diagnosislist, isShowZhenduan, isMouseIn, relatedObj } = this.state;
-    const delConfirm = (item) => {
-      Modal.confirm({
-        title: '您是否确认要删除这项诊断',
-        width: '300',
-        style: { left: '-300px', fontSize: '18px' },
-        onOk: () => this.deldiagnosis(item.id, item.data)
-      });
-    };
+    // const delConfirm = (item) => {
+    //   Modal.confirm({
+    //     title: '您是否确认要删除这项诊断',
+    //     width: '300',
+    //     style: { left: '-300px', fontSize: '18px' },
+    //     onOk: () => this.deldiagnosis(item.id, item.data)
+    //   });
+    // };
 
     // 诊断小弹窗操作
     const content = (item, i) => {
@@ -300,6 +300,8 @@ export default class Patient extends Component {
       this.setState({
         isMouseIn: false,
         diagnosi: item
+      }, () => {
+        if(!param) this.adddiagnosis();
       })
       if(param) {
         if (this.timer) clearTimeout(this.timer);
@@ -335,7 +337,7 @@ export default class Patient extends Component {
                   <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
                 </div>
               </Popover>
-              <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => delConfirm(item)} />
+              <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => this.deldiagnosis(item.id, item.data)} />
             </li>
           ))}
         </ol>
