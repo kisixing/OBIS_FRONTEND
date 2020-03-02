@@ -31,19 +31,97 @@ export default class Patient extends Component {
       //                 { 'week': 11, 'gonggao': 13.5 }, { 'week': 13, 'gonggao': 15 }, { 'week': 15, 'gonggao': 16.5 }, { 'week': 17, 'gonggao': 18.5 }, { 'week': 19, 'gonggao': 19 },
       //                 { 'week': 21, 'gonggao': 20.5 }, { 'week': 23, 'gonggao': 21 }, { 'week': 25, 'gonggao': 22.5 }, { 'week': 26, 'gonggao': 22 }, { 'week': 27, 'gonggao': 22 }],
 
+      topAcLine: [{ 'x': 5.5, 'y': 10.5 }, { 'x': 10, 'y': 15.8 }, { 'x': 15, 'y': 22 },
+                  { 'x': 20, 'y': 27.7 }, { 'x': 25, 'y': 32.8 }, { 'x': 30, 'y': 37 }],
+      middleAcLine: [{ 'x': 5.5, 'y': 9.3 }, { 'x': 10, 'y': 14.4 }, { 'x': 15, 'y': 20 },
+                     { 'x': 20, 'y': 25.2 }, { 'x': 25, 'y': 30 }, { 'x': 30, 'y': 34 }],
+      bottomAcLine: [{ 'x': 5.5, 'y': 8 }, { 'x': 10, 'y': 12.8 }, { 'x': 15, 'y': 18 },
+                     { 'x': 20, 'y': 22.8 }, { 'x': 25, 'y': 27.2 }, { 'x': 30, 'y': 31}],
+      acPoints: [
+        { 'x': 5.5, 'y': 10.5 },
+        { 'x': 10, 'y': 15.8 },
+        { 'x': 15, 'y': 22 },
+        { 'x': 20, 'y': 27.7 },
+        { 'x': 25, 'y': 32.8 },
+        { 'x': 30, 'y': 37 },
+        { 'x': 30, 'y': 31 },
+        { 'x': 25, 'y': 27.2 },
+        { 'x': 20, 'y': 22.8 },
+        { 'x': 15, 'y': 18 },
+        { 'x': 10, 'y': 12.8 },
+        { 'x': 5.5, 'y': 8 },
+        { 'x': 5.5, 'y': 10.5 },
+      ],
+
+      topFlLine: [{ 'x': 2, 'y': 9 }, { 'x': 5.5, 'y': 20.7 }, { 'x': 10, 'y': 34 },
+                  { 'x': 15, 'y': 47.5 }, { 'x': 20, 'y': 58.5 }, { 'x': 25, 'y': 68.8 }, { 'x': 30, 'y': 77 }],
+      middleFlLine: [{ 'x': 2, 'y': 6 }, { 'x': 5.5, 'y': 17.4 }, { 'x': 10, 'y': 30.7 },
+                     { 'x': 15, 'y': 43 }, { 'x': 20, 'y': 54 }, { 'x': 25, 'y': 63.5 }, { 'x': 30, 'y': 72 }],
+      bottomFlLine: [{ 'x': 2, 'y': 2.5 }, { 'x': 5.5, 'y': 13.3 }, { 'x': 10, 'y': 26.4 },
+                     { 'x': 15, 'y': 38.6 }, { 'x': 20, 'y': 49.5 }, { 'x': 25, 'y': 59.2 }, { 'x': 30, 'y': 67 }],
+      flPoints: [
+        { 'x': 2, 'y': 9 },
+        { 'x': 5.5, 'y': 20.7 },
+        { 'x': 10, 'y': 34 },
+        { 'x': 15, 'y': 47.5 },
+        { 'x': 20, 'y': 58.5 },
+        { 'x': 25, 'y': 68.8 },
+        { 'x': 30, 'y': 77 },
+        { 'x': 30, 'y': 67 },
+        { 'x': 25, 'y': 59.2 },
+        { 'x': 20, 'y': 49.5 },
+        { 'x': 15, 'y': 38.6 },
+        { 'x': 10, 'y': 26.4 },
+        { 'x': 5.5, 'y': 13.3 },
+        { 'x': 2, 'y': 2.5 },
+        { 'x': 2, 'y': 9 },
+      ], 
+
+      topBpdLine: [{ 'x': 2, 'y': 25 }, { 'x': 5.5, 'y': 38 }, { 'x': 10, 'y': 53.5 }, { 'x': 15, 'y': 69.2 },
+                   { 'x': 20, 'y': 82.5 }, { 'x': 25, 'y': 93.4 }, { 'x': 27.5, 'y': 97.6 }, { 'x': 30, 'y': 100.8 }],
+      middleBpdLine: [{ 'x': 2, 'y': 20.5 }, { 'x': 5.5, 'y': 32.7 }, { 'x': 10, 'y': 47.5 }, { 'x': 15, 'y': 63 },
+                      { 'x': 20, 'y': 76.7 }, { 'x': 25, 'y': 87.5 }, { 'x': 27.5, 'y': 91.7 }, { 'x': 30, 'y': 94 }],
+      bottomBpdLine: [{ 'x': 2, 'y': 14.8 }, { 'x': 5.5, 'y': 26.7 }, { 'x': 10, 'y': 41.5 }, { 'x': 15, 'y': 56.5 },
+                      { 'x': 20, 'y': 70 }, { 'x': 25, 'y': 80.8 }, { 'x': 27.5, 'y': 84.7 }, { 'x': 30, 'y': 87 }],
+      bdpPoints: [
+        { 'x': 2, 'y': 25 },
+        { 'x': 5.5, 'y': 38 },
+        { 'x': 10, 'y': 53.5 },
+        { 'x': 15, 'y': 69.2 },
+        { 'x': 20, 'y': 82.5 },
+        { 'x': 25, 'y': 93.4 },
+        { 'x': 27.5, 'y': 97.6 },
+        { 'x': 30, 'y': 100.8 },
+        { 'x': 30, 'y': 87 },
+        { 'x': 27.5, 'y': 84.7 },
+        { 'x': 25, 'y': 80.8 },
+        { 'x': 20, 'y': 70 },
+        { 'x': 15, 'y': 56.5 },
+        { 'x': 10, 'y': 41.5 },
+        { 'x': 5.5, 'y': 26.7 },
+        { 'x': 2, 'y': 14.8 },
+        { 'x': 2, 'y': 25 }
+      ],
+
       bmiNum: '',
       bmiTz: '',
       bmiIntro: '',
       bmiList: [],
       pregList: [],
+      fetusList: [],
     };
   }
 
   componentDidMount() {
     service.yunqi.getPacsGrowth().then(res => {
-      demodata = res.object;
-      drawgrid('canvas');
-      printline();
+      // demodata = res.object;
+      // drawgrid('canvas');
+      // printline();
+      this.setState({
+        fetusList: res.object
+      }, () => {
+        this.drawFetusCanvas()
+      })
     });
 
     // service.yunqi.getPreg().then(res => {
@@ -66,12 +144,44 @@ export default class Patient extends Component {
         bmiNum: res.object.bmi,
         bmiTz: res.object.cktizh,
         bmiList: res.object.list
-      }, () => { this.drawBmiCanvas() })
+      }, () => { 
+        this.drawBmiCanvas() 
+      })
     })
 
     // this.drawPregCanvas();
     this.drawBmiCanvas();
+    this.drawFetusCanvas();
   }
+
+  // 判断某个点是否在多边形内部
+judgeAreas(dot, coordinates) {
+  var x = dot.x,y=dot.y;
+  var crossNum = 0;
+  for(var i=0;i<coordinates.length-1;i++){
+     var start = coordinates[i];
+     var end = coordinates[i+1];
+     // 起点、终点斜率不存在的情况
+     if(start.x===end.x) {
+        // 因为射线向右水平，此处说明不相交
+        if(x>start.x) continue;
+        if((end.y>start.y&&y>=start.y && y<=end.y) || (end.y<start.y&&y>=end.y && y<=start.y)){
+           crossNum++;
+        }
+        continue;
+     }
+     // 斜率存在的情况，计算斜率
+     var k=(end.y-start.y)/(end.x-start.x);
+     // 交点的x坐标
+     var x0 = (y-start.y)/k+start.x;
+     // 因为射线向右水平，此处说明不相交
+     if(x>x0) continue;
+     if((end.x>start.x&&x0>=start.x && x0<=end.x) || (end.x<start.x&&x0>=end.x && x0<=start.x)){
+        crossNum++;
+     }
+  }
+  return crossNum%2===1;
+};
 
   //水平坐标轴标尺 
   setVerRules(ctx, origin, Len, color, lineWidth, step, int) {
@@ -108,24 +218,26 @@ export default class Patient extends Component {
   }
 
   //绘制曲线
-  drawScaleLine(ctx, oringin, steps, data, params, color, shape) {
+  drawScaleLine(ctx, oringin, steps, data, hasPoint, color, shape, lineWidth) {
     for (let i = 0; i < data.length; i++) {
       //绘制曲线
       ctx.beginPath();
       ctx.setLineDash(shape);
-      ctx.lineWidth = 2;
+      ctx.lineWidth = lineWidth;
       if(i < data.length - 1) {
-        ctx.moveTo(oringin[0] + steps[0] * data[i][params[0]], oringin[1] - steps[1] * data[i][params[1]]);
-        ctx.lineTo(oringin[0] + steps[0] * data[i + 1][params[0]], oringin[1] - steps[1] * data[i + 1][params[1]]);
+        ctx.moveTo(oringin[0] + steps[0] * data[i].x, oringin[1] - steps[1] * data[i].y);
+        ctx.lineTo(oringin[0] + steps[0] * data[i + 1].x, oringin[1] - steps[1] * data[i + 1].y);
       }
       ctx.strokeStyle = color;
       ctx.stroke();
       //绘制红点
-      ctx.beginPath();
-      ctx.setLineDash([]);
-      ctx.arc(oringin[0] + steps[0] * data[i][params[0]], oringin[1] - steps[1] * data[i][params[1]], 3, 0, 2*Math.PI);
-      ctx.fillStyle = 'red';
-      ctx.fill();
+      if(hasPoint) {
+        ctx.beginPath();
+        ctx.setLineDash([]);
+        ctx.arc(oringin[0] + steps[0] * data[i].x, oringin[1] - steps[1] * data[i].y, 3, 0, 2*Math.PI);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+      }
     }
   }
 
@@ -215,14 +327,14 @@ export default class Patient extends Component {
       }
       item.week = item.week - 1;
     })
-    console.log(newBmiList, '31')
+    console.log(newBmiList, 'bmi1')
     newBmiList = newBmiList.filter(i => i.week >= 0 && i.week <= 39 && i.tizhong >= -6 && i.tizhong <= 20);
     // 统一曲线 x,y 表示
     newBmiList.length > 0 && newBmiList.map(item => {
       item.x = item.week;
       item.y = item.tizhong;
     })
-    const bmiColor = newBmiList.length > 0 && judge(newBmiList[newBmiList.length-1], bmiDashPoints) ? '#6BB6FF' : 'red';
+    const bmiColor = newBmiList.length > 0 && this.judgeAreas(newBmiList[newBmiList.length-1], bmiDashPoints) ? '#6BB6FF' : 'red';
 
     const canvas = document.getElementById('bmiCanvas');
     const context = canvas.getContext("2d");
@@ -247,7 +359,7 @@ export default class Patient extends Component {
     context.fillStyle = '#000';
     //x轴线
     const setVertical = () => {
-      context.strokeStyle = 'gray'; // 横轴线
+      context.strokeStyle = 'gray'; 
       for (var i = 0; i < xCount; i++) {
         context.beginPath();
         context.lineWidth = 0.5;
@@ -289,16 +401,155 @@ export default class Patient extends Component {
     this.setVerRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (yCount - 1) * yStep, 'black', 1, yStep, 5);
     this.setHorRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (xCount - 1) * xStep, 'black', 1, xStep, 5);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine1, ["x", "y"], 'gray', [8]);
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine2, ["x", "y"], 'gray', [8]);
-    console.log(newBmiList, '3122')
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], newBmiList, ["x", "y"], bmiColor, [0]);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine1, true, 'gray', [8], 2);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine2, true, 'gray', [8], 2);
+    console.log(newBmiList, 'bmi2')
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], newBmiList, true, bmiColor, [0], 2);
+  }
+
+  drawFetusCanvas() {
+    const { topAcLine, middleAcLine, bottomAcLine, topFlLine, middleFlLine, bottomFlLine, topBpdLine, middleBpdLine, bottomBpdLine, 
+            fetusList, acPoints, flPoints, bdpPoints } = this.state;
+    let bpdArr = [], flArr = [], acArr = [];
+    if(!!fetusList) {
+      for (var i = 0; i < fetusList.length; i++) {
+        var bpdObj = {};
+        var flObj = {};
+        var acObj = {};
+        bpdObj.x = parseInt(fetusList[i].yunzh) - 10;
+        bpdObj.y = parseInt(fetusList[i].bpd);
+        bpdArr.push(bpdObj);
+    
+        flObj.x = parseInt(fetusList[i].yunzh) - 10;
+        flObj.y = parseInt(fetusList[i].fl);
+        flArr.push(flObj);
+    
+        acObj.x = parseInt(fetusList[i].yunzh) - 10;
+        acObj.y = parseInt(fetusList[i].ac);
+        acArr.push(acObj);
+      }
+    }
+  
+    const canvas = document.getElementById('fetusCanvas');
+    const context = canvas.getContext("2d");
+    canvas.width = 550;
+    canvas.height = 600;
+    const baseLeft = 60;
+    const baseTop = 30;
+    const xStep = 10;
+    const yStep = 15;
+    const xCount = 56;
+    const yCount = 31;
+
+    context.font = 'bold 16px KaiTi';
+    context.textAlign='center';
+    context.fillText('胎儿生长曲线', canvas.width / 2, 20);
+
+    context.fillStyle = '#000';
+
+    //x轴线
+    const setVertical = () => {
+      context.strokeStyle = 'gray';
+      for (var i = 0; i < xCount; i++) {
+        context.beginPath();
+        context.lineWidth = 0.5;
+        context.moveTo(baseLeft, baseTop + xStep * i);
+        context.lineTo(baseLeft + (yCount - 1) * yStep, baseTop + xStep * i);
+        
+        context.textBaseline='middle';
+        context.fillStyle = '#003366';
+        context.font = 'bold 12px consolas';
+        if (i * 2 % 10 === 0) { 
+          context.lineWidth = 1;
+          context.strokeStyle = 'gray';
+          context.fillText(i * 2, baseLeft - 20, (xCount - 1) * xStep + baseTop - i * xStep);
+        }
+        context.stroke();
+      }
+      // context.fillText('体重增长(kg)', baseLeft - 20, 30);
+    }
+
+    //y轴线
+    const setHorizontal = () => {
+      for (var i = 0; i < yCount; i++) {
+        context.beginPath();
+        context.lineWidth = 0.5;
+        context.moveTo(yStep * i + baseLeft, baseTop);
+        context.lineTo(yStep * i + baseLeft, baseTop + xStep * (xCount - 1));
+
+        context.textAlign = 'center';
+        context.fillStyle = '#003366';
+        context.font = 'bold 12px consolas';
+        if(i % 5 === 0) {
+          context.lineWidth = 1;
+          context.strokeStyle = 'black';
+          context.fillText(i + 10, baseLeft + i * yStep, xStep * xCount + baseTop + 5);
+        }
+        context.stroke();
+      }
+      // context.fillText('孕周(周)', yStep * yCount + baseLeft + 15, (xCount - 1) * xStep + baseTop);
+    }
+    setVertical();
+    setHorizontal();
+    this.setVerRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (yCount - 1) * yStep, 'black', 1, yStep, 5);
+    this.setHorRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (xCount - 1) * xStep, 'black', 1, xStep, 5);
+
+    //手动绘制标尺最右端点
+    //BPD
+    context.fillText('+2SD', baseLeft + yCount * yStep, baseTop + 4.2 * xStep);
+    context.fillText('Mean', baseLeft + yCount * yStep, baseTop + 8 * xStep);
+    context.fillText('-2SD', baseLeft + yCount * yStep, baseTop + 11.5 * xStep);
+    //FL
+    context.fillText('+2SD', baseLeft + yCount * yStep, baseTop + 16.5 * xStep);
+    context.fillText('Mean', baseLeft + yCount * yStep, baseTop + 19 * xStep);
+    context.fillText('-2SD', baseLeft + yCount * yStep, baseTop + 21.5 * xStep);
+    //AC
+    context.fillText(37, baseLeft + yCount * yStep, baseTop + 36.5 * xStep);
+    context.fillText(34, baseLeft + yCount * yStep, baseTop + 38 * xStep);
+    context.fillText(31, baseLeft + yCount * yStep, baseTop + 39.5 * xStep);
+
+    context.font = 'bold 18px consolas';
+    context.textAlign = 'center';
+    context.fillText('BPD', baseLeft + (yCount - 6) * yStep, baseTop + 6 * xStep);
+    context.fillText('FL', baseLeft + (yCount - 6) * yStep, baseTop + 28 * xStep);
+    context.fillText('AC', baseLeft + (yCount - 6) * yStep, baseTop + 44* xStep);
+
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], topAcLine, false, 'gray', [0], 1);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], middleAcLine, false, '#787878', [0], 2);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bottomAcLine, false, 'gray', [0], 1);
+
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], topFlLine, false, 'gray', [0], 1);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], middleFlLine, false, '#787878', [0], 2);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bottomFlLine, false, 'gray', [0], 1);
+
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], topBpdLine, false, 'gray', [0], 1);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], middleBpdLine, false, '#787878', [0], 2);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bottomBpdLine, false, 'gray', [0], 1);
+
+    console.log(bpdArr, flArr, acArr, '生长曲线')
+    if (bpdArr.length > 0) {
+      let bpdColor = this.judgeAreas(bpdArr[bpdArr.length - 1], bdpPoints) ? '#6BB6FF' : 'red';
+      this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bpdArr, true, bpdColor, [0], 4);
+    }
+
+    if (flArr.length > 0) {
+      let flColor = this.judgeAreas(flArr[flArr.length - 1], flPoints) ? '#6BB6FF' : 'red';
+      this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], flArr, true, flColor, [0], 4);
+    }
+
+    if (acArr.length > 0) {
+      let acColor = this.judgeAreas(acArr[acArr.length - 1], acPoints) ? '#6BB6FF' : 'red';
+      this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], acArr, true, acColor, [0], 4);
+    }
   }
 
   render() {
     return (
       <Page className="yunqi font-16 ant-col">
-        <canvas id="canvas" className='canvas'>
+        {/* <canvas id="canvas" className='canvas'>
+          您的浏览器不支持canvas，请更换浏览器.
+        </canvas> */}
+        <canvas id="fetusCanvas" className='fetusCanvas'>
           您的浏览器不支持canvas，请更换浏览器.
         </canvas>
         {/* <canvas id="pregCanvas" style={{border: "1px solid gray"}}>

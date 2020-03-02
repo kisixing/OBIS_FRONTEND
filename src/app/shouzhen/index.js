@@ -70,7 +70,7 @@ export default class Patient extends Component {
         const tab = tabs.filter(t => t.key === step).pop() || {};
         // if (!tab.init) {
             service.shouzhen.getForm(tab.key).then(res => {
-                const action = getAllFormDataAction(res.object);
+                const action = getAllFormDataAction(service.praseJSON(res.object));
                 store.dispatch(action);
                 // 如果想要使下面的数据转换放到对应的tab文件里面去，请实现entityParse这个方法，参考tab-0：yunfuxinxi.js这个文件
                 const entityParse = tab.entityParse || (i => i);
@@ -79,7 +79,7 @@ export default class Patient extends Component {
                 tab.init = true;
                 if (tab.key === 'tab-0') {
                     tab.entity = res.object.gravidaInfo
-                    tab.entity['useridtype'] = JSON.parse(res.object.gravidaInfo.useridtype);
+                    // tab.entity['useridtype'] = JSON.parse(res.object.gravidaInfo.useridtype);
                     // 逗号隔开string地址
                     const root = res.object.gravidaInfo.userconstant;
                     const rootArr = root.split(',');

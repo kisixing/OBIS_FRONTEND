@@ -13,7 +13,7 @@ export const getUrl = function (url){
     }
 };
 
-const getQueryString = function (name) {
+export const getQueryString = function (name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return r[2];
@@ -65,7 +65,7 @@ const myAxios = axios.create({
     timeout: 10000,
     headers: {'X-Requested-With': 'XMLHttpRequest'},
     headers: {'Content-Type': 'application/json;charset=utf-8'},
-    headers: {'User-Token': getQueryString('token')},
+    headers: {'User-Token': window.sessionStorage.getItem('docToken')},
     // headers: {'Content-Type': 'application/x-www-form-urlencode;charset=utf-8'},
 });
 

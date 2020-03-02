@@ -136,6 +136,33 @@ export default class App extends Component {
     this.setState(store.getState());
   };
 
+  componentDidMount() {
+    const { location = {} } = this.props;
+    const { muneIndex } = this.state;
+    const doctorId = service.getQueryString('doctorId');
+
+    service.authorize(doctorId).then(res => {
+      window.sessionStorage.setItem('docToken', res.object);
+    })
+
+    service.fuzhen.getdiagnosis().then(res => {
+      res.object.list && res.object.list.map(item => {
+        if(item.data === '妊娠期糖尿病') {
+          this.setState({isShowXTRouter: true})
+        }
+      })
+      const action = getDiagnisisAction(res.object.list);
+      store.dispatch(action);
+    });
+
+    if (location.pathname !== routers[muneIndex].path) {
+      this.props.history.push(routers[muneIndex].path);
+    }
+    this.componentWillUnmount = service.watchInfo(info =>
+      this.setState(info.object)
+    );
+  }
+
   setCheckedKeys(params) {
     const { checkedKeys, templateTree1 } = this.state;
     const diagnosis = params.diagnosisList;
@@ -155,7 +182,7 @@ export default class App extends Component {
     if(bmi > 30) checkedKeys.push(getKey("肥胖（BMI>30kg/m)"));
     if(age > 35) checkedKeys.push(getKey("年龄>35岁"));
     if(preghiss.length >= 3) checkedKeys.push(getKey("产次≥3"));
-    if(xiyan && xiyan[0].label ===" 有") checkedKeys.push(getKey("吸烟"));
+    if(!!xiyan && xiyan[0].label ===" 有") checkedKeys.push(getKey("吸烟"));
 
     if(checkedKeys.length > 0) {
       const action = isMeetPharAction(true);
@@ -170,27 +197,6 @@ export default class App extends Component {
 
     const action = checkedKeysAction(checkedKeys);
     store.dispatch(action);
-  }
-
-  componentDidMount() {
-    const { location = {} } = this.props;
-    const { muneIndex } = this.state;
-    service.fuzhen.getdiagnosis().then(res => {
-      res.object.list && res.object.list.map(item => {
-        if(item.data === '妊娠期糖尿病') {
-          this.setState({isShowXTRouter: true})
-        }
-      })
-      const action = getDiagnisisAction(res.object.list);
-      store.dispatch(action);
-    });
-
-    if (location.pathname !== routers[muneIndex].path) {
-      this.props.history.push(routers[muneIndex].path);
-    }
-    this.componentWillUnmount = service.watchInfo(info =>
-      this.setState(info.object)
-    );
   }
 
   /**

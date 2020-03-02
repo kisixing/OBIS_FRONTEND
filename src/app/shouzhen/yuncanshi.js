@@ -21,7 +21,8 @@ export default class extends Component{
           editable: true,
           iseditable: ({ entity }) => entity.datagridYearMonth !== "本孕",
           options: baseData.pregnanciesColumns,
-          className: "table-wrapper"
+          className: "table-wrapper",
+          isPreghiss: true,
         }
       ]
     };

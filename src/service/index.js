@@ -55,6 +55,12 @@ export default {
         return myAxios.post('/outpatientWriteRestful/addHighrisk', {userid, highrisk, level});
     },
     /**
+     * 获取token
+     */
+    authorize: function(doctorId){
+        return myAxios.post('/outpatientRestful/authorize', {doctorId: doctorId});
+    },
+    /**
      * 复诊所需API
      */
     fuzhen: Object.assign(fuzhen, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),

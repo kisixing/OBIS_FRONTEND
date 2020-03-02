@@ -64,11 +64,11 @@ class TableItem extends Component {
   }
 
   onChange = (e, value) => {
-    const { entity, name } = this.props;
+    const { entity, name, isPreghiss } = this.props;
     if (typeof value === 'object') value = value.label;
     // console.log(entity, name, value, '321')
     let bool = false;
-    if(entity.pregnum) {
+    if(isPreghiss) {
       let threeCount = 0;
       let fourCount = 0;
       if (!!entity.zir) threeCount++;
@@ -83,7 +83,7 @@ class TableItem extends Component {
       if( (name === 'zir' && value && fourCount > 0) || 
           (name === 'reng' && value && fourCount > 0) ||
           (name === 'yinch' && value && fourCount > 0) ) {
-          message.error('早产、足月产、顺产、手术产式中已有数据！');
+          message.error('早产、足月产、顺产、手术产式中已有数据！', 4);
           bool = true;
       }
 
@@ -91,38 +91,38 @@ class TableItem extends Component {
           (name === 'zuych' && value === 'true' && threeCount > 0) ||
           (name === 'shunch' && value === 'true' && threeCount > 0) ||
           (name === 'shouShuChanType' && value && threeCount > 0) ) {
-          message.error('自然流产、人工流产、引产中已有数据！');
+          message.error('自然流产、人工流产、引产中已有数据！', 4);
           bool = true;
       }
 
       if (name === 'zir' && value && (entity.reng || entity.yinch)) {
-        message.error('人工流产、引产中已有数据！');
+        message.error('人工流产、引产中已有数据！', 4);
         bool = true;
       } 
       if (name === 'reng' && value && (entity.zir || entity.yinch)) {
-        message.error('自然流产、引产中已有数据！');
+        message.error('自然流产、引产中已有数据！', 4);
         bool = true;
       }
       if (name === 'yinch' && value && (entity.zir || entity.reng)) {
-        message.error('自然流产、人工流产中已有数据！');
+        message.error('自然流产、人工流产中已有数据！', 4);
         bool = true;
       }
 
       if (name === 'zaoch' && value && entity.zuych === 'true') {
-        message.error('足月产已有数据！');
+        message.error('足月产已有数据！', 4);
         bool = true;
       }
       if (name === 'zuych' && value === 'true' && entity.zaoch)  {
-        message.error('早产已有数据！');
+        message.error('早产已有数据！', 4);
         bool = true;
       }
 
       if (name === 'shunch' && value === 'true' && entity.shouShuChanType) {
-        message.error('手术产式已有数据！');
+        message.error('手术产式已有数据！', 4);
         bool = true;
       }
       if (name === 'shouShuChanType' && value && entity.shunch === 'true') {
-        message.error('顺产已有数据！');
+        message.error('顺产已有数据！', 4);
         bool = true;
       }
     }
