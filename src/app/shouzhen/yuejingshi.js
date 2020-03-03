@@ -64,7 +64,7 @@ export default class extends Component {
         {
           columns:[
             { span: 1 },
-            {name:'add_FIELD_grqita[其@他]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            {name:'add_FIELD_grqita[其@他]', className: 'long-ipt', type:'checkinput-5',radio:true, options: baseData.nhOptions,span: 15}
           ]
         },
         {
@@ -103,7 +103,7 @@ export default class extends Component {
         {
           columns:[
             { span: 1 },
-            {name:'add_FIELD_jzqita[其@他]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            {name:'add_FIELD_jzqita[其@他]', className: 'long-ipt', type:'checkinput-5',radio:true, options: baseData.nhOptions,span: 15}
           ]
         },
         {

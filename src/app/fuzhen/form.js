@@ -85,12 +85,12 @@ export default class FuzhenForm extends Component {
         'signWord': ['内分泌疾病']
       },
       'hypertension': {
-        'diagKeyword': ['高血压', '子痫', '肾炎', '肾病', '红斑狼疮'],
+        'diagKeyword': ['高血压', '子痫', '肾炎', '肾脏', '肾病', '红斑狼疮'],
         'digWord': ['红斑狼疮', '风湿性关节炎', '类风湿性关节炎', '硬皮病'],
         'signWord': ['高血压', '肾病', '免疫系统疾病']
       },
       'coronary': {
-        'diagKeyword': [],
+        'diagKeyword': ['心脏', '心肌', '心包', '心血管'],
         'digWord': ['冠心病', '心力衰竭', '妊娠合并心力衰竭', '风湿性心脏病', '妊娠合并风湿性心脏病', '先天性心脏病', '心肌病'],
         'signWord': ['心血管疾病', '血液系统疾病']
       },
@@ -549,6 +549,8 @@ export default class FuzhenForm extends Component {
             })
           })
         });
+      } else {
+        message.error('必填项不能为空！');
       }
     });
   }

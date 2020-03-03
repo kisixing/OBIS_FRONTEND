@@ -293,6 +293,83 @@ export const tableKey = () => [
 		width: 50,
 		options: ckfuzhOptions
 	},
+
+	// {
+	// 	title: '胎儿超声',
+	// 	children:[
+	// 		{
+	// 			title: '胎儿体重',
+	// 			key: 'fetalUltrasound.tetz',
+	// 		},
+	// 		{
+	// 			title: 'AVF',
+	// 			key: 'fetalUltrasound.teafv',
+	// 		},
+	// 		{
+	// 			title: '脐血流',
+	// 			key: 'fetalUltrasound.teqxl',
+	// 		},
+	// 	]
+	// },
+	// {
+	// 	title: '空腹血糖',
+	// 	key: 'fpg',
+	// },
+	// {
+	// 	title: '餐后2H',
+	// 	key: 'pbg2h',
+	// },
+	// {
+	// 	title: 'HbAlc',
+	// 	key: 'hbAlc',
+	// },
+	// {
+	// 	title: '胰岛素(U)方案',
+	// 	children:[
+	// 		{
+	// 			title: '早',
+	// 			key: 'riMoDosage',
+	// 		},
+	// 		{
+	// 			title: '中',
+	// 			key: 'riNoDosage',
+	// 		},
+	// 		{
+	// 			title: '晚',
+	// 			key: 'riEvDosage',
+	// 		},
+	// 		{
+	// 			title: '睡前',
+	// 			key: 'riSlDosage',
+	// 		},
+	// 	]
+	// },
+	// {
+	// 	title: '尿蛋白',
+	// 	children:[
+	// 		{
+	// 			title: '定性',
+	// 			key: 'upState',
+	// 		},
+	// 		{
+	// 			title: '定量',
+	// 			key: 'upDosage24h',
+	// 		},
+	// 	]
+	// },
+	// {
+	// 	title: '心率',
+	// 	key: 'heartRate',
+	// },
+	// {
+	// 	title: '用药方案',
+	// 	key: 'medicationPlan.name',
+	// },
+	// {
+	// 	title: '化验',
+	// 	key: 'examination',
+	// },
+
 	// {
 	// 	title: '其他',
 	// 	key: 'ckzijzhzqt',
@@ -316,6 +393,10 @@ export const tableKey = () => [
 		// 	}
 		// ]
 	},
+	// {
+	// 	title: '医生',
+	// 	key: 'sign',
+	// },
 ];
 
 /**
@@ -401,9 +482,11 @@ export const xlOptions = [
  */
 export const wzOptions = [
 	{ label: '左', value: '左' },
-	{ label: '上', value: '上' },
-	{ label: '右下', value: '右下' },
+	{ label: '右', value: '右' },
+	{ label: '左上', value: '左上' },
+	{ label: '右上', value: '右上' },
 	{ label: '左下', value: '左下' },
+	{ label: '右下', value: '右下' },
 ];
 
 /**

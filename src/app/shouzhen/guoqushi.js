@@ -52,7 +52,6 @@ export default class extends Component {
             {
               name: "add_FIELD_qitabingshi[其@他]",
               type: "checkinput",
-              valid: "required",
               className: 'long-ipt-2',
               radio: true,
               options: baseData.wssOptions,

@@ -345,7 +345,7 @@ export default class extends Component{
 
             <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
                  onFocus={() => this.setState({isShowZhenduan: true})}
-                 onBlur={() => this.setState({isShowZhenduan: false})}
+                 onBlur={() => setTimeout(() => this.setState({isShowZhenduan: false}), 200)}
                  />
             { isShowZhenduan || isMouseIn ?
             <div className="shouzhen-list" onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}>

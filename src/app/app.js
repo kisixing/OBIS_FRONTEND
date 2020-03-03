@@ -30,7 +30,7 @@ import Yingxiang from "bundle-loader?lazy&name=yingxiang!./yingxiang";
 import Jianyan from "bundle-loader?lazy&name=jianyan!./jianyan";
 import Yunqi from "bundle-loader?lazy&name=yunqi!./yunqi";
 import Xuetang from "bundle-loader?lazy&name=xuetang!./xuetang";
-
+import Jiben from "bundle-loader?lazy&name=jiben!./jiben";
 import "./app.less";
 
 const ButtonGroup = Button.Group;
@@ -42,7 +42,8 @@ const routers = [
   { name: "血糖记录", path: "/xt", component: bundle(Xuetang) },
   { name: "影像报告", path: "/yx", component: bundle(Yingxiang) },
   { name: "检验报告", path: "/jy", component: bundle(Jianyan) },
-  // { name: "胎监记录", path: "/tj", component: null }
+  // { name: "胎监记录", path: "/tj", component: null },
+  { name: "基本信息", path: "/jb", component: bundle(Jiben) },
 ];
 
 export default class App extends Component {
@@ -69,7 +70,7 @@ export default class App extends Component {
     store.subscribe(this.handleStoreChange);
 
     service.authorize(service.getQueryString('doctorId')).then(res => {
-      common.setCookie('docToken', res.code, 1);
+      common.setCookie('docToken', res.object);
       service.getuserDoc().then(res =>
         this.setState({ ...res.object, loading: false, highriskEntity: { ...res.object }}, () => { 
           const action = getUserDocAction(res.object);

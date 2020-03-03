@@ -55,7 +55,7 @@ export default class Patient extends Component {
         this.componentWillUnmount = editors();
 
         service.authorize(service.getQueryString('doctorId')).then(res => {
-            common.setCookie('docToken', res.code);
+            common.setCookie('docToken', res.object);
             service.getuserDoc().then(res => this.setState({
                 info: res.object
             }))
