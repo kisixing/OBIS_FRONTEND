@@ -69,11 +69,18 @@ export default class extends Component{
   };
 
   componentDidMount(){
-    const { isMeetPhar } = this.state;
+    const { isMeetPhar, diagList, userDoc, trialVisible } = this.state;
     if(isMeetPhar) {
       const action = showPharAction(true);
       store.dispatch(action);
     }
+
+    diagList && diagList.forEach(item => {
+      if((item.data === '瘢痕子宫' || item.data === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32 && !trialVisible) {
+        const action = showTrialAction(true);
+        store.dispatch(action);
+      }
+    })
 
     service.fuzhen.treatTemp().then(res => this.setState({ treatTemp: res.object }));
 
@@ -83,13 +90,20 @@ export default class extends Component{
       res.object.length > 1 && this.setState({adviceList: res.object, openAdvice: true})
     });
 
-    this.getGPTimes();
+    // this.getGPTimes();
   }
 
   config(){
     return {
       step: 1,
       rows: [
+        {
+          columns: [
+            { name: 'yunc[G]', type: 'input', span: 4 },
+            { name: 'chanc[P]', type: 'input', span: 4 },
+            { name: 'tuserweek[妊娠](周)', type: 'input', span: 4 },
+          ]
+        },
         {
           columns: [
             { name: "diagnosisHandle[处理措施]", type: "textarea", span: 8, className: "table-wrapper" },
@@ -116,11 +130,11 @@ export default class extends Component{
   }
 
   adddiagnosis() {
-    const { diagList, diagnosi } = this.state;
+    const { diagList, diagnosi, userDoc } = this.state;
     if (diagnosi && !diagList.filter(i => i.data === diagnosi).length) {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
-        if (diagnosi==='瘢痕子宫' || diagnosi==='疤痕子宫') {
+        if ((diagnosi === '瘢痕子宫' || diagnosi === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
           const action = showTrialAction(true);
           store.dispatch(action);
         }
@@ -202,30 +216,30 @@ export default class extends Component{
     }
   }
 
-  getGPTimes() {
-    const { allFormData } = this.state;
-    const allPreghiss = allFormData.gestation.preghiss || [];
-    if(allPreghiss.length > 0) {
-      let newYunc = parseInt(allPreghiss[allPreghiss.length - 1].pregnum) + 1;  
-      let times = 0;
-      let bool = true;
-      let preg = 0;
-      this.setState({yunc: newYunc});
-      allPreghiss&&allPreghiss.map(item => {
-        if(item.births == 1) {
-          times++;
-        } else if(item.births > 1 && bool) {
-          times++;
-          bool = false;
-          preg = item.pregnum;
-        }
-        if(preg !== item.pregnum) {
-          bool = true;
-        }
-      })
-      this.setState({chanc: times});
-    }
-  }
+  // getGPTimes() {
+  //   const { allFormData } = this.state;
+  //   const allPreghiss = allFormData.gestation.preghiss || [];
+  //   if(allPreghiss.length > 0) {
+  //     let newYunc = parseInt(allPreghiss[allPreghiss.length - 1].pregnum) + 1;  
+  //     let times = 0;
+  //     let bool = true;
+  //     let preg = 0;
+  //     this.setState({yunc: newYunc});
+  //     allPreghiss&&allPreghiss.map(item => {
+  //       if(item.births == 1) {
+  //         times++;
+  //       } else if(item.births > 1 && bool) {
+  //         times++;
+  //         bool = false;
+  //         preg = item.pregnum;
+  //       }
+  //       if(preg !== item.pregnum) {
+  //         bool = true;
+  //       }
+  //     })
+  //     this.setState({chanc: times});
+  //   }
+  // }
 
   renderZD(){
     const { info = {} } = this.props;
@@ -304,7 +318,7 @@ export default class extends Component{
     return (
       <div className="shouzhen-left-zd">
         <div className="pad-LR-mid">
-          <Row className="shouzhen-left-default margin-TB-mid">
+          {/* <Row className="shouzhen-left-default margin-TB-mid">
             <Col span={20}>
               <span className="font-12">1、&nbsp;</span>
               G&nbsp;<Input value={yunc}/>&nbsp;
@@ -314,13 +328,13 @@ export default class extends Component{
               &nbsp;&nbsp;&nbsp;&nbsp;
               {info.doctor}
             </Col>
-          </Row>
+          </Row> */}
           {diagList&&diagList.map((item, i) => (
             <Row key={`diagnos-${item.id}-${Date.now()}`}>
               <Col span={8}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                   <div title={item.data}>
-                    <span className="font-12">{i + 2}、</span>
+                    <span className="font-12">{i + 1}、</span>
                     <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
                   </div>
                 </Popover>
@@ -450,7 +464,7 @@ export default class extends Component{
       </Modal> 
       : null
     );
-  }
+  }true
 
   /**
    * 模板

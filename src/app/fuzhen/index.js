@@ -6,6 +6,7 @@ import tableRender from '../../render/table';
 import FuzhenForm from './form';
 import FuzhenTable from './table';
 import Page from '../../render/page';
+import JianYan from './jianyanjiacha';
 import service from '../../service';
 import * as baseData from './data';
 import editors from '../shouzhen/editors';
@@ -63,12 +64,13 @@ export default class Patient extends Component {
       treatTemp: [],
       templateShow: false,
       collapseActiveKey: ['1', '2', '3'],
-      jianyanReport: '血常规、尿常规、肝功、生化、甲功、乙肝、梅毒、艾滋、地贫',
       planData: [],
       initData: { ...baseData.formEntity },
       fzEntity: { ...baseData.fzFormEntity },
       hasRecord: false,
       ycq: '',
+      reportStr: '',
+      jyEntity: {},
       ...store.getState(),
     };
     store.subscribe(this.handleStoreChange);
@@ -80,6 +82,15 @@ export default class Patient extends Component {
   };
 
   componentDidMount() {
+    const { diagList, userDoc, trialVisible } = this.state;
+
+    diagList && diagList.forEach(item => {
+      if((item.data === '瘢痕子宫' || item.data === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32 && !trialVisible) {
+        const action = showTrialAction(true);
+        store.dispatch(action);
+      }
+    })
+
     Promise.all([
     service.getuserDoc().then(res => this.setState({ info: res.object, ycq: res.object.gesexpect }, () => {
       let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
@@ -112,14 +123,22 @@ export default class Patient extends Component {
 
     service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
 
+    service.fuzhen.getLackLis().then(res => {
+      this.setState({reportStr: String(res.object)})
+    })
+
+    service.fuzhen.getLisResult().then(res => 
+      this.setState({jyEntity: service.praseJSON(res.object)}
+    ))
+
   }
 
   adddiagnosis() {
-    const { diagList, diagnosi } = this.state;
+    const { diagList, diagnosi, userDoc } = this.state;
     if (diagnosi && !diagList.filter(i => i.data === diagnosi).length) {
       service.fuzhen.adddiagnosis(diagnosi).then(() => {
         modal('success', '添加诊断信息成功');
-        if (diagnosi==='瘢痕子宫' || diagnosi==='疤痕子宫') {
+        if ((diagnosi==='瘢痕子宫' || diagnosi==='疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
           const action = showTrialAction(true);
           store.dispatch(action);
         }
@@ -376,18 +395,39 @@ export default class Patient extends Component {
   }
 
   renderLeft() {
-    const { loading, jianyanReport, planData, collapseActiveKey } = this.state;
+    const { loading, reportStr, planData, collapseActiveKey, jyEntity } = this.state;
     /**
    * 检验报告结果
    */
     const renderResultModal = () => {
       const { isShowResultModal } = this.state;
-      const handleClick = (item) => {
-        this.setState({isShowResultModal: false})
+      const handleClick = (bool) => {
+        if(bool) {
+          const form = document.querySelector('.jy-modal');
+          fireForm(form, 'valid').then((valid) => {
+            if(valid) {
+              service.shouzhen.saveForm('tab-6', jyEntity).then(res => {
+                this.setState({isShowResultModal: false})
+              })
+            }else {
+              message.error("必填项不能为空！");
+            }
+          })
+        } else {
+          this.setState({isShowResultModal: false});
+        }
       }
+
+      const handleChange = (e, { name, value, target }, jyEntity) => {
+        // console.log(name, value, target, jyEntity, '434')
+        jyEntity[name] = value;
+        this.setState({ jyEntity });
+      }
+
       return (
-        <Modal title="Title" visible={isShowResultModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-          <p>报告结果</p>
+        <Modal className="jy-modal"  title="检验报告" width="80%" visible={isShowResultModal} 
+               onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+          <JianYan entity={{...jyEntity}} onChange={(e, item) => handleChange(e, item, jyEntity)} />
         </Modal>
       )
     }
@@ -411,6 +451,14 @@ export default class Patient extends Component {
       )
     }
 
+    const handleBtnClick = (e) => {
+      e.stopPropagation();
+      service.fuzhen.getLisResult().then(res => 
+        this.setState({jyEntity: service.praseJSON(res.object)}
+      ))
+      this.setState({isShowResultModal: true})
+    }
+
     return (
       <div className="fuzhen-left ant-col-5">
         <Collapse defaultActiveKey={collapseActiveKey}>
@@ -422,8 +470,8 @@ export default class Patient extends Component {
             }
 
           </Panel>
-          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={e => { e.stopPropagation();this.setState({isShowResultModal: true})} }>其他</Button></span>} key="2">
-            <p className="pad-small">{jianyanReport || '无'}</p>
+          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={e => handleBtnClick(e) }>其他</Button></span>} key="2">
+            <p className="pad-small">{reportStr || '无'}</p>
           </Panel>
           <Panel header="诊 疗 计 划" key="3">
             <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>

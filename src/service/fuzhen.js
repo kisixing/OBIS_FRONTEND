@@ -1,7 +1,6 @@
 import myAxios from '../utils/myAxios';
 
 export default {
-
     /**
      * 左侧诊断列表
      */
@@ -24,6 +23,7 @@ export default {
         let data = {'id': i, "sortType": params};
         return this.userId().then(r => myAxios.put('/outpatientWriteRestful/diagnosis/updateSort', data));
     },
+
     /**
      * 关联表单
      */
@@ -56,6 +56,7 @@ export default {
             id: id
         }]}}));
     },
+
     /**
      * 高危弹出提醒判断
      */
@@ -63,6 +64,7 @@ export default {
         let data = {"data": params};
         return this.userId().then(r => myAxios.post('/outpatientWriteRestful/checkHighriskAlert', {userid: r.object.userid, inputType: '1', ...data}));
     },
+
     /**
      * 诊疗计划（最近两条记录）
      */
@@ -173,5 +175,19 @@ export default {
      */
     updateDocGesexpectrv: function(params){
         return this.userId().then(r => myAxios.post('/outpatient/updateDocGesexpectrv', {userid: r.object.userid, gesexpectrv: params}));
+    },
+
+    /**
+     * 缺少检验报告
+     */
+    getLackLis: function(){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getLackLis?userid=${r.object.userid}`));
+    },
+
+    /**
+     * 缺少检验报告-其他
+     */
+    getLisResult: function(){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getLisResult?userid=${r.object.userid}`));
     },
 }

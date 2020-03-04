@@ -22,6 +22,7 @@ import {
   getDiagnisisAction,
   isMeetPharAction,
   checkedKeysAction,
+  trailVisibleAction
 } from "./store/actionCreators.js";
 
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
@@ -59,7 +60,6 @@ export default class App extends Component {
       templateTree: [],
       templateTree1: [],
       templateTree2: [],
-      trialVisible: false,
       pharVisible1: false,
       pharVisible2: false,
       trialKeys: [],
@@ -105,7 +105,9 @@ export default class App extends Component {
             }
           })
         })
-        this.setState({templateTree: res.object.data, trialVisible: res.object.vislble, trialKeys: keys})
+        this.setState({templateTree: res.object.data, trialKeys: keys})
+        const action = trailVisibleAction(res.object.vislble);
+        store.dispatch(action);
       });
 
       service.shouzhen.findTemplateTree(0).then(res => {
@@ -528,6 +530,7 @@ export default class App extends Component {
           <div><strong>预产期:</strong>{userDoc.gesexpect}</div>
           <div><strong>就诊卡:</strong>{userDoc.usermcno}</div>
           <div><strong>产检编号:</strong>{userDoc.chanjno}</div>
+          <div><strong>高危因素:</strong><strong style={{color: "red"}}>{userDoc.highriskFactor}</strong></div>
         </div>
         <p className="patient-Info_tab">
           {routers.map((item, i) => (

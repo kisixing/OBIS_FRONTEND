@@ -1,6 +1,6 @@
 import { GET_USER_DOC, ALL_FORM_DATA, IS_FORM_CHANGE, CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, 
         SHOW_TRIAL_CARD, SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS, ALL_REMINDER_MODAL, CLOSE_REMINDER_MODAL, 
-        SHOW_REMINDER_MODAL, OPEN_MEDICAL_ADVICE, GET_DIAGNOSIS, OPEN_YCQ } from './actionTypes.js'
+        SHOW_REMINDER_MODAL, OPEN_MEDICAL_ADVICE, GET_DIAGNOSIS, OPEN_YCQ, TRIAL_VISIBLE} from './actionTypes.js'
 
 export const getUserDocAction = (data) => ({
   type: GET_USER_DOC,
@@ -76,5 +76,10 @@ export const getDiagnisisAction = (data) => ({
 
 export const openYCQAction = (bool) => ({
   type: OPEN_YCQ,
+  bool
+})
+
+export const trailVisibleAction = (bool) => ({
+  type: TRIAL_VISIBLE,
   bool
 })

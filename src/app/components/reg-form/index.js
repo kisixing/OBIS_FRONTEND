@@ -29,23 +29,11 @@ export default class RegForm extends Component {
   }
 
   getRegform() {
-    const { allFormData, userDoc } = this.state;
-    const allPreghiss = allFormData.gestation.preghiss || [];
+    const { allFormData } = this.state;
+    const userDiag = allFormData.diagnosis;
     const diagnosisList = allFormData.diagnosisList || [];
     const userIdType = allFormData.gravidaInfo.useridtype.value;
-    let chanc = 0
-    let yunc = 1;
     let diagnosisStr = [];
-    if(allPreghiss.length > 0) {
-      yunc = parseInt(allPreghiss[allPreghiss.length - 1].pregnum) + 1;   
-      allPreghiss&&allPreghiss.map(item => {
-        if(item.zuych === 'true') {
-          chanc++;
-        } else if (item.zaoch !== "") {
-          chanc++;
-        }
-      })
-    }
     diagnosisList.map(item => {
       diagnosisStr.push(item.data);
     })
@@ -53,7 +41,7 @@ export default class RegForm extends Component {
 
     service.fuzhen.getRecordList().then(res => {
       let data = service.praseJSON(res.object);
-      data.note = `G ${yunc}；P ${chanc}；妊娠${userDoc.tuserweek}周；${diagnosisStr}`;
+      data.note = `G ${userDiag.yunc}；P ${userDiag.chanc}；妊娠${userDiag.tuserweek}周；\n${diagnosisStr}`;
       if(!!userIdType && userIdType === '身份证') {
         if(res.object.address.indexOf('越秀') !== -1 && res.object.address.indexOf('广州') !== -1) {
           data.idcardSource = [{"label": "本区", "value": ""}];

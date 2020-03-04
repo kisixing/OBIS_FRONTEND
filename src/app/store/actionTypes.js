@@ -21,3 +21,5 @@ export const OPEN_MEDICAL_ADVICE = 'open_medical_advice';
 export const GET_DIAGNOSIS = 'get_diagnosis';
 
 export const OPEN_YCQ = 'open_ycq';
+
+export const TRIAL_VISIBLE = 'trial-visible';
