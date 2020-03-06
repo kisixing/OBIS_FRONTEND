@@ -7,7 +7,7 @@ import service from '../../service';
 import Yfxx from './yunfuxinxi';
 import Zfxx from './zhangfuxinxi';
 import store from "../store";
-import { getAllFormDataAction, isFormChangeAction } from "../store/actionCreators.js";
+import { getAllFormDataAction, isFormChangeAction, isSaveAction } from "../store/actionCreators.js";
 
 import editors from './editors';
 import "./index.less";
@@ -92,7 +92,9 @@ export default class Patient extends Component {
         const { tabs, step } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
-        const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
+        const next = tabs[tabs.indexOf(tab) + 1] || { key: step };
+        const action = isSaveAction(true);
+        store.dispatch(action);
         let isJump = false;
         if (key) {
             isJump = key.slice(-1) > step.slice(-1) ? false : true;
@@ -136,6 +138,8 @@ export default class Patient extends Component {
                 } else {
                     this.forceUpdate();
                 }
+                const action = isSaveAction(false);
+                store.dispatch(action);
             }
         });
     }

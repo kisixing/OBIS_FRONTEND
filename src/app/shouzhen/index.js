@@ -26,6 +26,7 @@ import { getUserDocAction,
         allReminderAction, 
         showReminderAction, 
         openMedicalAction,
+        isSaveAction
     } from "../store/actionCreators.js";
 
 import * as baseData from './data';
@@ -212,6 +213,8 @@ export default class Patient extends Component {
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
+        const action = isSaveAction(true);
+        store.dispatch(action);
         let isJump = false;
         if (key) {
             isJump = key.slice(-1) > step.slice(-1) ? false : true;
@@ -375,14 +378,15 @@ export default class Patient extends Component {
             const action = isFormChangeAction(false);
             store.dispatch(action);
 
-            console.log(valid, '76367')
             if (!valid && type !== 'save') {
                 !isJump && message.error('必填项不能为空！');
                 if (key && isJump) {
                     this.activeTab(key);
                 } else {
                     this.forceUpdate();
-                }
+                }  
+                const action = isSaveAction(false);
+                store.dispatch(action);
             }
         });
     }

@@ -291,87 +291,81 @@ export const tableKey = () => [
 		options: ckfuzhOptions
 	},
 
-	// {
-	// 	title: '胎儿超声',
-	// 	children:[
-	// 		{
-	// 			title: '胎儿体重',
-	// 			key: 'allTetz',
-	// 		},
-	// 		{
-	// 			title: 'AVF',
-	// 			key: 'allTeafv',
-	// 		},
-	// 		{
-	// 			title: '脐血流',
-	// 			key: 'allTeqxl',
-	// 		},
-	// 	]
-	// },
-	// {
-	// 	title: '空腹血糖',
-	// 	key: 'fpg',
-	// },
-	// {
-	// 	title: '餐后2H',
-	// 	key: 'pbg2h',
-	// },
-	// {
-	// 	title: 'HbAlc',
-	// 	key: 'hbAlc',
-	// },
-	// {
-	// 	title: '胰岛素(U)方案',
-	// 	children:[
-	// 		{
-	// 			title: '早',
-	// 			key: 'allRiMo',
-	// 		},
-	// 		{
-	// 			title: '中',
-	// 			key: 'allRiNo',
-	// 		},
-	// 		{
-	// 			title: '晚',
-	// 			key: 'allRiEv',
-	// 		},
-	// 		{
-	// 			title: '睡前',
-	// 			key: 'allRiSl',
-	// 		},
-	// 	]
-	// },
-	// {
-	// 	title: '尿蛋白',
-	// 	children:[
-	// 		{
-	// 			title: '定性',
-	// 			key: 'upState',
-	// 		},
-	// 		{
-	// 			title: '定量',
-	// 			key: 'upDosage24h',
-	// 		},
-	// 	]
-	// },
-	// {
-	// 	title: '心率',
-	// 	key: 'heartRate',
-	// },
-	// {
-	// 	title: '用药方案',
-	// 	key: 'allMedicationPlan',
-	// },
-	// {
-	// 	title: '化验',
-	// 	key: 'examination',
-	// },
-
-	// {
-	// 	title: '其他',
-	// 	key: 'ckzijzhzqt',
-	// 	type: 'input'
-	// },
+	{
+		title: '胎儿超声',
+		children:[
+			{
+				title: '胎儿体重',
+				key: 'allTetz',
+			},
+			{
+				title: 'AVF',
+				key: 'allTeafv',
+			},
+			{
+				title: '脐血流',
+				key: 'allTeqxl',
+			},
+		]
+	},
+	{
+		title: '空腹血糖',
+		key: 'fpg',
+	},
+	{
+		title: '餐后2H',
+		key: 'pbg2h',
+	},
+	{
+		title: 'HbAlc',
+		key: 'hbAlc',
+	},
+	{
+		title: '胰岛素(U)方案',
+		children:[
+			{
+				title: '早',
+				key: 'allRiMo',
+			},
+			{
+				title: '中',
+				key: 'allRiNo',
+			},
+			{
+				title: '晚',
+				key: 'allRiEv',
+			},
+			{
+				title: '睡前',
+				key: 'allRiSl',
+			},
+		]
+	},
+	{
+		title: '尿蛋白',
+		children:[
+			{
+				title: '定性',
+				key: 'upState',
+			},
+			{
+				title: '定量',
+				key: 'upDosage24h',
+			},
+		]
+	},
+	{
+		title: '心率',
+		key: 'heartRate',
+	},
+	{
+		title: '用药方案',
+		key: 'allMedicationPlan',
+	},
+	{
+		title: '化验',
+		key: 'examination',
+	},
 	{
 		title: '处理措施',
 		key: 'treatment',
@@ -382,13 +376,6 @@ export const tableKey = () => [
 		title: '下次复诊',
 		key: 'nextRvisitText',
 		width: 80,
-		// children:[
-		// 	{
-		// 		title: '预约日期',
-		// 		key: 'ckappointment',
-		// 	type: 'date'
-		// 	}
-		// ]
 	},
 	// {
 	// 	title: '医生',

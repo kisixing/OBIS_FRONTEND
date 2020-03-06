@@ -674,18 +674,15 @@ export default class Patient extends Component {
         if(!item.examination) examinationCount++;
       })
       
-      // if(fpgCount === obj.length) keys.splice(getIndex(keys, '空腹血糖'), 1);
-      // if(pbg2hCount === obj.length) keys.splice(getIndex(keys, '餐后2H'), 1);
-      // if(hbAlcCount === obj.length) keys.splice(getIndex(keys, 'HbAlc'), 1);
-      // if(upStateCount === obj.length && upDosage24hCount === obj.length) keys.splice(getIndex(keys, '尿蛋白'), 1);
-      // if(heartRateCount === obj.length) keys.splice(getIndex(keys, '心率'), 1);
-      // if(examinationCount === obj.length) keys.splice(getIndex(keys, '化验'), 1);
-      // if(!hasUltrasound) keys.splice(getIndex(keys, '胎儿超声'), 1);
-      // if(!hasRiMo) {
-      //   // console.log(keys, 654);
-      //   keys.splice(getIndex(keys, '胰岛素(U)方案'), 1);
-      // } 
-      // if(!hasPlan) keys.splice(getIndex(keys, '用药方案'), 1);
+      if(fpgCount === obj.length) keys.splice(getIndex(keys, '空腹血糖'), 1);
+      if(pbg2hCount === obj.length) keys.splice(getIndex(keys, '餐后2H'), 1);
+      if(hbAlcCount === obj.length) keys.splice(getIndex(keys, 'HbAlc'), 1);
+      if(upStateCount === obj.length && upDosage24hCount === obj.length) keys.splice(getIndex(keys, '尿蛋白'), 1);
+      if(heartRateCount === obj.length) keys.splice(getIndex(keys, '心率'), 1);
+      if(examinationCount === obj.length) keys.splice(getIndex(keys, '化验'), 1);
+      if(!hasUltrasound) keys.splice(getIndex(keys, '胎儿超声'), 1);
+      if(!hasRiMo) keys.splice(getIndex(keys, '胰岛素(U)方案'), 1)
+      if(!hasPlan) keys.splice(getIndex(keys, '用药方案'), 1);
     }
 
     if(recentRvisit) {
@@ -697,10 +694,14 @@ export default class Patient extends Component {
       resetData(recentRvisitAll, rvisitAllKeys);
     };
 
-    // rvisitKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
+    rvisitKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
+    rvisitAllKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
 
-    const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, ...props });
-    const allInitTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, ...props });
+    const newKeys = baseData.tableKey();
+    newKeys.splice(9, 9);
+
+    const initTable = (data, props) => tableRender(newKeys, data, { buttons: null, ...props });
+    const allInitTable = (data, props) => tableRender(rvisitAllKeys, data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
         {/* iseditable:({row})=>!!row, */}
@@ -714,7 +715,7 @@ export default class Patient extends Component {
           hasRecord: hasRecord,
           isTwins: isTwins,
           scroll: { x: 1100, y: 220 },
-          iseditable: ({ row }) => hasRecord ? row === 0 : row > recentRvisit.length - 2,
+          iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2,
           onChange: handleSaveChange,
           onRowChange: handleRowChange
         })}

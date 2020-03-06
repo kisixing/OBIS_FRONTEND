@@ -148,7 +148,7 @@ class TableItem extends Component {
   }
 
   onBlur = (e) => {
-    const { valid, onChange, name, entity, isPreghiss } = this.props;
+    const { valid, onChange, name, entity, isPreghiss, onEdit } = this.props;
     const { value } = this.state;
     const arr = ["cktizh", "ckzijzhz", "allTaix", "allXianl", "ckgongg", "ckfuzh"];
     const error = validFn(valid, value);
@@ -203,7 +203,7 @@ class TableItem extends Component {
       }
     }
 
-    if(!value && arr.includes(name)) {
+    if(!value && arr.includes(name) && onEdit) {
       this.setState({force: true})
     }else {
       this.setState({

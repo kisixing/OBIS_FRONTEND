@@ -166,9 +166,9 @@ class FormItem extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    const { name, isFormChange } = this.state;
+    const { name, isFormChange, isSave } = this.state;
     const { entity, width } = this.props;
-    if(isFormChange) {
+    if(isFormChange || isSave) {
       this.refs.formItem.fireReact = (type, ...args) => {
         return new Promise(resolve => {
           switch (type) {

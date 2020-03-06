@@ -22,4 +22,6 @@ export const GET_DIAGNOSIS = 'get_diagnosis';
 
 export const OPEN_YCQ = 'open_ycq';
 
-export const TRIAL_VISIBLE = 'trial-visible';
+export const TRIAL_VISIBLE = 'trial_visible';
+
+export const IS_SAVE = 'is_save';
