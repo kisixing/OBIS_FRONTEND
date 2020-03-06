@@ -514,19 +514,23 @@ export const pregnanciesColumns = [
 export const lisiColumns = [
 	{
 		title: '编号',
-		key: 'no',
+		key: "index",
+		format: (v, {row}) => row + 1,
+		width: 30
 	},
 	{
 		title: '修改时间',
-		key: 'date',
+		key: 'operateTime',
+		width: 60
 	},
 	{
 		title: '修改人',
-		key: 'by',
+		key: 'operator',
+		width: 40
 	},
 	{
 		title: '修改字段',
-		key: 'field',
+		key: 'operateField',
 	}
 ]
 

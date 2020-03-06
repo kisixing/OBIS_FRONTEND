@@ -20,18 +20,27 @@ class TableItem extends Component {
   }
 
   componentWillReceiveProps(newProps){
+    const { iseditable = () => true, entity, row, name, value, onEdit, hasRecord, isTwins } = this.props;
     if(this.props.value !== newProps.value){
       this.state.value = newProps.value;
       this.state.error = validFn(newProps.valid, newProps.value);
     }
+    if (iseditable({entity, row, name, value}) && onEdit && !hasRecord) {
+      if(isTwins && (name === "allTaix" || name === "allXianl")) {
+        this.setState({force:false});
+      }
+    }
   }
 
   componentDidMount(){
-    const { iseditable = () => true, entity, row, name, value, onEdit, hasRecord, style } = this.props;
-    const arr = ["cktizh", "ckzijzhz", "cktaix", "ckxianl", "ckgongg", "ckfuzh"];
+    const { iseditable = () => true, entity, row, name, value, onEdit, hasRecord, style, isTwins } = this.props;
+    const arr = ["cktizh", "ckzijzhz", "allTaix", "allXianl", "ckgongg", "ckfuzh"];
     if (iseditable({entity, row, name, value}) && onEdit && !hasRecord) {
       if (arr.includes(name)) {
         this.setState({force:true});
+      }
+      if(isTwins && (name === "allTaix" || name === "allXianl")) {
+        this.setState({force:false});
       }
     }
     this.refs.tableItem.parentNode.ondbclick = ()=>this.setState({force:true});
@@ -50,8 +59,12 @@ class TableItem extends Component {
   }
 
   onDbClick = () => {
-    const { iseditable = ()=> true, entity, row, name, value, onEdit } = this.props;
+    const { iseditable = ()=> true, entity, row, name, value, onEdit, isTwins } = this.props;
     if(iseditable({entity, row, name, value})){
+      if(isTwins && (name === "allTaix" || name === "allXianl")) {
+        this.setState({force:false});
+        return;
+      }
       this.setState({force:true}, ()=>{
         const input = this.refs.tableItem.querySelector(types.join());
         if(input)input.focus();
@@ -137,7 +150,7 @@ class TableItem extends Component {
   onBlur = (e) => {
     const { valid, onChange, name, entity, isPreghiss } = this.props;
     const { value } = this.state;
-    const arr = ["cktizh", "ckzijzhz", "cktaix", "ckxianl", "ckgongg", "ckfuzh"];
+    const arr = ["cktizh", "ckzijzhz", "allTaix", "allXianl", "ckgongg", "ckfuzh"];
     const error = validFn(valid, value);
 
     if(isPreghiss) {
@@ -156,7 +169,6 @@ class TableItem extends Component {
           (name === 'reng' && value && fourCount > 0) ||
           (name === 'yinch' && value && fourCount > 0) ) {
           message.error('早产、足月产、顺产、手术产式中已有数据！', 4);
-
       }
 
       if( (name === 'zaoch' && value  && threeCount > 0) || 
@@ -164,7 +176,6 @@ class TableItem extends Component {
           (name === 'shunch' && value === 'true' && threeCount > 0) ||
           (name === 'shouShuChanType' && value && threeCount > 0) ) {
           message.error('自然流产、人工流产、引产中已有数据！', 4);
-
       }
 
       if (name === 'zir' && value && (entity.reng || entity.yinch)) {

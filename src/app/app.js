@@ -185,7 +185,7 @@ export default class App extends Component {
     if(bmi > 30) checkedKeys.push(getKey("肥胖（BMI>30kg/m)"));
     if(age > 35) checkedKeys.push(getKey("年龄>35岁"));
     if(preghiss.length >= 3) checkedKeys.push(getKey("产次≥3"));
-    if(!!xiyan && xiyan[0].label ===" 有") checkedKeys.push(getKey("吸烟"));
+    if(!!xiyan && xiyan[0] && xiyan[0].label ===" 有") checkedKeys.push(getKey("吸烟"));
 
     if(checkedKeys.length > 0) {
       const action = isMeetPharAction(true);
@@ -299,6 +299,10 @@ export default class App extends Component {
           const action = getDiagnisisAction(res.object.list);
           store.dispatch(action);
         });
+        service.getuserDoc().then(res => {
+          const action = getUserDocAction(res.object);
+          store.dispatch(action);
+        })
         if (index === 0) {
           const action2 = showReminderAction(false);
           store.dispatch(action2);

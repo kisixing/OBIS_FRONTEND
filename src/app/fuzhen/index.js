@@ -19,6 +19,7 @@ import { getAlertAction,
         isFormChangeAction,
         openYCQAction,
         getDiagnisisAction,
+        getUserDocAction
   } from '../store/actionCreators.js';
 
 import "../index.less";
@@ -68,6 +69,7 @@ export default class Patient extends Component {
       initData: { ...baseData.formEntity },
       fzEntity: { ...baseData.fzFormEntity },
       hasRecord: false,
+      isTwins: false,
       ycq: '',
       reportStr: '',
       jyEntity: {},
@@ -89,6 +91,9 @@ export default class Patient extends Component {
         const action = showTrialAction(true);
         store.dispatch(action);
       }
+      if(item.data === '双胎妊娠' || item.data === '多胎妊娠') {
+        this.setState({ isTwins: true })
+      }
     })
 
     Promise.all([
@@ -107,7 +112,7 @@ export default class Patient extends Component {
     service.fuzhen.getRecentRvisit().then(res => {
       res.object = res.object || [];
       let bool = false;
-      res.object&&res.object.map(item => {
+      res.object && res.object.map(item => {
         if(item.checkdate == util.futureDate(0)) {
           bool = true;
           this.setState({hasRecord: true, initData: service.praseJSON(item)})
@@ -142,6 +147,9 @@ export default class Patient extends Component {
           const action = showTrialAction(true);
           store.dispatch(action);
         }
+        if(diagnosi === '双胎妊娠' || diagnosi === '多胎妊娠') {
+          this.setState({ isTwins: true })
+        }
         service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
           let data = res.object;
           if(data.length > 0) {
@@ -162,6 +170,10 @@ export default class Patient extends Component {
             store.dispatch(action);
           }
         })});
+        service.getuserDoc().then(res => {
+          const action = getUserDocAction(res.object);
+          store.dispatch(action);
+        })
       })
     } else if (diagnosi) {
       modal('warning', '添加数据重复');
@@ -199,6 +211,18 @@ export default class Patient extends Component {
         const action = getDiagnisisAction(res.object.list);
         store.dispatch(action);
         this.updateCheckedKeys(data);
+
+        let bool = true;
+        res.object.list && res.object.list.forEach(item => {
+          if(item.data === '双胎妊娠' || item.data === '多胎妊娠') {
+            bool = false;
+          }
+        })
+        if(bool) this.setState({ isTwins: false })
+      })
+      service.getuserDoc().then(res => {
+        const action = getUserDocAction(res.object);
+        store.dispatch(action);
       })
     })
   }
@@ -218,10 +242,14 @@ export default class Patient extends Component {
   }
 
   saveForm(entity) {
-    const { info } = this.state;
+    const { isTwins } = this.state;
     this.setState({ loading: true });
     const action = isFormChangeAction(false);
     store.dispatch(action);
+    if(!isTwins) {
+      entity.cktaix = entity.allTaix;
+      entity.ckxianl = entity.allXianl;
+    }
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
@@ -297,8 +325,8 @@ export default class Patient extends Component {
               {relatedObj[item.data]&&relatedObj[item.data].includes(subItem) ? `${subItem} √` : subItem} </a></p>)}
             </div>
           : null}
-          {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('up')}>上 移</a></p> : null}
-          {i + 1 < diagList.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>下 移</a></p> : null}
+          {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>上 移</a></p> : null}
+          {i + 1 < diagList.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('up')}>下 移</a></p> : null}
         </div>
       );
     }
@@ -407,7 +435,9 @@ export default class Patient extends Component {
           fireForm(form, 'valid').then((valid) => {
             if(valid) {
               service.shouzhen.saveForm('tab-6', jyEntity).then(res => {
-                this.setState({isShowResultModal: false})
+                this.setState({isShowResultModal: false});
+                const action = isFormChangeAction(false);
+                store.dispatch(action);
               })
             }else {
               message.error("必填项不能为空！");
@@ -420,6 +450,8 @@ export default class Patient extends Component {
 
       const handleChange = (e, { name, value, target }, jyEntity) => {
         // console.log(name, value, target, jyEntity, '434')
+        const action = isFormChangeAction(true);
+        store.dispatch(action);
         jyEntity[name] = value;
         this.setState({ jyEntity });
       }
@@ -492,7 +524,7 @@ export default class Patient extends Component {
   }
 
   renderTable() {
-    const { info, recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, hasRecord } = this.state;
+    const { info, recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, hasRecord, isTwins } = this.state;
     const handleMoreBtn = () => {
       service.fuzhen.getRvisitPage(pageCurrent).then(res => this.setState({
         recentRvisitAll: res.object.list,
@@ -518,6 +550,10 @@ export default class Patient extends Component {
       let ckpressure = row.ckpressure.split('/');
       if(ckpressure[0]) row.ckshrinkpressure = ckpressure[0];
       if(ckpressure[1]) row.ckdiastolicpressure = ckpressure[1];
+      if(row.cktaix || row.ckxianl) {
+        row.cktaix = row.allTaix;
+        row.ckxianl = row.allXianl;
+      }
 
       service.fuzhen.saveRvisitForm(row).then(res => {
         service.fuzhen.getRecentRvisit().then(res => {
@@ -539,32 +575,136 @@ export default class Patient extends Component {
         this.setState({recentRvisitAll: res.object.list})})
     }
 
-    const resetData = (obj) => {
+    let rvisitKeys = JSON.parse(JSON.stringify(baseData.tableKey()));
+    let rvisitAllKeys = JSON.parse(JSON.stringify(baseData.tableKey()));
+
+    const getIndex = (keys, title) => {
+      let index = 99;
+      keys.forEach((item, i) => {
+        if(item.title === title) index = i;
+      })
+      return index;
+    }
+
+    const resetData = (obj, keys) => {
+      let fpgCount = 0;
+      let pbg2hCount = 0;
+      let hbAlcCount = 0; 
+      let upStateCount = 0;
+      let upDosage24hCount = 0;    
+      let heartRateCount = 0;
+      let examinationCount = 0;
+      let hasUltrasound = false;
+      let hasRiMo= false;
+      let hasPlan = false;
+
       obj.map(item => {
+        // 下次复诊数据处理
         let describe1 = '', describe2 = '';
         if(typeof item.ckappointmentArea === 'object') describe1 = item.ckappointmentArea.describe;
         if(typeof item.rvisitOsType === 'object') describe2 = item.rvisitOsType.describe;
-        item.ckpressure = (!item.ckpressure||item.ckpressure === "") ?  item.ckshrinkpressure +'/'+ item.ckdiastolicpressure : item.ckpressure;
+        item.ckpressure = (!item.ckpressure || item.ckpressure === "") ?  item.ckshrinkpressure +'/'+ item.ckdiastolicpressure : item.ckpressure;
         item.nextRvisitText = item.ckappointment.slice(5) + ' ' + describe1 + ' ' + describe2;
+        
+        // 胎心率、先露数据处理
+        if(!item.cktaix && !item.ckxianl) {
+          item.allTaix = "";
+          item.allXianl = "";
+          if(item.fetalCondition && item.fetalCondition[0].location) {
+            item.fetalCondition.map(subItem => {
+              if(subItem.location && subItem.taix && subItem.xianl) {
+                item.allTaix += `${subItem.location.label}：${subItem.taix}；`;
+                item.allXianl += `${subItem.location.label}：${subItem.xianl.label}；`;
+              }
+            })
+          } 
+        } else {
+          item.allTaix = item.cktaix;
+          item.allXianl = item.ckxianl;
+        }
+
+        // 胎儿超声数据处理
+        if(item.fetalUltrasound && item.fetalUltrasound[0].tetz) {
+          hasUltrasound = true;
+          item.allTetz = "";
+          item.allTeafv = "";
+          item.allTeqxl = "";
+          item.fetalUltrasound.map(subItem => {
+            if(subItem.tetz) item.allTetz += subItem.tetz + '；';
+            if(subItem.teafv) item.allTeafv += subItem.teafv + '；';
+            if(subItem.teqxl) item.allTeqxl += subItem.teqxl + '；';
+          })
+        }
+
+        // 胰岛素方案数据处理
+        if(item.riMo && item.riMo[0] && item.riMo[1]) {
+          hasRiMo = true;
+          item.allRiMo = item.riMo[0] + '：' + item.riMo[1];
+        }
+        if(item.riNo && item.riNo[0] && item.riNo[1]) {
+          hasRiMo = true;
+          item.allRiNo = item.riNo[0] + '：' + item.riNo[1];
+        }
+        if(item.riEv && item.riEv[0] && item.riEv[1]) {
+          hasRiMo = true;
+          item.allRiEv = item.riEv[0] + '：' + item.riEv[1];
+        }
+        if(item.riSl && item.riSl[0] && item.riSl[1]) {
+          hasRiMo = true;
+          item.allRiSl = item.riSl[0] + '：' + item.riSl[1];
+        }
+
+        // 用药方案数据处理
+        if(item.medicationPlan) {
+          item.allMedicationPlan = "";
+          item.medicationPlan.map(subItem => {
+            if(subItem.name) {
+              item.allMedicationPlan += subItem.name + '；';
+              hasPlan = true;
+            } 
+          })
+        }
+
+        if(!item.fpg) fpgCount++;
+        if(!item.pbg2h) pbg2hCount++;
+        if(!item.hbAlc) hbAlcCount++;
+        if(!item.upState) upStateCount++;
+        if(!item.upDosage24h) upDosage24hCount++;
+        if(!item.heartRate) heartRateCount++;
+        if(!item.examination) examinationCount++;
       })
+      
+      // if(fpgCount === obj.length) keys.splice(getIndex(keys, '空腹血糖'), 1);
+      // if(pbg2hCount === obj.length) keys.splice(getIndex(keys, '餐后2H'), 1);
+      // if(hbAlcCount === obj.length) keys.splice(getIndex(keys, 'HbAlc'), 1);
+      // if(upStateCount === obj.length && upDosage24hCount === obj.length) keys.splice(getIndex(keys, '尿蛋白'), 1);
+      // if(heartRateCount === obj.length) keys.splice(getIndex(keys, '心率'), 1);
+      // if(examinationCount === obj.length) keys.splice(getIndex(keys, '化验'), 1);
+      // if(!hasUltrasound) keys.splice(getIndex(keys, '胎儿超声'), 1);
+      // if(!hasRiMo) {
+      //   // console.log(keys, 654);
+      //   keys.splice(getIndex(keys, '胰岛素(U)方案'), 1);
+      // } 
+      // if(!hasPlan) keys.splice(getIndex(keys, '用药方案'), 1);
     }
 
-    let newRecentRvisit = recentRvisit;
-    let newRecentRvisitAll = recentRvisitAll;
-    if (recentRvisit) {
-      service.praseJSON(newRecentRvisit)
-      resetData(newRecentRvisit);
+    if(recentRvisit) {
+      service.praseJSON(recentRvisit)
+      resetData(recentRvisit, rvisitKeys);
     };
-    if (recentRvisitAll) {
+    if(recentRvisitAll) {
       service.praseJSON(recentRvisitAll)
-      resetData(newRecentRvisitAll);
+      resetData(recentRvisitAll, rvisitAllKeys);
     };
 
+    // rvisitKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
+
     const initTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, ...props });
+    const allInitTable = (data, props) => tableRender(baseData.tableKey(), data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
         {/* iseditable:({row})=>!!row, */}
-        {initTable(newRecentRvisit, {
+        {recentRvisit && initTable(recentRvisit, {
           width: 1100,
           size: "small",
           pagination: false,
@@ -572,6 +712,7 @@ export default class Patient extends Component {
           className: "fuzhenTable",
           onEdit: true,
           hasRecord: hasRecord,
+          isTwins: isTwins,
           scroll: { x: 1100, y: 220 },
           iseditable: ({ row }) => hasRecord ? row === 0 : row > recentRvisit.length - 2,
           onChange: handleSaveChange,
@@ -580,7 +721,7 @@ export default class Patient extends Component {
         {/* {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null} */}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
-            {initTable(newRecentRvisitAll, {
+            {recentRvisitAll && allInitTable(recentRvisitAll, {
               className: "fuzhenTable",
               scroll: { x: 1100 },
               editable: true,

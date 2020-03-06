@@ -361,7 +361,7 @@ export default class FuzhenForm extends Component {
           columns:[
             { name: 'rvisitOsType[下次复诊]', type:'select', valid: 'required', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
             { name: 'ckappointmentWeek', type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
-            { name: 'ckappointment', type:'date', valid: 'required', span: 4 },
+            { name: 'ckappointment', type:'date', valid: 'required', span: 2 },
             { name: 'ckappointmentArea', type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
             // {
             //   name: 'nextRvisit[下次复诊]', valid: 'required', span: 16, type: [
@@ -451,6 +451,7 @@ export default class FuzhenForm extends Component {
     const { onSave, initData, ycq } = this.props;
     const { allFormData, isFormChange, diagList } = this.state;
     let newEntity = initData;
+    console.log(newEntity, '321')
     let ckpressure = initData.ckpressure.split('/');
     const getReminder = () => {
       if(act) {
@@ -526,14 +527,14 @@ export default class FuzhenForm extends Component {
     if(ckpressure[0]) newEntity.ckshrinkpressure = ckpressure[0];
     if(ckpressure[1]) newEntity.ckdiastolicpressure = ckpressure[1];
     // //胰岛素方案
-    if(newEntity.riMo[0]) newEntity.riMoMedicine = newEntity.riMo[0];
-    if(newEntity.riMo[1]) newEntity.riMoDosage = newEntity.riMo[1];
-    if(newEntity.riNo[0]) newEntity.riNoMedicine = newEntity.riNo[0];
-    if(newEntity.riNo[1]) newEntity.riNoDosage = newEntity.riNo[1];
-    if(newEntity.riEv[0]) newEntity.riEvMedicine = newEntity.riEv[0];
-    if(newEntity.riEv[1]) newEntity.riEvDosage = newEntity.riEv[1];
-    if(newEntity.riSl[0]) newEntity.riSlMedicine = newEntity.riSl[0];
-    if(newEntity.riSl[1]) newEntity.riSlDosage = newEntity.riSl[1];
+    if(!!newEntity.riMo && newEntity.riMo[0]) newEntity.riMoMedicine = newEntity.riMo[0];
+    if(!!newEntity.riMo && newEntity.riMo[1]) newEntity.riMoDosage = newEntity.riMo[1];
+    if(!!newEntity.riNo && newEntity.riNo[0]) newEntity.riNoMedicine = newEntity.riNo[0];
+    if(!!newEntity.riNo && newEntity.riNo[1]) newEntity.riNoDosage = newEntity.riNo[1];
+    if(!!newEntity.riEv && newEntity.riEv[0]) newEntity.riEvMedicine = newEntity.riEv[0];
+    if(!!newEntity.riEv && newEntity.riEv[1]) newEntity.riEvDosage = newEntity.riEv[1];
+    if(!!newEntity.riSl && newEntity.riSl[0]) newEntity.riSlMedicine = newEntity.riSl[0];
+    if(!!newEntity.riSl && newEntity.riSl[1]) newEntity.riSlDosage = newEntity.riSl[1];
 
     fireForm(form,'valid').then((valid)=>{
       if(valid && isFormChange){
@@ -548,6 +549,9 @@ export default class FuzhenForm extends Component {
               store.dispatch(action)
             })
           })
+          if(act) {
+            service.shouzhen.uploadHisDiagnosis().then(res => { })
+          }
         });
       } else {
         message.error('必填项不能为空！');

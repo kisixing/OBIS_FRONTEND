@@ -13,6 +13,7 @@ import { getAlertAction,
         showPharAction, 
         checkedKeysAction, 
         getDiagnisisAction,
+        getUserDocAction
       } from '../store/actionCreators.js';
 import RegForm from '../components/reg-form';
 import './index.less';
@@ -158,6 +159,10 @@ export default class extends Component{
             store.dispatch(action);
           }
         })});
+        service.getuserDoc().then(res => {
+          const action = getUserDocAction(res.object);
+          store.dispatch(action);
+        })
       })
     } else if (diagnosi) {
       modal('warning', '添加数据重复');
@@ -195,6 +200,10 @@ export default class extends Component{
         const action = getDiagnisisAction(res.object.list);
         store.dispatch(action);
         this.updateCheckedKeys(data);
+      })
+      service.getuserDoc().then(res => {
+        const action = getUserDocAction(res.object);
+        store.dispatch(action);
       })
     })
   }
@@ -276,8 +285,8 @@ export default class extends Component{
       return (
         <div>
           <p className="pad-small"><a className="font-16" onClick={handleHighriskmark}>{item.highriskmark == 1 ? '高危诊断 √' : '高危诊断'}</a></p>
-          {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('up')}>上 移</a></p> : null}
-          {i + 1 < diagList.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>下 移</a></p> : null}
+          {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>上 移</a></p> : null}
+          {i + 1 < diagList.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('up')}>下 移</a></p> : null}
         </div>
       );
     }
@@ -393,11 +402,21 @@ export default class extends Component{
     )
   }
 
-  openLisi(){
-    umodal({
-      title: '历史首检记录',
-      content: formTable(baseData0.lisiColumns,[{}],{editable:false,buttons:null, pagination: false,}),
-      footer:''
+  openLisi() {
+    service.shouzhen.getIvisitLog().then(res => {
+      if(res.object.length > 0) {
+        res.object.forEach(item => {
+          item.operateField = "";
+          item.itemList.forEach(subItem => {
+            item.operateField += subItem.columnDisplay + "；";
+          })
+        })
+      }
+      umodal({
+        title: '历史首检记录',
+        content: formTable(baseData0.lisiColumns, res.object, {editable:false,buttons:null, pagination: false,}),
+        width: '80%'
+      })
     })
   }
 
@@ -464,7 +483,7 @@ export default class extends Component{
       </Modal> 
       : null
     );
-  }true
+  }
 
   /**
    * 模板

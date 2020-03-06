@@ -18,6 +18,7 @@ import { Row, Col } from 'antd';
 
 import { events, editors, valid as validFn } from './common';
 import table from './table';
+import store from '../app/store';
 
 import './form.less';
 
@@ -101,9 +102,15 @@ class FormItem extends Component {
       width: 0,
       ...this.getSplitState(props.name, props.entity),
       dirty: false,
-      error: ''
+      error: '',
+      ...store.getState()
     }
+    store.subscribe(this.handleStoreChange);
   }
+
+  handleStoreChange = () => {
+    this.setState(store.getState());
+  };
 
   getSplitState(name = '', entity = {}) {
     const $name = getValueFn(name, entity)
@@ -159,29 +166,31 @@ class FormItem extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    const { name } = this.state;
+    const { name, isFormChange } = this.state;
     const { entity, width } = this.props;
-    this.refs.formItem.fireReact = (type, ...args) => {
-      return new Promise(resolve => {
-        switch (type) {
-          case 'valid':
-            this.onBlur(...args).then(resolve)
-            break;
-          case 'reset':
-            this.setState({
-              dirty: false,
-              error: ''
-            }, resolve);
-            break;
-        }
-      });
+    if(isFormChange) {
+      this.refs.formItem.fireReact = (type, ...args) => {
+        return new Promise(resolve => {
+          switch (type) {
+            case 'valid':
+              this.onBlur(...args).then(resolve)
+              break;
+            case 'reset':
+              this.setState({
+                dirty: false,
+                error: ''
+              }, resolve);
+              break;
+          }
+        });
+      }
     }
-
+    
     if (!entity || (JSON.stringify(entity && entity[name]) !== JSON.stringify(newProps.entity[name]))) {
       this.setState({
         ...this.getSplitState(newProps.name, newProps.entity),
         value: newProps.entity[name],
-        error: validFn(newProps.valid, newProps.entity[name])
+        error: isFormChange ? validFn(newProps.valid, newProps.entity[name]) : ''
       })
     }
     if (width !== newProps.width) {

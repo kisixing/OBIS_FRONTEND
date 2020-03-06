@@ -223,7 +223,6 @@ export const tableKey = () => [
 	},
 	{
 		title: '体重',
-		key: 'cktizh',
 		children:[
 			{
 				title: '(kg)',
@@ -256,11 +255,10 @@ export const tableKey = () => [
 	},
 	{
 		title: '胎心率',
-		key: 'cktaix',
 		children:[
 			{
 				title: '(bpm)',
-				key: 'cktaix',
+				key: 'allTaix',
 				width: 30,
 				type: 'input'
 			},
@@ -268,7 +266,6 @@ export const tableKey = () => [
 	},
 	{
 		title: '宫高',
-		key: 'ckgongg',
 		children:[
 			{
 				title: '(cm)',
@@ -280,7 +277,7 @@ export const tableKey = () => [
 	},
 	{
 		title: '先露',
-		key: 'ckxianl',
+		key: 'allXianl',
 		type:'select',
 		width: 30,
 		showSearch: true,
@@ -299,15 +296,15 @@ export const tableKey = () => [
 	// 	children:[
 	// 		{
 	// 			title: '胎儿体重',
-	// 			key: 'fetalUltrasound.tetz',
+	// 			key: 'allTetz',
 	// 		},
 	// 		{
 	// 			title: 'AVF',
-	// 			key: 'fetalUltrasound.teafv',
+	// 			key: 'allTeafv',
 	// 		},
 	// 		{
 	// 			title: '脐血流',
-	// 			key: 'fetalUltrasound.teqxl',
+	// 			key: 'allTeqxl',
 	// 		},
 	// 	]
 	// },
@@ -328,19 +325,19 @@ export const tableKey = () => [
 	// 	children:[
 	// 		{
 	// 			title: '早',
-	// 			key: 'riMoDosage',
+	// 			key: 'allRiMo',
 	// 		},
 	// 		{
 	// 			title: '中',
-	// 			key: 'riNoDosage',
+	// 			key: 'allRiNo',
 	// 		},
 	// 		{
 	// 			title: '晚',
-	// 			key: 'riEvDosage',
+	// 			key: 'allRiEv',
 	// 		},
 	// 		{
 	// 			title: '睡前',
-	// 			key: 'riSlDosage',
+	// 			key: 'allRiSl',
 	// 		},
 	// 	]
 	// },
@@ -363,7 +360,7 @@ export const tableKey = () => [
 	// },
 	// {
 	// 	title: '用药方案',
-	// 	key: 'medicationPlan.name',
+	// 	key: 'allMedicationPlan',
 	// },
 	// {
 	// 	title: '化验',

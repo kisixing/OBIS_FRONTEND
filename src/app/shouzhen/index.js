@@ -80,7 +80,7 @@ export default class Patient extends Component {
                 tab.entity = service.praseJSON(res.object.pregnantInfo);
             } else if (tab.key === 'tab-1'){
                 tab.entity = service.praseJSON(res.object.hisInfo);
-                tab.entity['operationHistory'] = !!res.object.operationHistory.operationHistorys ? res.object.operationHistory.operationHistorys : [];
+                // tab.entity['operationHistory'] = !!res.object.operationHistory.operationHistorys ? res.object.operationHistory.operationHistorys : [];
             } else if (tab.key === 'tab-2') {
                 tab.entity = service.praseJSON({...res.object.menstruationMarriage, ...res.object.biography});
             } else if (tab.key === 'tab-3') {
@@ -98,6 +98,16 @@ export default class Patient extends Component {
                 tab.entity["ckbmi"] = common.getBMI( tab.entity["cktizh"], tab.entity["cksheng"] );
                 tab.entity.ckpressure = typeof tab.entity.ckpressure === "object" 
                                     ? tab.entity.ckpressure : [ tab.entity.ckshrinkpressure, tab.entity.ckdiastolicpressure ];
+                // 体格检查数据初始化
+                tab.entity.ckpifu = !!tab.entity.ckpifu ? tab.entity.ckpifu : [{"label": "正常", "value": ""}];
+                tab.entity.ckjiazhx = !!tab.entity.ckjiazhx ? tab.entity.ckjiazhx : [{"label": "正常", "value": ""}];
+                tab.entity.ckganz = !!tab.entity.ckganz ? tab.entity.ckganz : [{"label": "未触及", "value": ""}];
+                tab.entity.ckpiz = !!tab.entity.ckpiz ? tab.entity.ckpiz : [{"label": "未触及", "value": ""}];
+                tab.entity.ckshenz = !!tab.entity.ckshenz ? tab.entity.ckshenz : [{"label": "无", "value": ""}];
+                tab.entity.ckjizh = !!tab.entity.ckjizh ? tab.entity.ckjizh : [{"label": "正常", "value": ""}];
+                tab.entity.nervousReflex = !!tab.entity.nervousReflex ? tab.entity.nervousReflex : [{"label": "存在", "value": ""}];
+                tab.entity.vascularMurmurOther = !!tab.entity.vascularMurmurOther ? tab.entity.vascularMurmurOther : [{"label": "无", "value": ""}];
+                tab.entity.ckfuzh = !!tab.entity.ckfuzh ? tab.entity.ckfuzh : [{"label": "-", "value": ""}];
             } else if (tab.key === 'tab-5') {
                 tab.entity = service.praseJSON(res.object.specialityCheckUp);
                 let ckjc = tab.entity.add_FIELD_ckjc;
@@ -229,12 +239,12 @@ export default class Patient extends Component {
             setTimeout(hide, 2000);
 
             if (this.change) {
-                if(tab.key === 'tab-1') {
-                    service.shouzhen.saveOperations(tab.key, entitySave(tab.entity)).then(() => {
-                        message.success('信息保存成功',3);
-                        valid && this.activeTab(key || next.key);
-                    });
-                }
+                // if(tab.key === 'tab-1') {
+                //     service.shouzhen.saveOperations(tab.key, entitySave(tab.entity)).then(() => {
+                //         message.success('信息保存成功',3);
+                //         valid && this.activeTab(key || next.key);
+                //     });
+                // }
                 if (tab.key === 'tab-3') {
                     //删除空数据以及去掉本孕一行
                     tab.entity.preghiss = tab.entity.preghiss.filter(item => Object.keys(item).length !== 1)
@@ -353,6 +363,9 @@ export default class Patient extends Component {
                                 store.dispatch(action);
                             }))
                         }
+                        if(tab.key === 'tab-7' && type === 'open') {
+                            service.shouzhen.uploadHisDiagnosis().then(res => { })
+                        }
                     });
                 }
             } else {
@@ -362,6 +375,7 @@ export default class Patient extends Component {
             const action = isFormChangeAction(false);
             store.dispatch(action);
 
+            console.log(valid, '76367')
             if (!valid && type !== 'save') {
                 !isJump && message.error('必填项不能为空！');
                 if (key && isJump) {

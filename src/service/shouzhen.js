@@ -132,14 +132,27 @@ export default {
     /**
      * 获取医嘱接口
     */
-   getAdviceTreeList: function(){
+    getAdviceTreeList: function() {
         return this.userId().then(r => myAxios.get(`/outpatientRestful/getAdviceTreeList?userid=${r.object.userid}`));
     },
     /**
      * 预约接口
     */
-   makeAppointment: function(type, time){
+    makeAppointment: function(type, time) {
         let data = {"type": type, "time": time};
         return this.userId().then(r => myAxios.post('/outpatientWriteRestful/makeAppointment', {userid: r.object.userid, ...data}));
+    },
+
+    /**
+     * 首诊历史修改记录
+    */
+    getIvisitLog: function() {
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getIvisitLog?userid=${r.object.userid}`));
+    },
+    /**
+     * 保存并开立医嘱调用接口
+    */
+    uploadHisDiagnosis: function() {
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/uploadHisDiagnosis', {userid: r.object.userid}));
     },
 };

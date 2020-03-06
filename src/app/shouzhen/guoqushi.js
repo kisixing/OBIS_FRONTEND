@@ -90,18 +90,32 @@ export default class extends Component {
           columns: [
             { span: 1 },
             {
-              name: "operationHistory[手术史]",
-              type: "table",
-              // valid: "required",
-              buttonSize: "default",
-              pagination: false,
-              editable: true,
-              options: baseData.shoushushiColumns,
-              className: "table-wrapper",
-              span: 23
+              name: "add_FIELD_has_operation_history[手术史]",
+              type: "checkinput",
+              valid: "required",
+              className: 'long-ipt-3',
+              radio: true,
+              options: baseData.wssOptions,
+              span: 8
             }
           ]
         },
+        // {
+        //   columns: [
+        //     { span: 1 },
+        //     {
+        //       name: "operationHistory[手术史]",
+        //       type: "table",
+        //       // valid: "required",
+        //       buttonSize: "default",
+        //       pagination: false,
+        //       editable: true,
+        //       options: baseData.shoushushiColumns,
+        //       className: "table-wrapper",
+        //       span: 23
+        //     }
+        //   ]
+        // },
         {
           columns: [
             { span: 1 },
