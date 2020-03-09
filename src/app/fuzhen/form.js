@@ -404,9 +404,9 @@ export default class FuzhenForm extends Component {
   handleTreatmentClick(e, {text,index},resolve){
     text==='更多'?this.setState({openTemplate:resolve}):this.addTreatment(e, text);
     if(text==='糖尿病日间门诊') {
-      this.setState({openMenzhen: true});
+      // this.setState({openMenzhen: true});
     }else if (text==='产前诊断') {
-      this.setState({openMenzhen: true});
+      // this.setState({openMenzhen: true});
 
     }
   }
@@ -553,7 +553,7 @@ export default class FuzhenForm extends Component {
             service.shouzhen.uploadHisDiagnosis().then(res => { })
           }
         });
-      } else {
+      } else if(!valid) {
         message.error('必填项不能为空！');
       }
     });
@@ -661,7 +661,9 @@ export default class FuzhenForm extends Component {
     const { openAdvice, adviceList } = this.state;
     const handelShow = (e, items=[]) => {
       this.setState({openAdvice: false});
-      this.addTreatment(e, items.map(i => i.name).join('\n'));
+      if (items.length > 0) {
+        this.addTreatment(e, items.map(i => i.name).join('\n'));
+      }
     }
 
     const initTree = (pid) => adviceList.filter(i => i.pid === pid).map(node => (

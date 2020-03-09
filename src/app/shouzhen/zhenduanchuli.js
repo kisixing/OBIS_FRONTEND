@@ -94,17 +94,25 @@ export default class extends Component{
     // this.getGPTimes();
   }
 
-  config(){
+  topConfig() {
     return {
-      step: 1,
       rows: [
         {
+          className: 'top-column',
           columns: [
-            { name: 'yunc[G]', type: 'input', span: 4 },
+            { name: 'yunc[1、G]', type: 'input', span: 4 },
             { name: 'chanc[P]', type: 'input', span: 4 },
             { name: 'tuserweek[妊娠](周)', type: 'input', span: 4 },
           ]
         },
+      ]
+    }
+  }
+
+  config(){
+    return {
+      step: 1,
+      rows: [
         {
           columns: [
             { name: "diagnosisHandle[处理措施]", type: "textarea", span: 8, className: "table-wrapper" },
@@ -219,9 +227,9 @@ export default class extends Component{
   handleTreatmentClick(e, {text,index},resolve){
     text==='更多'?this.setState({openTemplate:resolve}):this.addTreatment(e, text);
     if(text==='糖尿病日间门诊') {
-      this.setState({openMenzhen: true});
+      // this.setState({openMenzhen: true});
     }else if (text==='产前诊断') {
-      this.setState({openMenzhen: true});
+      // this.setState({openMenzhen: true});
     }
   }
 
@@ -343,7 +351,7 @@ export default class extends Component{
               <Col span={8}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                   <div title={item.data}>
-                    <span className="font-12">{i + 1}、</span>
+                    <span className="font-12">{i + 2}、</span>
                     <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
                   </div>
                 </Popover>
@@ -456,7 +464,9 @@ export default class extends Component{
     const { openAdvice, adviceList } = this.state;
     const handelShow = (e, items=[]) => {
       this.setState({openAdvice: false});
-      this.addTreatment(e, items.map(i => i.name).join('\n'));
+      if (items.length > 0) {
+        this.addTreatment(e, items.map(i => i.name).join('\n'));
+      }
     }
 
     const initTree = (pid) => adviceList.filter(i => i.pid === pid).map(node => (
@@ -558,7 +568,8 @@ export default class extends Component{
     const { isShowRegForm } = this.state;
     const { entity } = this.props;
     return (
-      <div>
+      <div className="zhen-duan">
+        {formRender(entity, this.topConfig(), this.handleChange.bind(this))}
         {this.renderZD()}
         {formRender(entity, this.config(), this.handleChange.bind(this))}
         <Button onClick={() =>this.openLisi()}>首检信息历史修改记录</Button>

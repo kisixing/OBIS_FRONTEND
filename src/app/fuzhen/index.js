@@ -430,22 +430,22 @@ export default class Patient extends Component {
     const renderResultModal = () => {
       const { isShowResultModal } = this.state;
       const handleClick = (bool) => {
-        if(bool) {
-          const form = document.querySelector('.jy-modal');
-          fireForm(form, 'valid').then((valid) => {
-            if(valid) {
-              service.shouzhen.saveForm('tab-6', jyEntity).then(res => {
-                this.setState({isShowResultModal: false});
-                const action = isFormChangeAction(false);
-                store.dispatch(action);
-              })
-            }else {
-              message.error("必填项不能为空！");
-            }
-          })
-        } else {
+        // if(bool) {
+        //   const form = document.querySelector('.jy-modal');
+        //   fireForm(form, 'valid').then((valid) => {
+        //     if(valid) {
+        //       service.shouzhen.saveForm('tab-6', jyEntity).then(res => {
+        //         this.setState({isShowResultModal: false});
+        //         const action = isFormChangeAction(false);
+        //         store.dispatch(action);
+        //       })
+        //     }else {
+        //       message.error("必填项不能为空！");
+        //     }
+        //   })
+        // } else {
           this.setState({isShowResultModal: false});
-        }
+        // }
       }
 
       const handleChange = (e, { name, value, target }, jyEntity) => {
@@ -612,8 +612,10 @@ export default class Patient extends Component {
           item.allXianl = "";
           if(item.fetalCondition && item.fetalCondition[0].location) {
             item.fetalCondition.map(subItem => {
-              if(subItem.location && subItem.taix && subItem.xianl) {
+              if(subItem.location && subItem.taix) {
                 item.allTaix += `${subItem.location.label}：${subItem.taix}；`;
+              }
+              if(subItem.location && subItem.xianl) {
                 item.allXianl += `${subItem.location.label}：${subItem.xianl.label}；`;
               }
             })

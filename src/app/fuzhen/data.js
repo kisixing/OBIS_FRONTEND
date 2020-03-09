@@ -223,6 +223,7 @@ export const tableKey = () => [
 	},
 	{
 		title: '体重',
+		key: 'cktizh',
 		children:[
 			{
 				title: '(kg)',
@@ -255,6 +256,7 @@ export const tableKey = () => [
 	},
 	{
 		title: '胎心率',
+		key: 'allTaix',
 		children:[
 			{
 				title: '(bpm)',
@@ -266,6 +268,7 @@ export const tableKey = () => [
 	},
 	{
 		title: '宫高',
+		key: 'ckgongg',
 		children:[
 			{
 				title: '(cm)',
@@ -293,6 +296,7 @@ export const tableKey = () => [
 
 	{
 		title: '胎儿超声',
+		key: 'allTetz',
 		children:[
 			{
 				title: '胎儿体重',
@@ -322,6 +326,7 @@ export const tableKey = () => [
 	},
 	{
 		title: '胰岛素(U)方案',
+		key: 'allRiMo',
 		children:[
 			{
 				title: '早',
@@ -343,6 +348,7 @@ export const tableKey = () => [
 	},
 	{
 		title: '尿蛋白',
+		key: 'upState',
 		children:[
 			{
 				title: '定性',

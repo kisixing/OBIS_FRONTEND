@@ -80,7 +80,7 @@ export default class FuzhenForm extends Component {
       rows: [
         {
           columns: [
-            { name: "name[诊疗计划组名字]", type: "input", span: 12 },
+            { name: "name[诊疗计划组名字]", className: "long-label", type: "input", span: 14 },
           ]
 				},
 				{
@@ -240,7 +240,7 @@ export default class FuzhenForm extends Component {
 
   render() {
     return (
-      <div>
+      <div className="plan-table">
         <Row>
           <Col span={16}>
             <Row>{this.renderLeftForm()}</Row>
