@@ -109,7 +109,7 @@ export const plOptions = toOptions('偶尔,经常,无');
 /**
  * 婚姻史
  */
-export const hysOptions = toOptions('未婚,已婚,离异,再婚,丧偶');
+export const hysOptions = toOptions('已婚,未婚,离异,再婚,丧偶');
 
 /**
  * 是否
@@ -119,7 +119,7 @@ export const yesOptions = toOptions('是,否');
 /**
  * 近亲
  */
-export const jinqOptions = toOptions('是{#FF3300},否');
+export const jinqOptions = toOptions('否,是{#FF3300}');
 
 /**
  *皮肤黏膜
@@ -209,7 +209,7 @@ export const sxfOptions = toOptions('存在,亢起{#FF3300},消失{#FF3300},引�
 /**
  *乙肝两对半
 */
-export const ygOptions = toOptions('正常,小三阳{#FF3300},大三阳{#FF3300},慢活肝{#FF3300},未查{#FF3300},其他{#FF3300}(input)');
+export const ygOptions = toOptions('正常,阳性{#FF3300}(input),小三阳{#FF3300},大三阳{#FF3300},慢活肝{#FF3300},未查{#FF3300}');
 
 /**
  *阴阳未查
@@ -273,7 +273,7 @@ export const xOptions = toOptions('阴性,弱阳性{#FF3300},阳性{#FF3300},未
 /**
  * 未做检查,拒绝检查
  */
-export const wjjOptions = toOptions('已查,拒绝检查');
+export const wjjOptions = toOptions('已查,未查');
 
 /**
  * 骨外盆未做检查
@@ -434,12 +434,6 @@ export const pregnanciesColumns = [
 		]
 	},
 	{
-		title: '并发症',
-		key: 'bingfzh',
-		type: 'input',
-		width: '200',
-	},
-	{
 		title: '胎数',
 		type: 'input',
 		key: 'births',
@@ -507,7 +501,13 @@ export const pregnanciesColumns = [
 		key: 'xinseother',
 		type: 'input',
 		width: 400
-	}
+	},
+	{
+		title: '特殊情况',
+		key: 'bingfzh',
+		type: 'input',
+		width: '200',
+	},
 ]
 
 

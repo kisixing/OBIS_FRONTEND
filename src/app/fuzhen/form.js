@@ -193,7 +193,7 @@ export default class FuzhenForm extends Component {
                       {
                         label: `胎${index+1}`, columns: [
                           { name: 'location[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
-                          { name: 'taix(bmp)[胎心率]', type: 'input', span: 7 },
+                          { name: 'taix(bmp)[胎心率]', type: 'input', span: 7, valid: 'number' },
                           { name: 'xianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
                           { span: 1 },
                           {
@@ -359,7 +359,7 @@ export default class FuzhenForm extends Component {
         },
         {
           columns:[
-            { name: 'rvisitOsType[下次复诊]', type:'select', valid: 'required', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
+            { name: 'rvisitOsType[下次复诊]', type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
             { name: 'ckappointmentWeek', type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
             { name: 'ckappointment', type:'date', valid: 'required', span: 2 },
             { name: 'ckappointmentArea', type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },

@@ -185,9 +185,37 @@ export default {
     },
 
     /**
-     * 缺少检验报告-其他
+     * 缺少检验报告-其他(获取)
      */
     getLisResult: function(){
         return this.userId().then(r => myAxios.get(`/outpatientRestful/getLisResult?userid=${r.object.userid}`));
+    },
+
+    /**
+     * 缺少检验报告-其他(保存)
+     */
+    saveLisResult: function(params){
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/saveLisResult', params));
+    },
+
+    /**
+     * 查询诊疗计划组所有数据
+     */
+    findDiagnosisPlanAndGroupVO: function(){
+        return this.userId().then(r => myAxios.get('/diagnosisPlanGroup/findDiagnosisPlanAndGroupVO'));
+    },
+
+    /**
+     * 诊疗计划组增删改
+     */
+    editGroupAndDiagnosisPlan: function(param){
+        return this.userId().then(r => myAxios.post('/diagnosisPlanGroup/editGroupAndDiagnosisPlan', {...param, userid: r.object.userid}));
+    },
+
+     /**
+     * 根据诊疗计划组的名字查询诊疗计划组数据列表
+     */
+    selectListByGroupName: function(param){
+        return this.userId().then(r => myAxios.get(`/diagnosisPlanGroup/selectListByGroupName?groupName=${param}`));
     },
 }

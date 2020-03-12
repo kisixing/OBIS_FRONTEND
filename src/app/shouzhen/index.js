@@ -234,6 +234,7 @@ export default class Patient extends Component {
         }
 
         fireForm(form, 'valid').then((valid) => {
+            console.log(valid, '543')
             // 数据提交前再对数据进行一些处理，请实现entitySave方法，请参考tab-0：yunfuxinxi.js这个文件
             const entitySave = tab.entitySave || (i=>i);
             tab.error = !valid;

@@ -155,33 +155,33 @@ export default class Patient extends Component {
   }
 
   // 判断某个点是否在多边形内部
-judgeAreas(dot, coordinates) {
-  var x = dot.x,y=dot.y;
-  var crossNum = 0;
-  for(var i=0;i<coordinates.length-1;i++){
-     var start = coordinates[i];
-     var end = coordinates[i+1];
-     // 起点、终点斜率不存在的情况
-     if(start.x===end.x) {
-        // 因为射线向右水平，此处说明不相交
-        if(x>start.x) continue;
-        if((end.y>start.y&&y>=start.y && y<=end.y) || (end.y<start.y&&y>=end.y && y<=start.y)){
-           crossNum++;
-        }
-        continue;
-     }
-     // 斜率存在的情况，计算斜率
-     var k=(end.y-start.y)/(end.x-start.x);
-     // 交点的x坐标
-     var x0 = (y-start.y)/k+start.x;
-     // 因为射线向右水平，此处说明不相交
-     if(x>x0) continue;
-     if((end.x>start.x&&x0>=start.x && x0<=end.x) || (end.x<start.x&&x0>=end.x && x0<=start.x)){
-        crossNum++;
-     }
-  }
-  return crossNum%2===1;
-};
+  judgeAreas(dot, coordinates) {
+    var x = dot.x,y=dot.y;
+    var crossNum = 0;
+    for(var i=0;i<coordinates.length-1;i++){
+      var start = coordinates[i];
+      var end = coordinates[i+1];
+      // 起点、终点斜率不存在的情况
+      if(start.x===end.x) {
+          // 因为射线向右水平，此处说明不相交
+          if(x>start.x) continue;
+          if((end.y>start.y&&y>=start.y && y<=end.y) || (end.y<start.y&&y>=end.y && y<=start.y)){
+            crossNum++;
+          }
+          continue;
+      }
+      // 斜率存在的情况，计算斜率
+      var k=(end.y-start.y)/(end.x-start.x);
+      // 交点的x坐标
+      var x0 = (y-start.y)/k+start.x;
+      // 因为射线向右水平，此处说明不相交
+      if(x>x0) continue;
+      if((end.x>start.x&&x0>=start.x && x0<=end.x) || (end.x<start.x&&x0>=end.x && x0<=start.x)){
+          crossNum++;
+      }
+    }
+    return crossNum%2===1;
+  };
 
   //水平坐标轴标尺 
   setVerRules(ctx, origin, Len, color, lineWidth, step, int) {
@@ -218,7 +218,7 @@ judgeAreas(dot, coordinates) {
   }
 
   //绘制曲线
-  drawScaleLine(ctx, oringin, steps, data, hasPoint, color, shape, lineWidth) {
+  drawScaleLine(ctx, oringin, steps, data, point, color, shape, lineWidth) {
     for (let i = 0; i < data.length; i++) {
       //绘制曲线
       ctx.beginPath();
@@ -231,11 +231,11 @@ judgeAreas(dot, coordinates) {
       ctx.strokeStyle = color;
       ctx.stroke();
       //绘制红点
-      if(hasPoint) {
+      if(point[0]) {
         ctx.beginPath();
         ctx.setLineDash([]);
         ctx.arc(oringin[0] + steps[0] * data[i].x, oringin[1] - steps[1] * data[i].y, 3, 0, 2*Math.PI);
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = point[1];
         ctx.fill();
       }
     }
@@ -401,10 +401,10 @@ judgeAreas(dot, coordinates) {
     this.setVerRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (yCount - 1) * yStep, 'black', 1, yStep, 5);
     this.setHorRules(context, [baseLeft, baseTop + (xCount - 1) * xStep], (xCount - 1) * xStep, 'black', 1, xStep, 5);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine1, true, 'gray', [8], 2);
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine2, true, 'gray', [8], 2);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine1, [true, '#787878'], 'gray', [8], 2);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], bmiDashLine2, [true, '#787878'], 'gray', [8], 2);
     console.log(newBmiList, 'bmi2')
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], newBmiList, true, bmiColor, [0], 2);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 4) * xStep],  [yStep, xStep / 2], newBmiList, [true, 'red'], bmiColor, [0], 2);
   }
 
   drawFetusCanvas() {
@@ -514,32 +514,32 @@ judgeAreas(dot, coordinates) {
     context.fillText('FL', baseLeft + (yCount - 6) * yStep, baseTop + 28 * xStep);
     context.fillText('AC', baseLeft + (yCount - 6) * yStep, baseTop + 44* xStep);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], topAcLine, false, 'gray', [0], 1);
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], middleAcLine, false, '#787878', [0], 2);
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bottomAcLine, false, 'gray', [0], 1);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], topAcLine, [false], 'gray', [0], 1);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], middleAcLine, [false], '#787878', [0], 2);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bottomAcLine, [false], 'gray', [0], 1);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], topFlLine, false, 'gray', [0], 1);
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], middleFlLine, false, '#787878', [0], 2);
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bottomFlLine, false, 'gray', [0], 1);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], topFlLine, [false], 'gray', [0], 1);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], middleFlLine, [false], '#787878', [0], 2);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bottomFlLine, [false], 'gray', [0], 1);
 
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], topBpdLine, false, 'gray', [0], 1);
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], middleBpdLine, false, '#787878', [0], 2);
-    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bottomBpdLine, false, 'gray', [0], 1);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], topBpdLine, [false], 'gray', [0], 1);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], middleBpdLine, [false], '#787878', [0], 2);
+    this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bottomBpdLine, [false], 'gray', [0], 1);
 
     console.log(bpdArr, flArr, acArr, '生长曲线')
     if (bpdArr.length > 0) {
       let bpdColor = this.judgeAreas(bpdArr[bpdArr.length - 1], bdpPoints) ? '#6BB6FF' : 'red';
-      this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bpdArr, true, bpdColor, [0], 4);
+      this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], bpdArr, [true, 'red'], bpdColor, [0], 4);
     }
 
     if (flArr.length > 0) {
       let flColor = this.judgeAreas(flArr[flArr.length - 1], flPoints) ? '#6BB6FF' : 'red';
-      this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], flArr, true, flColor, [0], 4);
+      this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], flArr, [true, 'red'], flColor, [0], 4);
     }
 
     if (acArr.length > 0) {
       let acColor = this.judgeAreas(acArr[acArr.length - 1], acPoints) ? '#6BB6FF' : 'red';
-      this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], acArr, true, acColor, [0], 4);
+      this.drawScaleLine(context, [baseLeft, baseTop + (xCount - 1) * xStep],  [yStep, xStep / 2], acArr, [true, 'red'], acColor, [0], 4);
     }
   }
 

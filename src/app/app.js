@@ -534,7 +534,7 @@ export default class App extends Component {
           <div><strong>预产期:</strong>{userDoc.gesexpect}</div>
           <div><strong>就诊卡:</strong>{userDoc.usermcno}</div>
           <div><strong>产检编号:</strong>{userDoc.chanjno}</div>
-          <div><strong>高危因素:</strong><strong style={{color: "red"}}>{userDoc.highriskFactor}</strong></div>
+          <div><strong>高危因素:</strong><strong className="high-risk">{userDoc.highriskFactor}</strong></div>
         </div>
         <p className="patient-Info_tab">
           {routers.map((item, i) => (

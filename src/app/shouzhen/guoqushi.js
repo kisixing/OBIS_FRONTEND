@@ -24,8 +24,13 @@ export default class extends Component {
               className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 8
+              span: 23
             },
+          ]
+        },
+        {
+          columns: [
+            { span: 1 },
             {
               name: "add_FIELD_tangniaobing[糖尿病]",
               type: "checkinput",
@@ -33,8 +38,13 @@ export default class extends Component {
               className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 8
+              span: 23
             },
+          ]
+        },
+        {
+          columns: [
+            { span: 1 },
             {
               name: "add_FIELD_xinzangbing[心脏病]",
               type: "checkinput",
@@ -42,7 +52,7 @@ export default class extends Component {
               className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 7
+              span: 23
             }
           ]
         },
@@ -52,10 +62,10 @@ export default class extends Component {
             {
               name: "add_FIELD_qitabingshi[其@他]",
               type: "checkinput",
-              className: 'long-ipt-2',
+              className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 15
+              span: 23
             }
           ]
         },
@@ -68,7 +78,7 @@ export default class extends Component {
               className: "none_check",
               radio: true,
               options: baseData.noneOptions,
-              span: 15
+              span: 23
             }
           ]
         },
@@ -93,10 +103,10 @@ export default class extends Component {
               name: "add_FIELD_has_operation_history[手术史]",
               type: "checkinput",
               valid: "required",
-              className: 'long-ipt-3',
+              className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 8
+              span: 23
             }
           ]
         },

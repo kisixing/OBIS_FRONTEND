@@ -274,7 +274,8 @@ export const tableKey = () => [
 				title: '(cm)',
 				key: 'ckgongg',
 				width: 50,
-				type: 'input'
+				type: 'input',
+				valid: 'number'
 			},
 		]
 	},
@@ -293,11 +294,24 @@ export const tableKey = () => [
 		width: 50,
 		options: ckfuzhOptions
 	},
-
-	{
-		title: '胎儿超声',
-		key: 'allTetz',
-		children:[
+	// {
+	// 	title: '胎儿超声',
+	// 	key: 'allTetz',
+	// 	children:[
+	// 		{
+	// 			title: '胎儿体重',
+	// 			key: 'allTetz',
+	// 		},
+	// 		{
+	// 			title: 'AVF',
+	// 			key: 'allTeafv',
+	// 		},
+	// 		{
+	// 			title: '脐血流',
+	// 			key: 'allTeqxl',
+	// 		},
+	// 	]
+	// },
 			{
 				title: '胎儿体重',
 				key: 'allTetz',
@@ -310,8 +324,6 @@ export const tableKey = () => [
 				title: '脐血流',
 				key: 'allTeqxl',
 			},
-		]
-	},
 	{
 		title: '空腹血糖',
 		key: 'fpg',
@@ -324,10 +336,28 @@ export const tableKey = () => [
 		title: 'HbAlc',
 		key: 'hbAlc',
 	},
-	{
-		title: '胰岛素(U)方案',
-		key: 'allRiMo',
-		children:[
+	// {
+	// 	title: '胰岛素(U)方案',
+	// 	key: 'allRiMo',
+	// 	children:[
+	// 		{
+	// 			title: '早',
+	// 			key: 'allRiMo',
+	// 		},
+	// 		{
+	// 			title: '中',
+	// 			key: 'allRiNo',
+	// 		},
+	// 		{
+	// 			title: '晚',
+	// 			key: 'allRiEv',
+	// 		},
+	// 		{
+	// 			title: '睡前',
+	// 			key: 'allRiSl',
+	// 		},
+	// 	]
+	// },
 			{
 				title: '早',
 				key: 'allRiMo',
@@ -344,12 +374,20 @@ export const tableKey = () => [
 				title: '睡前',
 				key: 'allRiSl',
 			},
-		]
-	},
-	{
-		title: '尿蛋白',
-		key: 'upState',
-		children:[
+	// {
+	// 	title: '尿蛋白',
+	// 	key: 'upState',
+	// 	children:[
+	// 		{
+	// 			title: '定性',
+	// 			key: 'upState',
+	// 		},
+	// 		{
+	// 			title: '定量',
+	// 			key: 'upDosage24h',
+	// 		},
+	// 	]
+	// },
 			{
 				title: '定性',
 				key: 'upState',
@@ -358,8 +396,6 @@ export const tableKey = () => [
 				title: '定量',
 				key: 'upDosage24h',
 			},
-		]
-	},
 	{
 		title: '心率',
 		key: 'heartRate',
@@ -375,8 +411,9 @@ export const tableKey = () => [
 	{
 		title: '处理措施',
 		key: 'treatment',
-		type: 'input',
-		width: 150,
+		className: 'treatment',
+		// type: 'input',
+		width: 200,
 	},
 	{
 		title: '下次复诊',
@@ -394,7 +431,7 @@ export const tableKey = () => [
  */
 export const planKey = () => [
 	{
-		title: 'No',
+		title: '编号',
 		key: 'index',
 		format: (v,{row})=>row+1
 	},
@@ -405,16 +442,19 @@ export const planKey = () => [
 	{
 		title: '孕周',
 		key: 'gestation',
+		type: 'input'
 	},
 	{
 		title: '产检项目',
 		key: 'item',
+		type: 'input'
 	},
 	{
 		title: '提醒事项',
 		key: 'event',
+		type: 'input'
 	}
-].map(i=>({type:'input',...i}));
+];
 
 /**
  * 管理诊疗组表头
@@ -423,16 +463,19 @@ export const managePlanKey = () => [
 	{
 		title: '编号',
 		key: 'id',
+		width: 30,
+		format: (v,{row})=>row+1
 	},
 	{
 		title: '诊疗计划组',
-		key: 'item',
+		key: 'groupName',
+		width: 50,
 	},
 	{
 		title: '内容',
 		key: 'content',
 	}
-].map(i=>({type:'input',...i}));
+];
 
 /**
  * 新建诊疗组表头
@@ -441,16 +484,21 @@ export const newPlanKey = () => [
 	{
 		title: '编号',
 		key: 'id',
+		width: 30,
+		format: (v,{row})=>row+1
 	},
 	{
 		title: '孕周',
 		key: 'time',
+		type: 'input',
+		width: 50,
 	},
 	{
 		title: '提醒事件',
 		key: 'event',
+		type: 'input'
 	}
-].map(i=>({type:'input',...i}));
+];
 
 /**
  * 诊断输入框的联想数据，当没有输入的时候显示top为true的数据

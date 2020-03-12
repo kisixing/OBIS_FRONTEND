@@ -21,30 +21,17 @@ export default class FuzhenForm extends Component {
         item: "",
         event: ""
       },
-			treeDate: ["梅毒", "甲亢", "甲减", "羊水过多/过少", "巨大儿"],
-			planGroup: [
-				{
-					"id": "1",
-					"item": "GDM",
-					"time": "8",
-					"event": "B超",
-					"content": "胎监（34周）"
-				},
-				{
-					"id": "2",
-					"item": "GDM",
-					"time": "12",
-					"event": "体检",
-					"content": "胎监（34周）"
-				},
-				{
-					"id": "3",
-					"item": "GDM",
-					"time": "18",
-					"event": "产前诊断",
-					"content": "胎监（34周）"
-				},
-			]
+			treeDate: [],
+      planGroup: [],
+
+      allPlanEntity: {},
+      allPlanDataList: {
+        "backup": "1",
+        "del": 0,
+        "diagnosisPlans": [],
+        "groupName": "",
+        "status": "1",
+      },
     };
   }
 
@@ -53,61 +40,53 @@ export default class FuzhenForm extends Component {
       rows: [
         {
           columns: [
-            { name: "gestation(周)[孕周]", type: "input", span: 6 },
-            {
-              name: "item[产检项目]",
-              type: "select",
-              span: 7,
-              options: baseData.cjOptions
-            },
+            { name: "gestation(周)[孕周]", type: "input", span: 6, valid: 'number' },
+            { name: "item[产检项目]", type: "select", span: 7, options: baseData.cjOptions },
             { name: "event[提醒事件]", type: "input", span: 8 },
-            {
-              type: "button",
-              span: 3,
-              text: "添加",
-              color: "#1890ff",
-							size: "small",
-							onClick:this.addRecentRvisit.bind(this)
-            }
+            { type: "button", span: 3, text: "添加", color: "#1890ff", size: "small",	onClick: this.addRecentRvisit.bind(this) }
           ]
         }
       ]
     };
 	}
 	
-	newPlanConfig() {
+	allPlanConfig() {
     return {
       rows: [
         {
           columns: [
-            { name: "name[诊疗计划组名字]", className: "long-label", type: "input", span: 14 },
+            { name: "groupName[诊疗计划组名字]", className: "long-label", type: "input", span: 22 },
           ]
 				},
 				{
           columns: [
+            { span: 1 },
             { name: "gestation(周)[孕周]", type: "input", span: 6 },
-            {
-              name: "item[产检项目]",
-              type: "select",
-              span: 7,
-              options: baseData.cjOptions
-            },
-            {
-              type: "button",
-              span: 3,
-              text: "添加",
-              color: "#1890ff",
-              size: "small"
-            }
+            { name: "event[提醒事件]", type: "input", span: 7 },
+            { span: 1 },
+            { type: "button", span: 3, text: "添加", color: "#1890ff", size: "small",	onClick: this.writePlanGroup.bind(this) }
           ]
         }
       ]
     };
   }
   componentDidMount() {
-
     service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));
+    this.getAllGroup();
+  }
 
+  getAllGroup() {
+    let treeData = [];
+    service.fuzhen.findDiagnosisPlanAndGroupVO().then(res => {
+      res.object && res.object.forEach(item => {
+        treeData.push(item.groupName);
+        item.content = '';
+        item.diagnosisPlans && item.diagnosisPlans.forEach(subItem => {
+          item.content += `${subItem.event}(${subItem.gestation}周)；`;
+        })
+        this.setState({ treeDate: treeData, planGroup: res.object })
+      })
+    })
   }
 
 	addRecentRvisit() {
@@ -122,7 +101,26 @@ export default class FuzhenForm extends Component {
         this.props.changeRecentRvisit();
       })
     })
-	}
+  }
+  
+  writePlanGroup() {
+    const { allPlanEntity, allPlanDataList } = this.state;
+    const { info } = this.props;
+    let param = {time: util.getWeek(allPlanEntity.gestation, info.tuserweek)};
+    let newplanEntity = Object.assign(allPlanEntity, param);
+
+    allPlanDataList.diagnosisPlans.push(newplanEntity);
+    allPlanDataList.groupName = newplanEntity.groupName;
+
+    console.log(newplanEntity, 112)
+    console.log(allPlanDataList, 113)
+
+    service.fuzhen.editGroupAndDiagnosisPlan(allPlanDataList).then(res => {
+      service.fuzhen.selectListByGroupName(newplanEntity.groupName).then(res => {
+        this.setState({ allPlanDataList: res.object })
+      })
+    })
+  }
 
 	onReturn(param) {
 		if (param === 1) {
@@ -180,21 +178,36 @@ export default class FuzhenForm extends Component {
    let newPlanDataList = planDataList;
    if (newPlanDataList.length>0) newPlanDataList.sort(compare('gestation'));
 
-
-    const initTable = data => tableRender(baseData.planKey(), data, { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onChange: handleTableChange});
+    const initTable = data => tableRender(baseData.planKey(), data, 
+          { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onChange: handleTableChange});
     return <div>{newPlanDataList.length > 0 ? initTable(newPlanDataList) : ""}</div>;
   }
 
   renderRightTree() {
 		const { treeDate } = this.state;
 					
-			/**
+		/**
      * 管理诊疗计划组窗口
      */
     const renderMplanModal = () => {
-      const { isShowMplanModal, planGroup } = this.state;
-      const handleClick = (item) => { this.setState({isShowMplanModal: false})}
-			const initTable = data => tableRender(baseData.managePlanKey(), data, { pagination: false, buttons: null, editable: true});
+      const { isShowMplanModal, planGroup, allPlanEntity } = this.state;
+      const handleClick = () => { this.setState({isShowMplanModal: false})}
+      const handleDBClick = (row) => {
+        allPlanEntity.groupName = row.groupName;
+        this.setState({ allPlanDataList: row, allPlanEntity });
+        this.onReturn(3);
+      }
+
+      const handleDelete = (select) => {
+        select.del = 1;
+        service.fuzhen.editGroupAndDiagnosisPlan(select).then(res => {
+          this.getAllGroup();
+        })
+      }
+
+      const initTable = data => tableRender(baseData.managePlanKey(), data,
+            { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onDBClick: handleDBClick});
+
       return (
 				<Modal width="60%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => {this.onReturn(2)}}>返回</Button>} 
 					visible={isShowMplanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
@@ -208,15 +221,33 @@ export default class FuzhenForm extends Component {
      * 新增诊疗计划组窗口
      */
     const renderNewplanModal = () => {
-			const { isShowNewplanModal, planGroup, planEntity } = this.state;
-			const handleClick = (item) => { this.setState({isShowNewplanModal: false})}
-			const handleChange = () => {}
-			const initTable = data => tableRender(baseData.newPlanKey(), data, { pagination: false, buttons: null, editable: true});
+			const { isShowNewplanModal, allPlanDataList, allPlanEntity } = this.state;
+			const handleClick = () => { this.setState({isShowNewplanModal: false})};
+      const handleChange = (e, { name, value, valid }) => {
+        // console.log(name, value, '23')
+        const data = { [name]: value };
+        data.item = '';
+        this.setState({ allPlanEntity: {...allPlanEntity, ...data}})
+      }
+      const handleDelete = (row, index) => {
+        console.log(allPlanEntity, '11')
+        console.log(row, index,allPlanDataList, '456')
+        allPlanDataList.diagnosisPlans[index-1].del = 1;
+
+        service.fuzhen.editGroupAndDiagnosisPlan(allPlanDataList).then(res => {
+          service.fuzhen.selectListByGroupName(allPlanEntity.groupName).then(res => {
+            this.setState({ allPlanDataList: res.object })
+          })
+        })
+
+      }
+
+			const initTable = data => tableRender(baseData.newPlanKey(), data, { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true});
       return (
 				<Modal width="60%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => {this.onReturn(4)}}>返回</Button>} 
 					visible={isShowNewplanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-					{formRender(planEntity, this.newPlanConfig(), handleChange())}
-          <div>{planGroup.length > 0 ? initTable(planGroup) : ""}</div>
+					{formRender(allPlanEntity, this.allPlanConfig(), handleChange)}
+          <div>{allPlanDataList.diagnosisPlans.length > 0 ? initTable(allPlanDataList.diagnosisPlans) : ""}</div>
         </Modal>
       )
 		}

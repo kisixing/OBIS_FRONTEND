@@ -5,7 +5,7 @@
 .bgDOM {
   position: fixed;
   z-index: 0;
-  left: 0;
+  right: 0;
   top: 0;
   width: @widthLeft;
   height: 2200px;
@@ -143,6 +143,13 @@
     border-top: 2px solid #4090ff;
     min-height: 5rem;
   }
+  .ant-tree li {
+    font-size: 14px;
+    float: left;
+  }
+  .ant-collapse .ant-collapse-header {
+    background: #237EE3;
+  }
 }
 
 
@@ -197,7 +204,7 @@
     width: 100%;
   }
 }
-.fuzhenTable {
+.fuzhenTable, .fuzhenTable2 {
   table-layout:fixed;
   td {
     max-width: 200px;
@@ -209,6 +216,11 @@
   }
   table {
     padding: 0 !important;
+  }
+  .treatment {
+    span {
+      // white-space: normal;
+    }
   }
   // .ant-table-tbody tr:first-child, .ant-table-tbody tr:first-child +tr {
   //   background: #F1F9FE !important;
@@ -260,6 +272,10 @@
       vertical-align: top;
     }
   }
+}
+
+.isHide {
+  display: none;
 }
 
 

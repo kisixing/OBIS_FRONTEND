@@ -50,16 +50,21 @@ class TableItem extends Component {
   }
 
   componentDidUpdate() {
-    const { style } = this.props;
-    if(style) {
-      this.refs.tableItem.parentNode.style.display = 'none';
-    }else {
-      this.refs.tableItem.parentNode.style.display = 'table-cell';
+    const { style, isPreghiss } = this.props;
+    if (isPreghiss) {
+      if(style) {
+        this.refs.tableItem.parentNode.style.display = 'none';
+      }else {
+        this.refs.tableItem.parentNode.style.display = 'table-cell';
+      }
     }
   }
 
   onDbClick = () => {
-    const { iseditable = ()=> true, entity, row, name, value, onEdit, isTwins } = this.props;
+    const { iseditable = ()=> true, entity, row, name, value, onEdit, isTwins, onDBClick } = this.props;
+    if(onDBClick) {
+      return onDBClick(entity);
+    }
     if(iseditable({entity, row, name, value})){
       if(isTwins && (name === "allTaix" || name === "allXianl")) {
         this.setState({force:false});
@@ -262,17 +267,18 @@ class MTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: null
+      selected: null,
+      rowIndex: null
     }
   }
 
-  onRowClick(record) {
+  onRowClick(record, index) {
     const { onRowSave } = this.props;
     const {selected} = this.state;
     if(selected && record !== selected) {
       onRowSave(selected);
     }
-    this.setState({selected: record});
+    this.setState({selected: record, rowIndex: index});
   }
 
   rowClassName(record) {
@@ -285,7 +291,7 @@ class MTable extends Component {
   }
 
   render() {
-    const {selected} = this.state;
+    const { selected, rowIndex } = this.state;
     const { buttons, buttonSize = "default", ...props } = this.props;
     return (
       <div>
@@ -295,7 +301,7 @@ class MTable extends Component {
               <Button
                 key={`btn-${i}`}
                 size={buttonSize}
-                onClick={() => btn.fn(selected)}
+                onClick={() => btn.fn(selected, rowIndex)}
                 style={{
                   height: buttonSize === "default" ? "30px" : "initial",
                   fontSize: '14px'
@@ -308,7 +314,7 @@ class MTable extends Component {
         ) : null}
         <Table
           {...props}
-          onRowClick={row => this.onRowClick(row)}
+          onRowClick={(row, index) => this.onRowClick(row, index)}
           rowClassName={row => this.rowClassName(row)}
         />
       </div>
@@ -339,19 +345,21 @@ export default function(
   data,
   {
     onChange = () => {},
-    onRowChange,
+    onRowChange = () => {},
     className,
     editable,
+    isPreghiss,
     ...props
   }) {
   const dataSource = data ? data.filter(i => i && typeof i === 'object') : [];
   const rows = getheades(keys);
-  const columns = rows[rows.length-1].map(({key, title, width, holdeditor, ...rest}, column)=>{
+  const columns = rows[rows.length-1].map(({key, title, width, className, holdeditor, ...rest}, column)=>{
     return {
       key: key,
       dataIndex: key,
       title: title,
       width: width || 80,
+      className: className,
       render(value, item, row) {
         if (row < rows.length) {
           const { title, span,level,children} = rows[row][column] || {};
@@ -374,8 +382,8 @@ export default function(
             }
           }
         }
-        if(dataSource.length >  1 && row > 1 && item.pregnum && row <= dataSource.length) {
-          const numArr = [15, 16, 17, 18, 19, 20];
+        if(isPreghiss && dataSource.length >  1 && row > 1 && row <= dataSource.length) {
+          const numArr = [14, 15, 16, 17, 18, 19];
           if ((row === 2 && item.pregnum === dataSource[row - 1].pregnum && !numArr.includes(column)) ||
           (row > 2 && item.pregnum === dataSource[row - 1].pregnum && item.pregnum !== dataSource[row - 3].pregnum && !numArr.includes(column))) {
             let countNum = 0;
@@ -393,6 +401,7 @@ export default function(
                 value={value}
                 isEditor={holdeditor || item.$type===dateType.CREATE}
                 onChange={handleChange}
+                isPreghiss={isPreghiss}
               />,
               props:{
                 rowSpan: countNum
@@ -411,6 +420,7 @@ export default function(
                 value={value}
                 isEditor={holdeditor || item.$type===dateType.CREATE}
                 onChange={handleChange}
+                isPreghiss={isPreghiss}
                 style={{display: 'none'}}
               />,
               props:{
@@ -443,7 +453,7 @@ export default function(
         title: "添加",
         fn: () => onRowChange("create", { $type: dateType.CREATE })
       },
-      { title: "删除", fn: item => onRowChange("delete", item) }
+      { title: "删除", fn: item => onRowChange("delete", item, index) }
     ]
   };
   return (

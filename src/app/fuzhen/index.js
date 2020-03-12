@@ -64,7 +64,8 @@ export default class Patient extends Component {
       isShowPlanModal: false,
       treatTemp: [],
       templateShow: false,
-      collapseActiveKey: ['1', '2', '3'],
+      collapseActiveKey: ['1', '2', '3', '4'],
+      // collapseActiveKey: ['4'],
       planData: [],
       initData: { ...baseData.formEntity },
       fzEntity: { ...baseData.fzFormEntity },
@@ -73,6 +74,14 @@ export default class Patient extends Component {
       ycq: '',
       reportStr: '',
       jyEntity: {},
+      scArr: [
+        {key: '0', id: 'add_FIELD_early_downs_syndrome', name: '早唐'},
+        {key: '1', id: 'add_FIELD_mk_downs_syndrome', name: '中唐'},
+        {key: '2', id: 'add_FIELD_nipt', name: 'NIPT'},
+        {key: '3', id: 'add_FIELD_outpatient', name: '产前诊断'},
+        {key: '4', id: 'add_FIELD_refuse_outpatient', name: '拒绝产前诊断和知情同意书'},
+      ],
+      scKeys: [],
       ...store.getState(),
     };
     store.subscribe(this.handleStoreChange);
@@ -97,29 +106,35 @@ export default class Patient extends Component {
     })
 
     Promise.all([
-    service.getuserDoc().then(res => this.setState({ info: res.object, ycq: res.object.gesexpect }, () => {
-      let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
-      this.setState({initData: {...this.state.initData, ...param}});
-    })),
+      service.getuserDoc().then(res => this.setState({ info: res.object, ycq: res.object.gesexpect }, () => {
+        let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
+        this.setState({initData: {...this.state.initData, ...param}});
 
-    service.fuzhen.getdiagnosis().then(res => {
-      const action = getDiagnisisAction(res.object.list);
-      store.dispatch(action);
-    }),
-
-    service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object})),
-
-    service.fuzhen.getRecentRvisit().then(res => {
-      res.object = res.object || [];
-      let bool = false;
-      res.object && res.object.map(item => {
-        if(item.checkdate == util.futureDate(0)) {
-          bool = true;
-          this.setState({hasRecord: true, initData: service.praseJSON(item)})
+        let arr = [];
+        for (let k in res.object) {
+          if(res.object[k] === 'true') arr.push(k);
         }
-      })
-      if(!bool) res.object.push(this.state.initData);
-      this.setState({recentRvisit: res.object})
+        this.setState({ scKeys: arr })
+      })),
+
+      service.fuzhen.getdiagnosis().then(res => {
+        const action = getDiagnisisAction(res.object.list);
+        store.dispatch(action);
+      }),
+
+      service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object})),
+
+      service.fuzhen.getRecentRvisit().then(res => {
+        res.object = res.object || [];
+        let bool = false;
+        res.object && res.object.map(item => {
+          if(item.checkdate == util.futureDate(0)) {
+            bool = true;
+            this.setState({hasRecord: true, initData: service.praseJSON(item)})
+          }
+        })
+        if(!bool) res.object.push(this.state.initData);
+        this.setState({recentRvisit: res.object})
     })]).then(() => this.setState({ loading: false }));
 
     service.fuzhen.getRvisitPage(this.state.pageCurrent).then(res => {
@@ -135,7 +150,6 @@ export default class Patient extends Component {
     service.fuzhen.getLisResult().then(res => 
       this.setState({jyEntity: service.praseJSON(res.object)}
     ))
-
   }
 
   adddiagnosis() {
@@ -423,29 +437,34 @@ export default class Patient extends Component {
   }
 
   renderLeft() {
-    const { loading, reportStr, planData, collapseActiveKey, jyEntity } = this.state;
+    const { loading, reportStr, planData, collapseActiveKey, jyEntity, info, scArr, scKeys } = this.state;
     /**
    * 检验报告结果
    */
     const renderResultModal = () => {
       const { isShowResultModal } = this.state;
       const handleClick = (bool) => {
-        // if(bool) {
-        //   const form = document.querySelector('.jy-modal');
-        //   fireForm(form, 'valid').then((valid) => {
-        //     if(valid) {
-        //       service.shouzhen.saveForm('tab-6', jyEntity).then(res => {
-        //         this.setState({isShowResultModal: false});
-        //         const action = isFormChangeAction(false);
-        //         store.dispatch(action);
-        //       })
-        //     }else {
-        //       message.error("必填项不能为空！");
-        //     }
-        //   })
-        // } else {
+        if (jyEntity.ogtt && jyEntity.ogtt[0] && jyEntity.ogtt[0].label === "GDM") {
+          jyEntity.ogttGdmEmpty = jyEntity.ogtt[0].value.input0;
+          jyEntity.ogttGdm1H = jyEntity.ogtt[0].value.input1;
+          jyEntity.ogttGdm2H = jyEntity.ogtt[0].value.input2;
+        }
+        if(bool) {
+          const form = document.querySelector('.jy-modal');
+          fireForm(form, 'valid').then((valid) => {
+            if(valid) {
+              service.fuzhen.saveLisResult(jyEntity).then(res => {
+                this.setState({isShowResultModal: false});
+                const action = isFormChangeAction(false);
+                store.dispatch(action);
+              })
+            }else {
+              message.error("必填项不能为空！");
+            }
+          })
+        } else {
           this.setState({isShowResultModal: false});
-        // }
+        }
       }
 
       const handleChange = (e, { name, value, target }, jyEntity) => {
@@ -456,9 +475,17 @@ export default class Patient extends Component {
         this.setState({ jyEntity });
       }
 
+      const footer = [
+        <div>
+          <Button onClick={() => handleClick(false)}>取消</Button>
+          <Button type="primary" onClick={() => handleClick(true)}>确定</Button>
+          <Button type="primary" onClick={() => window.print()}>打印</Button>
+        </div>
+      ]
+
       return (
         <Modal className="jy-modal"  title="检验报告" width="80%" visible={isShowResultModal} 
-               onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+            onCancel={() => handleClick(false)} footer={footer}>
           <JianYan entity={{...jyEntity}} onChange={(e, item) => handleChange(e, item, jyEntity)} />
         </Modal>
       )
@@ -491,6 +518,23 @@ export default class Patient extends Component {
       this.setState({isShowResultModal: true})
     }
 
+    const handleCheck = (keys) => {
+      this.setState({ scKeys: keys });
+      const allKeys = ['add_FIELD_early_downs_syndrome','add_FIELD_mk_downs_syndrome', 
+            'add_FIELD_nipt', 'add_FIELD_outpatient', 'add_FIELD_refuse_outpatient'];
+
+      allKeys.forEach(item => {
+        let k = item;
+        info[k] = false;
+      })
+      
+      keys.forEach(item => {
+        let k = item;
+        info[k] = true;
+      })
+      service.shouzhen.saveForm('sc', info).then(res => {})
+    }
+
     return (
       <div className="fuzhen-left ant-col-5">
         <Collapse defaultActiveKey={collapseActiveKey}>
@@ -505,7 +549,18 @@ export default class Patient extends Component {
           <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={e => handleBtnClick(e) }>其他</Button></span>} key="2">
             <p className="pad-small">{reportStr || '无'}</p>
           </Panel>
-          <Panel header="诊 疗 计 划" key="3">
+          
+          <Panel header="产前筛查和诊断" key="3">
+              <Tree checkable checkedKeys={scKeys} onCheck={handleCheck}>
+                {scArr.map(item => 
+                  <Tree.TreeNode key={item.id} title={item.name}>
+
+                  </Tree.TreeNode>
+                )}
+              </Tree>
+          </Panel>
+
+          <Panel header="诊 疗 计 划" key="4">
             <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>
               {planData&&planData.length>0 ? planData.map((item, index) => (
                 <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
@@ -524,7 +579,8 @@ export default class Patient extends Component {
   }
 
   renderTable() {
-    const { info, recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, hasRecord, isTwins } = this.state;
+    const { info, recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, 
+            hasRecord, isTwins } = this.state;
     const handleMoreBtn = () => {
       service.fuzhen.getRvisitPage(pageCurrent).then(res => this.setState({
         recentRvisitAll: res.object.list,
@@ -542,8 +598,6 @@ export default class Patient extends Component {
       const action = isFormChangeAction(true);
       store.dispatch(action);
     }
-
-    const handleRowChange = ()=> {}
 
     const handelTableChange = (type, row) => {
       //血压
@@ -595,8 +649,11 @@ export default class Patient extends Component {
       let heartRateCount = 0;
       let examinationCount = 0;
       let hasUltrasound = false;
-      let hasRiMo= false;
       let hasPlan = false;
+      let hasRiMo = false;
+      let hasRiNo = false;
+      let hasRiEv = false;
+      let hasRiSl = false;
 
       obj.map(item => {
         // 下次复诊数据处理
@@ -641,19 +698,19 @@ export default class Patient extends Component {
         // 胰岛素方案数据处理
         if(item.riMo && item.riMo[0] && item.riMo[1]) {
           hasRiMo = true;
-          item.allRiMo = item.riMo[0] + '：' + item.riMo[1];
+          item.allRiMo = item.riMo[0] + '：' + item.riMo[1] + 'U';
         }
         if(item.riNo && item.riNo[0] && item.riNo[1]) {
-          hasRiMo = true;
-          item.allRiNo = item.riNo[0] + '：' + item.riNo[1];
+          hasRiNo = true;
+          item.allRiNo = item.riNo[0] + '：' + item.riNo[1] + 'U';
         }
         if(item.riEv && item.riEv[0] && item.riEv[1]) {
-          hasRiMo = true;
-          item.allRiEv = item.riEv[0] + '：' + item.riEv[1];
+          hasRiEv = true;
+          item.allRiEv = item.riEv[0] + '：' + item.riEv[1] + 'U';
         }
         if(item.riSl && item.riSl[0] && item.riSl[1]) {
-          hasRiMo = true;
-          item.allRiSl = item.riSl[0] + '：' + item.riSl[1];
+          hasRiSl = true;
+          item.allRiSl = item.riSl[0] + '：' + item.riSl[1] + 'U';
         }
 
         // 用药方案数据处理
@@ -676,15 +733,62 @@ export default class Patient extends Component {
         if(!item.examination) examinationCount++;
       })
       
-      if(fpgCount === obj.length) keys.splice(getIndex(keys, '空腹血糖'), 1);
-      if(pbg2hCount === obj.length) keys.splice(getIndex(keys, '餐后2H'), 1);
-      if(hbAlcCount === obj.length) keys.splice(getIndex(keys, 'HbAlc'), 1);
-      if(upStateCount === obj.length && upDosage24hCount === obj.length) keys.splice(getIndex(keys, '尿蛋白'), 1);
-      if(heartRateCount === obj.length) keys.splice(getIndex(keys, '心率'), 1);
-      if(examinationCount === obj.length) keys.splice(getIndex(keys, '化验'), 1);
-      if(!hasUltrasound) keys.splice(getIndex(keys, '胎儿超声'), 1);
-      if(!hasRiMo) keys.splice(getIndex(keys, '胰岛素(U)方案'), 1)
-      if(!hasPlan) keys.splice(getIndex(keys, '用药方案'), 1);
+      // if(fpgCount === obj.length) keys.splice(getIndex(keys, '空腹血糖'), 1);
+      // if(pbg2hCount === obj.length) keys.splice(getIndex(keys, '餐后2H'), 1);
+      // if(hbAlcCount === obj.length) keys.splice(getIndex(keys, 'HbAlc'), 1);
+      // if(upStateCount === obj.length && upDosage24hCount === obj.length) keys.splice(getIndex(keys, '尿蛋白'), 1);
+      // if(heartRateCount === obj.length) keys.splice(getIndex(keys, '心率'), 1);
+      // if(examinationCount === obj.length) keys.splice(getIndex(keys, '化验'), 1);
+      // if(!hasUltrasound) keys.splice(getIndex(keys, '胎儿超声'), 1);
+      // if(!hasRiMo) keys.splice(getIndex(keys, '胰岛素(U)方案'), 1)
+      // if(!hasPlan) keys.splice(getIndex(keys, '用药方案'), 1);
+
+
+      // if(fpgCount === obj.length) keys[getIndex(keys, '空腹血糖')].className = 'isHide';
+      // if(pbg2hCount === obj.length) keys[getIndex(keys, '餐后2H')].className = 'isHide';
+      // if(hbAlcCount === obj.length) keys[getIndex(keys, 'HbAlc')].className = 'isHide';
+      // if(upStateCount === obj.length && upDosage24hCount === obj.length) keys[getIndex(keys, '尿蛋白')].className = 'isHide';
+      // if(heartRateCount === obj.length) keys[getIndex(keys, '心率')].className = 'isHide';
+      // if(examinationCount === obj.length) keys[getIndex(keys, '化验')].className = 'isHide';
+      // if(!hasUltrasound) {
+        // keys[getIndex(keys, '胎儿超声')].className = 'isHide';
+        // keys[getIndex(keys, '胎儿超声')].children.forEach(item => {
+        //   item.className = 'isHide';
+        // })
+      // };
+      // if(!hasRiMo) keys[getIndex(keys, '胰岛素(U)方案')].className = 'isHide';
+      // if(!hasPlan) keys[getIndex(keys, '用药方案')].className = 'isHide';
+
+
+
+      if(fpgCount === obj.length) keys[getIndex(keys, '空腹血糖')].className = 'isHide';
+      if(pbg2hCount === obj.length) keys[getIndex(keys, '餐后2H')].className = 'isHide';
+      if(hbAlcCount === obj.length) keys[getIndex(keys, 'HbAlc')].className = 'isHide';
+      if(upStateCount === obj.length && upDosage24hCount === obj.length) {
+        keys[getIndex(keys, '定性')].className = 'isHide';
+        keys[getIndex(keys, '定量')].className = 'isHide';
+      }
+      if(heartRateCount === obj.length) keys[getIndex(keys, '心率')].className = 'isHide';
+      if(examinationCount === obj.length) keys[getIndex(keys, '化验')].className = 'isHide';
+      if(!hasUltrasound) {
+        keys[getIndex(keys, '胎儿体重')].className = 'isHide';
+        keys[getIndex(keys, 'AVF')].className = 'isHide';
+        keys[getIndex(keys, '脐血流')].className = 'isHide';
+      };
+      if(!hasRiMo) {
+        keys[getIndex(keys, '早')].className = 'isHide';
+      } 
+      if(!hasRiNo) {
+        keys[getIndex(keys, '中')].className = 'isHide';
+      } 
+      if(!hasRiEv) {
+        keys[getIndex(keys, '晚')].className = 'isHide';
+      } 
+      if(!hasRiSl) {
+        keys[getIndex(keys, '睡前')].className = 'isHide';
+      } 
+      if(!hasPlan) keys[getIndex(keys, '用药方案')].className = 'isHide';
+
     }
 
     if(recentRvisit) {
@@ -699,10 +803,11 @@ export default class Patient extends Component {
     rvisitKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
     rvisitAllKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
 
-    const newKeys = baseData.tableKey();
-    newKeys.splice(9, 9);
+    // const newKeys = baseData.tableKey();
+    // newKeys.splice(9, 9);
 
-    const initTable = (data, props) => tableRender(newKeys, data, { buttons: null, ...props });
+    // console.log(rvisitKeys, '432')
+    const initTable = (data, props) => tableRender(rvisitKeys, data, { buttons: null, ...props });
     const allInitTable = (data, props) => tableRender(rvisitAllKeys, data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
@@ -718,14 +823,13 @@ export default class Patient extends Component {
           isTwins: isTwins,
           scroll: { x: 1100, y: 220 },
           iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2,
-          onChange: handleSaveChange,
-          onRowChange: handleRowChange
+          onChange: handleSaveChange
         })}
         {/* {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null} */}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
             {recentRvisitAll && allInitTable(recentRvisitAll, {
-              className: "fuzhenTable",
+              className: "fuzhenTable2",
               scroll: { x: 1100 },
               editable: true,
               onRowChange: handelTableChange,
@@ -737,8 +841,8 @@ export default class Patient extends Component {
                 showQuickJumper: true
               }
             })}
-            <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => alert("另存为PDF")}>
-              另存为PDF
+            <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => $(".fuzhenTable2 .ant-table-body").jqprint()}>
+              打印
             </Button>
           </div>
         </Modal>
@@ -884,7 +988,6 @@ export default class Patient extends Component {
     return (
       <Page className="fuzhen font-16 ant-col">
         <div className="bgDOM"></div>
-        {this.renderLeft()}
         <div className="fuzhen-right ant-col-19 pad-mid">
           {this.renderTable()}
           <FuzhenForm
@@ -901,6 +1004,7 @@ export default class Patient extends Component {
             &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>
           </p>
         </div>
+        {this.renderLeft()}
         {this.renderYCQ()}
         {/* <div className="chanhou-form">
           <p className="chanhou-title">产后复诊记录</p>
