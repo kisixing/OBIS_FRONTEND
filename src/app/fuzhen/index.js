@@ -8,6 +8,7 @@ import FuzhenTable from './table';
 import Page from '../../render/page';
 import JianYan from './jianyanjiacha';
 import service from '../../service';
+import * as common from '../../utils/common';
 import * as baseData from './data';
 import editors from '../shouzhen/editors';
 import * as util from './util';
@@ -65,7 +66,6 @@ export default class Patient extends Component {
       treatTemp: [],
       templateShow: false,
       collapseActiveKey: ['1', '2', '3', '4'],
-      // collapseActiveKey: ['4'],
       planData: [],
       initData: { ...baseData.formEntity },
       fzEntity: { ...baseData.fzFormEntity },
@@ -136,20 +136,21 @@ export default class Patient extends Component {
         if(!bool) res.object.push(this.state.initData);
         this.setState({recentRvisit: res.object})
     })]).then(() => this.setState({ loading: false }));
-
-    service.fuzhen.getRvisitPage(this.state.pageCurrent).then(res => {
-      if (res.object.list && res.object.list.length > 2) this.setState({isShowMoreBtn: true})
-    });
-
+    
     service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
 
     service.fuzhen.getLackLis().then(res => {
       this.setState({reportStr: String(res.object)})
     })
 
-    service.fuzhen.getLisResult().then(res => 
-      this.setState({jyEntity: service.praseJSON(res.object)}
-    ))
+    window.addEventListener('keyup', e => {
+      if (e.code === 'Enter') this.onKeyUp();
+    })
+  }
+
+  onKeyUp() {
+    const { diagnosi, isShowZhenduan } = this.state;
+    if (!!diagnosi && isShowZhenduan) this.adddiagnosis();
   }
 
   adddiagnosis() {
@@ -475,11 +476,20 @@ export default class Patient extends Component {
         this.setState({ jyEntity });
       }
 
+      const printReport = () => {
+        service.fuzhen.printLisResultPdf().then(res => {
+          // console.log(res,'22')
+          // common.printPdf(res.object);
+
+          // window.print(res)
+        })
+      }
+
       const footer = [
         <div>
           <Button onClick={() => handleClick(false)}>取消</Button>
           <Button type="primary" onClick={() => handleClick(true)}>确定</Button>
-          <Button type="primary" onClick={() => window.print()}>打印</Button>
+          <Button type="primary" onClick={() => printReport()}>打印</Button>
         </div>
       ]
 
@@ -698,19 +708,23 @@ export default class Patient extends Component {
         // 胰岛素方案数据处理
         if(item.riMo && item.riMo[0] && item.riMo[1]) {
           hasRiMo = true;
-          item.allRiMo = item.riMo[0] + '：' + item.riMo[1] + 'U';
+          let firstParam = typeof item.riMo[0] === 'object' ? item.riMo[0].label : item.riMo[0];
+          item.allRiMo = firstParam + '：' + item.riMo[1] + 'U';
         }
         if(item.riNo && item.riNo[0] && item.riNo[1]) {
           hasRiNo = true;
-          item.allRiNo = item.riNo[0] + '：' + item.riNo[1] + 'U';
+          let firstParam = typeof item.riNo[0] === 'object' ? item.riNo[0].label : item.riNo[0];
+          item.allRiNo = firstParam + '：' + item.riNo[1] + 'U';
         }
         if(item.riEv && item.riEv[0] && item.riEv[1]) {
           hasRiEv = true;
-          item.allRiEv = item.riEv[0] + '：' + item.riEv[1] + 'U';
+          let firstParam = typeof item.riEv[0] === 'object' ? item.riEv[0].label : item.riEv[0];
+          item.allRiEv = firstParam + '：' + item.riEv[1] + 'U';
         }
         if(item.riSl && item.riSl[0] && item.riSl[1]) {
           hasRiSl = true;
-          item.allRiSl = item.riSl[0] + '：' + item.riSl[1] + 'U';
+          let firstParam = typeof item.riSl[0] === 'object' ? item.riSl[0].label : item.riSl[0];
+          item.allRiSl = firstParam + '：' + item.riSl[1] + 'U';
         }
 
         // 用药方案数据处理
@@ -821,6 +835,7 @@ export default class Patient extends Component {
           onEdit: true,
           hasRecord: hasRecord,
           isTwins: isTwins,
+          tableLayout: "fixed",
           scroll: { x: 1100, y: 220 },
           iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2,
           onChange: handleSaveChange

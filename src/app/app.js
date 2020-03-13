@@ -86,16 +86,6 @@ export default class App extends Component {
         })
       );
 
-      service.highrisk().then(res => {
-        let list = res.object;
-        list && list.map(item => {
-          if (item.icon) {
-            item.level = item.icon.substring(item.icon.length-5, item.icon.length-4);
-          }
-        })
-        this.setState({highriskList: list})
-      })
-
       service.shouzhen.findTemplateTree(2).then(res => {
         let keys = [];
         res.object.data.map(item => {

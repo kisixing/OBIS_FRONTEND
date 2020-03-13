@@ -196,6 +196,11 @@
       top: -0.8rem;
       text-shadow: 3px 3px 3px #ddd;
     }
+    .form-item {
+      .form-label {
+        vertical-align: top;
+      }
+    }
   }
 }
 .table-content {
@@ -205,30 +210,15 @@
   }
 }
 .fuzhenTable, .fuzhenTable2 {
-  table-layout:fixed;
-  td {
-    max-width: 200px;
-  }
-  td span {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-  table {
-    padding: 0 !important;
+  .ant-table-tbody>tr>td {
+    padding: 5px 0;
   }
   .treatment {
-    span {
-      // white-space: normal;
-    }
+    width: 180px;
   }
-  // .ant-table-tbody tr:first-child, .ant-table-tbody tr:first-child +tr {
-  //   background: #F1F9FE !important;
-  // }
-  // .ant-table-tbody tr:first-child td, .ant-table-tbody tr:first-child +tr td {
-  //   border-color: #c9d1d7;
-  //   padding: 2px 0;
-  // }
+}
+.fuzhenTable2 .treatment {
+  width: 380px;
 }
 
 .delBModal {

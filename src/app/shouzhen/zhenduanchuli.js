@@ -83,15 +83,20 @@ export default class extends Component{
       }
     })
 
-    service.fuzhen.treatTemp().then(res => this.setState({ treatTemp: res.object }));
-
     service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
 
     service.shouzhen.getAdviceTreeList().then(res => {
       res.object.length > 1 && this.setState({adviceList: res.object, openAdvice: true})
     });
 
-    // this.getGPTimes();
+    window.addEventListener('keyup', e => {
+      if (e.code === 'Enter') this.onKeyUp();
+    })
+  }
+
+  onKeyUp() {
+    const { diagnosi, isShowZhenduan } = this.state;
+    if (!!diagnosi && isShowZhenduan) this.adddiagnosis();
   }
 
   topConfig() {
@@ -115,11 +120,11 @@ export default class extends Component{
       rows: [
         {
           columns: [
-            { name: "diagnosisHandle[处理措施]", type: "textarea", span: 8, className: "table-wrapper" },
+            { name: "diagnosisHandle[处理措施]", type: "textarea", span: 10, className: "table-wrapper" },
             {
               name: "treatment[模板]",
               type: "buttons",
-              span: 16,
+              span: 14,
               text:
                 "(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(#1890ff)[更多]",
               onClick: this.handleTreatmentClick.bind(this)
@@ -128,7 +133,7 @@ export default class extends Component{
         },
         {
           columns: [
-            { name: 'xiacsftype[下次复诊]', type:'select', valid: 'required', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
+            { name: 'xiacsftype[下次复诊]', type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
             { name: 'nextRvisitWeek', type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
             { name: 'xiacsfdate', type:'date', valid: 'required', span: 4 },
             { name: 'xiacsfdatearea', type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
@@ -224,39 +229,21 @@ export default class extends Component{
     })
   }
 
+  getTreatTemp() {
+    service.fuzhen.treatTemp().then(res => this.setState({ 
+      treatTemp: res.object,
+      openTemplate: true
+    }));
+  }
+
   handleTreatmentClick(e, {text,index},resolve){
-    text==='更多'?this.setState({openTemplate:resolve}):this.addTreatment(e, text);
+    text==='更多' ?  this.getTreatTemp() : this.addTreatment(e, text);
     if(text==='糖尿病日间门诊') {
       // this.setState({openMenzhen: true});
     }else if (text==='产前诊断') {
       // this.setState({openMenzhen: true});
     }
   }
-
-  // getGPTimes() {
-  //   const { allFormData } = this.state;
-  //   const allPreghiss = allFormData.gestation.preghiss || [];
-  //   if(allPreghiss.length > 0) {
-  //     let newYunc = parseInt(allPreghiss[allPreghiss.length - 1].pregnum) + 1;  
-  //     let times = 0;
-  //     let bool = true;
-  //     let preg = 0;
-  //     this.setState({yunc: newYunc});
-  //     allPreghiss&&allPreghiss.map(item => {
-  //       if(item.births == 1) {
-  //         times++;
-  //       } else if(item.births > 1 && bool) {
-  //         times++;
-  //         bool = false;
-  //         preg = item.pregnum;
-  //       }
-  //       if(preg !== item.pregnum) {
-  //         bool = true;
-  //       }
-  //     })
-  //     this.setState({chanc: times});
-  //   }
-  // }
 
   renderZD(){
     const { info = {} } = this.props;
@@ -565,7 +552,7 @@ export default class extends Component{
   }
 
   render(){
-    const { isShowRegForm } = this.state;
+    const { isShowRegForm, openTemplate } = this.state;
     const { entity } = this.props;
     return (
       <div className="zhen-duan">
@@ -573,10 +560,10 @@ export default class extends Component{
         {this.renderZD()}
         {formRender(entity, this.config(), this.handleChange.bind(this))}
         <Button onClick={() =>this.openLisi()}>首检信息历史修改记录</Button>
-        {this.renderTreatment()}
+        {openTemplate && this.renderTreatment()}
         {this.renderMenZhen()}
         {this.renderAdviceModal()}
-        <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>
+        {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>}
       </div>
     )
   }

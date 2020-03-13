@@ -199,6 +199,13 @@ export default {
     },
 
     /**
+     * 缺少检验报告-其他(打印)
+     */
+    printLisResultPdf: function(){
+        return this.userId().then(r => myAxios.get(`/print/printLisResultPdf.pdf?userid=${r.object.userid}`));
+    },
+
+    /**
      * 查询诊疗计划组所有数据
      */
     findDiagnosisPlanAndGroupVO: function(){

@@ -15,23 +15,14 @@ export default class FuzhenForm extends Component {
 			isShowMplanModal: false,
       isShowNewplanModal: false,
       planDataList: [],
-      planEntity: {
-				time: "",
-        gestation: "",
-        item: "",
-        event: ""
-      },
-			treeDate: [],
+      initPlanEntity: {	time: "", gestation: "", item: "", event: ""},
+      planEntity: {	time: "", gestation: "", item: "", event: ""},
+      treeData: [],
+      checkTreeKeys: [],
       planGroup: [],
-
       allPlanEntity: {},
-      allPlanDataList: {
-        "backup": "1",
-        "del": 0,
-        "diagnosisPlans": [],
-        "groupName": "",
-        "status": "1",
-      },
+      initPlanDataList: {"backup": "1", "del": 0, "diagnosisPlans": [], "groupName": "", "status": "1",},
+      allPlanDataList: {"backup": "1", "del": 0, "diagnosisPlans": [], "groupName": "", "status": "1",},
     };
   }
 
@@ -43,7 +34,7 @@ export default class FuzhenForm extends Component {
             { name: "gestation(周)[孕周]", type: "input", span: 6, valid: 'number' },
             { name: "item[产检项目]", type: "select", span: 7, options: baseData.cjOptions },
             { name: "event[提醒事件]", type: "input", span: 8 },
-            { type: "button", span: 3, text: "添加", color: "#1890ff", size: "small",	onClick: this.addRecentRvisit.bind(this) }
+            { type: "button", span: 3, text: "添加", color: "#1890ff", size: "small",	onClick: this.addRecentPlan.bind(this) }
           ]
         }
       ]
@@ -70,56 +61,65 @@ export default class FuzhenForm extends Component {
       ]
     };
   }
+
   componentDidMount() {
     service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));
     this.getAllGroup();
   }
 
   getAllGroup() {
-    let treeData = [];
+    let Data = [];
     service.fuzhen.findDiagnosisPlanAndGroupVO().then(res => {
       res.object && res.object.forEach(item => {
-        treeData.push(item.groupName);
+        let obj = {};
+        obj.name = item.groupName;
+        obj.key = item.groupName;
+        Data.push(obj);
         item.content = '';
         item.diagnosisPlans && item.diagnosisPlans.forEach(subItem => {
           item.content += `${subItem.event}(${subItem.gestation}周)；`;
         })
-        this.setState({ treeDate: treeData, planGroup: res.object })
+        this.setState({ planGroup: res.object })
+      })
+    })
+    this.setState({ treeData: Data })
+  }
+
+  editGroupPlan(list, entity) {
+    service.fuzhen.editGroupAndDiagnosisPlan(list).then(res => {
+      service.fuzhen.selectListByGroupName(entity.groupName).then(res => {
+        let newEntity = {};
+        newEntity.groupName = entity.groupName;
+        this.getAllGroup();
+        this.setState({ allPlanDataList: res.object, allPlanEntity: newEntity });
       })
     })
   }
 
-	addRecentRvisit() {
-    const { planEntity } = this.state;
+	addRecentPlan() {
+    const { planEntity, initPlanEntity } = this.state;
     const { info } = this.props;
-    let param = {time: util.getWeek(planEntity.gestation, info.tuserweek)};
-    let newplanEntity = Object.assign(planEntity, param);
-
-    this.setState({planEntity: newplanEntity}, () => {
-      service.fuzhen.addRecentRvisit(planEntity).then(res => {
-        service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));  
-        this.props.changeRecentRvisit();
+    if (!!planEntity.gestation) {
+      planEntity.time = util.getWeek(planEntity.gestation, info.tuserweek);
+      this.setState({planEntity}, () => {
+        service.fuzhen.addRecentRvisit(planEntity).then(res => {
+          service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object, planEntity: initPlanEntity }));  
+          this.props.changeRecentRvisit();
+        })
       })
-    })
+    }
   }
   
   writePlanGroup() {
     const { allPlanEntity, allPlanDataList } = this.state;
     const { info } = this.props;
-    let param = {time: util.getWeek(allPlanEntity.gestation, info.tuserweek)};
-    let newplanEntity = Object.assign(allPlanEntity, param);
+    if (allPlanEntity.gestation && allPlanEntity.event) {
+      allPlanEntity.time = util.getWeek(allPlanEntity.gestation, info.tuserweek);
+      allPlanDataList.diagnosisPlans.push(allPlanEntity);
+    }
 
-    allPlanDataList.diagnosisPlans.push(newplanEntity);
-    allPlanDataList.groupName = newplanEntity.groupName;
-
-    console.log(newplanEntity, 112)
-    console.log(allPlanDataList, 113)
-
-    service.fuzhen.editGroupAndDiagnosisPlan(allPlanDataList).then(res => {
-      service.fuzhen.selectListByGroupName(newplanEntity.groupName).then(res => {
-        this.setState({ allPlanDataList: res.object })
-      })
-    })
+    allPlanDataList.groupName = allPlanEntity.groupName;
+    this.editGroupPlan(allPlanDataList, allPlanEntity);
   }
 
 	onReturn(param) {
@@ -151,9 +151,7 @@ export default class FuzhenForm extends Component {
     
     const handleTableChange = (e, value) => {
       const { info } = this.props;
-      let param = {time: util.getWeek(value.item.gestation, info.tuserweek)};
-      value.item = Object.assign(value.item, param);
-
+      value.item.time = util.getWeek(value.item.gestation, info.tuserweek);
       service.fuzhen.editRecentRvisit(value.item).then(res => {
         service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));  
         this.props.changeRecentRvisit();
@@ -184,18 +182,16 @@ export default class FuzhenForm extends Component {
   }
 
   renderRightTree() {
-		const { treeDate } = this.state;
-					
-		/**
-     * 管理诊疗计划组窗口
-     */
+    const { treeData, checkTreeKeys } = this.state;
+    // 管理诊疗计划组窗口
     const renderMplanModal = () => {
-      const { isShowMplanModal, planGroup, allPlanEntity } = this.state;
+      const { isShowMplanModal, planGroup, allPlanEntity, initPlanDataList } = this.state;
       const handleClick = () => { this.setState({isShowMplanModal: false})}
       const handleDBClick = (row) => {
-        allPlanEntity.groupName = row.groupName;
-        this.setState({ allPlanDataList: row, allPlanEntity });
-        this.onReturn(3);
+        // allPlanEntity.groupName = row.groupName;
+        this.setState({ allPlanDataList: row }, () => {
+          this.onReturn(3);
+        });
       }
 
       const handleDelete = (select) => {
@@ -205,64 +201,88 @@ export default class FuzhenForm extends Component {
         })
       }
 
+      const addNewPlan = () => {
+        this.setState({ allPlanDataList: initPlanDataList, allPlanEntity: {} }, () => {
+          this.onReturn(3);
+        })
+      }
+
       const initTable = data => tableRender(baseData.managePlanKey(), data,
             { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onDBClick: handleDBClick});
 
       return (
-				<Modal width="60%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => {this.onReturn(2)}}>返回</Button>} 
+				<Modal width="60%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => this.onReturn(2)}>返回</Button>} 
 					visible={isShowMplanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
           <div>{planGroup.length > 0 ? initTable(planGroup) : ""}</div>
-					<Button className="blue-btn margin-TB-mid" type="ghost" onClick={() => {this.onReturn(3)}}>新增诊疗计划组</Button>
+					<Button className="blue-btn margin-TB-mid" type="ghost" onClick={() => addNewPlan()}>新增诊疗计划组</Button>
         </Modal>
       )
-		}
-
-			/**
-     * 新增诊疗计划组窗口
-     */
+    }
+    
+    // 新增诊疗计划组窗口
     const renderNewplanModal = () => {
 			const { isShowNewplanModal, allPlanDataList, allPlanEntity } = this.state;
 			const handleClick = () => { this.setState({isShowNewplanModal: false})};
       const handleChange = (e, { name, value, valid }) => {
-        // console.log(name, value, '23')
         const data = { [name]: value };
         data.item = '';
         this.setState({ allPlanEntity: {...allPlanEntity, ...data}})
       }
       const handleDelete = (row, index) => {
-        console.log(allPlanEntity, '11')
-        console.log(row, index,allPlanDataList, '456')
-        allPlanDataList.diagnosisPlans[index-1].del = 1;
-
-        service.fuzhen.editGroupAndDiagnosisPlan(allPlanDataList).then(res => {
-          service.fuzhen.selectListByGroupName(allPlanEntity.groupName).then(res => {
-            this.setState({ allPlanDataList: res.object })
-          })
-        })
-
+        if (index > 0) {
+          allPlanDataList.diagnosisPlans[index-1].del = 1;
+          this.editGroupPlan(allPlanDataList, allPlanEntity);
+        }
+      }
+      const handleTableChange = (e, value) => {
+        const { info } = this.props;
+        value.item.time = util.getWeek(value.item.gestation, info.tuserweek);
+        allPlanDataList.diagnosisPlans[value.row] = value.item;
+  
+        this.editGroupPlan(allPlanDataList, allPlanEntity);
       }
 
-			const initTable = data => tableRender(baseData.newPlanKey(), data, { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true});
+      const initTable = data => tableRender(baseData.newPlanKey(), data, 
+            { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onChange: handleTableChange});
+      
       return (
-				<Modal width="60%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => {this.onReturn(4)}}>返回</Button>} 
+				<Modal width="60%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => this.onReturn(4)}>返回</Button>} 
 					visible={isShowNewplanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
 					{formRender(allPlanEntity, this.allPlanConfig(), handleChange)}
           <div>{allPlanDataList.diagnosisPlans.length > 0 ? initTable(allPlanDataList.diagnosisPlans) : ""}</div>
         </Modal>
       )
-		}
+    }
+    
+    const handleCheck = (keys) => {
+      this.setState({ checkTreeKeys: keys })
+    }
+
+    const addPlanGroup = () => {
+      console.log(checkTreeKeys);
+      checkTreeKeys.length > 0 && checkTreeKeys.forEach(item => {
+        service.fuzhen.selectListByGroupName(item).then(res => {
+          const plans = res.object.diagnosisPlans;
+          plans && plans.length > 0 && plans.forEach(item => {
+            service.fuzhen.addRecentRvisit(item).then(() => {
+              service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));  
+            })
+          })
+        })
+      })
+    }
 		
     return (
 			<div className="tree-content">
 				<p className="tree-title">诊疗计划组
-					<Button className="blue-btn" type="ghost" onClick={() => {this.onReturn(1)}}>管理</Button>
+					<Button className="blue-btn" type="ghost" onClick={() => this.onReturn(1)}>管理</Button>
 				</p>
-				<Tree checkable>
-					{treeDate.map((item, index) => (
-						<Tree.TreeNode title={item} key={`0-${index}`}></Tree.TreeNode>
+				<Tree checkable onCheck={handleCheck}>
+					{treeData.map((item, index) => (
+						<Tree.TreeNode title={item.name} key={item.key}></Tree.TreeNode>
 					))}
 				</Tree>
-				<Button className="pull-left blue-btn" type="ghost">添加</Button>
+				<Button className="pull-left blue-btn" type="ghost" onClick={addPlanGroup}>添加</Button>
 				{renderMplanModal()}
 				{renderNewplanModal()}
 			</div>

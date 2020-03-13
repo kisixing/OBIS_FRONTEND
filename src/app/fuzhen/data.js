@@ -412,8 +412,6 @@ export const tableKey = () => [
 		title: '处理措施',
 		key: 'treatment',
 		className: 'treatment',
-		// type: 'input',
-		width: 200,
 	},
 	{
 		title: '下次复诊',
@@ -489,7 +487,7 @@ export const newPlanKey = () => [
 	},
 	{
 		title: '孕周',
-		key: 'time',
+		key: 'gestation',
 		type: 'input',
 		width: 50,
 	},
@@ -552,6 +550,10 @@ export const yyfaOptions = [
 	{ label: '每晚一次', value: '每晚一次' },
 ];
 
+/**
+ * 胰岛素药物名称
+ */
+export const ydsOptions = toOptions(['诺和平', '诺和锐']);
 /**
  * 胎动好,无腹痛,无阴道流血
  */

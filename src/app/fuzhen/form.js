@@ -53,9 +53,6 @@ export default class FuzhenForm extends Component {
     }
     store.subscribe(this.handleStoreChange);
     this.renderChart = renderChart();
-    service.fuzhen.treatTemp().then(res => this.setState({
-      treatTemp: res.object
-    }));
   }
 
   handleStoreChange = () => {
@@ -165,8 +162,8 @@ export default class FuzhenForm extends Component {
         //     { name: 'ckzijzhz[自觉症状]', type:'select', showSearch:true, span: 12, options: baseData.ckzijzhzOptions }
         //   ]
         // },
-        {
-          columns: [
+        // {
+        //   columns: [
             // {
             //   span: 6, columns:[
             //     { name: 'ckgongg(cm)[宫高]', type: 'input', span: 16 },
@@ -178,8 +175,8 @@ export default class FuzhenForm extends Component {
             //     { name: 'ckfuzh[下肢水肿]', type: 'select', showSearch:true, options: baseData.ckfuzhOptions}
             //   ]
             // },
-            {
-              span: 18, rows: [
+            // {
+              // span: 18, rows: [
                 // {
                 //   filter:()=>!check('twins')&&!check('multiple'), columns: [
                 //     { name: 'cktaix(bmp)[胎心率]', type: 'input', span: 8 },
@@ -188,12 +185,12 @@ export default class FuzhenForm extends Component {
                 //   ]
                 // },
                 {
-                  filter:()=>check('twins')||check('multiple'), name: 'fetalCondition', span: 24, groups: index => ({
+                  name: 'fetalCondition', span: 24, filter:()=>check('twins')||check('multiple'),groups: index => ({
                     rows: [
                       {
                         label: `胎${index+1}`, columns: [
-                          { name: 'location[位置]', type: 'select', span: 8, showSearch:true, options: baseData.wzOptions },
-                          { name: 'taix(bmp)[胎心率]', type: 'input', span: 7, valid: 'number' },
+                          { name: 'location[位置]', type: 'select', span: 6, showSearch:true, options: baseData.wzOptions },
+                          { name: 'taix(bmp)[胎心率]', type: 'input', span: 6, valid: 'number' },
                           { name: 'xianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
                           { span: 1 },
                           {
@@ -216,12 +213,12 @@ export default class FuzhenForm extends Component {
                     ]
                   })
                 },
-              ]
-            }
-          ]
-        },
+              // ]
+            // }
+        //   ]
+        // },
         {
-          name: 'fetalUltrasound', span: 3, filter:()=>check('twins')||check('multiple'), groups: index => ({
+          name: 'fetalUltrasound', span: 24, filter:()=>check('twins')||check('multiple'), groups: index => ({
             rows: [
               {
                 label: `胎${index+1}超声`, columns: [
@@ -258,26 +255,38 @@ export default class FuzhenForm extends Component {
         },
         {
           filter:()=>check('diabetes'), label:'胰岛素方案', columns:[
-            { name: 'riMo(U)[早]', span: 6, type: [{type:'input( )',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}]},
-            { name: 'riNo(U)[中]', span: 6,type: [{type:'input( )',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}] },
-            { name: 'riEv(U)[晚]', span: 6,type: [{type:'input( )',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}] },
-            { name: 'riSl(U)[睡前]', span: 6,type: [{type:'input( )',placeholder:'药物名称',span:16},{type:'input',placeholder:'剂量',span:8}] },
+            { name: 'riMo(U)[早]', span: 6, 
+              type: [{type:'select', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
+                    {type:'input', placeholder:'剂量', span:8}] 
+            },
+            { name: 'riNo(U)[中]', span: 6, 
+              type: [{type:'select', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
+                    {type:'input', placeholder:'剂量', span:8}]
+            },
+            { name: 'riEv(U)[晚]', span: 6, 
+              type: [{type:'select', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
+                    {type:'input',placeholder:'剂量', span:8}] 
+            },
+            { name: 'riSl(U)[睡前]', span: 6, 
+              type: [{type:'select', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
+                    {type:'input',placeholder:'剂量', span:8}] 
+            },
           ]
         },
         {
           filter:()=>check('hypertension'), columns: [
             {
-              label: '尿蛋白', span: 10, columns: [
+              label: '尿蛋白', span: 12, columns: [
                 { name: 'upState[定性]', type: 'input', span: 12 },
-                { name: 'upDosage24h[24H定量]', type: 'input', span: 11 },
+                { name: 'upDosage24h[24H定量]', type: 'input', span: 12 },
               ]
             },
             {
-              label: '用药方案', name: 'medicationPlan', span: 14, filter:()=>!check('coronary'), groups: index => ({
+              label: '用药方案', name: 'medicationPlan', span: 12, groups: index => ({
                 rows: [
                   {
                     columns:[
-                      { name: `name[用药${index + 1}]`, span: 18, type: 'input' },
+                      { name: `name[用药${index + 1}]`, span: 21, type: 'input' },
                       // { name: `frequency[频率]`, span: 7, type: 'select', showSearch: true, options: baseData.yyfaOptions },
                       // { name: `dosages[剂量]`, span: 7, type: 'input' },
                       { span: 1 },
@@ -309,11 +318,11 @@ export default class FuzhenForm extends Component {
               columns: [
                 { name: 'heartRate(次/分)[心率]', type: 'input', span: 6 },
                 {
-                  label: '用药方案', name: 'medicationPlan', span: 18,  groups: index => ({
+                  label: '用药方案', name: 'medicationPlan', span: 18, filter:()=>!check('hypertension'), groups: index => ({
                     rows: [
                       {
                         columns:[
-                          { name: `name[用药${index + 1}]`, span: 18, type: 'input' },
+                          { name: `name[用药${index + 1}]`, span: 21, type: 'input' },
                           // { name: `frequency[频率]`, span: 6, type: 'select', showSearch: true, options: baseData.yyfaOptions },
                           // { name: `dosages[剂量]`, span: 6, type: 'input' },
                           { span: 1 },
@@ -353,15 +362,15 @@ export default class FuzhenForm extends Component {
         // },
         {
           columns:[
-            { name: 'treatment[处理措施]', type: 'textarea', span: 10 },
-            { name:'treatment[模板]', type: 'buttons',span: 14, text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
+            { name: 'treatment[处理措施]', type: 'textarea', span: 12 },
+            { name:'treatment[模板]', type: 'buttons',span: 12, text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
           ]
         },
         {
           columns:[
-            { name: 'rvisitOsType[下次复诊]', type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
+            { name: 'rvisitOsType[下次复诊]', type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 3 },
             { name: 'ckappointmentWeek', type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
-            { name: 'ckappointment', type:'date', valid: 'required', span: 2 },
+            { name: 'ckappointment', type:'date', valid: 'required', span: 3 },
             { name: 'ckappointmentArea', type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
             // {
             //   name: 'nextRvisit[下次复诊]', valid: 'required', span: 16, type: [
@@ -401,8 +410,15 @@ export default class FuzhenForm extends Component {
     })
   }
 
+  getTreatTemp() {
+    service.fuzhen.treatTemp().then(res => this.setState({ 
+      treatTemp: res.object,
+      openTemplate: true
+    }));
+  }
+
   handleTreatmentClick(e, {text,index},resolve){
-    text==='更多'?this.setState({openTemplate:resolve}):this.addTreatment(e, text);
+    text==='更多' ?  this.getTreatTemp() : this.addTreatment(e, text);
     if(text==='糖尿病日间门诊') {
       // this.setState({openMenzhen: true});
     }else if (text==='产前诊断') {
@@ -747,7 +763,7 @@ export default class FuzhenForm extends Component {
   }
 
   render() {
-    const { isShowRegForm } = this.state;
+    const { isShowRegForm, openTemplate } = this.state;
     const { initData } = this.props;
     return (
       <div className="fuzhen-form">
@@ -764,11 +780,11 @@ export default class FuzhenForm extends Component {
           </Button>
         </div>
         {/* {this.renderQX()} */}
-        {this.renderTreatment()}
+        {openTemplate && this.renderTreatment()}
         {/* {this.renderYCQ()} */}
         {this.renderMenZhen()}
         {this.renderAdviceModal()}
-        <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />
+        {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />}
       </div>
     );
   }

@@ -392,28 +392,11 @@ export default class Patient extends Component {
         });
     }
 
-    printPdf(url) {
-        var iframe = this._printIframe;
-        if (!this._printIframe) {
-            iframe = this._printIframe = document.createElement('iframe');
-            document.body.appendChild(iframe);
-
-            iframe.style.display = 'none';
-            iframe.onload = function() {
-            setTimeout(function() {
-                iframe.focus();
-                iframe.contentWindow.print();
-            }, 1);
-          };
-        }
-        iframe.src = service.getUrl(url);
-    }
-
     render() {
         const { tabs, info, step } = this.state;
         const printIvisit = () => {
             service.shouzhen.printPdfByFile().then(res => {
-                this.printPdf(res.object);
+                common.printPdf(res.object);
             })
         }
 

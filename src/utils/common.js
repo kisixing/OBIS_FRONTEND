@@ -1,3 +1,5 @@
+import service from '../service';
+
 export function GetExpected(gesmoc) {
   var tmpdate = new Date(gesmoc).getTime();
   console.log(tmpdate);
@@ -142,3 +144,21 @@ export function getCookie(name){
   }
   return "";
 }
+
+export function printPdf(url){
+  var iframe = this._printIframe;
+  if (!this._printIframe) {
+      iframe = this._printIframe = document.createElement('iframe');
+      document.body.appendChild(iframe);
+
+      iframe.style.display = 'none';
+      iframe.onload = function() {
+      setTimeout(function() {
+          iframe.focus();
+          iframe.contentWindow.print();
+      }, 1);
+    };
+  }
+  iframe.src = service.getUrl(url);
+}
+

@@ -121,8 +121,8 @@ export default class RegForm extends Component {
         },
         {
           columns:[
-            { name: 'idcardNo[身份证号码(ID)]', type: 'input', span: 10 },
-            { name: 'idcardSource[来源]', className: "reg-source", type: 'checkinput', radio: true, span: 14, options: baseData.lyOptions }
+            { name: 'idcardNo[身份证号码(ID)]', type: 'input', span: 12 },
+            { name: 'idcardSource[来源]', className: "reg-source", type: 'checkinput', radio: true, span: 12, options: baseData.lyOptions }
           ]
         },
         {
@@ -138,13 +138,13 @@ export default class RegForm extends Component {
         {
           columns:[
             { name: 'corPostno[单位邮编]', type: 'input', span: 12, placeholder: "请输入" },
-            { name: 'corTele[单位联系电话]', className: 'long-label', type: 'input', span: 12, placeholder: "请输入" }
+            { name: 'corTele[单位联系电话]', className: 'long-label', type: 'input', span: 11, placeholder: "请输入" }
           ]
         },
         {
           columns:[
             { name: 'ecName[联系人姓名]', type: 'input', span: 12, placeholder: "请输入" },
-            { name: 'ecTele[联系人电话]', type: 'input', span: 12, placeholder: "请输入" }
+            { name: 'ecTele[联系人电话]', type: 'input', span: 11, placeholder: "请输入" }
           ]
         },
         {
