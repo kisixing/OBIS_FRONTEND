@@ -273,12 +273,13 @@ class MTable extends Component {
   }
 
   onRowClick(record, index) {
-    const { onRowSave } = this.props;
+    const { onRowSave, onRowClick } = this.props;
     const {selected} = this.state;
     if(selected && record !== selected) {
       onRowSave(selected);
     }
     this.setState({selected: record, rowIndex: index});
+    if(onRowClick) return onRowClick(record, index);
   }
 
   rowClassName(record) {

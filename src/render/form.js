@@ -208,13 +208,14 @@ class FormItem extends Component {
 
   onBlur = ({ checkedChange, ...e } = {}, target = '') => {
     return new Promise(resolve => {
-      const { entity, valid, onChange } = this.props;
+      const { entity, valid, onChange, type } = this.props;
       const { name, value } = this.state;
       const error = validFn(valid, value);
       this.setState({
         error: error
       }, () => resolve());
-      if (onChange && (JSON.stringify(entity && entity[name]) !== JSON.stringify(value) || checkedChange)) {
+      if (onChange && (JSON.stringify(entity && entity[name]) !== JSON.stringify(value) || checkedChange)
+          || (type && type instanceof Array)) {
         onChange(e, { name, value, error, entity, target })
         this.setState(this.getSplitState(this.props.name, {...entity,[name]:value }))
       }

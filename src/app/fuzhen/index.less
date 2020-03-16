@@ -211,7 +211,8 @@
 }
 .fuzhenTable, .fuzhenTable2 {
   .ant-table-tbody>tr>td {
-    padding: 5px 0;
+    padding: 5px 1px;
+    word-break: keep-all;
   }
   .treatment {
     width: 180px;
@@ -220,6 +221,18 @@
 .fuzhenTable2 .treatment {
   width: 380px;
 }
+.print-table {
+  display: none;
+  .print-highrisk {
+    font-size: 21px;
+  }
+}
+@media print {
+  .has-print .ant-table-tbody tr:nth-of-type(-n+2) {
+    display: none;
+  }
+}
+
 
 .delBModal {
   .ant-btn {
@@ -238,6 +251,36 @@
   }
   .form-item .form-label {
     vertical-align: top;
+  }
+}
+
+.yuModal {
+  .ant-modal-header,
+  .ant-modal-body,
+  .ant-modal-footer {
+    background: #fffbe6;
+    font-size: 16px;
+  }
+  .ant-select.ant-select-enabled {
+    margin: 0 10px 0 5px;
+  }
+  .ant-calendar-picker {
+    vertical-align: middle;
+  }
+  .ant-modal-title {
+    font-size: 18px;
+  }
+  .ant-tree li {
+    font-size: 16px;
+  }
+  .gesexpect {
+    .form-label {
+      width: 100px;
+      margin-left: 20px;
+    }
+    .form-content {
+      width: 200px;
+    }
   }
 }
 

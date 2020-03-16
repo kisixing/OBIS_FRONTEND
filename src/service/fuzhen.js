@@ -117,8 +117,8 @@ export default {
     /**
      * 查询更多产检记录
      */
-    getRvisitPage: function(params){
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/getRvisitPage?pageSize=10&pageCurrent=${params}&id=${r.object.userid}`));
+    getRvisitPage: function(page, params){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getRvisitPage?pageSize=${page}&pageCurrent=${params}&id=${r.object.userid}`));
     },
 
     /**
@@ -201,8 +201,8 @@ export default {
     /**
      * 缺少检验报告-其他(打印)
      */
-    printLisResultPdf: function(){
-        return this.userId().then(r => myAxios.get(`/print/printLisResultPdf.pdf?userid=${r.object.userid}`));
+    printLisResultPdfPath: function(){
+        return this.userId().then(r => myAxios.get(`/print/printLisResultPdfPath?userid=${r.object.userid}`));
     },
 
     /**
@@ -215,14 +215,35 @@ export default {
     /**
      * 诊疗计划组增删改
      */
-    editGroupAndDiagnosisPlan: function(param){
-        return this.userId().then(r => myAxios.post('/diagnosisPlanGroup/editGroupAndDiagnosisPlan', {...param, userid: r.object.userid}));
+    editGroupAndDiagnosisPlan: function(params){
+        return this.userId().then(r => myAxios.post('/diagnosisPlanGroup/editGroupAndDiagnosisPlan', {userid: r.object.userid, ...params}));
     },
 
      /**
      * 根据诊疗计划组的名字查询诊疗计划组数据列表
      */
-    selectListByGroupName: function(param){
-        return this.userId().then(r => myAxios.get(`/diagnosisPlanGroup/selectListByGroupName?groupName=${param}`));
+    selectListByGroupName: function(params){
+        return this.userId().then(r => myAxios.get(`/diagnosisPlanGroup/selectListByGroupName?groupName=${params}`));
+    },
+
+    /**
+     * 获取体检数据
+     */
+    getRvisitPhysicalExam: function(){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getRvisitPhysicalExam?userid=${r.object.userid}`));
+    },
+
+    /**
+     * 获取孕周弹出表单信息
+     */
+    getGesweekForm: function(){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getGesweekForm?userid=${r.object.userid}`));
+    },
+
+    /**
+     * 更新孕周弹出表单信息
+     */
+    saveGesweekForm: function(params){
+        return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/saveGesweekForm`, {userid: r.object.userid, ...params}));
     },
 }

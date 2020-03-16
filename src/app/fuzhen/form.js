@@ -559,12 +559,12 @@ export default class FuzhenForm extends Component {
           this.setState({ error: {} }, () => {
             getReminder();
           })
-          service.fuzhen.updateDocGesexpectrv(ycq).then(() => {
-            service.getuserDoc().then(res => {
-              const action = getUserDocAction(res.object);
-              store.dispatch(action)
-            })
-          })
+          // service.fuzhen.updateDocGesexpectrv(ycq).then(() => {
+          //   service.getuserDoc().then(res => {
+          //     const action = getUserDocAction(res.object);
+          //     store.dispatch(action)
+          //   })
+          // })
           if(act) {
             service.shouzhen.uploadHisDiagnosis().then(res => { })
           }
