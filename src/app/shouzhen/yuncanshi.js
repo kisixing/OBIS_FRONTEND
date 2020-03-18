@@ -19,7 +19,7 @@ export default class extends Component{
           valid: "required",
           pagination: false,
           editable: true,
-          iseditable: ({ entity }) => entity.datagridYearMonth !== "本孕",
+          // iseditable: ({ entity }) => entity.datagridYearMonth !== "本孕",
           options: baseData.pregnanciesColumns,
           className: "table-wrapper",
           isPreghiss: true,

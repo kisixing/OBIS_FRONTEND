@@ -69,6 +69,7 @@ export default class App extends Component {
     };
     store.subscribe(this.handleStoreChange);
 
+    common.setCookie('clinicCode', service.getQueryString('clinicCode'));
     service.authorize(service.getQueryString('doctorId')).then(res => {
       common.setCookie('docToken', res.object);
       service.getuserDoc().then(res =>
@@ -253,24 +254,6 @@ export default class App extends Component {
    */
   renderReminder() {
     const { allReminderModal, isOpenMedicalAdvice } = this.state;
-    
-    const closeWebPage = () => {
-      if (navigator.userAgent.indexOf("MSIE") > 0) {//close IE
-        if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
-          window.opener = null;
-          window.close();
-        } else {
-          window.open('', '_top');
-          window.top.close();
-        }
-      } else if (navigator.userAgent.indexOf("Firefox") > 0) {//close firefox
-        window.location.href = 'about:blank ';
-      } else {//close chrome;It is effective when it is only one.
-        window.opener = null;
-        window.open('', '_self');
-        window.close();
-      }
-    }
  
     const handelClose = (index, item) => {
       const action = closeReminderAction(index);
@@ -297,7 +280,7 @@ export default class App extends Component {
           const action2 = showReminderAction(false);
           store.dispatch(action2);
         }else if(index === 0 && isOpenMedicalAdvice) {
-          closeWebPage();
+          common.closeWindow();
         }
       })
     };
@@ -305,7 +288,7 @@ export default class App extends Component {
     const footer = (index, item) => {
       return (
         <div>
-          {isOpenMedicalAdvice ? <Button onClick={() => closeWebPage()}>取消, 开立医嘱</Button> : null}
+          {isOpenMedicalAdvice ? <Button onClick={() => common.closeWindow()}>取消, 开立医嘱</Button> : null}
           <Button onClick={() => handelClose(index)}>{isOpenMedicalAdvice ? '取消并返回' : '取消'}</Button>
           <Button type="primary" onClick={() => handelClose(index, item)}>确定</Button>
         </div>

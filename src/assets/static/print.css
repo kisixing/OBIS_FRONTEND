@@ -1,0 +1,32 @@
+@import "./antd/antd-1.x.min.css";
+
+@page :pseudo-class {
+  size: A4 landscape;
+  margin: 20px 0;
+}
+@media print {
+  .print-table {
+    color: red;
+    width: 100%;
+  }
+  .print-table tr {
+    page-break-inside: always;
+  }
+  .has-print .ant-table-tbody tr:nth-of-type(-n+2) {
+    display: none;
+  }
+  .ant-table-tbody>tr>td {
+    padding: 5px 1px;
+    word-break: keep-all;
+  }
+  .treatment {
+    width: 280px;
+  }
+  .isHide {
+    display: none;
+  }
+  .print-highrisk {
+    font-size: 21px;
+    text-align: right;
+  }
+}

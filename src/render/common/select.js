@@ -14,15 +14,23 @@ export function select({
   ...props
 }) {
   const getValue = () => {
-    if (value && typeof value === "object") {
+    if(value && Object.prototype.toString.call(value) === '[object Object]'){
       return value.value;
+    }
+    if(value && Object.prototype.toString.call(value) === '[object Array]'){
+      return value.map(v => v.value);
     }
     return value;
   };
   const handleChange = e => {
-    onChange(e, options.filter(o => o.value == e).pop()).then(() =>
-      onBlur({ checkedChange: true })
-    );
+    // 新增支持多选
+    if(Object.prototype.toString.call(e) === '[object Array]'){
+      let r = e.map(v => options.filter(o=>o.value==v).pop());
+      onChange(e, r).then(()=>onBlur({checkedChange:true}));
+    }else{
+      // 一般对象
+      onChange(e, options.filter(o=>o.value==e).pop()).then(()=>onBlur({checkedChange:true}));
+    }
   };
   const handleSearch = e => {
     if(e) {

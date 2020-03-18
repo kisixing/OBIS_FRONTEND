@@ -62,6 +62,7 @@ export default class extends Component {
             {
               name: "userroots[籍贯]",
               type: "input",
+              // options: baseData.jgOptions,
               span: 5,
               valid: "required"
             },
@@ -69,6 +70,7 @@ export default class extends Component {
             {
               name: "userpeople[民族]",
               type: "input",
+              // options: baseData.mzOptions,
               span: 4,
               valid: "required"
             },

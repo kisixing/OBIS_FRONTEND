@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Row, Col, Input, Icon, Select, Button, message, Table, Modal, Spin, Tree, DatePicker } from 'antd';
 import addrOptions from '../../utils/cascader-address-options';
 import * as util from './util';
+import * as common from '../../utils/common';
 import * as baseData from './data';
 import formRender, {fireForm} from '../../render/form';
 import {valid} from '../../render/common';
@@ -470,13 +471,6 @@ export default class FuzhenForm extends Component {
     console.log(newEntity, '321')
     let ckpressure = initData.ckpressure.split('/');
     const getReminder = () => {
-      if(act) {
-        const action = openMedicalAction(true);
-        store.dispatch(action);
-      } else {
-        const action = openMedicalAction(false);
-        store.dispatch(action);
-      }
       const lis = service.praseJSON(allFormData.lis);
       let allReminderModal = [];
       const getAllReminder = (modalObj) => {
@@ -528,6 +522,18 @@ export default class FuzhenForm extends Component {
         const action = allReminderAction(allReminderModal);
         store.dispatch(action);
       }
+      
+      if(act) {
+        if (allReminderModal.length > 0) {
+          const action = openMedicalAction(true);
+          store.dispatch(action);
+        } else {
+          common.closeWindow();
+        }
+      } else {
+        const action = openMedicalAction(false);
+        store.dispatch(action);
+      }
     }
 
     newEntity.checkdate = initData.checkdate;
@@ -566,11 +572,13 @@ export default class FuzhenForm extends Component {
           //   })
           // })
           if(act) {
-            service.shouzhen.uploadHisDiagnosis().then(res => { })
+            service.shouzhen.uploadHisDiagnosis(2).then(res => { })
           }
         });
       } else if(!valid) {
         message.error('必填项不能为空！');
+      } else if (!isFormChange && act) {
+        common.closeWindow();
       }
     });
   }

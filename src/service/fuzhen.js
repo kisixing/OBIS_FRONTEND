@@ -1,4 +1,5 @@
 import myAxios from '../utils/myAxios';
+import * as common from '../utils/common';
 
 export default {
     /**
@@ -153,7 +154,8 @@ export default {
      * 保存本次产检记录
      */
     saveRvisitForm: function(params){
-        return this.userId().then(r => myAxios.put('/outpatientWriteRestful/saveRvisitForm', Object.assign(params, {userid: r.object.userid})));
+        const clinicCode = common.getCookie('clinicCode');
+        return this.userId().then(r => myAxios.put('/outpatientWriteRestful/saveRvisitForm', Object.assign(params, {userid: r.object.userid, clinicCode})));
     },
 
     /**

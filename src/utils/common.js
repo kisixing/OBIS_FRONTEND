@@ -162,3 +162,35 @@ export function printPdf(url){
   iframe.src = service.getUrl(url);
 }
 
+// export function closeWindow() {
+//   var reg = /25\.0\.1364/;
+//   if (reg.test(navigator.userAgent) && Browser) {
+//       Browser.Close();
+//       return;
+//   }
+//   var event = document.createEvent('MessageEvent');
+//   event.initMessageEvent("Close", false, false, "@Model.Id", null, null, null, null);
+//   document.dispatchEvent(event);
+
+//   window.open('', '_parent', '');
+//   window.close();
+// }
+
+  export function closeWindow() {
+    if (navigator.userAgent.indexOf("MSIE") > 0) {//close IE
+      if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
+        window.opener = null;
+        window.close();
+      } else {
+        window.open('', '_top');
+        window.top.close();
+      }
+    } else if (navigator.userAgent.indexOf("Firefox") > 0) {//close firefox
+      window.location.href = 'about:blank ';
+    } else {//close chrome;It is effective when it is only one.
+      window.opener = null;
+      window.open('', '_self');
+      window.close();
+    }
+  }
+

@@ -56,6 +56,7 @@ function render(type, { value, ...props }) {
           list[row] = item;
           break;
         case 'delete':
+          // list = list.filter(i => i !== item)
           item.datagridYearMonth !== '本孕' ? list = list.filter(i => i !== item) : null;
           break;
       }
@@ -169,6 +170,7 @@ class FormItem extends Component {
     const { name, isFormChange, isSave } = this.state;
     const { entity, width } = this.props;
     if(isFormChange || isSave) {
+      // console.log(isSave, name, '321')
       this.refs.formItem.fireReact = (type, ...args) => {
         return new Promise(resolve => {
           switch (type) {
@@ -341,6 +343,7 @@ class FormItem extends Component {
  * }
  */
 export default function (entity, config, onChange, { children, ...props } = {}) {
+  entity = JSON.parse(JSON.stringify(entity));
   if (!entity) {
     console.warn('entity最好不为空,否则可能导致保存不上');
   }

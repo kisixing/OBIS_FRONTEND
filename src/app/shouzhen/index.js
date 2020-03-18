@@ -87,12 +87,12 @@ export default class Patient extends Component {
             } else if (tab.key === 'tab-3') {
                 tab.entity = [];
                 tab.entity['preghiss'] = !!res.object.gestation.preghiss ? res.object.gestation.preghiss : [];
-                let pregNum = 1
-                if(tab.entity['preghiss'].length > 0) {
-                    pregNum = parseInt(tab.entity['preghiss'][tab.entity['preghiss'].length - 1].pregnum) + 1;
-                }
-                baseData.initYCData.pregnum = pregNum;
-                tab.entity['preghiss'].push(baseData.initYCData);
+                // let pregNum = 1
+                // if(tab.entity['preghiss'].length > 0) {
+                //     pregNum = parseInt(tab.entity['preghiss'][tab.entity['preghiss'].length - 1].pregnum) + 1;
+                // }
+                // baseData.initYCData.pregnum = pregNum;
+                // tab.entity['preghiss'].push(baseData.initYCData);
             } else if (tab.key === 'tab-4') {
                 tab.entity = service.praseJSON(res.object.checkUp);
                 // 初始化BMI数值
@@ -252,8 +252,11 @@ export default class Patient extends Component {
                 if (tab.key === 'tab-3') {
                     //删除空数据以及去掉本孕一行
                     tab.entity.preghiss = tab.entity.preghiss.filter(item => Object.keys(item).length !== 1)
-                    tab.entity.preghiss.pop();
-                    // 孕产史数据同步
+                    // tab.entity.preghiss.pop();
+                    // 孕产史数据同步  数据校验
+                    let isDateSpecial = false;
+                    let isPregSpecial = false;
+                    let len = tab.entity.preghiss.length;
                     tab.entity.preghiss.forEach((item) => {
                         let bool = true;
                         tab.entity.preghiss.forEach((subItem) => {
@@ -275,11 +278,22 @@ export default class Patient extends Component {
                                 bool = false;
                             }
                         })
+                        if (item.datagridYearMonth && item.datagridYearMonth.indexOf('~') !== -1) isDateSpecial = true;
+                        if (item.pregnum && item.pregnum.indexOf('-') !== -1) isPregSpecial = true;
                     })
+
+                    if (isDateSpecial && !tab.entity.preghiss[len-1].pregnum) {
+                        message.error('年月格式不规范，请手动输入本孕孕次！', 6);
+                        key = step;
+                    }  
+                    if (isPregSpecial && !tab.entity.preghiss[len-1].pregnum) {
+                        message.error('孕次格式不规范，请手动输入本孕孕次！', 6);
+                        key = step;
+                    }  
 
                     service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
                         message.success('信息保存成功',3);
-                        tab.entity.preghiss.push(baseData.initYCData);
+                        // tab.entity.preghiss.push(baseData.initYCData);
                         valid && this.activeTab(key || next.key);
                         service.getuserDoc().then(res => this.setState({
                             info: res.object
@@ -301,13 +315,6 @@ export default class Patient extends Component {
                     }
                 }
                 if (tab.key === 'tab-7' && key === 'tab-7') {
-                    if(type === 'open') {
-                        const action = openMedicalAction(true);
-                        store.dispatch(action);
-                    } else {
-                        const action = openMedicalAction(false);
-                        store.dispatch(action);
-                    }
                     const Lis = service.praseJSON(allFormData.lis);
                     if (Lis.ogtt && Lis.ogtt[0] && Lis.ogtt[0].label === "GDM") {
                         let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
@@ -353,6 +360,17 @@ export default class Patient extends Component {
                         const action3 = showReminderAction(true);
                         store.dispatch(action3);
                     }
+                    if(type === 'open') {
+                        if (allReminderModal.length > 0) {
+                            const action = openMedicalAction(true);
+                            store.dispatch(action);
+                        } else {
+                            common.closeWindow();
+                        }
+                    } else {
+                        const action = openMedicalAction(false);
+                        store.dispatch(action);
+                    }
                 }        
                 if (tab.key !== 'tab-3') {
                     service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
@@ -368,11 +386,14 @@ export default class Patient extends Component {
                             }))
                         }
                         if(tab.key === 'tab-7' && type === 'open') {
-                            service.shouzhen.uploadHisDiagnosis().then(res => { })
+                            service.shouzhen.uploadHisDiagnosis(1).then(res => { })
                         }
                     });
                 }
             } else {
+                if (type === 'open') {
+                    common.closeWindow();
+                }
                 valid && this.activeTab(key || next.key);
             }
             this.change = false;

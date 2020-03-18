@@ -1,5 +1,5 @@
 import myAxios from '../utils/myAxios';
-
+import * as common from '../utils/common';
 
 export default {
     /**
@@ -26,7 +26,8 @@ export default {
         //console.log(entity)
         var arr2 = JSON.stringify(data).replace(/add_/g, "ADD_");
         data=JSON.parse(arr2) 
-        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid,...data}));
+        const clinicCode = common.getCookie('clinicCode');
+        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, ...data}));
     },
     /**
      * 保存孕产史
@@ -133,7 +134,8 @@ export default {
      * 获取医嘱接口
     */
     getAdviceTreeList: function() {
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/getAdviceTreeList?userid=${r.object.userid}`));
+        const clinicCode = common.getCookie('clinicCode');
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getAdviceTreeList?userid=${r.object.userid}&clinicCode=${clinicCode}`));
     },
     /**
      * 预约接口
@@ -152,7 +154,8 @@ export default {
     /**
      * 保存并开立医嘱调用接口
     */
-    uploadHisDiagnosis: function() {
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/uploadHisDiagnosis', {userid: r.object.userid}));
+    uploadHisDiagnosis: function(type) {
+        const clinicCode = common.getCookie('clinicCode');
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/uploadHisDiagnosis', {userid: r.object.userid, type, clinicCode }));
     },
 };

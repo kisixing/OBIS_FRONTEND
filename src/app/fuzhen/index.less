@@ -209,30 +209,26 @@
     width: 100%;
   }
 }
-.fuzhenTable, .fuzhenTable2 {
+.fuzhenTable {
   .ant-table-tbody>tr>td {
     padding: 5px 1px;
-    word-break: keep-all;
   }
   .treatment {
     width: 180px;
   }
 }
-.fuzhenTable2 .treatment {
-  width: 380px;
+.fuzhenTable2 {
+  .ant-table-tbody>tr>td {
+    padding: 5px 1px;
+    word-break: keep-all;
+  }
+  .treatment {
+    width: 380px;
+  }
 }
 .print-table {
   display: none;
-  .print-highrisk {
-    font-size: 21px;
-  }
 }
-@media print {
-  .has-print .ant-table-tbody tr:nth-of-type(-n+2) {
-    display: none;
-  }
-}
-
 
 .delBModal {
   .ant-btn {

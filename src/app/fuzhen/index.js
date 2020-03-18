@@ -110,9 +110,26 @@ export default class Patient extends Component {
     })
 
     Promise.all([
+      // service.getuserDoc().then(res => {
+      //   let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
+      //   let arr = [];
+      //   for (let k in res.object) {
+      //     if(res.object[k] === 'true') arr.push(k);
+      //   }
+      //   service.fuzhen.getRvisitPhysicalExam().then(res => {
+      //     const data = {
+      //       'ckdiastolicpressure': res.object.diastolic,
+      //       'ckshrinkpressure': res.object.systolic,
+      //       'cktizh': res.object.weight,
+      //     };
+      //     this.setState({ initData: {...initData, ...data, ...param} });
+      //   });
+      //   this.setState({ scKeys: arr });
+      // }),
+
       service.getuserDoc().then(res => this.setState({ info: res.object, ycq: res.object.gesexpect }, () => {
         let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
-        this.setState({initData: {...this.state.initData, ...param}});
+        this.setState({initData: {...initData, ...param}});
 
         let arr = [];
         for (let k in res.object) {
@@ -134,10 +151,23 @@ export default class Patient extends Component {
         res.object && res.object.map(item => {
           if(item.checkdate == util.futureDate(0)) {
             bool = true;
-            this.setState({hasRecord: true, initData: service.praseJSON(item)})
+            this.setState({
+              hasRecord: true, 
+              initData: service.praseJSON(item)
+            })
           }
         })
-        if(!bool) res.object.push(this.state.initData);
+        if(!bool) {
+          res.object.push(this.state.initData);
+          // service.fuzhen.getRvisitPhysicalExam().then(res => {
+          //   const data = {
+          //     'ckdiastolicpressure': res.object.diastolic,
+          //     'ckshrinkpressure': res.object.systolic,
+          //     'cktizh': res.object.weight,
+          //   };
+          //   this.setState({ initData: {...initData, ...data} });
+          // });
+        } 
         this.setState({recentRvisit: res.object})
     })]).then(() => this.setState({ loading: false }));
     
@@ -145,15 +175,6 @@ export default class Patient extends Component {
 
     service.fuzhen.getLackLis().then(res => {
       this.setState({reportStr: String(res.object)})
-    })
-
-    service.fuzhen.getRvisitPhysicalExam().then(res => {
-      const data = {
-        'ckdiastolicpressure': res.object.diastolic,
-        'ckshrinkpressure': res.object.systolic,
-        'cktizh': res.object.weight,
-      };
-      this.setState({ initData: {...initData, ...data} });
     })
 
     service.fuzhen.getGesweekForm().then(res => {
@@ -910,7 +931,7 @@ export default class Patient extends Component {
             })}
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => printFZ()}>打印</Button>
             <div className={hasPrint ? "print-table has-print" : "print-table"}>
-              <span className="print-highrisk">高危因素：{userDoc.highriskFactor}</span>
+              <div className="print-highrisk">高危因素：{userDoc.highriskFactor}</div>
               {printData && printTable(printData, { className: "fuzhenTable2", pagination: false, scroll: { x: 1100 }, tableLayout: "fixed" })}
             </div>
           </div>
@@ -956,14 +977,12 @@ export default class Patient extends Component {
       if(isOk){
         if(isChangeYCQ) {
           const tip = `B超时间：${ycqEntity.ckzdate}，停经${ycqEntity.ckztingj}周，如孕${ycqEntity.ckzweek}周，修订预产期为${ycqEntity.gesexpect}`;
-          let newInitData = initData;
-          let newRecentRvisit = recentRvisit;
-          newInitData.ckweek = util.getWeek(40, util.countWeek(ycqEntity.gesexpect, newInitData.checkdate))+'(修)';
-          newInitData.treatment += tip + '；';
+          initData.ckweek = util.getWeek(40, util.countWeek(ycqEntity.gesexpect, initData.checkdate))+'(修)';
+          initData.treatment += tip + '；';
 
-          newRecentRvisit.pop();
-          newRecentRvisit.push(newInitData);
-          this.setState({initData: newInitData, recentRvisit: newRecentRvisit});
+          recentRvisit.pop();
+          recentRvisit.push(initData);
+          this.setState({initData, recentRvisit});
         }
         service.fuzhen.saveGesweekForm(ycqEntity).then(res => {
           service.getuserDoc().then(res => {

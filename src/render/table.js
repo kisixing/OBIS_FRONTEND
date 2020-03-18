@@ -35,7 +35,7 @@ class TableItem extends Component {
   componentDidMount(){
     const { iseditable = () => true, entity, row, name, value, onEdit, hasRecord, style, isTwins } = this.props;
     const arr = ["cktizh", "ckzijzhz", "allTaix", "allXianl", "ckgongg", "ckfuzh"];
-    if (iseditable({entity, row, name, value}) && onEdit && !hasRecord) {
+    if (iseditable({entity, row, name, value}) && onEdit) {
       if (arr.includes(name)) {
         this.setState({force:true});
       }
@@ -441,6 +441,7 @@ export default function(
             value={value}
             isEditor={holdeditor || item.$type===dateType.CREATE}
             onChange={handleChange}
+            isPreghiss={isPreghiss}
           />
         );
       }
@@ -454,7 +455,7 @@ export default function(
         title: "添加",
         fn: () => onRowChange("create", { $type: dateType.CREATE })
       },
-      { title: "删除", fn: item => onRowChange("delete", item, index) }
+      { title: "删除", fn: item => onRowChange("delete", item) }
     ]
   };
   return (
