@@ -8,6 +8,7 @@ import * as dates from './date';
 import * as buttons from './button';
 import * as mixs from './mix';
 import * as cascader from "./cascader";
+import * as districtSelect from "./district-select";
 
 /**
  * 所有编辑组件
@@ -29,7 +30,8 @@ export const editors = {
   ...dates,
   ...buttons,
   ...mixs,
-  ...cascader
+  ...cascader,
+  ...districtSelect
 };
 
 export default {

@@ -2,6 +2,7 @@ import provinces from "./china-division/provinces";
 import cities from "./china-division/cities";
 import areas from "./china-division/areas";
 import hkmotw from "./china-division/HK-MO-TW";
+import pcas from "./china-division/pcas";
 
 areas.forEach(area => {
   const matchCity = cities.filter(city => city.code === area.cityCode)[0];
@@ -57,3 +58,16 @@ let options = provinces.map(province => ({
 options = options.concat(_hkmotw);
 
 export default options;
+
+// 获取街道
+export const getStreets = (p, c, a) => {
+  if (p.match(RegExp(/香港|澳门|台湾/))) {
+    return []
+  }
+  const street = pcas[p][c][a];
+  // console.log("pcas", pcas, street);
+  if (Object.prototype.toString.call(street) === '[object Array]' && street.length) {
+    const s = street.map(e => ({ label: e, value: e}));
+    return s;
+  }
+}

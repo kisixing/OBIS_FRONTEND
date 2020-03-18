@@ -110,54 +110,56 @@ export default class extends Component {
             }
           ]
         },
+        {
+          columns: [
+            {
+              name: "root[户口地址]",
+              className: "h_24",
+              span: 17,
+              valid: "required",
+              type: [
+                { type: "districtSelect", span: 16 },
+                { type: "input", span: 8, placeholder: "请输入详细地址" }
+              ]
+            }
+          ]
+        },
+        {
+          columns: [
+            {
+              name: "address[现居地址]",
+              className: "h_24",
+              span: 17,
+              valid: "required",
+              type: [
+                { type: "districtSelect", span: 16 },
+                { type: "input", span: 8, placeholder: "请输入详细地址" }
+              ]
+            }
+          ]
+        },
         // {
         //   columns: [
         //     {
-        //       name: "userconstant[户口地址]",
-        //       type: "input",
+        //       name: "root[户口地址]",
+        //       className: "h_26",
         //       span: 11,
-        //       valid: "required"
+        //       valid: "required",
+        //       type: [{ type: "cascader", options: options }, { type: "input" }]
         //     },
         //     { span: 1 },
         //     {
-        //       name: "useraddress[现住地址]",
-        //       type: "input",
+        //       name: "address[现居地址]",
+        //       className: "h_26",
         //       span: 11,
-        //       valid: "required"
+        //       valid: "required",
+        //       type: [{ type: "cascader", options: options }, { type: "input" }]
         //     },
         //     { span: 1 }
         //   ]
         // },
         {
-          columns: [
-            {
-              name: "root[户口地址]",
-              className: "h_26",
-              span: 11,
-              valid: "required",
-              type: [
-                { type: "cascader", options: options },
-                { type: "input" }
-              ]
-            },
-            { span: 1 },
-            {
-              name: "address[现居地址]",
-              className: "h_26",
-              span: 11,
-              valid: "required",
-              type: [
-                { type: "cascader", options: options },
-                { type: "input", }
-              ]
-            },
-            { span: 1 }
-          ]
-        },
-        {
-          columns: [
-            { name: 'add_FIELD_readdress[产休地址]', type: 'input', span: 11, valid: 'required'},
-          ]
+          columns: [{ name: "add_FIELD_readdress[产休地址]", type: "input", span: 11, valid: "required" }]
         }
       ]
     };

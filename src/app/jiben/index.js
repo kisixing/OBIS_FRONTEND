@@ -45,17 +45,17 @@ export default class Patient extends Component {
             store.dispatch(action);
             if (tab.key === 'tab-0') {
                 tab.entity = service.praseJSON(res.object.gravidaInfo);
-                const root = res.object.gravidaInfo.userconstant;
-                const rootArr = root.split(',');
+                const userconstant = res.object.gravidaInfo.userconstant;
+                const userconstantd = res.object.gravidaInfo.userconstantd;
                 tab.entity["root"] = {
-                  0: rootArr[0].split(' '),
-                  1: rootArr[1]
+                  0: userconstant.split(","),
+                  1: userconstantd
                 };
-                const address = res.object.gravidaInfo.useraddress;
-                const addressArr = address.split(",");
+                const useraddress = res.object.gravidaInfo.useraddress;
+                const useraddressd = res.object.gravidaInfo.useraddressd;
                 tab.entity["address"] = {
-                  0: addressArr[0].split(" "),
-                  1: addressArr[1]
+                  0: useraddress.split(","),
+                  1: useraddressd
                 };
             } else if (tab.key === 'tab-1') {
                 tab.entity = service.praseJSON(res.object.husbandInfo);
@@ -66,7 +66,7 @@ export default class Patient extends Component {
               const form = document.querySelector(".shouzhen");
               fireForm(form, "valid");
             });
-        }).catch(e => { 
+        }).catch(e => {
             service.praseJSON(tab.entity);
             console.warn(e);
             this.setState({ step }, () => {
@@ -113,17 +113,19 @@ export default class Patient extends Component {
 
             if (this.change) {
                 if (tab.key === "tab-0") {
-                    tab.entity.userconstant = `${tab.entity.root[0].join(' ')},${tab.entity.root[1]}`;
-                    tab.entity.useraddress = `${tab.entity.address[0].join(' ')},${tab.entity.address[1]}`;
+                    tab.entity.userconstant = `${tab.entity.root[0].join(',')}`;
+                    tab.entity.useraddress = `${tab.entity.address[0].join(',')}`;
+                    tab.entity.userconstantd = `${tab.entity.root[1]}`;
+                    tab.entity.useraddressd = `${tab.entity.address[1]}`;
                 }
                 if (tab.key === 'tab-1') {
                     tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink_data[0] || '';
                     tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1] || '';
-                }      
+                }
                 service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
                     message.success('信息保存成功',3);
                     valid && this.activeTab(key || next.key);
-                });  
+                });
             } else {
                 valid && this.activeTab(key || next.key);
             }
