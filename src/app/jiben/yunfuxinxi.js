@@ -28,115 +28,49 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            {
-              name: "userage[年龄]",
-              type: "input",
-              span: 5,
-              valid: "required|number"
-            },
+            { name: "userage[年龄]", type: "input", span: 5, valid: "required|number" },
             { span: 1 },
-            {
-              name: "userbirth[出生日期]",
-              type: "date",
-              span: 5,
-              valid: "required"
-            },
+            { name: "userbirth[出生日期]", type: "date", span: 5, valid: "required" },
             { span: 1 },
-            {
-              name: "usercuzh[建档日期]",
-              type: "date",
-              span: 5,
-              valid: "required"
-            }
+            { name: "usercuzh[建档日期]", type: "date", span: 5, valid: "required" }
           ]
         },
         {
           columns: [
-            {
-              name: "usernation[国籍]",
-              type: "input",
-              span: 5,
-              valid: "required"
-            },
+            { name: "usernation[国籍]", type: "input", span: 5, valid: "required" },
             { span: 1 },
-            {
-              name: "userroots[籍贯]",
-              type: "input",
-              // options: baseData.jgOptions,
-              span: 5,
-              valid: "required"
-            },
+            { name: "userroots[籍贯]", type: "input", span: 5, valid: "required" },
             { span: 1 },
-            {
-              name: "userpeople[民族]",
-              type: "input",
-              // options: baseData.mzOptions,
-              span: 4,
-              valid: "required"
-            },
+            { name: "userpeople[民族]", type: "input", span: 4, valid: "required" },
             { span: 1 },
-            {
-              name: "useroccupation[职业]",
-              type: "select",
-              options: baseData.zyOptions,
-              span: 6,
-              valid: "required"
-            }
+            { name: "useroccupation[职业]", type: "select", options: baseData.zyOptions, span: 6, valid: "required" }
           ]
         },
         {
           columns: [
-            {
-              name: "usermobile[手机]",
-              type: "input",
-              span: 5,
-              valid: "number|required"
-            },
+            { name: "usermobile[手机]", type: "input", span: 5, valid: "number|required" },
             { span: 1 },
             { name: "phone[固话]", type: "input", span: 5 },
             { span: 1 },
-            {
-              name: "useridtype[证件类型]",
-              type: "select",
-              span: 4,
-              showSearch: false,
-              options: baseData.sfzOptions,
-              valid: "required"
-            },
+            { name: "useridtype[证件类型]", type: "select", span: 4, showSearch: false, options: baseData.sfzOptions, valid: "required" },
             { span: 1 },
-            {
-              name: "useridno[证件号码]",
-              type: "input",
-              span: 6,
-              valid: "required"
+            { name: "useridno[证件号码]", type: "input", span: 6, valid: "required" }
+          ]
+        },
+        {
+          columns: [
+            { name: "root[户口地址]", className: "h_24", span: 20, valid: "required",
+              type: [{ type: "districtSelect", span: 16 }, { type: "input", span: 8, placeholder: "请输入详细地址" }]
+            },
+            { name: 'time[来本市时间]', type: 'date', span: 4, 
+              filter: entity => entity.root && entity.root[0][1] !== '广州市'
             }
           ]
         },
         {
           columns: [
-            {
-              name: "root[户口地址]",
-              className: "h_24",
-              span: 17,
-              valid: "required",
-              type: [
-                { type: "districtSelect", span: 16 },
-                { type: "input", span: 8, placeholder: "请输入详细地址" }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              name: "address[现居地址]",
-              className: "h_24",
-              span: 17,
-              valid: "required",
-              type: [
-                { type: "districtSelect", span: 16 },
-                { type: "input", span: 8, placeholder: "请输入详细地址" }
-              ]
+            { name: "address[现居地址]", className: "h_24", span: 20, valid: "required",
+              type: [{ type: "districtSelect", span: 16 }, { type: "input", span: 8, placeholder: "请输入详细地址" }]
             }
           ]
         },

@@ -249,6 +249,25 @@ export default class Patient extends Component {
                 //         valid && this.activeTab(key || next.key);
                 //     });
                 // }
+                if (tab.key === 'tab-2') {
+                    let arr = [];
+                    if (tab.entity.add_FIELD_jzgaoxueya && tab.entity.add_FIELD_jzgaoxueya[0] && tab.entity.add_FIELD_jzgaoxueya[0].label === '有') {
+                        arr.push('高血压');
+                    }
+                    if (tab.entity.add_FIELD_jztangniaobing && tab.entity.add_FIELD_jztangniaobing[0] && tab.entity.add_FIELD_jztangniaobing[0].label === '有') {
+                        arr.push('糖尿病');
+                    }
+                    if (tab.entity.add_FIELD_jzjixing && tab.entity.add_FIELD_jzjixing[0] && tab.entity.add_FIELD_jzjixing[0].label === '有') {
+                        arr.push('先天畸形');
+                    }
+                    if (tab.entity.add_FIELD_jzyichuanbing && tab.entity.add_FIELD_jzyichuanbing[0] && tab.entity.add_FIELD_jzyichuanbing[0].label === '有') {
+                        arr.push('遗传病');
+                    }
+                    if (tab.entity.add_FIELD_jzqita && tab.entity.add_FIELD_jzqita[0] && tab.entity.add_FIELD_jzqita[0].label === '有') {
+                        arr.push(tab.entity.add_FIELD_jzqita[0].value);
+                    }
+                    tab.entity.mzxuan = arr.join(',');
+                }
                 if (tab.key === 'tab-3') {
                     //删除空数据以及去掉本孕一行
                     tab.entity.preghiss = tab.entity.preghiss.filter(item => Object.keys(item).length !== 1)

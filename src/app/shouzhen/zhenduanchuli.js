@@ -121,12 +121,8 @@ export default class extends Component{
         {
           columns: [
             { name: "diagnosisHandle[处理措施]", type: "textarea", span: 10, className: "table-wrapper" },
-            {
-              name: "treatment[模板]",
-              type: "buttons",
-              span: 14,
-              text:
-                "(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(#1890ff)[更多]",
+            { name: "treatment[模板]", type: "buttons", span: 14,
+              text: "(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(green)[入院],(#1890ff)[更多]",
               onClick: this.handleTreatmentClick.bind(this)
             }
           ]
@@ -223,10 +219,13 @@ export default class extends Component{
 
   addTreatment(e, value){
     const { entity, onChange } = this.props;
-    onChange(e, {
-      name: 'diagnosisHandle',
-      value: (entity.diagnosisHandle||'') + value + '； '
-    })
+    entity.diagnosisHandle = entity.diagnosisHandle || '';
+    if (entity.diagnosisHandle.indexOf(value) === -1) {
+      onChange(e, {
+        name: 'diagnosisHandle',
+        value: entity.diagnosisHandle + value + '； '
+      })
+    }
   }
 
   getTreatTemp() {
@@ -238,10 +237,12 @@ export default class extends Component{
 
   handleTreatmentClick(e, {text,index},resolve){
     text==='更多' ?  this.getTreatTemp() : this.addTreatment(e, text);
-    if(text==='糖尿病日间门诊') {
+    if (text==='糖尿病日间门诊') {
       // this.setState({openMenzhen: true});
-    }else if (text==='产前诊断') {
+    } else if (text==='产前诊断') {
       // this.setState({openMenzhen: true});
+    } else if (text==='入院') {
+      this.setState({isShowRegForm: true})
     }
   }
 
@@ -539,9 +540,9 @@ export default class extends Component{
   handleChange(e, { name, value, target }){
     const { onChange } = this.props;
     switch (name) {
-      case 'xiacsftype':
-        value.label === '入院'  ? this.setState({isShowRegForm: true}) : null;
-      break;
+      // case 'xiacsftype':
+      //   value.label === '入院'  ? this.setState({isShowRegForm: true}) : null;
+      // break;
     }
     console.log(name, value, target, '123')
     onChange(e, { name, value, target })

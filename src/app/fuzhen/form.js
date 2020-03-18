@@ -364,7 +364,10 @@ export default class FuzhenForm extends Component {
         {
           columns:[
             { name: 'treatment[处理措施]', type: 'textarea', span: 12 },
-            { name:'treatment[模板]', type: 'buttons',span: 12, text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(#1890ff)[更多]',onClick: this.handleTreatmentClick.bind(this)}
+            { name:'treatment[模板]', type: 'buttons',span: 12, 
+              text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(green)[入院],(#1890ff)[更多]',
+              onClick: this.handleTreatmentClick.bind(this)
+            }
           ]
         },
         {
@@ -405,10 +408,12 @@ export default class FuzhenForm extends Component {
 
   addTreatment(e, value){
     const { initData } = this.props;
-    this.handleChange(e, {
-      name: 'treatment',
-      value: initData.treatment + value + '； '
-    })
+    if (initData.treatment.indexOf(value) === -1) {
+      this.handleChange(e, {
+        name: 'treatment',
+        value: initData.treatment + value + '； '
+      })
+    }
   }
 
   getTreatTemp() {
@@ -420,11 +425,12 @@ export default class FuzhenForm extends Component {
 
   handleTreatmentClick(e, {text,index},resolve){
     text==='更多' ?  this.getTreatTemp() : this.addTreatment(e, text);
-    if(text==='糖尿病日间门诊') {
+    if (text==='糖尿病日间门诊') {
       // this.setState({openMenzhen: true});
-    }else if (text==='产前诊断') {
+    } else if (text==='产前诊断') {
       // this.setState({openMenzhen: true});
-
+    } else if (text==='入院') {
+      this.setState({isShowRegForm: true})
     }
   }
 
@@ -446,9 +452,9 @@ export default class FuzhenForm extends Component {
         case 'ckweek':
           this.state.openYCQ = ()=>{};
         break;
-        case 'rvisitOsType':
-          value.label === '入院' ? this.setState({isShowRegForm: true}) : null;
-          break;
+        // case 'rvisitOsType':
+        //   value.label === '入院' ? this.setState({isShowRegForm: true}) : null;
+        //   break;
         case 'ckappointmentWeek':
           data.ckappointment = util.futureDate(value.value);
         break;
