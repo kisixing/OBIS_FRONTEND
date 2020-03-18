@@ -19,7 +19,7 @@ export function cascader({
        }
        if (e && typeof e === "string") {
          // 字符串，空格符隔开
-         const v = e.split(' ');
+         const v = e.split(',');
          return v;
        }
        return null;
@@ -34,7 +34,7 @@ export function cascader({
          {...props}
          options={options}
          value={getValue(value)}
-         expandTrigger="hover"
+         expandTrigger="click"
          onChange={handleChange}
          placeholder={placeholder}
          style={{ fontSize: "16px" }}
