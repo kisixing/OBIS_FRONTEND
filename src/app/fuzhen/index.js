@@ -110,33 +110,38 @@ export default class Patient extends Component {
     })
 
     Promise.all([
-      // service.getuserDoc().then(res => {
-      //   let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
-      //   let arr = [];
-      //   for (let k in res.object) {
-      //     if(res.object[k] === 'true') arr.push(k);
-      //   }
-      //   service.fuzhen.getRvisitPhysicalExam().then(res => {
-      //     const data = {
-      //       'ckdiastolicpressure': res.object.diastolic,
-      //       'ckshrinkpressure': res.object.systolic,
-      //       'cktizh': res.object.weight,
-      //     };
-      //     this.setState({ initData: {...initData, ...data, ...param} });
-      //   });
-      //   this.setState({ scKeys: arr });
-      // }),
-
-      service.getuserDoc().then(res => this.setState({ info: res.object, ycq: res.object.gesexpect }, () => {
+      service.getuserDoc().then(res => {
         let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
-        this.setState({initData: {...initData, ...param}});
-
         let arr = [];
         for (let k in res.object) {
           if(res.object[k] === 'true') arr.push(k);
         }
-        this.setState({ scKeys: arr })
-      })),
+        this.setState({ scKeys: arr });
+        service.fuzhen.getRvisitPhysicalExam().then(res => {
+          param.ckdiastolicpressure = res.object.diastolic;
+          param.ckshrinkpressure = res.object.systolic;
+          param.cktizh = res.object.weight;
+          this.setState({ initData: {...initData, ...param} }, () => {
+            service.fuzhen.getRecentRvisit().then(res => {
+              res.object = res.object || [];
+              let bool = false;
+              res.object && res.object.map(item => {
+                if(item.checkdate == util.futureDate(0)) {
+                  bool = true;
+                  this.setState({
+                    hasRecord: true, 
+                    initData: service.praseJSON(item)
+                  })
+                }
+              })
+              if(!bool) {
+                res.object.push(this.state.initData);
+              } 
+              this.setState({recentRvisit: res.object})
+            })
+          });
+        });
+      }),
 
       service.fuzhen.getdiagnosis().then(res => {
         const action = getDiagnisisAction(res.object.list);
@@ -144,32 +149,7 @@ export default class Patient extends Component {
       }),
 
       service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object})),
-
-      service.fuzhen.getRecentRvisit().then(res => {
-        res.object = res.object || [];
-        let bool = false;
-        res.object && res.object.map(item => {
-          if(item.checkdate == util.futureDate(0)) {
-            bool = true;
-            this.setState({
-              hasRecord: true, 
-              initData: service.praseJSON(item)
-            })
-          }
-        })
-        if(!bool) {
-          res.object.push(this.state.initData);
-          // service.fuzhen.getRvisitPhysicalExam().then(res => {
-          //   const data = {
-          //     'ckdiastolicpressure': res.object.diastolic,
-          //     'ckshrinkpressure': res.object.systolic,
-          //     'cktizh': res.object.weight,
-          //   };
-          //   this.setState({ initData: {...initData, ...data} });
-          // });
-        } 
-        this.setState({recentRvisit: res.object})
-    })]).then(() => this.setState({ loading: false }));
+    ]).then(() => this.setState({ loading: false }));
     
     service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
 

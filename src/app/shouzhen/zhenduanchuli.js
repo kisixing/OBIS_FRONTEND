@@ -238,7 +238,7 @@ export default class extends Component{
   handleTreatmentClick(e, {text,index},resolve){
     text==='更多' ?  this.getTreatTemp() : this.addTreatment(e, text);
     if (text==='糖尿病日间门诊') {
-      // this.setState({openMenzhen: true});
+      this.setState({openMenzhen: true});
     } else if (text==='产前诊断') {
       // this.setState({openMenzhen: true});
     } else if (text==='入院') {

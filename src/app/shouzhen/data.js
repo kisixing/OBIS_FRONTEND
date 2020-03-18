@@ -288,17 +288,17 @@ export const wjycOptions = toOptions('未见异常');
 /**
  * 手术医院
  */
-export const ssyyOptions = toOptions('中山一院, 中山二院, 中山三院, 广医一院, 广医三院, 省中医院, 省妇幼, 市妇幼');
+export const ssyyOptions = toOptions('中山一院,中山二院,中山三院,广医一院,广医三院,省中医院,省妇幼,市妇幼');
 
 /**
  * 手术产式
  */
-export const sscsOptions = toOptions('剖宫产, 吸引, 钳产, 臀助产');
+export const sscsOptions = toOptions('剖宫产,吸引,钳产,臀助产');
 
 /**
  * 分娩医院
  */
-export const fmyyOptions = toOptions('中山一院, 中山二院, 中山三院, 广医一院, 广医三院, 省妇幼, 市妇幼');
+export const fmyyOptions = toOptions('中山一院,中山二院,中山三院,广医一院,广医三院,省妇幼,市妇幼');
 
 /**
  * 职业
