@@ -8,12 +8,8 @@ import * as baseData0 from './../shouzhen/data';
 import * as baseData from './../fuzhen/data';
 import * as util from '../fuzhen/util';
 import store from '../store';
-import { getAlertAction, 
-        showTrialAction, 
-        showPharAction, 
-        checkedKeysAction, 
-        getDiagnisisAction,
-        getUserDocAction
+import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, getDiagnisisAction, getUserDocAction,
+         showSypAction,
       } from '../store/actionCreators.js';
 import RegForm from '../components/reg-form';
 import './index.less';
@@ -148,6 +144,21 @@ export default class extends Component{
           const action = showTrialAction(true);
           store.dispatch(action);
         }
+        if (diagnosi.indexOf("梅毒") !== -1) {
+          if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf("梅毒") === -1)) {
+            let arr = userDoc.infectious ? userDoc.infectious.split(',') : [];
+            arr.push('梅毒');
+            userDoc.infectious = arr.join();
+            service.savehighriskform(userDoc).then(res => {
+              service.getuserDoc().then(res => {
+                const action = getUserDocAction(res.object);
+                store.dispatch(action);
+              })
+            });
+          }
+          const action = showSypAction(true);
+          store.dispatch(action);
+        }
         service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
           let data = res.object;
           if(data.length > 0) {
@@ -203,16 +214,35 @@ export default class extends Component{
   }
 
   deldiagnosis(id, data) {
+    const { userDoc } = this.state;
     service.fuzhen.deldiagnosis(id).then(() => {
       modal('info', '删除诊断信息成功');
       service.fuzhen.getdiagnosis().then(res => {
         const action = getDiagnisisAction(res.object.list);
         store.dispatch(action);
         this.updateCheckedKeys(data);
-      })
-      service.getuserDoc().then(res => {
-        const action = getUserDocAction(res.object);
-        store.dispatch(action);
+
+        let hasSyp = false;
+        res.object.list && res.object.list.forEach(item => {
+          if (item.data.indexOf('梅毒') !== -1) hasSyp = true;
+        })
+
+        if (!hasSyp && userDoc.infectious && userDoc.infectious.indexOf('梅毒') !== -1) {
+          let arr = userDoc.infectious.split(',');
+          arr.splice(arr.indexOf('梅毒'), 1);
+          userDoc.infectious = arr.join();
+          service.savehighriskform(userDoc).then(res => {
+            service.getuserDoc().then(res => {
+              const action = getUserDocAction(res.object);
+              store.dispatch(action);
+            })
+          });
+        } else {
+          service.getuserDoc().then(res => {
+            const action = getUserDocAction(res.object);
+            store.dispatch(action);
+          })
+        }
       })
     })
   }

@@ -58,6 +58,12 @@ export default class Patient extends Component {
                   1: useraddressd
                 };
             } else if (tab.key === 'tab-1') {
+                const h_userconstant = res.object.husbandInfo.add_FIELD_h_userconstant;
+                const h_userconstantd = res.object.husbandInfo.add_FIELD_h_userconstantd;
+                // tab.entity["h_root"] = {
+                //   0: h_userconstant.split(","),
+                //   1: h_userconstantd
+                // };
                 tab.entity = service.praseJSON(res.object.husbandInfo);
                 tab.entity['add_FIELD_husband_drink_data'] = { 0: tab.entity["add_FIELD_husband_drink_type"], 1: tab.entity['add_FIELD_husband_drink'] }
             }
@@ -121,6 +127,8 @@ export default class Patient extends Component {
                 if (tab.key === 'tab-1') {
                     tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink_data[0] || '';
                     tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1] || '';
+                    tab.entity.add_FIELD_h_userconstant = `${tab.entity.h_root[0].join(',')}`;
+                    tab.entity.add_FIELD_h_userconstantd = `${tab.entity.h_root[1]}`;
                 }
                 service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
                     message.success('信息保存成功',3);
@@ -177,7 +185,7 @@ export default class Patient extends Component {
             {/* <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button> */}
 
             <div className="bgWhite" style={{ position: "fixed", top: "7.65em", left: "0", right: "0", bottom: "0"}}></div>
-            <Tabs type="card" activeKey={step} onChange={key => this.handleSave(key)}>
+            <Tabs type="card" activeKey={step} onChange={key => setTimeout(() => { this.handleSave(key) }, 100)}>
               {tabs.map(({ key, title, entity, error, Content }) => (
                 <Tabs.TabPane key={key}
                   tab={

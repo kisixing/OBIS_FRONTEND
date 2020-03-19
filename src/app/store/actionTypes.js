@@ -25,3 +25,5 @@ export const OPEN_YCQ = 'open_ycq';
 export const TRIAL_VISIBLE = 'trial_visible';
 
 export const IS_SAVE = 'is_save';
+
+export const SHOW_SYP_MODAL = 'show_syp_modal';

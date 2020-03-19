@@ -234,7 +234,6 @@ export default class Patient extends Component {
         }
 
         fireForm(form, 'valid').then((valid) => {
-            console.log(valid, '543')
             // 数据提交前再对数据进行一些处理，请实现entitySave方法，请参考tab-0：yunfuxinxi.js这个文件
             const entitySave = tab.entitySave || (i=>i);
             tab.error = !valid;
@@ -446,7 +445,7 @@ export default class Patient extends Component {
             <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
 
             <div className="bgWhite" style={{ position: "fixed", top: "7.65em", left: "0", right: "0", bottom: "0"}}></div>
-            <Tabs type="card" activeKey={step} onChange={key => this.handleSave(key)}>
+            <Tabs type="card" activeKey={step} onChange={key => setTimeout(() => { this.handleSave(key) }, 100)}> 
               {tabs.map(({ key, title, entity, error, Content }) => (
                 <Tabs.TabPane key={key}
                   tab={

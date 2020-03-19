@@ -62,7 +62,7 @@ export default class extends Component {
             { name: "root[户口地址]", className: "h_24", span: 20, valid: "required",
               type: [{ type: "districtSelect", span: 16 }, { type: "input", span: 8, placeholder: "请输入详细地址" }]
             },
-            { name: 'time[来本市时间]', type: 'date', span: 4, 
+            { name: 'add_FIELD_coming_this_city[来本市时间]', type: 'date', span: 4, 
               filter: entity => entity.root && entity.root[0][1] !== '广州市'
             }
           ]

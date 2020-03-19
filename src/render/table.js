@@ -244,7 +244,7 @@ class TableItem extends Component {
       <span
         ref="tableItem"
         title={error}
-        onDoubleClick={this.onDbClick.bind(this)}
+        onClick={this.onDbClick.bind(this)}
         className={`table-item table-item-${type} ${(force && "table-force") ||
           (error && "table-error") ||
           ""}`}

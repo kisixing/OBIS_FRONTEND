@@ -8,23 +8,11 @@ import service from '../service';
 import * as util from './fuzhen/util';
 import * as common from '../utils/common';
 import store from "./store";
-import {
-  getUserDocAction,
-  isFormChangeAction,
-  getAlertAction,
-  closeAlertAction,
-  showTrialAction,
-  showTrialCardAction,
-  showPharAction,
-  showPharCardAction,
-  showReminderAction,
-  closeReminderAction,
-  getDiagnisisAction,
-  isMeetPharAction,
-  checkedKeysAction,
-  trailVisibleAction
-} from "./store/actionCreators.js";
-
+import { getUserDocAction, isFormChangeAction, getAlertAction, closeAlertAction, showTrialAction, showTrialCardAction,
+         showPharAction, showPharCardAction, showReminderAction, closeReminderAction, getDiagnisisAction, isMeetPharAction,
+         checkedKeysAction, trailVisibleAction, showSypAction,
+      } from "./store/actionCreators.js";
+import AppModal from './components/app-modal';
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
 import Fuzhen from "bundle-loader?lazy&name=fuzhen!./fuzhen";
 import Yingxiang from "bundle-loader?lazy&name=yingxiang!./yingxiang";
@@ -280,15 +268,21 @@ export default class App extends Component {
           const action2 = showReminderAction(false);
           store.dispatch(action2);
         }else if(index === 0 && isOpenMedicalAdvice) {
+          this.props.history.push('/sz');
           common.closeWindow();
         }
       })
     };
 
+    const goToOpen = () => {
+      this.props.history.push('/sz');
+      common.closeWindow();
+    }
+
     const footer = (index, item) => {
       return (
         <div>
-          {isOpenMedicalAdvice ? <Button onClick={() => common.closeWindow()}>取消, 开立医嘱</Button> : null}
+          {isOpenMedicalAdvice ? <Button onClick={() => goToOpen()}>取消, 开立医嘱</Button> : null}
           <Button onClick={() => handelClose(index)}>{isOpenMedicalAdvice ? '取消并返回' : '取消'}</Button>
           <Button type="primary" onClick={() => handelClose(index, item)}>确定</Button>
         </div>
@@ -313,17 +307,18 @@ export default class App extends Component {
    * 瘢痕子宫阴道试产表
    */
   handleCardClick = (name) => {
-    const action1 = showTrialAction(true);
-    const action2 = showPharAction(true);
+    const trialAction = showTrialAction(true);
+    const pharAction = showPharAction(true);
     switch(name) {
       case 'trial':
-        store.dispatch(action1);
+        store.dispatch(trialAction);
         break;
       case 'phar':
-        store.dispatch(action2);
+        store.dispatch(pharAction);
         break;
     }
   }
+
   renderTrialModal() {
     const { templateTree, isShowTrialModal, username, trialKeys } = this.state;
     let newTemplateTree = templateTree;
@@ -474,15 +469,15 @@ export default class App extends Component {
     )
   }
 
-
-  onClick(item) {
+  onRouterClick(item) {
     if (item.component) {
       this.props.history.push(item.path);
     }
   }
 
   renderHeader() {
-    const { userDoc, isShowTrialCard, isShowPharCard, isShowXTRouter, trialVisible, pharVisible1, pharVisible2, checkedKeys, pharKeys } =this.state;
+    const { userDoc, isShowTrialCard, isShowPharCard, isShowXTRouter, trialVisible, pharVisible1, pharVisible2, 
+            checkedKeys, pharKeys } =this.state;
     const handleDanger = () => {
       service.highrisk().then(res => {
         let list = res.object;
@@ -496,6 +491,10 @@ export default class App extends Component {
       service.getuserDoc().then(res => {
         this.setState({ ...res.object, highriskEntity: { ...res.object }})
       })
+      if (userDoc.infectious.indexOf('梅毒') !== -1) {
+        const action = showSypAction(true);
+        store.dispatch(action);
+      }
     }
     return (
       <div className="main-header">
@@ -510,18 +509,11 @@ export default class App extends Component {
           <div><strong>高危因素:</strong><strong className="high-risk">{userDoc.highriskFactor}</strong></div>
         </div>
         <p className="patient-Info_tab">
-          {routers.map((item, i) => (
-            item.name === '血糖记录' && !isShowXTRouter ? null
-            : <Button
-              key={"mune" + i}
-              type={this.state.muneIndex != i ? "dashed" : "primary"}
-              onClick={() => {
-                this.setState({ muneIndex: i });
-                this.onClick(item);
-              }}
-            >
-              {item.name}
-            </Button>
+          {routers.map((item, i) => ( item.name === '血糖记录' && !isShowXTRouter ? null
+            : <Button key={"mune" + i} type={this.state.muneIndex != i ? "dashed" : "primary"}
+                onClick={() => { this.setState({ muneIndex: i }); this.onRouterClick(item); }}>
+                {item.name}
+              </Button>
           ))}
         </p>
         <div className="patient-Info_btnList">
@@ -547,7 +539,13 @@ export default class App extends Component {
     
     const handleOk = () => {
       this.setState({ highriskShow: false });
-      service.savehighriskform(highriskEntity).then(() => {})
+      service.savehighriskform(highriskEntity).then(() => {
+        service.getuserDoc().then(res => {
+          this.setState({ highriskEntity: { ...res.object }})
+          const action = getUserDocAction(res.object);
+          store.dispatch(action);
+        })
+      })
     };
 
     const handleClear = () => {
@@ -616,9 +614,10 @@ export default class App extends Component {
                 </Col>
                 <Col span={2}>传染病：</Col>
                 <Col span={10}>
-                  <Select multiple value={ highriskEntity.infectious && highriskEntity.infectious.split(",")}
+                  <Select className="highrisk-infec" multiple
+                          value={!!highriskEntity.infectious ? highriskEntity.infectious.split(",") : []}
                           onChange={e => handleChange("infectious", e.join())}>
-                    {"<乙肝大三阳,乙肝小三阳,梅毒,HIV,结核病,重症感染性肺炎,特殊病毒感染（H1N7、寨卡等）,传染病：其他".split(",").map(i => (
+                    {"乙肝大三阳,乙肝小三阳,梅毒,HIV,结核病,重症感染性肺炎,特殊病毒感染（H1N7、寨卡等）,传染病：其他".split(",").map(i => (
                         <Select.Option key={i} value={i}>{i}</Select.Option>
                       ))}
                   </Select>
@@ -687,6 +686,7 @@ export default class App extends Component {
         {this.renderTrialModal()}
         {this.renderPharModal()}
         {this.renderReminder()}
+        <AppModal />
         <Prompt message={alertConfirm} when={isFormChange}/>
       </div>
     );

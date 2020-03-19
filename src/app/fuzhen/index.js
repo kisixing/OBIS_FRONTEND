@@ -13,15 +13,9 @@ import * as baseData from './data';
 import editors from '../shouzhen/editors';
 import * as util from './util';
 import store from '../store';
-import { getAlertAction,
-        showTrialAction, 
-        showPharAction,
-        checkedKeysAction,
-        isFormChangeAction,
-        openYCQAction,
-        getDiagnisisAction,
-        getUserDocAction
-  } from '../store/actionCreators.js';
+import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, isFormChangeAction, openYCQAction,
+         getDiagnisisAction, getUserDocAction, showSypAction,
+      } from '../store/actionCreators.js';
 
 import "../index.less";
 import "./index.less";
@@ -71,7 +65,6 @@ export default class Patient extends Component {
       fzEntity: { ...baseData.fzFormEntity },
       hasRecord: false,
       isTwins: false,
-      ycq: '',
       ycqEntity: {},
       isChangeYCQ: false,
       reportStr: '',
@@ -107,6 +100,10 @@ export default class Patient extends Component {
       if(item.data === '双胎妊娠' || item.data === '多胎妊娠') {
         this.setState({ isTwins: true })
       }
+      if (item.data.indexOf('梅毒') !== -1) {
+        const action = showSypAction(true);
+        store.dispatch(action);
+      }
     })
 
     Promise.all([
@@ -116,7 +113,7 @@ export default class Patient extends Component {
         for (let k in res.object) {
           if(res.object[k] === 'true') arr.push(k);
         }
-        this.setState({ scKeys: arr });
+        this.setState({ info: res.object, scKeys: arr });
         service.fuzhen.getRvisitPhysicalExam().then(res => {
           param.ckdiastolicpressure = res.object.diastolic;
           param.ckshrinkpressure = res.object.systolic;
@@ -180,6 +177,21 @@ export default class Patient extends Component {
           const action = showTrialAction(true);
           store.dispatch(action);
         }
+        if (diagnosi.indexOf("梅毒") !== -1) {
+          if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf("梅毒") === -1)) {
+            let arr = userDoc.infectious ? userDoc.infectious.split(',') : [];
+            arr.push('梅毒');
+            userDoc.infectious = arr.join();
+            service.savehighriskform(userDoc).then(res => {
+              service.getuserDoc().then(res => {
+                const action = getUserDocAction(res.object);
+                store.dispatch(action);
+              })
+            });
+          }
+          const action = showSypAction(true);
+          store.dispatch(action);
+        }
         if(diagnosi === '双胎妊娠' || diagnosi === '多胎妊娠') {
           this.setState({ isTwins: true })
         }
@@ -238,6 +250,7 @@ export default class Patient extends Component {
   }
 
   deldiagnosis(id, data) {
+    const { userDoc } = this.state;
     service.fuzhen.deldiagnosis(id).then(() => {
       modal('info', '删除诊断信息成功');
       service.fuzhen.getdiagnosis().then(res => {
@@ -246,16 +259,29 @@ export default class Patient extends Component {
         this.updateCheckedKeys(data);
 
         let bool = true;
+        let hasSyp = false;
         res.object.list && res.object.list.forEach(item => {
-          if(item.data === '双胎妊娠' || item.data === '多胎妊娠') {
-            bool = false;
-          }
+          if (item.data === '双胎妊娠' || item.data === '多胎妊娠') bool = false;
+          if (item.data.indexOf('梅毒') !== -1) hasSyp = true;
         })
-        if(bool) this.setState({ isTwins: false })
-      })
-      service.getuserDoc().then(res => {
-        const action = getUserDocAction(res.object);
-        store.dispatch(action);
+        if (bool) this.setState({ isTwins: false });
+
+        if (!hasSyp && userDoc.infectious && userDoc.infectious.indexOf('梅毒') !== -1) {
+          let arr = userDoc.infectious.split(',');
+          arr.splice(arr.indexOf('梅毒'), 1);
+          userDoc.infectious = arr.join();
+          service.savehighriskform(userDoc).then(res => {
+            service.getuserDoc().then(res => {
+              const action = getUserDocAction(res.object);
+              store.dispatch(action);
+            })
+          });
+        } else {
+          service.getuserDoc().then(res => {
+            const action = getUserDocAction(res.object);
+            store.dispatch(action);
+          })
+        }
       })
     })
   }
@@ -578,7 +604,6 @@ export default class Patient extends Component {
             //   <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
               this.renderZD()
             }
-
           </Panel>
           <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={e => handleBtnClick(e) }>其他</Button></span>} key="2">
             <p className="pad-small">{reportStr || '无'}</p>
@@ -586,11 +611,7 @@ export default class Patient extends Component {
           
           <Panel header="产前筛查和诊断" key="3">
               <Tree checkable checkedKeys={scKeys} onCheck={handleCheck}>
-                {scArr.map(item => 
-                  <Tree.TreeNode key={item.id} title={item.name}>
-
-                  </Tree.TreeNode>
-                )}
+                {scArr.map(item => <Tree.TreeNode key={item.id} title={item.name}></Tree.TreeNode>)}
               </Tree>
           </Panel>
 
@@ -601,8 +622,7 @@ export default class Patient extends Component {
                   <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
                   <p className="font-16">{item.event}</p>
                 </Timeline.Item>
-              ))
-                : <div>无</div>}
+              )) : <div>无</div>}
             </Timeline>
           </Panel>
         </Collapse>
@@ -613,7 +633,7 @@ export default class Patient extends Component {
   }
 
   renderTable() {
-    const { info, recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, 
+    const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, 
             hasRecord, isTwins, printData, userDoc, hasPrint } = this.state;
     const handleMoreBtn = () => {
       service.fuzhen.getRvisitPage(10, pageCurrent).then(res => this.setState({
@@ -628,9 +648,6 @@ export default class Patient extends Component {
     }
 
     const handleSaveChange = (e, {item, value, key}) => {
-      if(key === "checkdate") {
-        item.ckweek = util.getWeek(40, util.countWeek(info.gesexpect, item.checkdate));
-      }
       this.setState({initData: item});
       const action = isFormChangeAction(true);
       store.dispatch(action);
@@ -878,36 +895,16 @@ export default class Patient extends Component {
     return (
       <div className="fuzhen-table">
         {/* iseditable:({row})=>!!row, */}
-        {recentRvisit && initTable(recentRvisit, {
-          width: 1100,
-          size: "small",
-          pagination: false,
-          editable: true,
-          className: "fuzhenTable",
-          onEdit: true,
-          hasRecord: hasRecord,
-          isTwins: isTwins,
-          tableLayout: "fixed",
-          scroll: { x: 1100, y: 220 },
-          iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2,
-          onChange: handleSaveChange
+        {recentRvisit && initTable(recentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable",
+          onEdit: true, hasRecord: hasRecord, isTwins: isTwins, tableLayout: "fixed", scroll: { x: 1100, y: 220 },
+          iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onChange: handleSaveChange
         })}
         {/* {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null} */}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
-            {recentRvisitAll && allInitTable(recentRvisitAll, {
-              className: "fuzhenTable2",
-              scroll: { x: 1100 },
-              editable: true,
-              onRowChange: handelTableChange,
-              onRowClick: handleTableClick,
-              tableLayout: "fixed",
-              pagination: {
-                pageSize: 12,
-                total: totalRow + 2,
-                onChange: handlePageChange,
-                showQuickJumper: true
-              }
+            {recentRvisitAll && allInitTable(recentRvisitAll, { className: "fuzhenTable2", scroll: { x: 1100 }, editable: true,
+              onRowChange: handelTableChange, onRowClick: handleTableClick, tableLayout: "fixed",
+              pagination: { pageSize: 12, total: totalRow + 2, onChange: handlePageChange, showQuickJumper: true }
             })}
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => printFZ()}>打印</Button>
             <div className={hasPrint ? "print-table has-print" : "print-table"}>
@@ -927,7 +924,7 @@ export default class Patient extends Component {
    * 孕产期
    */
   renderYCQ(){
-    const { openYCQ, info, ycq, initData, recentRvisit, ycqEntity, isChangeYCQ } = this.state;
+    const { openYCQ, initData, recentRvisit, ycqEntity, isChangeYCQ } = this.state;
     const ycqConfig = () => {
       return {
         rows: [
@@ -940,7 +937,7 @@ export default class Patient extends Component {
           },
           {
             columns: [
-              { name: "gesexpect[预产期-超声]", type: "date", span: 18 },
+              { name: "gesexpectrv[预产期-超声]", className: "yu-ges", type: "date", span: 21 },
             ]
           },
         ]
@@ -948,7 +945,7 @@ export default class Patient extends Component {
     }
     const handleYCQChange = (e, { name, value, target }) => {
       let data = {[name]: value};
-      if(name === 'gesexpect') this.setState({ isChangeYCQ: true });
+      if(name === 'gesexpectrv') this.setState({ isChangeYCQ: true });
       this.setState({ ycqEntity: {...ycqEntity, ...data} });
     }
     const handelClick = (e, isOk) => {
@@ -956,8 +953,8 @@ export default class Patient extends Component {
       store.dispatch(action);
       if(isOk){
         if(isChangeYCQ) {
-          const tip = `B超时间：${ycqEntity.ckzdate}，停经${ycqEntity.ckztingj}周，如孕${ycqEntity.ckzweek}周，修订预产期为${ycqEntity.gesexpect}`;
-          initData.ckweek = util.getWeek(40, util.countWeek(ycqEntity.gesexpect, initData.checkdate))+'(修)';
+          const tip = `B超时间：${ycqEntity.ckzdate}，停经${ycqEntity.ckztingj}周，如孕${ycqEntity.ckzweek}周，修订预产期为${ycqEntity.gesexpectrv}`;
+          initData.ckweek = util.getWeek(40, util.countWeek(ycqEntity.gesexpectrv, initData.checkdate))+'(修)';
           initData.treatment += tip + '；';
 
           recentRvisit.pop();
@@ -975,8 +972,6 @@ export default class Patient extends Component {
     return (
       <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
              width={800} closable visible={openYCQ} onCancel={e => handelClick(e, false)} onOk={e => handelClick(e, true)}>
-        {/* <span>是否修改预产期-超声:</span>
-        <DatePicker defaultValue={info.gesexpect} value={ycq} onChange={(e,v)=>{this.setState({ycq:v})}}/> */}
         {formRender(ycqEntity, ycqConfig(), handleYCQChange)}
       </Modal>
     );
@@ -1087,22 +1082,14 @@ export default class Patient extends Component {
   }
 
   render() {
-    const { loading, diagList, relatedObj, info, initData, ycq, fzEntity } = this.state;
+    const { loading, diagList, relatedObj, initData, fzEntity } = this.state;
     return (
       <Page className="fuzhen font-16 ant-col">
         <div className="bgDOM"></div>
         <div className="fuzhen-right ant-col-19 pad-mid">
           {this.renderTable()}
-          <FuzhenForm
-            ycq={ycq}
-            info={info}
-            initData={initData}
-            diagList={diagList}
-            relatedObj={relatedObj}
-            onSave={data => this.saveForm(data)}
-            onChange={this.handleChange.bind(this)}
-            onChangeInfo={this.onChangeInfo.bind(this)}
-          />
+          <FuzhenForm initData={initData} diagList={diagList} relatedObj={relatedObj}
+            onSave={data => this.saveForm(data)} onChange={this.handleChange.bind(this)} onChangeInfo={this.onChangeInfo.bind(this)}/>
           <p className="pad_ie">
             &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>
           </p>
