@@ -12,12 +12,8 @@ import modal from '../../utils/modal';
 import {loadWidget} from '../../utils/common';
 import './form.less';
 import store from '../store';
-import { isFormChangeAction,
-        allReminderAction,
-        getUserDocAction,
-        openMedicalAction,
+import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAction,
       } from '../store/actionCreators.js';
-
 import RegForm from '../components/reg-form';
 import chartDemoData from './chart-demo';
 
@@ -373,14 +369,6 @@ export default class FuzhenForm extends Component {
             { name: 'ckappointmentWeek', type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
             { name: 'ckappointment', type:'date', valid: 'required', span: 3 },
             { name: 'ckappointmentArea', type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
-            // {
-            //   name: 'nextRvisit[下次复诊]', valid: 'required', span: 16, type: [
-            //     {type:'select', valid: 'required', showSearch:true, options: baseData.rvisitOsTypeOptions},
-            //     {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
-            //     {type: 'date', valid: 'required'},
-            //     {type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions},
-            //   ]
-            // }
           ]
         }
       ]
@@ -449,9 +437,6 @@ export default class FuzhenForm extends Component {
         case 'ckweek':
           this.state.openYCQ = ()=>{};
         break;
-        // case 'rvisitOsType':
-        //   value.label === '入院' ? this.setState({isShowRegForm: true}) : null;
-        //   break;
         case 'ckappointmentWeek':
           data.ckappointment = util.futureDate(value.value);
         break;

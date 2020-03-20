@@ -36,7 +36,76 @@ export default class RegForm extends Component {
             { name: 'notionality[梅毒结果：TPPA滴度]', className: 'long-label', type: 'input', span: 10 },
             { name: 'root[TRUST滴度]', type: 'input', span: 8 },
           ]
-        }
+        },
+        {
+          label: '第一疗程', span: 12, className: 'labelclass'
+        },
+        {
+          columns:[
+            { name: 'notionality[第一针]((孕周))', type: 'date', span: 6 },
+            { name: 'root[执行情况]', type: 'input', span: 6 },
+          ]
+        },
+        {
+          columns:[
+            { name: 'notionality[第二针]((孕周))', type: 'date', span: 6 },
+            { name: 'root[执行情况]', type: 'input', span: 6 },
+          ]
+        },
+        {
+          columns:[
+            { name: 'notionality[第三针]((孕周))', type: 'date', span: 6 },
+            { name: 'root[执行情况]', type: 'input', span: 6 },
+          ]
+        },
+        {
+          label: '第二疗程', span: 12, className: 'labelclass'
+        },
+        {
+          columns:[
+            { name: 'notionality[第一针]((孕周))', type: 'date', span: 6 },
+            { name: 'root[执行情况]', type: 'input', span: 6 },
+          ]
+        },
+        {
+          columns:[
+            { name: 'notionality[第二针]((孕周))', type: 'date', span: 6 },
+            { name: 'root[执行情况]', type: 'input', span: 6 },
+          ]
+        },
+        {
+          columns:[
+            { name: 'notionality[第三针]((孕周))', type: 'date', span: 6 },
+            { name: 'root[执行情况]', type: 'input', span: 6 },
+          ]
+        },
+        {
+          label: 'TRUST随访结果', span: 12, className: 'labelclass'
+        },
+        {
+          columns:[
+            { name: 'notionality[第一次]', type: 'date', span: 6 },
+            { name: 'root[TRUST滴度]', type: 'input', span: 6 },
+            { name: 'notionality[第四次]', type: 'date', span: 6 },
+            { name: 'root[TRUST滴度]', type: 'input', span: 6 },
+          ]
+        },
+        {
+          columns:[
+            { name: 'notionality[第二次]', type: 'date', span: 6 },
+            { name: 'root[TRUST滴度]', type: 'input', span: 6 },
+            { name: 'notionality[第五次]', type: 'date', span: 6 },
+            { name: 'root[TRUST滴度]', type: 'input', span: 6 },
+          ]
+        },
+        {
+          columns:[
+            { name: 'notionality[第三次]', type: 'date', span: 6 },
+            { name: 'root[TRUST滴度]', type: 'input', span: 6 },
+            { name: 'notionality[第六次]', type: 'date', span: 6 },
+            { name: 'root[TRUST滴度]', type: 'input', span: 6 },
+          ]
+        },
       ]
     }
   }
@@ -52,7 +121,7 @@ export default class RegForm extends Component {
       store.dispatch(action);
     }
 
-    const handleSypChange = (e, { name, value, valid }) => {
+    const handleSypChange = (e, { name, value, valid }) => {true
       console.log(e, { name, value, valid });
     }
 

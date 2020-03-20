@@ -2,25 +2,26 @@
 
 @page :pseudo-class {
   size: A4 landscape;
-  margin: 20px 0;
 }
 @media print {
-  .print-table {
-    color: red;
-    width: 100%;
+  .has-print .ant-table-tbody tr {
+    visibility: hidden;
   }
-  .print-table tr {
-    page-break-inside: always;
+  .has-print .ant-table-tbody tr td {
+    border: none;
   }
-  .has-print .ant-table-tbody tr:nth-of-type(-n+2) {
-    display: none;
+  .has-print .ant-table-tbody tr:last-of-type {
+    visibility: inherit;
+  }
+  .has-print .ant-table-tbody tr:last-of-type td {
+    border-right: 1px solid #e9e9e9;
   }
   .ant-table-tbody>tr>td {
     padding: 5px 1px;
     word-break: keep-all;
   }
-  .treatment {
-    width: 280px;
+  .print-table .treatment {
+    width: 2800px !important;
   }
   .isHide {
     display: none;
@@ -28,5 +29,8 @@
   .print-highrisk {
     font-size: 21px;
     text-align: right;
+  }
+  .has-print .print-highrisk {
+    visibility: hidden;
   }
 }

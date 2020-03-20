@@ -7,6 +7,7 @@ import FuzhenForm from './form';
 import FuzhenTable from './table';
 import Page from '../../render/page';
 import JianYan from './jianyanjiacha';
+import ChanHou from '../components/chan-hou';
 import service from '../../service';
 import * as common from '../../utils/common';
 import * as baseData from './data';
@@ -62,7 +63,6 @@ export default class Patient extends Component {
       collapseActiveKey: ['1', '2', '3', '4'],
       planData: [],
       initData: { ...baseData.formEntity },
-      fzEntity: { ...baseData.fzFormEntity },
       hasRecord: false,
       isTwins: false,
       ycqEntity: {},
@@ -482,7 +482,7 @@ export default class Patient extends Component {
   }
 
   renderLeft() {
-    const { loading, reportStr, planData, collapseActiveKey, jyEntity, info, scArr, scKeys } = this.state;
+    const { reportStr, planData, collapseActiveKey, jyEntity, info, scArr, scKeys } = this.state;
     /**
    * 检验报告结果
    */
@@ -546,14 +546,13 @@ export default class Patient extends Component {
      * 诊疗计划管理
      */
     const renderPlanModal = () => {
-      const { isShowPlanModal, planDataList, info } = this.state;
+      const { isShowPlanModal, info } = this.state;
       const handleClick = (item) => {
         this.setState({isShowPlanModal: false})
       }
       const changeRecentRvisit = () => {
         service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
       }
-      // const initTable = (data) => tableRender(baseData.planKey(), data, { pagination: false, buttons: null, editable: true, onRowChange: this.handelTableChange.bind(this)});
       return (
         <Modal width="80%" footer={null} title="诊疗计划" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
           <FuzhenTable info={info} onReturn={(param) => this.setState({isShowPlanModal: param})} changeRecentRvisit={changeRecentRvisit} />
@@ -561,7 +560,7 @@ export default class Patient extends Component {
       )
     }
 
-    const handleBtnClick = (e) => {
+    const handleOtherClick = e => {
       e.stopPropagation();
       service.fuzhen.getLisResult().then(res => {
         let data = service.praseJSON(res.object);
@@ -576,6 +575,10 @@ export default class Patient extends Component {
         this.setState({jyEntity: data})
       })
       this.setState({isShowResultModal: true})
+    }
+
+    const handleHisClick = e => {
+      e.stopPropagation();
     }
 
     const handleCheck = (keys) => {
@@ -598,14 +601,14 @@ export default class Patient extends Component {
     return (
       <div className="fuzhen-left ant-col-5">
         <Collapse defaultActiveKey={collapseActiveKey}>
-          <Panel header="诊 断" key="1">
+          <Panel header={<span>诊 断<Button type="ghost" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
             {
             // loading ?
             //   <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
               this.renderZD()
             }
           </Panel>
-          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={e => handleBtnClick(e) }>其他</Button></span>} key="2">
+          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={e => handleOtherClick(e) }>其他</Button></span>} key="2">
             <p className="pad-small">{reportStr || '无'}</p>
           </Panel>
           
@@ -678,24 +681,21 @@ export default class Patient extends Component {
       })
     }
 
-    const handleTableClick = (row, index) => {
-      let data = []; 
-      let initData = JSON.parse(JSON.stringify(recentRvisitAll));
-      initData.forEach((item, i) => {
-        if(index - 2 !== i) Object.keys(item).forEach(key => item[key] = '');
-        data.push(item);
-      })
-      this.setState({ printData: data });
-    }
-
     const handlePageChange = (page) => {
       service.fuzhen.getRvisitPage(10, page).then(res => {
         this.setState({recentRvisitAll: res.object.list})})
     }
 
-    const printFZ = () => {
-      $(".print-table").jqprint();
-      this.setState({ hasPrint: true });
+    const printFZ = (bool) => {
+      if (bool) {
+        this.setState({ hasPrint: false}, () => {
+          $(".print-table").jqprint();
+        })
+      } else {
+        this.setState({ hasPrint: true}, () => {
+          $(".print-table").jqprint();
+        })
+      }
     }
 
     let rvisitKeys = JSON.parse(JSON.stringify(baseData.tableKey()));
@@ -881,6 +881,7 @@ export default class Patient extends Component {
     rvisitKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
     rvisitAllKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
     printKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
+    printKeys.splice(printKeys.length - 1, 1);
 
     // const newKeys = baseData.tableKey();
     // newKeys.splice(9, 9);
@@ -894,7 +895,6 @@ export default class Patient extends Component {
     const printTable = (data, props) => tableRender(printKeys, data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
-        {/* iseditable:({row})=>!!row, */}
         {recentRvisit && initTable(recentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable",
           onEdit: true, hasRecord: hasRecord, isTwins: isTwins, tableLayout: "fixed", scroll: { x: 1100, y: 220 },
           iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onChange: handleSaveChange
@@ -903,10 +903,11 @@ export default class Patient extends Component {
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
             {recentRvisitAll && allInitTable(recentRvisitAll, { className: "fuzhenTable2", scroll: { x: 1100 }, editable: true,
-              onRowChange: handelTableChange, onRowClick: handleTableClick, tableLayout: "fixed",
+              onRowChange: handelTableChange, tableLayout: "fixed",
               pagination: { pageSize: 12, total: totalRow + 2, onChange: handlePageChange, showQuickJumper: true }
             })}
-            <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => printFZ()}>打印</Button>
+            <Button type="primary" className="bottom-savePDF-btn margin-R-1" size="small" onClick={() => printFZ()}>逐次打印</Button>
+            <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => printFZ(true)}>全部打印</Button>
             <div className={hasPrint ? "print-table has-print" : "print-table"}>
               <div className="print-highrisk">高危因素：{userDoc.highriskFactor}</div>
               {printData && printTable(printData, { className: "fuzhenTable2", pagination: false, scroll: { x: 1100 }, tableLayout: "fixed" })}
@@ -977,112 +978,8 @@ export default class Patient extends Component {
     );
   }
 
-  /**
-   * 产后复诊记录表单
-   */  
-  fzFormConfig() {
-    return {
-      rows: [
-        {
-          columns: [
-            { name: 'sfri[随访日期]', type: 'date', valid: 'required', span: 4 },
-            { name: 'fmri[分娩日期]', type: 'date', valid: 'required', span: 4  },
-            { name: 'fmyy[分娩医院]', type: 'input', valid: 'required', span: 4  },
-          ]
-        },
-        {
-          columns:[
-            { name: 'zs[主@@诉]', type: 'input', span: 8 }
-          ]
-        },
-        {
-          columns: [
-            { 
-              name: 'ckpressure(mmHg)[血@@压]', type: ['input(/)','input'], span: 4, valid: (value)=>{
-              let message = '';
-              if(value){
-                message = [0,1].map(i=>valid(`number|required|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
-              }else{
-                message = valid('required',value)
-              }
-              return message;
-            }},
-            { name: 'tz[体@@重](kg)', type: 'input', span: 4 },
-            { name: 'bmi[BMI]', type: 'input', span: 4  },
-          ]
-        },
-        {
-          columns:[
-            { name: 'jkzk[健康状况]', type: 'input', span: 8, showSearch: true, options: baseData.jkzkOptions },
-            { name: 'xlzk[心里状况]((EPDS: <span>12分<span>))', type: 'input', span: 8, valid: 'required', showSearch: true, options: baseData.xlzkOptions },
-          ]
-        },
-        {
-          columns:[
-            { name: 'xsewy[新生儿喂养]', type: 'checkinput', radio: true, span: 12, options: baseData.xsewyOptions }
-          ]
-        },
-        {
-          columns:[
-            { name: 'rf[乳@@房]', type: 'select', span: 4, showSearch: true, options: baseData.rfOptions },
-            { name: 'el[恶@@露]', type: 'select', span: 4, showSearch: true, options: baseData.elOptions },
-            { name: 'hy[会@@阴]', type: 'select', span: 4, showSearch: true, options: baseData.sfycOptions },
-            { name: 'yd[阴@@道]', type: 'select', span: 4, showSearch: true, options: baseData.sfycOptions },
-          ]
-        },
-        {
-          columns:[
-            { name: 'zg[子@@宫]', type: 'select', span: 4, showSearch: true, options: baseData.sfycOptions },
-            { name: 'fj[附@@件]', type: 'select', span: 4, showSearch: true, options: baseData.sfycOptions },
-            { name: 'pdpf[盆地评分]', type: 'input', span: 4 },
-            { name: 'pdhf[盆地恢复]', type: 'select', span: 4, showSearch: true, options: baseData.pdhfOptions },
-          ]
-        },
-        {
-          columns:[
-            { name: 'qt[其@@他]', type: 'input', span: 10 },
-          ]
-        },
-        {
-          columns:[
-            { name: 'gwzw[高危转归]', type: 'checkinput', radio: true, span: 12, options: baseData.gwzwOptions },
-          ]
-        },
-        {
-          columns:[
-            { name: 'zd[诊@@断]', type: 'select', span: 10, valid: 'required', showSearch: true, options: baseData.zdOptions }
-          ]
-        },
-        {
-          columns:[
-            { name: 'zhd[指@@导]', type: 'input', span: 10 }
-          ]
-        },
-        {
-          columns:[
-            { name: 'cl[处@@理]', type: 'input', span: 10 }
-          ]
-        },
-      ]
-    }
-  }
-
-  handleFZChange(e, { name, value, valid }) {
-    console.log(e, { name, value, valid })
-  }
-
-  handleFZSave(form) {
-    fireForm(form,'valid').then((valid)=>{
-      if(valid){
-        console.log(666)
-      }else {
-        message.error("必填项不能为空！")
-      }
-    });
-  }
-
   render() {
-    const { loading, diagList, relatedObj, initData, fzEntity } = this.state;
+    const { diagList, relatedObj, initData } = this.state;
     const { history } = this.props;
     return (
       <Page className="fuzhen font-16 ant-col">
@@ -1097,14 +994,7 @@ export default class Patient extends Component {
         </div>
         {this.renderLeft()}
         {this.renderYCQ()}
-        {/* <div className="chanhou-form">
-          <p className="chanhou-title">产后复诊记录</p>
-          {formRender(fzEntity, this.fzFormConfig(), this.handleFZChange.bind(this))}
-          <Button className="blue-btn chanhou-btn" type="ghost" 
-                  onClick={() => this.handleFZSave(document.querySelector(".chanhou-form"))}>
-            保存
-          </Button>
-        </div> */}
+        {/* <ChanHou /> */}
       </Page>
     );
   }

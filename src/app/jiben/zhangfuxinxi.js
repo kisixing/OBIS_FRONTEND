@@ -59,7 +59,7 @@ export default class extends Component {
               type: [{ type: "districtSelect", span: 16 }, { type: "input", span: 8, placeholder: "请输入详细地址" }]
             },
             { name: 'add_FIELD_h_coming_this_city[来本市时间]', type: 'date', span: 4, 
-              filter: entity => entity.root && entity.root[0][1] !== '广州市'
+              filter: entity => entity.h_root && entity.h_root[0][1] !== '广州市'
             }
           ]
         },

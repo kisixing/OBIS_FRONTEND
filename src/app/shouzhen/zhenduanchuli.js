@@ -569,12 +569,7 @@ export default class extends Component{
 
   handleChange(e, { name, value, target }){
     const { onChange } = this.props;
-    switch (name) {
-      // case 'xiacsftype':
-      //   value.label === '入院'  ? this.setState({isShowRegForm: true}) : null;
-      // break;
-    }
-    console.log(name, value, target, '123')
+    // console.log(name, value, target, '123')
     onChange(e, { name, value, target })
   }
 
