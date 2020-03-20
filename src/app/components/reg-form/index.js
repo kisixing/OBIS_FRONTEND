@@ -79,17 +79,20 @@ export default class RegForm extends Component {
           columns: [
             { name: 'dept[住院科室]', type: 'select', valid: 'required', span: 6, options: baseData.zyksOptions },
             { span: 1 },
-            { name: `dateHos[入院日期](${yunz})`, className: 'reg-date', type: 'date', valid: 'required', span: 6 },
+            { name: `dateHos[拟入院日期](${yunz})`, className: 'reg-date', type: 'date', valid: 'required', span: 6 },
           ]
         },
         {
           columns:[
-            { name: 'note[特殊备注]', type: 'textarea', span: 12, placeholder: "请输入备注" }
+            { name: 'note[特殊备注]', type: 'textarea', span: 12, placeholder: "请输入备注" },
+            { span: 1 },
+            { name: 'hospitalized[是否曾在我院住院]', className: 'long-label', type: 'checkinput-4', radio: true, span: 11, options: baseData.sfzyOptions }
           ]
         },
         {
           columns:[
-            { name: 'hospitalized[是否曾在我院住院]', className: 'long-label', type: 'checkinput-4', radio: true, span: 16, options: baseData.sfzyOptions }
+            { name: 'hospitalized[入院情况]', type: 'checkinput', radio: true, span: 6, options: baseData.ryqkOptions },
+            { name: 'hospitalized[病案类别]', type: 'checkinput', radio: true, span: 8, options: baseData.balxOptions },
           ]
         },
         {
@@ -102,7 +105,6 @@ export default class RegForm extends Component {
         {
           columns:[
             { name: 'birthAddrProvince[出生地]', span: 12, type: [{type: "cascader", options: addrOptions}] },
-            // { name: 'birthAddrProvince[出生地]', type: 'select', span: 4, options: baseData.csd1Options },
             // { name: 'birthAddrCity[]', type: 'select', span: 4, options: baseData.csd2Options },
             { name: 'marriage[婚姻]', type: 'checkinput', radio: true, span: 12, options: baseData.hyOptions }
           ]
@@ -212,7 +214,7 @@ export default class RegForm extends Component {
       <div className="reg-title">
         <span>入院登记表</span>
         <div className="reg-btns">
-          <Button className="pull-right blue-btn margin-R-2" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
+          <Button className="pull-right blue-btn margin-R-2" type="ghost" onClick={() => printForm()}>打印入院登记表和通知书</Button>
           <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={e => handleRegSave(e, document.querySelector('.reg-form'))}>保存</Button>
         </div>
       </div>

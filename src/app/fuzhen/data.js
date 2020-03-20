@@ -510,7 +510,7 @@ export const xlOptions = [
 	{ label: "头", value: "头" },
 	{ label: "臀", value: "臀" },
 	{ label: "肩", value: "肩" },
-	{ label: "/", value: "/" }
+	{ label: "-", value: "-" }
 ];
 
 /**

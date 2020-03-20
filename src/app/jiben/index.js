@@ -48,23 +48,23 @@ export default class Patient extends Component {
                 const userconstant = res.object.gravidaInfo.userconstant;
                 const userconstantd = res.object.gravidaInfo.userconstantd;
                 tab.entity["root"] = {
-                  0: userconstant.split(","),
-                  1: userconstantd
+                  0: userconstant ? userconstant.split(",") : [],
+                  1: userconstantd ? userconstantd : ''
                 };
                 const useraddress = res.object.gravidaInfo.useraddress;
                 const useraddressd = res.object.gravidaInfo.useraddressd;
                 tab.entity["address"] = {
-                  0: useraddress.split(","),
-                  1: useraddressd
+                  0: useraddress ? useraddress.split(",") : [],
+                  1: useraddressd ? useraddressd : ''
                 };
-            } else if (tab.key === 'tab-1') {
+            } else if (tab.key === 'tab-1') { 
+                tab.entity = service.praseJSON(res.object.husbandInfo);
                 const h_userconstant = res.object.husbandInfo.add_FIELD_h_userconstant;
                 const h_userconstantd = res.object.husbandInfo.add_FIELD_h_userconstantd;
-                // tab.entity["h_root"] = {
-                //   0: h_userconstant.split(","),
-                //   1: h_userconstantd
-                // };
-                tab.entity = service.praseJSON(res.object.husbandInfo);
+                tab.entity["h_root"] = {
+                  0: h_userconstant ? h_userconstant.split(",") : [],
+                  1: h_userconstantd ? h_userconstantd : ''
+                };
                 tab.entity['add_FIELD_husband_drink_data'] = { 0: tab.entity["add_FIELD_husband_drink_type"], 1: tab.entity['add_FIELD_husband_drink'] }
             }
             console.log(tab.key, tab.entity);

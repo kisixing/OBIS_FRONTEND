@@ -468,7 +468,7 @@ export default class FuzhenForm extends Component {
   }
 
   handleSave(form, act) {
-    const { onSave, initData } = this.props;
+    const { onSave, initData, history } = this.props;
     const { allFormData, isFormChange, diagList } = this.state;
     let newEntity = initData;
     let ckpressure = initData.ckpressure.split('/');
@@ -530,6 +530,7 @@ export default class FuzhenForm extends Component {
           const action = openMedicalAction(true);
           store.dispatch(action);
         } else {
+          history.push('/sz');
           common.closeWindow();
         }
       } else {
@@ -574,6 +575,7 @@ export default class FuzhenForm extends Component {
       } else if(!valid) {
         message.error('必填项不能为空！');
       } else if (!isFormChange && act) {
+        history.push('/sz');
         common.closeWindow();
       }
     });

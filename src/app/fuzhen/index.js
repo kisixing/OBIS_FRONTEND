@@ -115,8 +115,8 @@ export default class Patient extends Component {
         }
         this.setState({ info: res.object, scKeys: arr });
         service.fuzhen.getRvisitPhysicalExam().then(res => {
-          param.ckdiastolicpressure = res.object.diastolic;
-          param.ckshrinkpressure = res.object.systolic;
+          param.ckdiastolicpressure = res.object.diastolic ? res.object.diastolic : '';
+          param.ckshrinkpressure = res.object.systolic ? res.object.systolic : '';
           param.cktizh = res.object.weight;
           this.setState({ initData: {...initData, ...param} }, () => {
             service.fuzhen.getRecentRvisit().then(res => {
@@ -758,10 +758,10 @@ export default class Patient extends Component {
           item.allTetz = "";
           item.allTeafv = "";
           item.allTeqxl = "";
-          item.fetalUltrasound.map(subItem => {
-            if(subItem.tetz) item.allTetz += subItem.tetz + '；';
-            if(subItem.teafv) item.allTeafv += subItem.teafv + '；';
-            if(subItem.teqxl) item.allTeqxl += subItem.teqxl + '；';
+          item.fetalUltrasound.map((subItem, index) => {
+            if(subItem.tetz) item.allTetz += subItem.tetz + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
+            if(subItem.teafv) item.allTeafv += subItem.teafv + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
+            if(subItem.teqxl) item.allTeqxl += subItem.teqxl + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
           })
         }
 
@@ -1083,12 +1083,13 @@ export default class Patient extends Component {
 
   render() {
     const { loading, diagList, relatedObj, initData, fzEntity } = this.state;
+    const { history } = this.props;
     return (
       <Page className="fuzhen font-16 ant-col">
         <div className="bgDOM"></div>
         <div className="fuzhen-right ant-col-19 pad-mid">
           {this.renderTable()}
-          <FuzhenForm initData={initData} diagList={diagList} relatedObj={relatedObj}
+          <FuzhenForm initData={initData} diagList={diagList} relatedObj={relatedObj} history={ history }
             onSave={data => this.saveForm(data)} onChange={this.handleChange.bind(this)} onChangeInfo={this.onChangeInfo.bind(this)}/>
           <p className="pad_ie">
             &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>

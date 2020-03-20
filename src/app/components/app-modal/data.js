@@ -21,7 +21,7 @@ function toOptions(data, vfn =()=>({})){
 /**
  * 梅毒登记表单初始数据
  */
-export const regFormEntity = {
+export const sypFormEntity = {
   "address": "",
   "birthAddrCity": "",
   "birthAddrProvince": "",
@@ -55,5 +55,10 @@ export const regFormEntity = {
   "sex": "",
   "telephone": ""
 };
+
+/**
+ * 是否
+ */
+export const sfOptions = toOptions('是,否');
 
  

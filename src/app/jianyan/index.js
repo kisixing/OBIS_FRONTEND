@@ -49,7 +49,7 @@ export default class Patient extends Component {
                 {
                   item.data.map(subItem => (
                     <div className="left-item" onClick={() => {subItem.isAmy ? getDetail(subItem.amyId, true) : getDetail(subItem.sampleno)}}>    
-                      {subItem.state === "" ? <span className="left-state">新</span> : null}       
+                      {!subItem.state ? <span className="left-state">新</span> : null}       
                       <p className="left-title">{subItem.title}</p>
                       {/* <Button className={subItem.state==="2" ? "left-btn normal" : "left-btn"} size="small">
                         {subItem.state===null ? '待审阅' : (subItem.state==='1' ? '已看' : (subItem.state==='2' ? '正常' : '异常'))}
