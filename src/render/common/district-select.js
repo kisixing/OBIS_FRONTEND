@@ -13,18 +13,17 @@ import options, { getStreets } from '../../utils/cascader-address-options'
 export function districtSelect({ value = [], onChange, onBlur = () => {}, ...props }) {
   const handleChangePCA = e => {
     let newValue = [];
-    if (value && value.length) {
-      const pca = value.slice(0, 3);
-      const sv = value.slice(3);
-      newValue =[...e, ...sv];
-    }
+    const pca = value.slice(0, 3);
+    const sv = value.slice(3);
+    newValue =[...e, ...sv];
     onChange("", newValue, onBlur({ checkedChange: true }));
   };
 
   const handleChangeSV = e => {
+    let newValue = [];
     const pca = value.slice(0, 3);
     const sv = value.slice(3);
-    const newValue = [...pca, ...e];
+    newValue = [...pca, ...e];
     onChange("", newValue, onBlur({ checkedChange: true }));
   }
 

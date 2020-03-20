@@ -47,7 +47,7 @@ export default class extends Component {
             { name: "add_FIELD_husband_smoking(支/天)[抽烟]", type: "input", span: 5 },
             { name: entity => "add_FIELD_husband_drink_data[喝酒]" + (!entity.add_FIELD_husband_drink_data[0] || isMY(entity.add_FIELD_husband_drink_data[0]) ? "(ml/天)" : ""),
               className: "h_26", span: 6,
-              type: [{ type: "select", options: baseData.jiuOptions, multiple: true, defaultValue: [], span: 15 }, 
+              type: [{ type: "select", options: baseData.jiuOptions, multiple: true, defaultValue: [], span: 15 },
                      { type: "input", span: 8, filter: data => !data || isMY(data[0])}]
             },
             { name: "userhjib[现有何病]", type: "input", span: 12 }
@@ -58,7 +58,7 @@ export default class extends Component {
             { name: "userhconstant[户口地址]", className: "h_24", span: 20,
               type: [{ type: "districtSelect", span: 16 }, { type: "input", span: 8, placeholder: "请输入详细地址" }]
             },
-            { name: 'time[来本市时间]', type: 'date', span: 4, 
+            { name: 'time[来本市时间]', type: 'date', span: 4,
               filter: entity => entity.root && entity.root[0][1] !== '广州市'
             }
           ]
@@ -67,7 +67,12 @@ export default class extends Component {
     };
   }
 
-  render(){
+  // handleChange(e, { name, value, target }){
+  //   const { onChange } = this.props;
+  //   onChange(e, { name, value, target })
+  // }
+
+  render() {
     const { entity, onChange } = this.props;
     return (
       <div className="">
