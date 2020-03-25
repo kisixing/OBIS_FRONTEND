@@ -174,12 +174,12 @@ export function closeWindow() {
   } else if (navigator.userAgent.indexOf("Firefox") > 0) {//close firefox
     window.location.href = 'about:blank ';
   } else {//close chrome;It is effective when it is only one.
-    // window.opener = null;
-    // window.open('', '_self');
-    // window.close();
-
-    window.location.href = 'about:blank';
+    window.opener = null;
+    window.open('', '_self');
     window.close();
+
+    // window.location.href = 'about:blank';
+    // window.close();
   }
 }
 

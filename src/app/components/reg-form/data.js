@@ -53,7 +53,10 @@ export const regFormEntity = {
   "regtime": "",
   "root": "",
   "sex": "",
-  "telephone": ""
+  "telephone": "",
+  "hosStatus": "",
+  "mrType": "",
+  "bedno": "",
 };
 
 // 住院登记表

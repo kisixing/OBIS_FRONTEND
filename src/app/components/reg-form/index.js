@@ -91,8 +91,9 @@ export default class RegForm extends Component {
         },
         {
           columns:[
-            { name: 'hospitalized[入院情况]', type: 'checkinput', radio: true, span: 6, options: baseData.ryqkOptions },
-            { name: 'hospitalized[病案类别]', type: 'checkinput', radio: true, span: 8, options: baseData.balxOptions },
+            { name: 'bedno[床号]', type: 'input', span: 6 },
+            { name: 'hosStatus[入院情况]', type: 'checkinput', radio: true, span: 6, options: baseData.ryqkOptions },
+            { name: 'mrType[病案类别]', type: 'checkinput', radio: true, span: 12, options: baseData.balxOptions },
           ]
         },
         {
@@ -215,14 +216,14 @@ export default class RegForm extends Component {
         <span>入院登记表</span>
         <div className="reg-btns">
           <Button className="pull-right blue-btn margin-R-2" type="ghost" onClick={() => printForm()}>打印入院登记表和通知书</Button>
-          <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={e => handleRegSave(e, document.querySelector('.reg-form'))}>保存</Button>
+          <Button className="pull-right blue-btn margin-R-1" type="ghost" 
+                  onClick={e => setTimeout(() => { handleRegSave(e, document.querySelector('.reg-modal')) }, 100)}>保存</Button>
         </div>
       </div>
     ]
 
     return (
-      <Modal width="80%" title={title} footer={null} className="reg-form"
-        visible={isShowRegForm} onCancel={() => handleClick()}>
+      <Modal width="80%" title={title} footer={null} className="reg-modal" visible={isShowRegForm} onCancel={() => handleClick()}>
         {formRender(regFormEntity, this.regFormConfig(), handleRegChange)}
       </Modal>
     )
@@ -230,7 +231,7 @@ export default class RegForm extends Component {
 
   render() {
     return (
-      <div className="reg-form">
+      <div>
         {this.showRegForm()}
       </div>
     )

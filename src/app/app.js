@@ -20,6 +20,7 @@ import Jianyan from "bundle-loader?lazy&name=jianyan!./jianyan";
 import Yunqi from "bundle-loader?lazy&name=yunqi!./yunqi";
 import Xuetang from "bundle-loader?lazy&name=xuetang!./xuetang";
 import Jiben from "bundle-loader?lazy&name=jiben!./jiben";
+import Chanhou from "bundle-loader?lazy&name=chanhou!./chanhou";
 import "./app.less";
 
 const ButtonGroup = Button.Group;
@@ -27,6 +28,7 @@ const ButtonGroup = Button.Group;
 const routers = [
   { name: "首检信息", path: "/sz", component: bundle(Shouzhen) },
   { name: "复诊记录", path: "/fz", component: bundle(Fuzhen) },
+  // { name: "产后复诊记录", path: "/ch", component: bundle(Chanhou) },
   { name: "孕期曲线", path: "/yq", component: bundle(Yunqi) },
   { name: "血糖记录", path: "/xt", component: bundle(Xuetang) },
   { name: "影像报告", path: "/yx", component: bundle(Yingxiang) },
@@ -329,6 +331,8 @@ export default class App extends Component {
         service.shouzhen.saveTemplateTreeUser(2, newTemplateTree).then(res => {
           const action = showTrialCardAction(true);
           store.dispatch(action);
+          const action2 = trailVisibleAction(true);
+          store.dispatch(action2);
         })
       }
     }

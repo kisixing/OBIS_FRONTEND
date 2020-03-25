@@ -319,12 +319,12 @@ export const tableKey = () => [
 		key: 'heartRate',
 	},
 	{
-		title: '用药方案',
-		key: 'allMedicationPlan',
-	},
-	{
 		title: '化验',
 		key: 'examination',
+	},
+	{
+		title: '用药方案',
+		key: 'allMedicationPlan',
 	},
 	{
 		title: '处理措施',

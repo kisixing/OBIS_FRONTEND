@@ -434,11 +434,11 @@ export default class FuzhenForm extends Component {
         data.ckweek = util.countWeek(value);
         errorData.ckweek = null;
         break;
-        case 'ckweek':
-          this.state.openYCQ = ()=>{};
+      case 'ckweek':
+        this.state.openYCQ = ()=>{};
         break;
-        case 'ckappointmentWeek':
-          data.ckappointment = util.futureDate(value.value);
+      case 'ckappointmentWeek':
+        data.ckappointment = util.futureDate(value.value);
         break;
     }
     onChange(e, data);
@@ -456,6 +456,7 @@ export default class FuzhenForm extends Component {
     const { onSave, initData, history } = this.props;
     const { allFormData, isFormChange, diagList } = this.state;
     let newEntity = initData;
+    console.log(initData, '35')
     let ckpressure = initData.ckpressure.split('/');
     const getReminder = () => {
       const lis = service.praseJSON(allFormData.lis);
@@ -523,16 +524,6 @@ export default class FuzhenForm extends Component {
         store.dispatch(action);
       }
     }
-
-    newEntity.checkdate = initData.checkdate;
-    newEntity.ckweek = initData.ckweek;
-    newEntity.cktizh = initData.cktizh;
-    newEntity.ckzijzhz = initData.ckzijzhz;
-
-    newEntity.ckgongg = initData.ckgongg;
-    newEntity.cktaix = initData.cktaix;
-    newEntity.ckxianl = initData.ckxianl;
-    newEntity.ckfuzh = initData.ckfuzh;
     // //血压
     if(ckpressure[0]) newEntity.ckshrinkpressure = ckpressure[0];
     if(ckpressure[1]) newEntity.ckdiastolicpressure = ckpressure[1];

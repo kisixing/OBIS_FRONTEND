@@ -7,7 +7,7 @@ import FuzhenForm from './form';
 import FuzhenTable from './table';
 import Page from '../../render/page';
 import JianYan from './jianyanjiacha';
-import ChanHou from '../components/chan-hou';
+import PrintTable from './print-table';
 import service from '../../service';
 import * as common from '../../utils/common';
 import * as baseData from './data';
@@ -305,10 +305,6 @@ export default class Patient extends Component {
     this.setState({ loading: true });
     const action = isFormChangeAction(false);
     store.dispatch(action);
-    if(!isTwins) {
-      entity.cktaix = entity.allTaix;
-      entity.ckxianl = entity.allXianl;
-    }
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then(() => {
         modal('success', '诊断信息保存成功');
@@ -645,12 +641,13 @@ export default class Patient extends Component {
       })).then(() => {
         this.setState({ recentRvisitShow: true })
       });
-      service.fuzhen.getRvisitPage(100, pageCurrent).then(res => {
-        this.setState({ printData: res.object.list});
-      })
     }
 
-    const handleSaveChange = (e, {item, value, key}) => {
+    const handleSaveChange = (type, item) => {
+      if (!isTwins) {
+        item.cktaix = item.allTaix;
+        item.ckxianl = item.allXianl;
+      }
       this.setState({initData: item});
       const action = isFormChangeAction(true);
       store.dispatch(action);
@@ -687,15 +684,18 @@ export default class Patient extends Component {
     }
 
     const printFZ = (bool) => {
-      if (bool) {
-        this.setState({ hasPrint: false}, () => {
-          $(".print-table").jqprint();
-        })
-      } else {
-        this.setState({ hasPrint: true}, () => {
-          $(".print-table").jqprint();
-        })
-      }
+      service.fuzhen.getRvisitPage(100, pageCurrent).then(res => {
+        this.setState({ printData: res.object.list});
+        if (bool) {
+          this.setState({ hasPrint: false}, () => {
+            $(".fz-print").jqprint();
+          })
+        } else {
+          this.setState({ hasPrint: true}, () => {
+            $(".fz-print").jqprint();
+          })
+        }
+      })
     }
 
     let rvisitKeys = JSON.parse(JSON.stringify(baseData.tableKey()));
@@ -881,23 +881,22 @@ export default class Patient extends Component {
     rvisitKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
     rvisitAllKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
     printKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
-    printKeys.splice(printKeys.length - 1, 1);
+    // printKeys.splice(printKeys.length - 1, 1);
 
     // const newKeys = baseData.tableKey();
     // newKeys.splice(9, 9);
 
-    // console.log(rvisitKeys, '432')
+    // console.log(printKeys, '432')
     printData && printData.forEach(item  => {
       if(item.ckpressure === "/") item.ckpressure = '';
     })
     const initTable = (data, props) => tableRender(rvisitKeys, data, { buttons: null, ...props });
     const allInitTable = (data, props) => tableRender(rvisitAllKeys, data, { buttons: null, ...props });
-    const printTable = (data, props) => tableRender(printKeys, data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
         {recentRvisit && initTable(recentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable",
           onEdit: true, hasRecord: hasRecord, isTwins: isTwins, tableLayout: "fixed", scroll: { x: 1100, y: 220 },
-          iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onChange: handleSaveChange
+          iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onRowChange: handleSaveChange
         })}
         {/* {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null} */}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
@@ -908,9 +907,8 @@ export default class Patient extends Component {
             })}
             <Button type="primary" className="bottom-savePDF-btn margin-R-1" size="small" onClick={() => printFZ()}>逐次打印</Button>
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => printFZ(true)}>全部打印</Button>
-            <div className={hasPrint ? "print-table has-print" : "print-table"}>
-              <div className="print-highrisk">高危因素：{userDoc.highriskFactor}</div>
-              {printData && printTable(printData, { className: "fuzhenTable2", pagination: false, scroll: { x: 1100 }, tableLayout: "fixed" })}
+            <div className={hasPrint ? "fz-print has-print" : "fz-print"}>
+              {printData && <PrintTable printKeys={printKeys} printData={printData} highriskFactor={userDoc.highriskFactor}></PrintTable>}
             </div>
           </div>
         </Modal>
@@ -994,7 +992,6 @@ export default class Patient extends Component {
         </div>
         {this.renderLeft()}
         {this.renderYCQ()}
-        {/* <ChanHou /> */}
       </Page>
     );
   }
