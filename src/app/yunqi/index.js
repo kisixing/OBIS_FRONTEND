@@ -543,9 +543,18 @@ export default class Patient extends Component {
     }
   }
 
+  printCanvas(id) {
+    const canvas = document.getElementById(id);
+    const image = new Image();
+    image.src = canvas.toDataURL("image/png");
+    $(image).jqprint();
+  }
+
   render() {
     return (
       <Page className="yunqi font-16 ant-col">
+        <Button type="ghost" className="btn-tz" onClick={() => this.printCanvas('bmiCanvas')}>打印体重曲线</Button>
+        <Button type="ghost" className="btn-sz" onClick={() => this.printCanvas('fetusCanvas')}>打印生长曲线</Button>
         {/* <canvas id="canvas" className='canvas'>
           您的浏览器不支持canvas，请更换浏览器.
         </canvas> */}

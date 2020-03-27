@@ -173,18 +173,6 @@ export const tableKey = () => [
 		options: ckzijzhzOptions
 	},
 	{
-		title: '胎心率',
-		key: 'allTaix',
-		children:[
-			{
-				title: '(bpm)',
-				key: 'allTaix',
-				width: 30,
-				type: 'input'
-			},
-		]
-	},
-	{
 		title: '宫高',
 		key: 'ckgongg',
 		children:[
@@ -194,6 +182,18 @@ export const tableKey = () => [
 				width: 50,
 				type: 'input',
 				valid: 'number'
+			},
+		]
+	},
+	{
+		title: '胎心率',
+		key: 'allTaix',
+		children:[
+			{
+				title: '(bpm)',
+				key: 'allTaix',
+				width: 30,
+				type: 'input'
 			},
 		]
 	},
@@ -414,6 +414,31 @@ export const newPlanKey = () => [
 		key: 'event',
 		type: 'input'
 	}
+];
+
+/**
+ * 历史诊断表头
+ */
+export const listHisKey = () => [
+	{
+		title: '诊断',
+		key: 'data',
+	},
+	{
+		title: '诊断医生',
+		key: 'doctor',
+		width: 30,
+	},
+	{
+		title: '诊断孕周',
+		key: 'event',
+		width: 20,
+	},
+	{
+		title: '诊断日期',
+		key: 'gesweek',
+		width: 50,
+	},
 ];
 
 /**

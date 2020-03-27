@@ -126,7 +126,7 @@ export default class RegForm extends Component {
     }
 
     return (
-      <Modal title="梅毒管理页面" visible={isShowSypModal} width="60%" className="syp-modal"
+      <Modal title="梅毒管理" visible={isShowSypModal} width="60%" className="syp-modal"
             onCancel={() => closeModal()} onOk={() => closeModal(true)}>
         {formRender(sypFormEntity, this.sypFormConfig(), handleSypChange)}
       </Modal>

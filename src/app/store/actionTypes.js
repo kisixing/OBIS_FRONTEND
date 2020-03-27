@@ -27,3 +27,8 @@ export const TRIAL_VISIBLE = 'trial_visible';
 export const IS_SAVE = 'is_save';
 
 export const SHOW_SYP_MODAL = 'show_syp_modal';
+
+export const GET_SZ_LIST = 'get_sz_list';
+export const GET_FZ_LIST = 'get_fz_list';
+export const GET_RELATEDID = 'get_relatedid';
+export const GET_WHICH = 'get_which';

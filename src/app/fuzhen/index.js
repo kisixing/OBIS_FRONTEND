@@ -12,10 +12,10 @@ import service from '../../service';
 import * as common from '../../utils/common';
 import * as baseData from './data';
 import editors from '../shouzhen/editors';
-import * as util from './util';
+import * as util from './util'; 
 import store from '../store';
 import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, isFormChangeAction, openYCQAction,
-         getDiagnisisAction, getUserDocAction, showSypAction,
+         getDiagnisisAction, getUserDocAction, showSypAction, fzListAction, getIdAction, getWhichAction
       } from '../store/actionCreators.js';
 
 import "../index.less";
@@ -79,6 +79,8 @@ export default class Patient extends Component {
       scKeys: [],
       printData: null,
       hasPrint: false,
+      listHistory: null,
+      isShowHis: false,
       ...store.getState(),
     };
     store.subscribe(this.handleStoreChange);
@@ -90,9 +92,9 @@ export default class Patient extends Component {
   };
 
   componentDidMount() {
-    const { diagList, userDoc, trialVisible, initData } = this.state;
+    const { fzList, userDoc, trialVisible, initData } = this.state;
 
-    diagList && diagList.forEach(item => {
+    fzList && fzList.forEach(item => {
       if((item.data === '瘢痕子宫' || item.data === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32 && !trialVisible) {
         const action = showTrialAction(true);
         store.dispatch(action);
@@ -169,67 +171,152 @@ export default class Patient extends Component {
   }
 
   adddiagnosis() {
-    const { diagList, diagnosi, userDoc } = this.state;
-    if (diagnosi && !diagList.filter(i => i.data === diagnosi).length) {
-      service.fuzhen.adddiagnosis(diagnosi).then(() => {
-        modal('success', '添加诊断信息成功');
-        if ((diagnosi==='瘢痕子宫' || diagnosi==='疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
-          const action = showTrialAction(true);
-          store.dispatch(action);
+    const { fzList, diagnosi, userDoc } = this.state;
+    if (diagnosi && !fzList.filter(i => i.data === diagnosi).length) {
+
+      fzList.push({ 'data': diagnosi, 'highriskmark': ''});
+      const action = fzListAction(fzList);
+      store.dispatch(action);
+      modal('success', '添加诊断信息成功');
+
+      if ((diagnosi === '瘢痕子宫' || diagnosi === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
+        const action = showTrialAction(true);
+        store.dispatch(action);
+      }
+      if (diagnosi.indexOf("梅毒") !== -1) {
+        if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf("梅毒") === -1)) {
+          let arr = userDoc.infectious ? userDoc.infectious.split(',') : [];
+          arr.push('梅毒');
+          userDoc.infectious = arr.join();
+          service.savehighriskform(userDoc).then(res => {
+            service.getuserDoc().then(res => {
+              const action = getUserDocAction(res.object);
+              store.dispatch(action);
+            })
+          });
         }
-        if (diagnosi.indexOf("梅毒") !== -1) {
-          if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf("梅毒") === -1)) {
-            let arr = userDoc.infectious ? userDoc.infectious.split(',') : [];
-            arr.push('梅毒');
-            userDoc.infectious = arr.join();
-            service.savehighriskform(userDoc).then(res => {
-              service.getuserDoc().then(res => {
-                const action = getUserDocAction(res.object);
-                store.dispatch(action);
-              })
-            });
-          }
-          const action = showSypAction(true);
-          store.dispatch(action);
+        const action = showSypAction(true);
+        store.dispatch(action);
+      }
+      if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
+        this.updateCheckedKeys();
+        const action = showPharAction(true);
+        store.dispatch(action);
+      }
+      service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
+        let data = res.object;
+        if(data.length > 0) {
+          data.map(item => ( item.visible = true ))
         }
-        if(diagnosi === '双胎妊娠' || diagnosi === '多胎妊娠') {
-          this.setState({ isTwins: true })
-        }
-        service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
-          let data = res.object;
-          if(data.length > 0) {
-            data.map(item => ( item.visible = true ))
-          }
-          const action = getAlertAction(data);
-          store.dispatch(action);
-        })
-        service.fuzhen.getdiagnosis().then(res => {
-          const action = getDiagnisisAction(res.object.list);
-          store.dispatch(action);
-          this.setState({
-            diagnosi: ''
-        }, () => {
-          if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
-            this.updateCheckedKeys();
-            const action = showPharAction(true);
-            store.dispatch(action);
-          }
-        })});
-        service.getuserDoc().then(res => {
-          const action = getUserDocAction(res.object);
-          store.dispatch(action);
-        })
+        const action = getAlertAction(data);
+        store.dispatch(action);
       })
+      this.setState({ diagnosi: '' });
+
+      // service.fuzhen.adddiagnosis(diagnosi).then(() => {
+      //   modal('success', '添加诊断信息成功');
+      //   if ((diagnosi==='瘢痕子宫' || diagnosi==='疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
+      //     const action = showTrialAction(true);
+      //     store.dispatch(action);
+      //   }
+      //   if (diagnosi.indexOf("梅毒") !== -1) {
+      //     if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf("梅毒") === -1)) {
+      //       let arr = userDoc.infectious ? userDoc.infectious.split(',') : [];
+      //       arr.push('梅毒');
+      //       userDoc.infectious = arr.join();
+      //       service.savehighriskform(userDoc).then(res => {
+      //         service.getuserDoc().then(res => {
+      //           const action = getUserDocAction(res.object);
+      //           store.dispatch(action);
+      //         })
+      //       });
+      //     }
+      //     const action = showSypAction(true);
+      //     store.dispatch(action);
+      //   }
+      //   if(diagnosi === '双胎妊娠' || diagnosi === '多胎妊娠') {
+      //     this.setState({ isTwins: true })
+      //   }
+      //   service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
+      //     let data = res.object;
+      //     if(data.length > 0) {
+      //       data.map(item => ( item.visible = true ))
+      //     }
+      //     const action = getAlertAction(data);
+      //     store.dispatch(action);
+      //   })
+      //   service.fuzhen.getdiagnosis().then(res => {
+      //     const action = getDiagnisisAction(res.object.list);
+      //     store.dispatch(action);
+      //     this.setState({
+      //       diagnosi: ''
+      //   }, () => {
+      //     if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
+      //       this.updateCheckedKeys();
+      //       const action = showPharAction(true);
+      //       store.dispatch(action);
+      //     }
+      //   })});
+      //   service.getuserDoc().then(res => {
+      //     const action = getUserDocAction(res.object);
+      //     store.dispatch(action);
+      //   })
+      // })
+
+
     } else if (diagnosi) {
       modal('warning', '添加数据重复');
     }
   }
 
+  deldiagnosis(id, data) {
+    const { userDoc, fzList } = this.state;
+    const newList = fzList.filter(i => i.data !== data);
+    const action = fzListAction(newList);
+    store.dispatch(action);
+    modal('info', '删除诊断信息成功');
+
+    // service.fuzhen.deldiagnosis(id).then(() => {
+    //   modal('info', '删除诊断信息成功');
+    //   service.fuzhen.getdiagnosis().then(res => {
+    //     const action = getDiagnisisAction(res.object.list);
+    //     store.dispatch(action);
+    //     this.updateCheckedKeys(data);
+
+    //     let bool = true;
+    //     let hasSyp = false;
+    //     res.object.list && res.object.list.forEach(item => {
+    //       if (item.data === '双胎妊娠' || item.data === '多胎妊娠') bool = false;
+    //       if (item.data.indexOf('梅毒') !== -1) hasSyp = true;
+    //     })
+    //     if (bool) this.setState({ isTwins: false });
+
+    //     if (!hasSyp && userDoc.infectious && userDoc.infectious.indexOf('梅毒') !== -1) {
+    //       let arr = userDoc.infectious.split(',');
+    //       arr.splice(arr.indexOf('梅毒'), 1);
+    //       userDoc.infectious = arr.join();
+    //       service.savehighriskform(userDoc).then(res => {
+    //         service.getuserDoc().then(res => {
+    //           const action = getUserDocAction(res.object);
+    //           store.dispatch(action);
+    //         })
+    //       });
+    //     } else {
+    //       service.getuserDoc().then(res => {
+    //         const action = getUserDocAction(res.object);
+    //         store.dispatch(action);
+    //       })
+    //     }
+    //   })
+    // })
+
+  }
+
   updateCheckedKeys(data) {
-    const { checkedKeys, diagList } = this.state;
+    const { checkedKeys, fzList } = this.state;
     let newCheckedKeys = checkedKeys;
 
-    diagList.map(item => {
+    fzList.map(item => {
       if(item.data.indexOf("静脉曲张") !== -1 && !newCheckedKeys.includes('11')) newCheckedKeys.push('11');
       if(item.data === "妊娠子痫前期" && !newCheckedKeys.includes('10')) newCheckedKeys.push("10");
       if(item.data === "多胎妊娠" && !newCheckedKeys.includes('14')) newCheckedKeys.push("14");
@@ -249,43 +336,6 @@ export default class Patient extends Component {
     store.dispatch(action);
   }
 
-  deldiagnosis(id, data) {
-    const { userDoc } = this.state;
-    service.fuzhen.deldiagnosis(id).then(() => {
-      modal('info', '删除诊断信息成功');
-      service.fuzhen.getdiagnosis().then(res => {
-        const action = getDiagnisisAction(res.object.list);
-        store.dispatch(action);
-        this.updateCheckedKeys(data);
-
-        let bool = true;
-        let hasSyp = false;
-        res.object.list && res.object.list.forEach(item => {
-          if (item.data === '双胎妊娠' || item.data === '多胎妊娠') bool = false;
-          if (item.data.indexOf('梅毒') !== -1) hasSyp = true;
-        })
-        if (bool) this.setState({ isTwins: false });
-
-        if (!hasSyp && userDoc.infectious && userDoc.infectious.indexOf('梅毒') !== -1) {
-          let arr = userDoc.infectious.split(',');
-          arr.splice(arr.indexOf('梅毒'), 1);
-          userDoc.infectious = arr.join();
-          service.savehighriskform(userDoc).then(res => {
-            service.getuserDoc().then(res => {
-              const action = getUserDocAction(res.object);
-              store.dispatch(action);
-            })
-          });
-        } else {
-          service.getuserDoc().then(res => {
-            const action = getUserDocAction(res.object);
-            store.dispatch(action);
-          })
-        }
-      })
-    })
-  }
-
   onChangeInfo(info) {
     this.setState({ info: info }, () => service.fuzhen.fireWatch(info));
   }
@@ -300,29 +350,11 @@ export default class Patient extends Component {
     this.setState({initData: newInitData, recentRvisit: newRecentRvisit})
   }
 
-  saveForm(entity) {
-    const { isTwins } = this.state;
-    this.setState({ loading: true });
-    const action = isFormChangeAction(false);
-    store.dispatch(action);
-    return new Promise(resolve => {
-      service.fuzhen.saveRvisitForm(entity).then(() => {
-        modal('success', '诊断信息保存成功');
-        service.fuzhen.getRecentRvisit().then(res => {
-          let newInitData = service.praseJSON(res.object[res.object.length - 1]);
-          console.log(newInitData, '543')
-          this.setState({loading: false, recentRvisit: res.object, initData: newInitData})
-        });
-        resolve();
-      }, () => this.setState({ loading: false }));
-    })
-  }
-
   /**
    * 诊断列表
    */
   renderZD() {
-    const { diagnosi, diagList, diagnosislist, isShowZhenduan, isMouseIn, relatedObj } = this.state;
+    const { diagnosi, fzList, diagnosislist, isShowZhenduan, isMouseIn, relatedObj } = this.state;
     // const delConfirm = (item) => {
     //   Modal.confirm({
     //     title: '您是否确认要删除这项诊断',
@@ -335,22 +367,31 @@ export default class Patient extends Component {
     // 诊断小弹窗操作
     const content = (item, i) => {
       const handleHighriskmark = () => {
-        let highriskmark = item.highriskmark == 1 ? 0 : 1;
-        service.fuzhen.updateHighriskmark(item.id, highriskmark).then(() => {
-          service.fuzhen.getdiagnosis().then(res => {
-            const action = getDiagnisisAction(res.object.list);
-            store.dispatch(action);
-          })
-        })
+        item.highriskmark = item.highriskmark === 1 ? 0 : 1;
+        const action = fzListAction(fzList);
+        store.dispatch(action);
+
+        // let highriskmark = item.highriskmark == 1 ? 0 : 1;
+        // service.fuzhen.updateHighriskmark(item.id, highriskmark).then(() => {
+        //   service.fuzhen.getdiagnosis().then(res => {
+        //     const action = getDiagnisisAction(res.object.list);
+        //     store.dispatch(action);
+        //   })
+        // })
+
       }
 
       const handleVisibleChange = fx => () => {
-        service.fuzhen.updateSort(item.id, fx).then(() => {
-          service.fuzhen.getdiagnosis().then(res => {
-            const action = getDiagnisisAction(res.object.list);
-            store.dispatch(action);
-          })
-        })
+        fzList[i] = fzList[i + fx];
+        fzList[i + fx] = item;
+        const action = fzListAction(fzList);
+        store.dispatch(action);
+        // service.fuzhen.updateSort(item.id, fx).then(() => {
+        //   service.fuzhen.getdiagnosis().then(res => {
+        //     const action = getDiagnisisAction(res.object.list);
+        //     store.dispatch(action);
+        //   })
+        // })
       }
 
       const handleRelated = (subItem, data) => () => {
@@ -370,18 +411,18 @@ export default class Patient extends Component {
         });
       }
 
-      let relatedformtype = item.relatedformtype.split(",");
+      let relatedformtype = item.relatedformtype && item.relatedformtype.split(",");
       return (
         <div>
           <p className="pad-small"><a className="font-16" onClick={handleHighriskmark}>{item.highriskmark == 1 ? '高危诊断 √' : '高危诊断'}</a></p>
-          {item.relatedformtype!=="" ?
+          {item.relatedformtype && item.relatedformtype!=="" ?
             <div><p>关联表单</p>
               {relatedformtype.map(subItem => <p className="pad-small"><a className="font-16" onClick={handleRelated(subItem, item.data)}>
               {relatedObj[item.data]&&relatedObj[item.data].includes(subItem) ? `${subItem} √` : subItem} </a></p>)}
             </div>
           : null}
-          {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>上 移</a></p> : null}
-          {i + 1 < diagList.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('up')}>下 移</a></p> : null}
+          {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange(-1)}>上 移</a></p> : null}
+          {i + 1 < fzList.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange(1)}>下 移</a></p> : null}
         </div>
       );
     }
@@ -431,8 +472,8 @@ export default class Patient extends Component {
     return (
       <div className="fuzhen-left-zd">
         <ol>
-          {diagList&&diagList.map((item, i) => (
-            <li key={`diagnos-${item.id}-${Date.now()}`}>
+          {fzList&&fzList.map((item, i) => (
+            <li key={`diagnos-${item.data}-${i}-${Date.now()}`}>
               <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                 <div title={title(item)}>
                   <span className="font-12">{i + 1}、</span>
@@ -446,7 +487,7 @@ export default class Patient extends Component {
         <div className="fuzhen-left-input font-16">
           <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
                  onFocus={() => this.setState({isShowZhenduan: true})}
-                 onBlur={() => setTimeout(() => this.setState({isShowZhenduan: false}), 200)}
+                 onBlur={() => setTimeout(() => this.setState({isShowZhenduan: true}), 200)}
                  />
           { isShowZhenduan || isMouseIn ?
             <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}>
@@ -543,15 +584,31 @@ export default class Patient extends Component {
      */
     const renderPlanModal = () => {
       const { isShowPlanModal, info } = this.state;
-      const handleClick = (item) => {
+      const handleClick = () => {
         this.setState({isShowPlanModal: false})
       }
       const changeRecentRvisit = () => {
         service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
       }
       return (
-        <Modal width="80%" footer={null} title="诊疗计划" visible={isShowPlanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+        <Modal width="80%" footer={null} title="诊疗计划" visible={isShowPlanModal} onCancel={() => handleClick(false)}>
           <FuzhenTable info={info} onReturn={(param) => this.setState({isShowPlanModal: param})} changeRecentRvisit={changeRecentRvisit} />
+        </Modal>
+      )
+    }
+
+      /**
+     * 诊断历史记录
+     */
+    const renderHisnModal = () => {
+      const { isShowHis, listHistory } = this.state;
+      const handleClick = () => {
+        this.setState({isShowHis: false})
+      }
+      const initTable = data => tableRender(baseData.listHisKey(), data, { pagination: false, buttons: null });
+      return (
+        <Modal width="80%" footer={null} title="诊断历史" visible={isShowHis} onCancel={() => handleClick()}>
+          {initTable(listHistory)}
         </Modal>
       )
     }
@@ -575,6 +632,12 @@ export default class Patient extends Component {
 
     const handleHisClick = e => {
       e.stopPropagation();
+      service.fuzhen.getHistory().then(res => {
+        this.setState({ 
+          isShowHis: true,
+          listHistory: res.object
+        })
+      })
     }
 
     const handleCheck = (keys) => {
@@ -608,7 +671,7 @@ export default class Patient extends Component {
             <p className="pad-small">{reportStr || '无'}</p>
           </Panel>
           
-          <Panel header="产前筛查和诊断" key="3">
+          <Panel className="cq-check" header="产前筛查和诊断" key="3">
               <Tree checkable checkedKeys={scKeys} onCheck={handleCheck}>
                 {scArr.map(item => <Tree.TreeNode key={item.id} title={item.name}></Tree.TreeNode>)}
               </Tree>
@@ -627,6 +690,7 @@ export default class Patient extends Component {
         </Collapse>
         {renderResultModal()}
         {renderPlanModal()}
+        {renderHisnModal()}
       </div>
     );
   }
@@ -976,15 +1040,44 @@ export default class Patient extends Component {
     );
   }
 
+  saveForm(entity) {
+    const { fzList } = this.state;
+    this.setState({ loading: true });
+    const action = isFormChangeAction(false);
+    store.dispatch(action);
+    return new Promise(resolve => {
+      service.fuzhen.saveRvisitForm(entity).then((res) => {
+        modal('success', '诊断信息保存成功');
+        const idAction = getIdAction(res.object);
+        store.dispatch(idAction);
+        const whichAction = getWhichAction('fz');
+        store.dispatch(whichAction);
+        // 保存诊断数据
+        service.shouzhen.batchAdd(2, res.object, fzList).then(res => {
+          service.getuserDoc().then(res => {
+            const action = getUserDocAction(res.object);
+            store.dispatch(action);
+          })
+        })
+        service.fuzhen.getRecentRvisit().then(res => {
+          let newInitData = service.praseJSON(res.object[res.object.length - 1]);
+          console.log(newInitData, '543')
+          this.setState({loading: false, recentRvisit: res.object, initData: newInitData})
+        });
+        resolve();
+      }, () => this.setState({ loading: false }));
+    })
+  }
+
   render() {
-    const { diagList, relatedObj, initData } = this.state;
+    const { fzList, relatedObj, initData } = this.state;
     const { history } = this.props;
     return (
       <Page className="fuzhen font-16 ant-col">
         <div className="bgDOM"></div>
         <div className="fuzhen-right ant-col-19 pad-mid">
           {this.renderTable()}
-          <FuzhenForm initData={initData} diagList={diagList} relatedObj={relatedObj} history={ history }
+          <FuzhenForm initData={initData} diagList={fzList} relatedObj={relatedObj} history={ history }
             onSave={data => this.saveForm(data)} onChange={this.handleChange.bind(this)} onChangeInfo={this.onChangeInfo.bind(this)}/>
           <p className="pad_ie">
             &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>

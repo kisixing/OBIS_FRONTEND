@@ -454,16 +454,15 @@ export default class FuzhenForm extends Component {
 
   handleSave(form, act) {
     const { onSave, initData, history } = this.props;
-    const { allFormData, isFormChange, diagList } = this.state;
+    const { allFormData, isFormChange, fzList } = this.state;
     let newEntity = initData;
-    console.log(initData, '35')
     let ckpressure = initData.ckpressure.split('/');
     const getReminder = () => {
       const lis = service.praseJSON(allFormData.lis);
       let allReminderModal = [];
       const getAllReminder = (modalObj) => {
           let bool = true;
-          diagList && diagList.map(item => {
+          fzList && fzList.map(item => {
               if(item.data === modalObj.diagnosis) bool = false;
           })
           if(bool) allReminderModal.push(modalObj);
@@ -538,7 +537,7 @@ export default class FuzhenForm extends Component {
     if(!!newEntity.riSl && newEntity.riSl[1]) newEntity.riSlDosage = newEntity.riSl[1];
 
     fireForm(form,'valid').then((valid)=>{
-      if(valid && isFormChange){
+      if(valid){
         console.log(newEntity, '可以保存')
         onSave(newEntity).then(() =>{
           this.setState({ error: {} }, () => {

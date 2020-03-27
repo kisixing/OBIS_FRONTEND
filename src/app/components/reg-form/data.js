@@ -63,7 +63,7 @@ export const regFormEntity = {
 /**
  * 住院科室
  */
-export const zyksOptions = toOptions('孕妇区,产区,爱婴区,产科VIP');
+export const zyksOptions = toOptions('孕妇区,产房,爱婴区,产科VIP');
 /**
  * 是否在我院住院
  */

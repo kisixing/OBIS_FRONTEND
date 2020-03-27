@@ -10,7 +10,7 @@ import * as common from '../utils/common';
 import store from "./store";
 import { getUserDocAction, isFormChangeAction, getAlertAction, closeAlertAction, showTrialAction, showTrialCardAction,
          showPharAction, showPharCardAction, showReminderAction, closeReminderAction, getDiagnisisAction, isMeetPharAction,
-         checkedKeysAction, trailVisibleAction, showSypAction,
+         checkedKeysAction, trailVisibleAction, showSypAction, szListAction, fzListAction,
       } from "./store/actionCreators.js";
 import AppModal from './components/app-modal';
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
@@ -118,15 +118,35 @@ export default class App extends Component {
         this.setState({templateTree2: res.object.data, pharVisible2: res.object.vislble, pharKeys: keys})
       });
 
-      service.fuzhen.getdiagnosis().then(res => {
-        res.object.list && res.object.list.map(item => {
+      service.shouzhen.getList(1).then(res => {
+        res.object && res.object.map(item => {
           if(item.data === '妊娠期糖尿病') {
             this.setState({isShowXTRouter: true})
           }
         })
-        const action = getDiagnisisAction(res.object.list);
+        const action = szListAction(res.object);
         store.dispatch(action);
-      });
+      })
+
+      service.shouzhen.getList(2).then(res => {
+        res.object && res.object.map(item => {
+          if(item.data === '妊娠期糖尿病') {
+            this.setState({isShowXTRouter: true})
+          }
+        })
+        const action = fzListAction(res.object);
+        store.dispatch(action);
+      })
+
+      // service.fuzhen.getdiagnosis().then(res => {
+      //   res.object.list && res.object.list.map(item => {
+      //     if(item.data === '妊娠期糖尿病') {
+      //       this.setState({isShowXTRouter: true})
+      //     }
+      //   })
+      //   const action = getDiagnisisAction(res.object.list);
+      //   store.dispatch(action);
+      // });
 
     })
   }
@@ -243,13 +263,22 @@ export default class App extends Component {
    * 诊断提醒窗口
    */
   renderReminder() {
-    const { allReminderModal, isOpenMedicalAdvice } = this.state;
+    const { allReminderModal, isOpenMedicalAdvice, relatedid, whichPage, szList, fzList } = this.state;
  
     const handelClose = (index, item) => {
       const action = closeReminderAction(index);
       store.dispatch(action);
 
-      item && service.fuzhen.adddiagnosis(item.diagnosis).then(() => {
+      if (item && whichPage === 'sz') {
+        szList.push({ 'data': item.diagnosis, 'highriskmark': ''});
+        const action = szListAction(szList);
+        store.dispatch(action);
+        service.shouzhen.batchAdd(1, relatedid, szList).then(res => {
+          service.getuserDoc().then(res => {
+            const action = getUserDocAction(res.object);
+            store.dispatch(action);
+          })
+        })
         service.fuzhen.checkHighriskAlert(item.diagnosis).then(res => {
           let data = res.object;
           if(data.length > 0) {
@@ -258,22 +287,60 @@ export default class App extends Component {
           const action = getAlertAction(data);
           store.dispatch(action);
         })
-        service.fuzhen.getdiagnosis().then(res => {
-          const action = getDiagnisisAction(res.object.list);
-          store.dispatch(action);
-        });
-        service.getuserDoc().then(res => {
-          const action = getUserDocAction(res.object);
+      } else if (item && whichPage === 'fz') {
+        fzList.push({ 'data': item.diagnosis, 'highriskmark': ''});
+        const action = fzListAction(fzList);
+        store.dispatch(action);
+        service.shouzhen.batchAdd(2, relatedid, fzList).then(res => {
+          service.getuserDoc().then(res => {
+            const action = getUserDocAction(res.object);
+            store.dispatch(action);
+          })
+        })
+        service.fuzhen.checkHighriskAlert(item.diagnosis).then(res => {
+          let data = res.object;
+          if(data.length > 0) {
+            data.map(item => ( item.visible = true ))
+          }
+          const action = getAlertAction(data);
           store.dispatch(action);
         })
-        if (index === 0) {
-          const action2 = showReminderAction(false);
-          store.dispatch(action2);
-        }else if(index === 0 && isOpenMedicalAdvice) {
-          this.props.history.push('/sz');
-          common.closeWindow();
-        }
-      })
+      }
+
+      if (index === 0) {
+        const action2 = showReminderAction(false);
+        store.dispatch(action2);
+      }else if(index === 0 && isOpenMedicalAdvice) {
+        this.props.history.push('/sz');
+        common.closeWindow();
+      }
+
+      // item && service.fuzhen.adddiagnosis(item.diagnosis).then(() => {
+      //   service.fuzhen.checkHighriskAlert(item.diagnosis).then(res => {
+      //     let data = res.object;
+      //     if(data.length > 0) {
+      //       data.map(item => ( item.visible = true ))
+      //     }
+      //     const action = getAlertAction(data);
+      //     store.dispatch(action);
+      //   })
+      //   service.fuzhen.getdiagnosis().then(res => {
+      //     const action = getDiagnisisAction(res.object.list);
+      //     store.dispatch(action);
+      //   });
+      //   service.getuserDoc().then(res => {
+      //     const action = getUserDocAction(res.object);
+      //     store.dispatch(action);
+      //   })
+      //   if (index === 0) {
+      //     const action2 = showReminderAction(false);
+      //     store.dispatch(action2);
+      //   }else if(index === 0 && isOpenMedicalAdvice) {
+      //     this.props.history.push('/sz');
+      //     common.closeWindow();
+      //   }
+      // })
+
     };
 
     const goToOpen = () => {

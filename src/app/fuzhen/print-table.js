@@ -66,15 +66,15 @@ export default class extends Component{
                   !!item.allMedicationPlan ?
                   <tr style={index === printData.length - 1 ? {visibility: "inherit"} : null}>
                     <td>用药方案</td>
-                    <td colSpan={keysArr.length-1}>{item.allMedicationPlan}</td>
+                    <td colSpan={keysArr.length-1} style={{textAlign: "left"}}>{item.allMedicationPlan}</td>
                   </tr>
                   : null
                 }
                 {
                   !!item.treatment ?
                   <tr style={index === printData.length - 1 ? {visibility: "inherit"} : null}>
-                    <td>处理措施</td>
-                    <td colSpan={keysArr.length-1}>{item.treatment}</td>
+                    <td>处理</td>
+                    <td colSpan={keysArr.length-1} style={{textAlign: "left"}}>{item.treatment}</td>
                   </tr>
                   : null
                 }
