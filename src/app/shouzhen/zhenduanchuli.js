@@ -8,12 +8,8 @@ import * as baseData0 from './../shouzhen/data';
 import * as baseData from './../fuzhen/data';
 import * as util from '../fuzhen/util';
 import store from '../store';
-import { getAlertAction, 
-        showTrialAction, 
-        showPharAction, 
-        checkedKeysAction, 
-        getDiagnisisAction,
-        getUserDocAction
+import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, getDiagnisisAction, getUserDocAction,
+         showSypAction, szListAction,
       } from '../store/actionCreators.js';
 import RegForm from '../components/reg-form';
 import './index.less';
@@ -70,13 +66,13 @@ export default class extends Component{
   };
 
   componentDidMount(){
-    const { isMeetPhar, diagList, userDoc, trialVisible } = this.state;
+    const { isMeetPhar, szList, userDoc, trialVisible } = this.state;
     if(isMeetPhar) {
       const action = showPharAction(true);
       store.dispatch(action);
     }
 
-    diagList && diagList.forEach(item => {
+    szList && szList.forEach(item => {
       if((item.data === '瘢痕子宫' || item.data === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32 && !trialVisible) {
         const action = showTrialAction(true);
         store.dispatch(action);
@@ -107,7 +103,7 @@ export default class extends Component{
           columns: [
             { name: 'yunc[1、G]', type: 'input', span: 4 },
             { name: 'chanc[P]', type: 'input', span: 4 },
-            { name: 'tuserweek[妊娠](周)', type: 'input', span: 4 },
+            { name: 'ADD_FIELD_tuserweek[妊娠](周)', type: 'input', span: 4 },
           ]
         },
       ]
@@ -140,49 +136,146 @@ export default class extends Component{
   }
 
   adddiagnosis() {
-    const { diagList, diagnosi, userDoc } = this.state;
-    if (diagnosi && !diagList.filter(i => i.data === diagnosi).length) {
-      service.fuzhen.adddiagnosis(diagnosi).then(() => {
-        modal('success', '添加诊断信息成功');
-        if ((diagnosi === '瘢痕子宫' || diagnosi === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
-          const action = showTrialAction(true);
-          store.dispatch(action);
+    const { szList, diagnosi, userDoc } = this.state;
+    if (diagnosi && !szList.filter(i => i.data === diagnosi).length) {
+      szList.push({ 'data': diagnosi, 'highriskmark': ''});
+      const action = szListAction(szList);
+      store.dispatch(action);
+      modal('success', '添加诊断信息成功');
+
+      if ((diagnosi === '瘢痕子宫' || diagnosi === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
+        const action = showTrialAction(true);
+        store.dispatch(action);
+      }
+      if (diagnosi.indexOf("梅毒") !== -1) {
+        if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf("梅毒") === -1)) {
+          let arr = userDoc.infectious ? userDoc.infectious.split(',') : [];
+          arr.push('梅毒');
+          userDoc.infectious = arr.join();
+          service.savehighriskform(userDoc).then(res => {
+            service.getuserDoc().then(res => {
+              const action = getUserDocAction(res.object);
+              store.dispatch(action);
+            })
+          });
         }
-        service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
-          let data = res.object;
-          if(data.length > 0) {
-            data.map(item => ( item.visible = true ))
-          }
-          const action = getAlertAction(data);
-          store.dispatch(action);
-        })
-        service.fuzhen.getdiagnosis().then(res => {
-          const action = getDiagnisisAction(res.object.list);
-          store.dispatch(action);
-          this.setState({
-            diagnosi: ''
-        }, () => {
-          if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
-            this.updateCheckedKeys();
-            const action = showPharAction(true);
-            store.dispatch(action);
-          }
-        })});
-        service.getuserDoc().then(res => {
-          const action = getUserDocAction(res.object);
-          store.dispatch(action);
-        })
+        const action = showSypAction(true);
+        store.dispatch(action);
+      }
+      if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
+        this.updateCheckedKeys();
+        const action = showPharAction(true);
+        store.dispatch(action);
+      }
+      service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
+        let data = res.object;
+        if(data.length > 0) {
+          data.map(item => ( item.visible = true ))
+        }
+        const action = getAlertAction(data);
+        store.dispatch(action);
       })
+      this.setState({ diagnosi: '' });
+
+      // service.fuzhen.adddiagnosis(diagnosi).then(() => {
+      //   modal('success', '添加诊断信息成功');
+      //   if ((diagnosi === '瘢痕子宫' || diagnosi === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
+      //     const action = showTrialAction(true);
+      //     store.dispatch(action);
+      //   }
+      //   if (diagnosi.indexOf("梅毒") !== -1) {
+      //     if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf("梅毒") === -1)) {
+      //       let arr = userDoc.infectious ? userDoc.infectious.split(',') : [];
+      //       arr.push('梅毒');
+      //       userDoc.infectious = arr.join();
+      //       service.savehighriskform(userDoc).then(res => {
+      //         service.getuserDoc().then(res => {
+      //           const action = getUserDocAction(res.object);
+      //           store.dispatch(action);
+      //         })
+      //       });
+      //     }
+      //     const action = showSypAction(true);
+      //     store.dispatch(action);
+      //   }
+      //   service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
+      //     let data = res.object;
+      //     if(data.length > 0) {
+      //       data.map(item => ( item.visible = true ))
+      //     }
+      //     const action = getAlertAction(data);
+      //     store.dispatch(action);
+      //   })
+      //   service.fuzhen.getdiagnosis().then(res => {
+      //     const action = getDiagnisisAction(res.object.list);
+      //     store.dispatch(action);
+      //     this.setState({
+      //       diagnosi: ''
+      //   }, () => {
+      //     if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
+      //       this.updateCheckedKeys();
+      //       const action = showPharAction(true);
+      //       store.dispatch(action);
+      //     }
+      //   })});
+      //   service.getuserDoc().then(res => {
+      //     const action = getUserDocAction(res.object);
+      //     store.dispatch(action);
+      //   })
+      // })
+
+
     } else if (diagnosi) {
       modal('warning', '添加数据重复');
     }
   }
 
+  deldiagnosis(id, data) {
+    const { userDoc, szList } = this.state;
+    const newList = szList.filter(i => i.data !== data);
+    const action = szListAction(newList);
+    store.dispatch(action);
+    modal('info', '删除诊断信息成功');
+
+
+    // service.fuzhen.deldiagnosis(id).then(() => {
+    //   modal('info', '删除诊断信息成功');
+    //   service.fuzhen.getdiagnosis().then(res => {
+    //     const action = getDiagnisisAction(res.object.list);
+    //     store.dispatch(action);
+    //     this.updateCheckedKeys(data);
+
+    //     let hasSyp = false;
+    //     res.object.list && res.object.list.forEach(item => {
+    //       if (item.data.indexOf('梅毒') !== -1) hasSyp = true;
+    //     })
+
+    //     if (!hasSyp && userDoc.infectious && userDoc.infectious.indexOf('梅毒') !== -1) {
+    //       let arr = userDoc.infectious.split(',');
+    //       arr.splice(arr.indexOf('梅毒'), 1);
+    //       userDoc.infectious = arr.join();
+    //       service.savehighriskform(userDoc).then(res => {
+    //         service.getuserDoc().then(res => {
+    //           const action = getUserDocAction(res.object);
+    //           store.dispatch(action);
+    //         })
+    //       });
+    //     } else {
+    //       service.getuserDoc().then(res => {
+    //         const action = getUserDocAction(res.object);
+    //         store.dispatch(action);
+    //       })
+    //     }
+    //   })
+    // })
+
+  }
+
   updateCheckedKeys(data) {
-    const { checkedKeys, diagList } = this.state;
+    const { checkedKeys, szList } = this.state;
     let newCheckedKeys = checkedKeys;
 
-    diagList.map(item => {
+    szList.map(item => {
       if(item.data.indexOf("静脉曲张") !== -1 && !newCheckedKeys.includes('11')) newCheckedKeys.push('11');
       if(item.data === "妊娠子痫前期" && !newCheckedKeys.includes('10')) newCheckedKeys.push("10");
       if(item.data === "多胎妊娠" && !newCheckedKeys.includes('14')) newCheckedKeys.push("14");
@@ -200,21 +293,6 @@ export default class extends Component{
 
     const action = checkedKeysAction(newCheckedKeys);
     store.dispatch(action);
-  }
-
-  deldiagnosis(id, data) {
-    service.fuzhen.deldiagnosis(id).then(() => {
-      modal('info', '删除诊断信息成功');
-      service.fuzhen.getdiagnosis().then(res => {
-        const action = getDiagnisisAction(res.object.list);
-        store.dispatch(action);
-        this.updateCheckedKeys(data);
-      })
-      service.getuserDoc().then(res => {
-        const action = getUserDocAction(res.object);
-        store.dispatch(action);
-      })
-    })
   }
 
   addTreatment(e, value){
@@ -248,7 +326,7 @@ export default class extends Component{
 
   renderZD(){
     const { info = {} } = this.props;
-    const { diagnosi, diagList, diagnosislist, isMouseIn, isShowZhenduan, chanc, yunc } = this.state;
+    const { diagnosi, szList, diagnosislist, isMouseIn, isShowZhenduan, } = this.state;
     // const delConfirm = (item) => {
     //   Modal.confirm({
     //     title: '您是否确认要删除这项诊断',
@@ -261,28 +339,37 @@ export default class extends Component{
     // 诊断小弹窗操作
     const content = (item, i) => {
       const handleHighriskmark = () => {
-        let highriskmark = item.highriskmark == 1 ? 0 : 1;
-        service.fuzhen.updateHighriskmark(item.id, highriskmark).then(() => {
-          service.fuzhen.getdiagnosis().then(res => {
-            const action = getDiagnisisAction(res.object.list);
-            store.dispatch(action);
-          })
-        })
+        item.highriskmark = item.highriskmark === 1 ? 0 : 1;
+        const action = szListAction(szList);
+        store.dispatch(action);
+
+        // let highriskmark = item.highriskmark == 1 ? 0 : 1;
+        // service.fuzhen.updateHighriskmark(item.id, highriskmark).then(() => {
+        //   service.fuzhen.getdiagnosis().then(res => {
+        //     const action = getDiagnisisAction(res.object.list);
+        //     store.dispatch(action);
+        //   })
+        // })
+
       }
 
       const handleVisibleChange = fx => () => {
-        service.fuzhen.updateSort(item.id, fx).then(() => {
-          service.fuzhen.getdiagnosis().then(res => {
-            const action = getDiagnisisAction(res.object.list);
-            store.dispatch(action);
-          })
-        })
+        szList[i] = szList[i + fx];
+        szList[i + fx] = item;
+        const action = szListAction(szList);
+        store.dispatch(action);
+        // service.fuzhen.updateSort(item.id, fx).then(() => {
+        //   service.fuzhen.getdiagnosis().then(res => {
+        //     const action = getDiagnisisAction(res.object.list);
+        //     store.dispatch(action);
+        //   })
+        // })
       }
       return (
         <div>
           <p className="pad-small"><a className="font-16" onClick={handleHighriskmark}>{item.highriskmark == 1 ? '高危诊断 √' : '高危诊断'}</a></p>
-          {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('down')}>上 移</a></p> : null}
-          {i + 1 < diagList.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange('up')}>下 移</a></p> : null}
+          {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange(-1)}>上 移</a></p> : null}
+          {i + 1 < szList.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange(1)}>下 移</a></p> : null}
         </div>
       );
     }
@@ -334,8 +421,8 @@ export default class extends Component{
               {info.doctor}
             </Col>
           </Row> */}
-          {diagList&&diagList.map((item, i) => (
-            <Row key={`diagnos-${item.id}-${Date.now()}`}>
+          {szList && szList.map((item, i) => (
+            <Row key={`diagnos-${item.data}-${Date.now()}`}>
               <Col span={8}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                   <div title={item.data}>
@@ -430,17 +517,22 @@ export default class extends Component{
     const panelChange = (date, dateString) => {
       this.setState({menzhenData: dateString})
     }
+    const timeSelect = v => {
+      this.setState({
+        menzhenData: util.getOrderTime(v)
+      })
+    }
 
     return (
       <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
               visible={openMenzhen} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
         <span>糖尿病门诊预约</span>
-        <Select defaultValue={"本周五"} style={{ width: 120 }}>
+        <Select onSelect={(value) => timeSelect(value)} defaultValue={"本周五"} style={{ width: 120 }}>
           <Select.Option value={"本周五"}>本周五</Select.Option>
           <Select.Option value={"下周五"}>下周五</Select.Option>
           <Select.Option value={"下下周五"}>下下周五</Select.Option>
         </Select>
-        <DatePicker defaultValue={menzhenData} onChange={(date, dateString) => panelChange(date, dateString)}/>
+        <DatePicker value={menzhenData} onChange={(date, dateString) => panelChange(date, dateString)}/>
       </Modal>
     );
   }
@@ -539,12 +631,7 @@ export default class extends Component{
 
   handleChange(e, { name, value, target }){
     const { onChange } = this.props;
-    switch (name) {
-      // case 'xiacsftype':
-      //   value.label === '入院'  ? this.setState({isShowRegForm: true}) : null;
-      // break;
-    }
-    console.log(name, value, target, '123')
+    // console.log(name, value, target, '123')
     onChange(e, { name, value, target })
   }
 

@@ -376,8 +376,8 @@ export const pregnanciesColumns = [
 			{
 				title: '清宫',
 				key: 'removalUterus',
-				type: 'input',
-				// holdeditor: true
+				type: 'checkbox',
+				holdeditor: true
 			},
 			{
 				title: '人工',

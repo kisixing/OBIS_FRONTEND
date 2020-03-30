@@ -248,4 +248,11 @@ export default {
     saveGesweekForm: function(params){
         return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/saveGesweekForm`, {userid: r.object.userid, ...params}));
     },
+
+    /**
+     * 查询诊断历史
+     */
+    getHistory: function(){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/diagnosis/getHistory?userid=${r.object.userid}`));
+    },
 }

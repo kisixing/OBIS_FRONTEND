@@ -145,6 +145,8 @@
   }
   .ant-tree li {
     font-size: 14px;
+  }
+  .cq-check .ant-tree li {
     float: left;
   }
   .ant-collapse .ant-collapse-header {
@@ -226,27 +228,40 @@
     width: 380px;
   }
 }
-.print-table {
+.fz-print{
   display: none;
+}
+.print-highrisk {
+  font-size: 21px;
+  text-align: right;
+  padding: 0;
+  margin: 0;
+}
+.has-print .print-highrisk {
+  visibility: hidden;
+}
+
+.print-table {
+  table-layout: fixed;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+}
+.print-table tr td {
+  border: 1px solid #ccc;
+  word-break: keep-all;
+  font-size: 7px;
+}
+.isHide {
+  display: none;
+}
+.has-print .print-table tbody tr {
+  visibility: hidden;
 }
 
 .delBModal {
   .ant-btn {
     font-size: 1rem;
-  }
-}
-
-.chanhou-form {
-  .chanhou-title {
-    font-size: 24px;
-  }
-  .chanhou-btn {
-    position: fixed;
-    bottom: 50px;
-    right: 100px;
-  }
-  .form-item .form-label {
-    vertical-align: top;
   }
 }
 
@@ -269,7 +284,7 @@
   .ant-tree li {
     font-size: 16px;
   }
-  .gesexpect {
+  .yu-ges {
     .form-label {
       width: 100px;
       margin-left: 20px;

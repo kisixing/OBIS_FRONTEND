@@ -31,60 +31,6 @@ function toOptions(data, vfn =()=>({})){
 	return [];
 }
 
-/**
- * 表单初始数据
- */
-// export const formEntity = {
-// 	"id": "",
-// 	"userid": "6",
-// 	"doctor": "",
-// 	"checkdate": new Date().toLocaleDateString().replace(/\//g,'-'),
-// 	"ckweek": '',
-// 	"cktizh": "",
-// 	"ckshrinkpressure": "",
-// 	"ckdiastolicpressure": "",
-// 	"ckzijzhz": "",
-// 	"ckgongg": "",
-// 	"tx1": "",
-// 	"xl1": "1",
-// 	"tx2": "",
-// 	"xl2": "1",
-// 	"tx3": "",
-// 	"xl3": "1",
-// 	"cktaix": "",
-// 	"ckxianl": "1",
-// 	"ckfuzh": "1",
-// 	"fpg": "",
-// 	"pbg2h": "",
-// 	"hbAlc": "",
-// 	"riMoMedicine": "",
-// 	"riMoDosage": "",
-// 	"riNoMedicine": "",
-// 	"riNoDosage": "",
-// 	"riEvMedicine": "",
-// 	"riEvDosage": "",
-// 	"riSlMedicine": "",
-// 	"riSlDosage": "",
-// 	"upState": "",
-// 	"upDosage24h": "",
-// 	"": "4,周",
-// 	"heartRate": "",
-// 	"examination": "",
-// 	"tetz1": "",
-// 	"teafv1": "",
-// 	"teqxl1": "",
-// 	"tetz2": "",
-// 	"teafv2": "",
-// 	"teqxl2": "",
-// 	"tetz3": "",
-// 	"teafv3": "",
-// 	"teqxl3": "",
-// 	"ckzijzhzqt": "",
-// 	"treatment": "",
-// 	"ckappointment": "2019-12-15",
-// 	"rvisitOsType": "产科普通门诊",
-// 	"ckappointmentArea": "1"
-// };
 
 /**
  * 本次产检记录表单初始数据
@@ -177,34 +123,6 @@ export const formEntity = {
 };
 
 /**
- * 产后复诊记录表单初始数据
- */
-export const fzFormEntity = {
-	"sfri": "",
-	"fmri": "",
-	"fmyy": "本院",
-	"zs": "",
-	"ckpressure": "",
-	"tz": "",
-	"bmi": "",
-	"jkzk": "",
-	"xlzk": "",
-	"xsewy": "",
-	"rf": "",
-	"el": "",
-	"hy": "",
-	"yd": "",
-	"zg": "",
-	"fj": "",
-	"pdpf": "",
-	"pdhf": "",
-	"qt": "",
-	"gwzw": "",
-	"zd": "",
-	"zhd": "",
-	"cl": "",
-}
-/**
  * 表格当表头
  */
 export const tableKey = () => [
@@ -255,18 +173,6 @@ export const tableKey = () => [
 		options: ckzijzhzOptions
 	},
 	{
-		title: '胎心率',
-		key: 'allTaix',
-		children:[
-			{
-				title: '(bpm)',
-				key: 'allTaix',
-				width: 30,
-				type: 'input'
-			},
-		]
-	},
-	{
 		title: '宫高',
 		key: 'ckgongg',
 		children:[
@@ -276,6 +182,18 @@ export const tableKey = () => [
 				width: 50,
 				type: 'input',
 				valid: 'number'
+			},
+		]
+	},
+	{
+		title: '胎心率',
+		key: 'allTaix',
+		children:[
+			{
+				title: '(bpm)',
+				key: 'allTaix',
+				width: 30,
+				type: 'input'
 			},
 		]
 	},
@@ -401,12 +319,12 @@ export const tableKey = () => [
 		key: 'heartRate',
 	},
 	{
-		title: '用药方案',
-		key: 'allMedicationPlan',
-	},
-	{
 		title: '化验',
 		key: 'examination',
+	},
+	{
+		title: '用药方案',
+		key: 'allMedicationPlan',
 	},
 	{
 		title: '处理措施',
@@ -499,6 +417,31 @@ export const newPlanKey = () => [
 ];
 
 /**
+ * 历史诊断表头
+ */
+export const listHisKey = () => [
+	{
+		title: '诊断',
+		key: 'data',
+	},
+	{
+		title: '诊断医生',
+		key: 'doctor',
+		width: 30,
+	},
+	{
+		title: '诊断孕周',
+		key: 'event',
+		width: 20,
+	},
+	{
+		title: '诊断日期',
+		key: 'gesweek',
+		width: 50,
+	},
+];
+
+/**
  * 诊断输入框的联想数据，当没有输入的时候显示top为true的数据
  */
 export const diagnosis = toOptions('瘢痕子宫,妊娠期糖尿病,妊娠高血压,双胎妊娠,子宫平滑肌瘤'.split(','),v=>({top:true})).concat(toOptions(['高血压','冠心病','多胎妊娠','梅毒']));
@@ -510,7 +453,7 @@ export const xlOptions = [
 	{ label: "头", value: "头" },
 	{ label: "臀", value: "臀" },
 	{ label: "肩", value: "肩" },
-	{ label: "/", value: "/" }
+	{ label: "-", value: "-" }
 ];
 
 /**
@@ -606,40 +549,3 @@ export const tjOptions = [
 	{ label: '可疑，复查', value: '可疑，复查' },
 	{ label: '异常，入院治疗', value: '异常，入院治疗' },
 ];
-
-/**
- * 健康状况
- */
-export const jkzkOptions = toOptions('健康,良好,一般,较差');
-/**
- * 心里状况
- */
-export const xlzkOptions = toOptions('平稳,焦虑,抑郁');
-/**
- * 新生儿喂养
- */
-export const xsewyOptions = toOptions('母乳,混合,人工');
-/**
- * 乳房
- */
-export const rfOptions = toOptions('未见异常,硬结,红肿');
-/**
- * 恶露
- */
-export const elOptions = toOptions('干净,未净');
-/**
- * 会阴
- */
-export const sfycOptions = toOptions('未见异常,异常');
-/**
- * 盆底恢复
- */
-export const pdhfOptions = toOptions('未见异常,压力性尿失禁,其它类型尿失禁,脱垂,尿频,粪失禁,盆腔疼痛');
-/**
- * 高危转危
- */
-export const gwzwOptions = toOptions('痊愈,好转，定期复查,转专科治疗');
-/**
- * 诊断
- */
-export const zdOptions = toOptions('常规产后随诊,子宫复旧不良,伤口愈合不良,盆地功能障碍');

@@ -50,61 +50,6 @@ export default {
         data.operationHistorys = entity.operationHistory;
         return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/${uri}`, { userid:r.object.userid,...data}));
     },
-
-    /**
-     * 左侧诊断列表
-     */
-    getdiagnosis: function(){
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/getdiagnosis?userid=${r.object.userid}`));
-    },
-
-    /**
-     * 标记高危
-     */
-    updateHighriskmark: function(i, params) {
-        let data = {'id': i, "highriskmark": params};
-        return this.userId().then(r => myAxios.put('/outpatientWriteRestful/diagnosis/markHighrisk', data));
-    },
-
-    /**
-     * 更改排序
-     */
-    updateSort: function(i, params) {
-        let data = {'id': i, "sortType": params};
-        return this.userId().then(r => myAxios.put('/outpatientWriteRestful/diagnosis/updateSort', data));
-    },
-
-    /**
-     * 获取诊断下拉模板(联想输入)
-     */
-    getDiagnosisInputTemplate: function(params){
-        let data = {"content": params};
-        return this.userId().then(r => myAxios.post('/outpatientRestful/getDiagnosisInputTemplate', {userid: r.object.userid, ...data}));
-    },
-
-    /**
-     * 添加诊断列表的数据
-     */
-    adddiagnosis: function(text){
-        let data = {'data':text};
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/adddiagnosis', {userid: r.object.userid, ...data}));
-    },
-
-    /**
-     * 删除诊断列表的数据
-     */
-    deldiagnosis: function(id){
-        return this.userId().then(r => myAxios.delete('/outpatientWriteRestful/deldiagnosis', {data:{userid: r.object.userid, diagnosiss: [{
-            id: id
-        }]}}));
-    },
-    /**
-     * 高危弹出提醒判断
-     */
-    checkHighriskAlert: function(params){
-        let data = {"data": params};
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/checkHighriskAlert', {userid: r.object.userid, inputType: '1', ...data}));
-    },
     /**
      * 查询血栓高危因素模板 LVT_HIGH_RISK
      */
@@ -154,8 +99,20 @@ export default {
     /**
      * 保存并开立医嘱调用接口
     */
-    uploadHisDiagnosis: function(type) {
+    uploadHisDiagnosis: function(relatedtype) {
         const clinicCode = common.getCookie('clinicCode');
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/uploadHisDiagnosis', {userid: r.object.userid, type, clinicCode }));
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/uploadHis', {userid: r.object.userid, relatedtype, clinicCode }));
+    },
+    /**
+     * 查询诊断列表
+     */
+    getList: function(type) {
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/diagnosis/getList?userid=${r.object.userid}&relatedtype=${type}`));
+    },
+    /**
+     * 批量插入诊断
+     */
+    batchAdd: function(relatedtype, relatedid, list) {
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/batchAdd', {userid: r.object.userid, relatedtype, relatedid, list }));
     },
 };

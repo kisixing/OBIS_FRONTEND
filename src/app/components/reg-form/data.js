@@ -53,23 +53,29 @@ export const regFormEntity = {
   "regtime": "",
   "root": "",
   "sex": "",
-  "telephone": ""
+  "telephone": "",
+  "hosStatus": "",
+  "mrType": "",
+  "bedno": "",
 };
 
 // 住院登记表
 /**
  * 住院科室
  */
-export const zyksOptions = toOptions('孕妇区,产区,爱婴区,产科VIP');
+export const zyksOptions = toOptions('孕妇区,产房,爱婴区,产科VIP');
 /**
  * 是否在我院住院
  */
 export const sfzyOptions = toOptions([{k: '是(shouzhenyy-原住院号)', addspan: 2}, '否']);
 /**
- * 出生地
+ * 入院情况
  */
-export const csd1Options = toOptions('广东,福建,北京');
-export const csd2Options = toOptions('广州,深圳,上海');
+export const ryqkOptions = toOptions('一般,危重,急');
+/**
+ * 病案类型
+ */
+export const balxOptions = toOptions('住院,门特,急诊留观,日间手术');
 /**
  * 婚姻
  */

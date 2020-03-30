@@ -1,32 +1,34 @@
-@import "./antd/antd-1.x.min.css";
 
-@page :pseudo-class {
-  size: A4 landscape;
-  margin: 20px 0;
-}
+/* @page :pseudo-class {
+  size: A5 landscape;
+  width: 21cm;
+} */
 @media print {
+  .print-highrisk {
+    font-size: 14px;
+    text-align: right;
+    padding: 0;
+    margin: 0;
+  }
+  .has-print .print-highrisk {
+    visibility: hidden;
+  }
+
   .print-table {
-    color: red;
-    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
   }
-  .print-table tr {
-    page-break-inside: always;
-  }
-  .has-print .ant-table-tbody tr:nth-of-type(-n+2) {
-    display: none;
-  }
-  .ant-table-tbody>tr>td {
-    padding: 5px 1px;
-    word-break: keep-all;
-  }
-  .treatment {
-    width: 280px;
+  .print-table tr td {
+    border: 1px solid #ccc;
+    word-break: break-all;
+    font-size: 7px;
   }
   .isHide {
     display: none;
   }
-  .print-highrisk {
-    font-size: 21px;
-    text-align: right;
+  .has-print .print-table tbody tr {
+    visibility: hidden;
   }
 }

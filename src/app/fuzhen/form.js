@@ -12,12 +12,8 @@ import modal from '../../utils/modal';
 import {loadWidget} from '../../utils/common';
 import './form.less';
 import store from '../store';
-import { isFormChangeAction,
-        allReminderAction,
-        getUserDocAction,
-        openMedicalAction,
+import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAction,
       } from '../store/actionCreators.js';
-
 import RegForm from '../components/reg-form';
 import chartDemoData from './chart-demo';
 
@@ -35,9 +31,6 @@ export default class FuzhenForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // ycq: '',
-      // openYCQ: false,
-      // openQX: false,
       openTemplate: false,
       openYy: false,
       adviceList: [],
@@ -376,14 +369,6 @@ export default class FuzhenForm extends Component {
             { name: 'ckappointmentWeek', type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
             { name: 'ckappointment', type:'date', valid: 'required', span: 3 },
             { name: 'ckappointmentArea', type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
-            // {
-            //   name: 'nextRvisit[下次复诊]', valid: 'required', span: 16, type: [
-            //     {type:'select', valid: 'required', showSearch:true, options: baseData.rvisitOsTypeOptions},
-            //     {type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions},
-            //     {type: 'date', valid: 'required'},
-            //     {type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions},
-            //   ]
-            // }
           ]
         }
       ]
@@ -449,14 +434,11 @@ export default class FuzhenForm extends Component {
         data.ckweek = util.countWeek(value);
         errorData.ckweek = null;
         break;
-        case 'ckweek':
-          this.state.openYCQ = ()=>{};
+      case 'ckweek':
+        this.state.openYCQ = ()=>{};
         break;
-        // case 'rvisitOsType':
-        //   value.label === '入院' ? this.setState({isShowRegForm: true}) : null;
-        //   break;
-        case 'ckappointmentWeek':
-          data.ckappointment = util.futureDate(value.value);
+      case 'ckappointmentWeek':
+        data.ckappointment = util.futureDate(value.value);
         break;
     }
     onChange(e, data);
@@ -471,17 +453,16 @@ export default class FuzhenForm extends Component {
   }
 
   handleSave(form, act) {
-    const { onSave, initData, ycq } = this.props;
-    const { allFormData, isFormChange, diagList } = this.state;
+    const { onSave, initData, history } = this.props;
+    const { allFormData, isFormChange, fzList } = this.state;
     let newEntity = initData;
-    console.log(newEntity, '321')
     let ckpressure = initData.ckpressure.split('/');
     const getReminder = () => {
       const lis = service.praseJSON(allFormData.lis);
       let allReminderModal = [];
       const getAllReminder = (modalObj) => {
           let bool = true;
-          diagList && diagList.map(item => {
+          fzList && fzList.map(item => {
               if(item.data === modalObj.diagnosis) bool = false;
           })
           if(bool) allReminderModal.push(modalObj);
@@ -534,6 +515,7 @@ export default class FuzhenForm extends Component {
           const action = openMedicalAction(true);
           store.dispatch(action);
         } else {
+          history.push('/sz');
           common.closeWindow();
         }
       } else {
@@ -541,16 +523,6 @@ export default class FuzhenForm extends Component {
         store.dispatch(action);
       }
     }
-
-    newEntity.checkdate = initData.checkdate;
-    newEntity.ckweek = initData.ckweek;
-    newEntity.cktizh = initData.cktizh;
-    newEntity.ckzijzhz = initData.ckzijzhz;
-
-    newEntity.ckgongg = initData.ckgongg;
-    newEntity.cktaix = initData.cktaix;
-    newEntity.ckxianl = initData.ckxianl;
-    newEntity.ckfuzh = initData.ckfuzh;
     // //血压
     if(ckpressure[0]) newEntity.ckshrinkpressure = ckpressure[0];
     if(ckpressure[1]) newEntity.ckdiastolicpressure = ckpressure[1];
@@ -565,18 +537,12 @@ export default class FuzhenForm extends Component {
     if(!!newEntity.riSl && newEntity.riSl[1]) newEntity.riSlDosage = newEntity.riSl[1];
 
     fireForm(form,'valid').then((valid)=>{
-      if(valid && isFormChange){
+      if(valid){
         console.log(newEntity, '可以保存')
         onSave(newEntity).then(() =>{
           this.setState({ error: {} }, () => {
             getReminder();
           })
-          // service.fuzhen.updateDocGesexpectrv(ycq).then(() => {
-          //   service.getuserDoc().then(res => {
-          //     const action = getUserDocAction(res.object);
-          //     store.dispatch(action)
-          //   })
-          // })
           if(act) {
             service.shouzhen.uploadHisDiagnosis(2).then(res => { })
           }
@@ -584,36 +550,11 @@ export default class FuzhenForm extends Component {
       } else if(!valid) {
         message.error('必填项不能为空！');
       } else if (!isFormChange && act) {
+        history.push('/sz');
         common.closeWindow();
       }
     });
   }
-
-  /**
-   * 孕产期
-   */
-  // renderYCQ(){
-  //   const { info, onChangeInfo } = this.props;
-  //   const { openYCQ, ycq } = this.state;
-
-  //   const handelClick = (e, isOk) => {
-  //     this.setState({openYCQ:false},()=>{
-  //       // openYCQ();
-  //       if(isOk){
-  //         onChangeInfo({...info, gesexpect:ycq });
-  //         this.handleChange(e, {name: 'checkdate', value: ycq});
-  //       }
-  //     });
-  //   }
-
-  //   return (
-  //     <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
-  //            width={600} closable visible={!!openYCQ} onCancel={e => handelClick(e, false)} onOk={e => handelClick(e, true)}>
-  //       <span>是否修改孕产期：</span>
-  //       <DatePicker defaultValue={info.gesexpect} value={ycq} onChange={(e,v)=>{this.setState({ycq:v})}}/>
-  //     </Modal>
-  //   );
-  // }
 
   /**
    *预约窗口
@@ -643,42 +584,6 @@ export default class FuzhenForm extends Component {
       </Modal>
     );
   }
-
-  /**
-   * 曲线
-   */
-  // renderQX(e,text,resolve){
-  //   const canvas = 'canvas';
-  //   const canvas2 = 'canvas2';
-  //   console.log(demodata, '111')
-
-  //   service.fuzhen.getPacsGrowth().then(res => {
-  //     if (res.code === '10') {
-  //       demodata = [];
-  //       modal({
-  //         title: text,
-  //         className: "canvasContent",
-  //         content:[<canvas id={canvas} style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>,
-  //                 // <canvas id={canvas2} className="z3" style={{height: 450, width: '40%'}}><p>Your browserdoes not support the canvas element.</p></canvas>,
-  //                 <canvas style={{height: 600, width: 550}}><p>Your browserdoes not support the canvas element.</p></canvas>],
-  //         footer:'',
-  //         width:'90%',
-  //         maskClosable:true,
-  //         onCancel:resolve
-  //       }).then(() => {
-  //         setTimeout(
-  //           ()=>{
-  //             drawgrid('canvas');
-  //             drawgrid('canvas2');
-  //             // printline();
-  //           },200)
-  //         }
-  //       );
-  //     } else {
-
-  //     }
-  //   })
-  // }
 
   closeRegForm = () => {
     this.setState({isShowRegForm: false})
@@ -793,9 +698,7 @@ export default class FuzhenForm extends Component {
             保存并开立医嘱
           </Button>
         </div>
-        {/* {this.renderQX()} */}
         {openTemplate && this.renderTreatment()}
-        {/* {this.renderYCQ()} */}
         {this.renderMenZhen()}
         {this.renderAdviceModal()}
         {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />}

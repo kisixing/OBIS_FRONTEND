@@ -170,7 +170,6 @@ class FormItem extends Component {
     const { name, isFormChange, isSave } = this.state;
     const { entity, width } = this.props;
     if(isFormChange || isSave) {
-      // console.log(isSave, name, '321')
       this.refs.formItem.fireReact = (type, ...args) => {
         return new Promise(resolve => {
           switch (type) {

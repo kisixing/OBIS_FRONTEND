@@ -49,7 +49,7 @@ export default class Patient extends Component {
                 {
                   item.data.map(subItem => (
                     <div className="left-item" onClick={() => {subItem.isAmy ? getDetail(subItem.amyId, true) : getDetail(subItem.sampleno)}}>    
-                      {subItem.state === "" ? <span className="left-state">新</span> : null}       
+                      {!subItem.state ? <span className="left-state">新</span> : null}       
                       <p className="left-title">{subItem.title}</p>
                       {/* <Button className={subItem.state==="2" ? "left-btn normal" : "left-btn"} size="small">
                         {subItem.state===null ? '待审阅' : (subItem.state==='1' ? '已看' : (subItem.state==='2' ? '正常' : '异常'))}
@@ -87,13 +87,14 @@ export default class Patient extends Component {
 
       return (
         <div className="right-wrapper">
-          <div className="right-title">
-            <p><span className="right-words">{detailData.title} </span>检验报告单</p>
+          <div className="right-top">
+            <p className="right-title"><span className="right-words">{detailData.title} </span>检验报告单</p>
             {/* {
               !isShowModal ?
               <Button className="right-btn" type="primary" size="small" onClick={() => this.setState({isShowModal: true})}>审阅</Button>
               : null
             } */}
+            <div className="right-doctor">首阅医生：{detailData.firstChecker}</div>
           </div>
           <ul className="right-msg">
             <li className="msg-item">检验单号: {detailData.sampleno}</li>

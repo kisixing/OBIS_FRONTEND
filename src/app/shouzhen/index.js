@@ -20,13 +20,8 @@ import Zkjc from './zhuankejiancha';
 import Zdcl from './zhenduanchuli';
 
 import store from "../store";
-import { getUserDocAction,
-        getAllFormDataAction,
-        isFormChangeAction, 
-        allReminderAction, 
-        showReminderAction, 
-        openMedicalAction,
-        isSaveAction
+import { getUserDocAction, getAllFormDataAction, isFormChangeAction, allReminderAction, showReminderAction, openMedicalAction,
+         isSaveAction, getIdAction, getWhichAction,
     } from "../store/actionCreators.js";
 
 import * as baseData from './data';
@@ -209,7 +204,7 @@ export default class Patient extends Component {
     }
 
     handleSave(key, type) {
-        const { tabs, step, allFormData, diagList } = this.state;
+        const { tabs, step, allFormData, szList } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
@@ -227,14 +222,13 @@ export default class Patient extends Component {
         let allReminderModal = [];
         const getAllReminder = (modalObj) => {
             let bool = true;
-            diagList && diagList.map(item => {
+            szList && szList.map(item => {
                 if(item.data === modalObj.diagnosis) bool = false;
             })
             if(bool) allReminderModal.push(modalObj);
         }
 
         fireForm(form, 'valid').then((valid) => {
-            console.log(valid, '543')
             // 数据提交前再对数据进行一些处理，请实现entitySave方法，请参考tab-0：yunfuxinxi.js这个文件
             const entitySave = tab.entitySave || (i=>i);
             tab.error = !valid;
@@ -391,12 +385,12 @@ export default class Patient extends Component {
                         store.dispatch(action);
                     }
                 }        
-                if (tab.key !== 'tab-3') {
+                if (tab.key !== 'tab-3' && tab.key !== 'tab-7') {
                     service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
                         message.success('信息保存成功',3);
                         valid && this.activeTab(key || next.key);
-                        /*修改预产期-B超 同步数据*/
-                        if(tab.key === 'tab-0' || tab.key === 'tab-7') {
+                        /*修改预产期-B超    G、P、妊娠 同步数据*/
+                        if(tab.key === 'tab-0') {
                             service.getuserDoc().then(res => this.setState({
                                 info: res.object
                             }, () => {
@@ -404,9 +398,9 @@ export default class Patient extends Component {
                                 store.dispatch(action);
                             }))
                         }
-                        if(tab.key === 'tab-7' && type === 'open') {
-                            service.shouzhen.uploadHisDiagnosis(1).then(res => { })
-                        }
+                        // if(tab.key === 'tab-7' && type === 'open') {
+                        //     service.shouzhen.uploadHisDiagnosis(1).then(res => { })
+                        // }
                     });
                 }
             } else {
@@ -414,6 +408,27 @@ export default class Patient extends Component {
                     common.closeWindow();
                 }
                 valid && this.activeTab(key || next.key);
+            }
+            // 保存诊断数据
+            if(tab.key === 'tab-7') {
+                service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(res => {
+                    message.success('信息保存成功',3);
+                    const idAction = getIdAction(res.object.ivisitId);
+                    store.dispatch(idAction);
+                    const whichAction = getWhichAction('sz');
+                    store.dispatch(whichAction);
+                    service.shouzhen.batchAdd(1, res.object.ivisitId, szList).then(res => {
+                        service.getuserDoc().then(res => this.setState({
+                            info: res.object
+                        }, () => {
+                            const action = getUserDocAction(res.object);
+                            store.dispatch(action);
+                        }))
+                    })
+                })
+                if(type === 'open') {
+                    service.shouzhen.uploadHisDiagnosis(1).then(res => { })
+                }
             }
             this.change = false;
             const action = isFormChangeAction(false);
@@ -446,7 +461,7 @@ export default class Patient extends Component {
             <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
 
             <div className="bgWhite" style={{ position: "fixed", top: "7.65em", left: "0", right: "0", bottom: "0"}}></div>
-            <Tabs type="card" activeKey={step} onChange={key => this.handleSave(key)}>
+            <Tabs type="card" activeKey={step} onChange={key => setTimeout(() => { this.handleSave(key) }, 100)}> 
               {tabs.map(({ key, title, entity, error, Content }) => (
                 <Tabs.TabPane key={key}
                   tab={

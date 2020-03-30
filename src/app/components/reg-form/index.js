@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Input, Icon, Select, Button, message, Table, Modal, Spin, Tree, DatePicker } from 'antd';
+import { Button, message, Modal } from 'antd';
 import addrOptions from '../../../utils/cascader-address-options';
 import * as baseData from './data';
 import * as util from '../../fuzhen/util';
@@ -42,21 +42,22 @@ export default class RegForm extends Component {
     service.fuzhen.getRecordList().then(res => {
       let data = service.praseJSON(res.object);
       data.note = `G ${userDiag.yunc}；P ${userDiag.chanc}；妊娠${userDiag.tuserweek}周；\n${diagnosisStr}`;
-      if(!!userIdType && userIdType === '身份证') {
-        if(res.object.address.indexOf('越秀') !== -1 && res.object.address.indexOf('广州') !== -1) {
-          data.idcardSource = [{"label": "本区", "value": ""}];
-        } else if(res.object.address.indexOf('广州') !== -1) {
-          data.idcardSource = [{"label": "本市", "value": ""}];
-        } else if(res.object.address.indexOf('广东') !== -1) {
-          data.idcardSource = [{"label": "本省", "value": ""}];
-        } else {
-          data.idcardSource = [{"label": "外省", "value": ""}];
-        }
-      } else if(!!userIdType && userIdType === '护照') {
-        data.idcardSource = [{"label": "外国", "value": ""}];
-      } else if (!!userIdType) {
-        data.idcardSource = [{"label": "港澳台", "value": ""}];
-      }
+
+      // if(!!userIdType && userIdType === '身份证') {
+      //   if(res.object.address.indexOf('越秀') !== -1 && res.object.address.indexOf('广州') !== -1) {
+      //     data.idcardSource = [{"label": "本区", "value": ""}];
+      //   } else if(res.object.address.indexOf('广州') !== -1) {
+      //     data.idcardSource = [{"label": "本市", "value": ""}];
+      //   } else if(res.object.address.indexOf('广东') !== -1) {
+      //     data.idcardSource = [{"label": "本省", "value": ""}];
+      //   } else {
+      //     data.idcardSource = [{"label": "外省", "value": ""}];
+      //   }
+      // } else if(!!userIdType && userIdType === '护照') {
+      //   data.idcardSource = [{"label": "外国", "value": ""}];
+      // } else if (!!userIdType) {
+      //   data.idcardSource = [{"label": "港澳台", "value": ""}];
+      // }
 
       this.setState({regFormEntity: data})
     })
@@ -79,17 +80,21 @@ export default class RegForm extends Component {
           columns: [
             { name: 'dept[住院科室]', type: 'select', valid: 'required', span: 6, options: baseData.zyksOptions },
             { span: 1 },
-            { name: `dateHos[入院日期](${yunz})`, className: 'reg-date', type: 'date', valid: 'required', span: 6 },
+            { name: `dateHos[拟入院日期](${yunz})`, className: 'reg-date', type: 'date', valid: 'required', span: 6 },
           ]
         },
         {
           columns:[
-            { name: 'note[特殊备注]', type: 'textarea', span: 12, placeholder: "请输入备注" }
+            { name: 'note[特殊备注]', type: 'textarea', span: 12, placeholder: "请输入备注" },
+            { span: 1 },
+            { name: 'hospitalized[是否曾在我院住院]', className: 'long-label', type: 'checkinput-4', radio: true, span: 11, options: baseData.sfzyOptions }
           ]
         },
         {
           columns:[
-            { name: 'hospitalized[是否曾在我院住院]', className: 'long-label', type: 'checkinput-4', radio: true, span: 16, options: baseData.sfzyOptions }
+            { name: 'bedno[床号]', type: 'input', span: 6 },
+            { name: 'hosStatus[入院情况]', type: 'checkinput', radio: true, span: 6, options: baseData.ryqkOptions },
+            { name: 'mrType[病案类别]', type: 'checkinput', radio: true, span: 12, options: baseData.balxOptions },
           ]
         },
         {
@@ -102,7 +107,6 @@ export default class RegForm extends Component {
         {
           columns:[
             { name: 'birthAddrProvince[出生地]', span: 12, type: [{type: "cascader", options: addrOptions}] },
-            // { name: 'birthAddrProvince[出生地]', type: 'select', span: 4, options: baseData.csd1Options },
             // { name: 'birthAddrCity[]', type: 'select', span: 4, options: baseData.csd2Options },
             { name: 'marriage[婚姻]', type: 'checkinput', radio: true, span: 12, options: baseData.hyOptions }
           ]
@@ -212,15 +216,15 @@ export default class RegForm extends Component {
       <div className="reg-title">
         <span>入院登记表</span>
         <div className="reg-btns">
-          <Button className="pull-right blue-btn margin-R-2" type="ghost" onClick={() => printForm()}>打印入院登记表</Button>
-          <Button className="pull-right blue-btn margin-R-1" type="ghost" onClick={e => handleRegSave(e, document.querySelector('.reg-form'))}>保存</Button>
+          <Button className="pull-right blue-btn margin-R-2" type="ghost" onClick={() => printForm()}>打印入院登记表和通知书</Button>
+          <Button className="pull-right blue-btn margin-R-1" type="ghost" 
+                  onClick={e => setTimeout(() => { handleRegSave(e, document.querySelector('.reg-modal')) }, 100)}>保存</Button>
         </div>
       </div>
     ]
 
     return (
-      <Modal width="80%" title={title} footer={null} className="reg-form"
-        visible={isShowRegForm} onCancel={() => handleClick()}>
+      <Modal width="80%" title={title} footer={null} className="reg-modal" visible={isShowRegForm} onCancel={() => handleClick()}>
         {formRender(regFormEntity, this.regFormConfig(), handleRegChange)}
       </Modal>
     )
@@ -228,7 +232,7 @@ export default class RegForm extends Component {
 
   render() {
     return (
-      <div className="reg-form">
+      <div>
         {this.showRegForm()}
       </div>
     )
