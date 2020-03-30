@@ -212,7 +212,7 @@ export default class Patient extends Component {
         store.dispatch(action);
         let isJump = false;
         if (key) {
-            isJump = key.slice(-1) > step.slice(-1) ? false : true;
+            isJump = key.slice(-1) >= step.slice(-1) ? false : true;
         }
         console.log('handleSave', key, step, tab.entity);
 
@@ -326,65 +326,7 @@ export default class Patient extends Component {
                         tab.entity.add_FIELD_ogtt_gdm_1h = tab.entity.ogtt[0].value.input1;
                         tab.entity.add_FIELD_ogtt_gdm_2h = tab.entity.ogtt[0].value.input2;
                     }
-                }
-                if (tab.key === 'tab-7' && key === 'tab-7') {
-                    const Lis = service.praseJSON(allFormData.lis);
-                    if (Lis.ogtt && Lis.ogtt[0] && Lis.ogtt[0].label === "GDM") {
-                        let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
-                        getAllReminder(modalObj);
-                    }
-                    if(Lis.add_FIELD_hbsAg_ALT && Lis.add_FIELD_hbsAg_ALT > 80) {
-                        let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
-                        getAllReminder(modalObj);
-                    }
-                    if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '小三阳') {
-                        let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
-                        getAllReminder(modalObj);
-                    }
-                    if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '大三阳') {
-                        let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
-                        getAllReminder(modalObj);
-                    }
-                    if(Lis.hcvAb && Lis.hcvAb[0] && Lis.hcvAb[0].label === '阳性') {
-                        let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-                        getAllReminder(modalObj);
-                    }
-                    if(Lis.add_FIELD_hcvAb_RNA && Lis.add_FIELD_hcvAb_RNA[0] && Lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
-                        let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-                        getAllReminder(modalObj);
-                    }
-                    if(Lis.rpr && Lis.rpr[0] && Lis.rpr[0].label === '阳性') {
-                        let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
-                        getAllReminder(modalObj);
-                    }
-                    if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === '甲型') {
-                        let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
-                        getAllReminder(modalObj);
-                    }
-                    if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === '乙型') {
-                        let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
-                        getAllReminder(modalObj);
-                    }
-
-                    if(allReminderModal.length > 0) {
-                        const action2 = allReminderAction(allReminderModal);
-                        store.dispatch(action2);
-
-                        const action3 = showReminderAction(true);
-                        store.dispatch(action3);
-                    }
-                    if(type === 'open') {
-                        if (allReminderModal.length > 0) {
-                            const action = openMedicalAction(true);
-                            store.dispatch(action);
-                        } else {
-                            common.closeWindow();
-                        }
-                    } else {
-                        const action = openMedicalAction(false);
-                        store.dispatch(action);
-                    }
-                }        
+                }   
                 if (tab.key !== 'tab-3' && tab.key !== 'tab-7') {
                     service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
                         message.success('信息保存成功',3);
@@ -404,11 +346,67 @@ export default class Patient extends Component {
                     });
                 }
             } else {
-                if (type === 'open') {
-                    common.closeWindow();
-                }
                 valid && this.activeTab(key || next.key);
             }
+            if (tab.key === 'tab-7' && key === 'tab-7') {
+                const Lis = service.praseJSON(allFormData.lis);
+                if (Lis.ogtt && Lis.ogtt[0] && Lis.ogtt[0].label === "GDM") {
+                    let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
+                    getAllReminder(modalObj);
+                }
+                if(Lis.add_FIELD_hbsAg_ALT && Lis.add_FIELD_hbsAg_ALT > 80) {
+                    let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
+                    getAllReminder(modalObj);
+                }
+                if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '小三阳') {
+                    let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
+                    getAllReminder(modalObj);
+                }
+                if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '大三阳') {
+                    let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
+                    getAllReminder(modalObj);
+                }
+                if(Lis.hcvAb && Lis.hcvAb[0] && Lis.hcvAb[0].label === '阳性') {
+                    let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+                    getAllReminder(modalObj);
+                }
+                if(Lis.add_FIELD_hcvAb_RNA && Lis.add_FIELD_hcvAb_RNA[0] && Lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
+                    let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+                    getAllReminder(modalObj);
+                }
+                if(Lis.rpr && Lis.rpr[0] && Lis.rpr[0].label === '阳性') {
+                    let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
+                    getAllReminder(modalObj);
+                }
+                if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === '甲型') {
+                    let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
+                    getAllReminder(modalObj);
+                }
+                if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === '乙型') {
+                    let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
+                    getAllReminder(modalObj);
+                }
+
+                console.log(allReminderModal, '666')
+                if(allReminderModal.length > 0) {
+                    const action2 = allReminderAction(allReminderModal);
+                    store.dispatch(action2);
+
+                    const action3 = showReminderAction(true);
+                    store.dispatch(action3);
+                }
+                if(type === 'open') {
+                    if (allReminderModal.length > 0) {
+                        const action = openMedicalAction(true);
+                        store.dispatch(action);
+                    } else if (valid) {
+                        common.closeWindow();
+                    }
+                } else {
+                    const action = openMedicalAction(false);
+                    store.dispatch(action);
+                }
+            }     
             // 保存诊断数据
             if(tab.key === 'tab-7') {
                 service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(res => {

@@ -120,7 +120,7 @@ export default class App extends Component {
 
       service.shouzhen.getList(1).then(res => {
         res.object && res.object.map(item => {
-          if(item.data === '妊娠期糖尿病') {
+          if (item.data.indexOf('糖尿病') !== -1) {
             this.setState({isShowXTRouter: true})
           }
         })
@@ -130,7 +130,7 @@ export default class App extends Component {
 
       service.shouzhen.getList(2).then(res => {
         res.object && res.object.map(item => {
-          if(item.data === '妊娠期糖尿病') {
+          if (item.data.indexOf('糖尿病') !== -1) {
             this.setState({isShowXTRouter: true})
           }
         })
@@ -310,7 +310,8 @@ export default class App extends Component {
       if (index === 0) {
         const action2 = showReminderAction(false);
         store.dispatch(action2);
-      }else if(index === 0 && isOpenMedicalAdvice) {
+      }
+      if (index === 0 && isOpenMedicalAdvice) {
         this.props.history.push('/sz');
         common.closeWindow();
       }
@@ -730,7 +731,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { isFormChange, muneIndex } = this.state;
+    const { isFormChange, muneIndex, isShowSypModal } = this.state;
     const alertConfirm = () => {
       if (!isFormChange) {
         return true;
@@ -757,7 +758,7 @@ export default class App extends Component {
         {this.renderTrialModal()}
         {this.renderPharModal()}
         {this.renderReminder()}
-        <AppModal />
+        {isShowSypModal && <AppModal />}
         <Prompt message={alertConfirm} when={isFormChange}/>
       </div>
     );

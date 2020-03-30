@@ -56,7 +56,14 @@ export default class extends Component{
       openTemplate: false,
       ...store.getState(),
       chanc: 0,
-      yunc: 1
+      yunc: 1,
+      signList: [
+        { 'word': '大三阳', 'diag': '乙肝大三阳' },
+        { 'word': '小三阳', 'diag': '乙肝小三阳' },
+        { 'word': '梅毒', 'diag': '梅毒' },
+        { 'word': 'HIV', 'diag': 'HIV' },
+        { 'word': '艾滋', 'diag': 'HIV' },
+      ],
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -103,7 +110,7 @@ export default class extends Component{
           columns: [
             { name: 'yunc[1、G]', type: 'input', span: 4 },
             { name: 'chanc[P]', type: 'input', span: 4 },
-            { name: 'ADD_FIELD_tuserweek[妊娠](周)', type: 'input', span: 4 },
+            { name: 'add_FIELD_tuserweek[妊娠](周)', type: 'input', span: 4 },
           ]
         },
       ]
@@ -136,9 +143,25 @@ export default class extends Component{
   }
 
   adddiagnosis() {
-    const { szList, diagnosi, userDoc } = this.state;
+    const { szList, diagnosi, userDoc, signList } = this.state;
+    const specialList = ['妊娠', '早孕', '中孕', '晚孕'];
     if (diagnosi && !szList.filter(i => i.data === diagnosi).length) {
-      szList.push({ 'data': diagnosi, 'highriskmark': ''});
+      // 诊断互斥项
+      let specialIndex = -1;
+      let diagData = { 'data': diagnosi, 'highriskmark': ''};
+      szList.forEach((item, index) => {
+        if (specialList.includes(item.data)) {
+          specialIndex = index;
+        }
+      })
+      if (specialIndex !== -1 && specialList.includes(diagnosi)) {
+        szList.splice(specialIndex, 1);
+        szList.unshift(diagData);
+      } else if (specialIndex === -1 && specialList.includes(diagnosi)) {
+        szList.unshift(diagData);
+      } else {
+        szList.push(diagData);
+      }
       const action = szListAction(szList);
       store.dispatch(action);
       modal('success', '添加诊断信息成功');
@@ -147,10 +170,17 @@ export default class extends Component{
         const action = showTrialAction(true);
         store.dispatch(action);
       }
-      if (diagnosi.indexOf("梅毒") !== -1) {
-        if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf("梅毒") === -1)) {
+      // 传染病标记
+      let signDiag = '';
+      signList.forEach(item => {
+        if (diagnosi.indexOf(item.word) !== -1) {
+          signDiag = item.diag;
+        }
+      })
+      if (!!signDiag) {
+        if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf(signDiag) === -1)) {
           let arr = userDoc.infectious ? userDoc.infectious.split(',') : [];
-          arr.push('梅毒');
+          arr.push(signDiag);
           userDoc.infectious = arr.join();
           service.savehighriskform(userDoc).then(res => {
             service.getuserDoc().then(res => {
@@ -159,9 +189,12 @@ export default class extends Component{
             })
           });
         }
-        const action = showSypAction(true);
-        store.dispatch(action);
+        if (signDiag === '梅毒') {
+          const action = showSypAction(true);
+          store.dispatch(action);
+        }
       }
+
       if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
         this.updateCheckedKeys();
         const action = showPharAction(true);
@@ -231,11 +264,37 @@ export default class extends Component{
   }
 
   deldiagnosis(id, data) {
-    const { userDoc, szList } = this.state;
+    const { userDoc, szList, signList } = this.state;
     const newList = szList.filter(i => i.data !== data);
     const action = szListAction(newList);
     store.dispatch(action);
     modal('info', '删除诊断信息成功');
+    this.updateCheckedKeys(data);
+
+    // 删除传染病标记
+    let signDiag = '';
+    let signDel = true;
+    signList.forEach(item => {
+      if (data.indexOf(item.word) !== -1) {
+        signDiag = item.diag;
+        newList && newList.forEach(subItem => {
+          if (subItem.data.indexOf(item.word) !== -1) {
+            signDel = false;
+          }
+        })
+      }
+    })
+    if (!!signDiag && signDel && userDoc.infectious && userDoc.infectious.indexOf(signDiag) !== -1) {
+      let arr = userDoc.infectious.split(',');
+      arr.splice(arr.indexOf(signDiag), 1);
+      userDoc.infectious = arr.join();
+      service.savehighriskform(userDoc).then(res => {
+        service.getuserDoc().then(res => {
+          const action = getUserDocAction(res.object);
+          store.dispatch(action);
+        })
+      });
+    }
 
 
     // service.fuzhen.deldiagnosis(id).then(() => {
@@ -422,7 +481,7 @@ export default class extends Component{
             </Col>
           </Row> */}
           {szList && szList.map((item, i) => (
-            <Row key={`diagnos-${item.data}-${Date.now()}`}>
+            <Row key={`diagnos-${item.data}-${i}-${Date.now()}`}>
               <Col span={8}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                   <div title={item.data}>
@@ -511,7 +570,7 @@ export default class extends Component{
     const handelShow = (isShow) => {
       this.setState({openMenzhen: false});
       if(isShow) {
-        service.shouzhen.makeAppointment(1, menzhenData).then(res => console.log(res))
+        service.shouzhen.makeAppointment(20, menzhenData).then(res => console.log(res))
       };
     }
     const panelChange = (date, dateString) => {

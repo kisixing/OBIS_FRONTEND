@@ -79,14 +79,12 @@ export default class RegForm extends Component {
         {
           columns: [
             { name: 'dept[住院科室]', type: 'select', valid: 'required', span: 6, options: baseData.zyksOptions },
-            { span: 1 },
-            { name: `dateHos[拟入院日期](${yunz})`, className: 'reg-date', type: 'date', valid: 'required', span: 6 },
+            { name: `dateHos[拟入院日期](${yunz})`, className: 'long-label reg-date', type: 'date', valid: 'required', span: 5 },
           ]
         },
         {
           columns:[
             { name: 'note[特殊备注]', type: 'textarea', span: 12, placeholder: "请输入备注" },
-            { span: 1 },
             { name: 'hospitalized[是否曾在我院住院]', className: 'long-label', type: 'checkinput-4', radio: true, span: 11, options: baseData.sfzyOptions }
           ]
         },

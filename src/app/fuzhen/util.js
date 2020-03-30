@@ -1,11 +1,10 @@
-import React, { Component } from "react";
-import { Input } from 'antd';
-
-import tableRender from '../../render/table';
 
 export function countWeek(date1, date2){
   var newDate = date2 ? new Date(date2) : new Date();
   var days = Math.ceil(((new Date(date1) - newDate) / (1000 * 3600)) / 24);
+  if (days < 0) {
+    return `${Math.ceil(days / 7)}+${days % 7}`;
+  }
   return `${Math.floor(days / 7)}+${days % 7}`;
 }
 
@@ -23,16 +22,27 @@ export function futureDate(param) {
 }
 
 export function getWeek(param1, param2) {
-  let day1 = param1 * 7;
+  let day1;
   let day2;
-  if (param2.indexOf('+') !== -1) {
+  let days;
+  if (typeof param1 === 'string' && param1.indexOf('+') !== -1) {
+    day1 = param1.split('+');
+    day1 = parseInt(day1[0] * 7) + parseInt(day1[1]);
+  } else {
+    day1 = parseInt(param1) * 7;
+  }
+
+  if (typeof param2 === 'string' && param2.indexOf('+') !== -1) {
     day2 = param2.split('+');
     day2 = parseInt(day2[0] * 7) + parseInt(day2[1]);
   } else {
     day2 = parseInt(param2) * 7;
   }
-  let days = day1 - day2;
-  if(days % 7 === 0) return Math.floor(days / 7);
+  days = day1 - day2;
+  if (days % 7 === 0) return Math.floor(days / 7);
+  if (days < 0) {
+    return `${Math.ceil(days / 7)}+${days % 7}`;
+  }
   return `${Math.floor(days / 7)}+${days % 7}`;
 }
 

@@ -81,6 +81,13 @@ export default class Patient extends Component {
       hasPrint: false,
       listHistory: null,
       isShowHis: false,
+      signList: [
+        { 'word': '大三阳', 'diag': '乙肝大三阳' },
+        { 'word': '小三阳', 'diag': '乙肝小三阳' },
+        { 'word': '梅毒', 'diag': '梅毒' },
+        { 'word': 'HIV', 'diag': 'HIV' },
+        { 'word': '艾滋', 'diag': 'HIV' },
+      ],
       ...store.getState(),
     };
     store.subscribe(this.handleStoreChange);
@@ -171,10 +178,25 @@ export default class Patient extends Component {
   }
 
   adddiagnosis() {
-    const { fzList, diagnosi, userDoc } = this.state;
+    const { fzList, diagnosi, userDoc, signList } = this.state;
+    const specialList = ['妊娠', '早孕', '中孕', '晚孕'];
     if (diagnosi && !fzList.filter(i => i.data === diagnosi).length) {
-
-      fzList.push({ 'data': diagnosi, 'highriskmark': ''});
+      // 诊断互斥项
+      let specialIndex = -1;
+      let diagData = { 'data': diagnosi, 'highriskmark': ''};
+      fzList.forEach((item, index) => {
+        if (specialList.includes(item.data)) {
+          specialIndex = index;
+        }
+      })
+      if (specialIndex !== -1 && specialList.includes(diagnosi)) {
+        fzList.splice(specialIndex, 1);
+        fzList.unshift(diagData);
+      } else if (specialIndex === -1 && specialList.includes(diagnosi)) {
+        fzList.unshift(diagData);
+      } else {
+        fzList.push(diagData);
+      }
       const action = fzListAction(fzList);
       store.dispatch(action);
       modal('success', '添加诊断信息成功');
@@ -183,10 +205,20 @@ export default class Patient extends Component {
         const action = showTrialAction(true);
         store.dispatch(action);
       }
-      if (diagnosi.indexOf("梅毒") !== -1) {
-        if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf("梅毒") === -1)) {
+      if(diagnosi === '双胎妊娠' || diagnosi === '多胎妊娠') {
+        this.setState({ isTwins: true })
+      }
+      // 传染病标记
+      let signDiag = '';
+      signList.forEach(item => {
+        if (diagnosi.indexOf(item.word) !== -1) {
+          signDiag = item.diag;
+        }
+      })
+      if (!!signDiag) {
+        if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf(signDiag) === -1)) {
           let arr = userDoc.infectious ? userDoc.infectious.split(',') : [];
-          arr.push('梅毒');
+          arr.push(signDiag);
           userDoc.infectious = arr.join();
           service.savehighriskform(userDoc).then(res => {
             service.getuserDoc().then(res => {
@@ -195,9 +227,12 @@ export default class Patient extends Component {
             })
           });
         }
-        const action = showSypAction(true);
-        store.dispatch(action);
+        if (signDiag === '梅毒') {
+          const action = showSypAction(true);
+          store.dispatch(action);
+        }
       }
+
       if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
         this.updateCheckedKeys();
         const action = showPharAction(true);
@@ -270,11 +305,43 @@ export default class Patient extends Component {
   }
 
   deldiagnosis(id, data) {
-    const { userDoc, fzList } = this.state;
+    const { userDoc, fzList, signList } = this.state;
     const newList = fzList.filter(i => i.data !== data);
     const action = fzListAction(newList);
     store.dispatch(action);
     modal('info', '删除诊断信息成功');
+    this.updateCheckedKeys(data);
+
+    let bool = true;
+    newList && newList.forEach(item => {
+      if (item.data === '双胎妊娠' || item.data === '多胎妊娠') bool = false;
+    })
+    if (bool) this.setState({ isTwins: false });
+
+    // 删除传染病标记
+    let signDiag = '';
+    let signDel = true;
+    signList.forEach(item => {
+      if (data.indexOf(item.word) !== -1) {
+        signDiag = item.diag;
+        newList && newList.forEach(subItem => {
+          if (subItem.data.indexOf(item.word) !== -1) {
+            signDel = false;
+          }
+        })
+      }
+    })
+    if (!!signDiag && signDel && userDoc.infectious && userDoc.infectious.indexOf(signDiag) !== -1) {
+      let arr = userDoc.infectious.split(',');
+      arr.splice(arr.indexOf(signDiag), 1);
+      userDoc.infectious = arr.join();
+      service.savehighriskform(userDoc).then(res => {
+        service.getuserDoc().then(res => {
+          const action = getUserDocAction(res.object);
+          store.dispatch(action);
+        })
+      });
+    }
 
     // service.fuzhen.deldiagnosis(id).then(() => {
     //   modal('info', '删除诊断信息成功');
@@ -487,7 +554,7 @@ export default class Patient extends Component {
         <div className="fuzhen-left-input font-16">
           <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
                  onFocus={() => this.setState({isShowZhenduan: true})}
-                 onBlur={() => setTimeout(() => this.setState({isShowZhenduan: true}), 200)}
+                 onBlur={() => setTimeout(() => this.setState({isShowZhenduan: false}), 200)}
                  />
           { isShowZhenduan || isMouseIn ?
             <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}>
@@ -660,14 +727,14 @@ export default class Patient extends Component {
     return (
       <div className="fuzhen-left ant-col-5">
         <Collapse defaultActiveKey={collapseActiveKey}>
-          <Panel header={<span>诊 断<Button type="ghost" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
+          <Panel header={<span>诊 断<Button type="ghost" className="header-btn" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
             {
             // loading ?
             //   <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
               this.renderZD()
             }
           </Panel>
-          <Panel header={<span>缺 少 检 验 报 告<Button type="ghost" size="small" onClick={e => handleOtherClick(e) }>其他</Button></span>} key="2">
+          <Panel header={<span>缺少检验报告<Button type="ghost" className="header-btn" size="small" onClick={e => handleOtherClick(e) }>其他</Button></span>} key="2">
             <p className="pad-small">{reportStr || '无'}</p>
           </Panel>
           
@@ -677,7 +744,7 @@ export default class Patient extends Component {
               </Tree>
           </Panel>
 
-          <Panel header="诊 疗 计 划" key="4">
+          <Panel header="诊疗计划" key="4">
             <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>
               {planData&&planData.length>0 ? planData.map((item, index) => (
                 <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>

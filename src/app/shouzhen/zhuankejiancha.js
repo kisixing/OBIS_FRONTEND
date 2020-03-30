@@ -13,7 +13,7 @@ export default class extends Component {
 
   config() {
     const isShow = data => {
-      return !data || !data.filter || !data.filter(i=>['拒绝检查','已查'].indexOf(i.label) !== -1).length;
+      return !data || !data.filter || !data.filter(i=>['未查','已查'].indexOf(i.label) !== -1).length;
     };
     return {
       step: 1,
@@ -45,7 +45,7 @@ export default class extends Component {
                   // { span: 1 },
                   {
                     name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
-                    filter: entity => entity.add_FIELD_ckjc.length !== 1,
+                    filter: entity => entity.add_FIELD_ckjc.length !== 1 && !!entity.add_FIELD_ckjc,
                     onClick: (e, text, resolve) => {
                       Modal.confirm({
                         title: '您是否确认要删除该记录',
@@ -57,7 +57,7 @@ export default class extends Component {
                   },
                   {
                     name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
-                    filter: entity => entity.add_FIELD_ckjc.length === index + 1,
+                    filter: entity => entity.add_FIELD_ckjc.length === index + 1 || !entity.add_FIELD_ckjc,
                     onClick: (e, text, resolve) => this.handleChange(e, resolve)
                 },
                 ]

@@ -115,4 +115,16 @@ export default {
     batchAdd: function(relatedtype, relatedid, list) {
         return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/batchAdd', {userid: r.object.userid, relatedtype, relatedid, list }));
     },
+    /**
+     * 查询梅毒数据
+     */
+    searchSyp: function() {
+        return this.userId().then(r => myAxios.get(`/api/syphilisMng/selectList?userid=${r.object.userid}`));
+    },
+    /**
+     * 编辑或者新增梅毒数据
+     */
+    editSyp: function(data) {
+        return this.userId().then(r => myAxios.post(`/api/syphilisMng/edit`, { ...data, userid: r.object.userid}));
+    }
 };

@@ -175,11 +175,12 @@ export function closeWindow() {
     window.location.href = 'about:blank ';
   } else {//close chrome;It is effective when it is only one.
     window.opener = null;
-    window.open('', '_self');
+    window.open(' ', '_self');
     window.close();
 
     // window.location.href = 'about:blank';
     // window.close();
+    window.close();
   }
 }
 

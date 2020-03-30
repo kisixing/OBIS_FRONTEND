@@ -457,9 +457,9 @@ export default class FuzhenForm extends Component {
     const { allFormData, isFormChange, fzList } = this.state;
     let newEntity = initData;
     let ckpressure = initData.ckpressure.split('/');
+    let allReminderModal = [];
     const getReminder = () => {
       const lis = service.praseJSON(allFormData.lis);
-      let allReminderModal = [];
       const getAllReminder = (modalObj) => {
           let bool = true;
           fzList && fzList.map(item => {
@@ -514,9 +514,6 @@ export default class FuzhenForm extends Component {
         if (allReminderModal.length > 0) {
           const action = openMedicalAction(true);
           store.dispatch(action);
-        } else {
-          history.push('/sz');
-          common.closeWindow();
         }
       } else {
         const action = openMedicalAction(false);
@@ -542,6 +539,10 @@ export default class FuzhenForm extends Component {
         onSave(newEntity).then(() =>{
           this.setState({ error: {} }, () => {
             getReminder();
+            if (act && allReminderModal.length === 0) {
+              history.push('/sz');
+              common.closeWindow();
+            }
           })
           if(act) {
             service.shouzhen.uploadHisDiagnosis(2).then(res => { })
@@ -549,9 +550,6 @@ export default class FuzhenForm extends Component {
         });
       } else if(!valid) {
         message.error('必填项不能为空！');
-      } else if (!isFormChange && act) {
-        history.push('/sz');
-        common.closeWindow();
       }
     });
   }
@@ -564,7 +562,7 @@ export default class FuzhenForm extends Component {
     const handelShow = (isShow) => {
       this.setState({openMenzhen: false});
       if(isShow) {
-        service.shouzhen.makeAppointment(1, menzhenData).then(res => console.log(res))
+        service.shouzhen.makeAppointment(20, menzhenData).then(res => console.log(res))
       };
     }
     const panelChange = (date, dateString) => {
@@ -690,11 +688,11 @@ export default class FuzhenForm extends Component {
         {formRender(initData, this.formConfig(), this.handleChange.bind(this))}
         <div style={{ minHeight: '32px', textAlign: 'right' }}>
           <Button className="blue-btn" type="ghost" style={{ marginRight: '12px' }}
-            onClick={() => this.handleSave(document.querySelector(".fuzhen-form"))}>
+            onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form")), 100)}>
             保存
           </Button>
           <Button className="blue-btn" type="ghost"
-            onClick={() => this.handleSave(document.querySelector(".fuzhen-form"), "open")}>
+            onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form"), "open"), 100)}>
             保存并开立医嘱
           </Button>
         </div>

@@ -25,9 +25,9 @@ export default class extends Component {
         {
           columns: [
             { name: "userhnation[国籍]", type: "input", span: 5 },
-            { name: "userhroots[籍贯]", type: "input", span: 4 },
+            { name: "userhroots[籍贯]", type: "select", span: 4, options: baseData.jgOptions },
             { span: 2 },
-            { name: "userhpeople[民族]", type: "input", span: 6 },
+            { name: "userhpeople[民族]", type: "select", span: 6, options: baseData.mzOptions },
             { span: 1 },
             { name: "userhoccupation[职业]", type: "select", span: 6, options: baseData.zyOptions }
           ]

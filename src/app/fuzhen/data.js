@@ -354,6 +354,7 @@ export const planKey = () => [
 	{
 		title: '时间',
 		key: 'time',
+		format: (v) => v+'周后'
 	},
 	{
 		title: '孕周',
