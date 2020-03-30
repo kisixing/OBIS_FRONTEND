@@ -7,7 +7,6 @@ import options from '../../utils/cascader-address-options';
 export default class extends Component {
   static Title = '孕妇信息';
   static entityParse(obj = {}) {
-    console.log('object')
     return {
       ...obj.gravidaInfo,
       useridtype: JSON.parse(obj.gravidaInfo.useridtype)
@@ -59,17 +58,17 @@ export default class extends Component {
         },
         {
           columns: [
-            { name: "root[户口地址]", className: "h_24", span: 20, valid: "required",
+            { name: "root[户口地址]", className: "h_24", span: 17, valid: "required",
               type: [{ type: "districtSelect", span: 16 }, { type: "input", span: 8, placeholder: "请输入详细地址" }]
             },
-            { name: 'add_FIELD_coming_this_city[来本市时间]', type: 'date', span: 4, 
+            { name: 'add_FIELD_coming_this_city[来本市时间]', type: 'date', span: 4,
               filter: entity => entity.root && entity.root[0][1] !== '广州市'
             }
           ]
         },
         {
           columns: [
-            { name: "address[现居地址]", className: "h_24", span: 20, valid: "required",
+            { name: "address[现居地址]", className: "h_24", span: 17, valid: "required",
               type: [{ type: "districtSelect", span: 16 }, { type: "input", span: 8, placeholder: "请输入详细地址" }]
             }
           ]
