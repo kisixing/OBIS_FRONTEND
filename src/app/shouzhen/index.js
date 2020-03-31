@@ -40,7 +40,6 @@ export default class Patient extends Component {
             entity: { ...(tab.default || {}) }
         }));
         this.state = {
-            info: {},
             tabs: tabs,
             step: tabs[0].key, // 从0开始
             ...store.getState(),
@@ -48,14 +47,8 @@ export default class Patient extends Component {
         store.subscribe(this.handleStoreChange);
 
         this.componentWillUnmount = editors();
-
-        service.authorize(service.getQueryString('doctorId')).then(res => {
-            common.setCookie('docToken', res.object);
-            service.getuserDoc().then(res => this.setState({
-                info: res.object
-            }))
-            this.activeTab(this.state.step);
-        })
+  
+        this.activeTab(this.state.step);
     }
 
     handleStoreChange = () => {
@@ -63,33 +56,24 @@ export default class Patient extends Component {
     };
 
     activeTab(step) {
-        const { tabs } = this.state;
+        const { tabs, allFormData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
-        service.shouzhen.getForm(tab.key).then(res => {
-            const action = getAllFormDataAction(service.praseJSON(res.object));
-            store.dispatch(action);
+        if (!!allFormData) {
             // 如果想要使下面的数据转换放到对应的tab文件里面去，请实现entityParse这个方法，参考tab-0：yunfuxinxi.js这个文件
             const entityParse = tab.entityParse || (i => i);
-            tab.entity = entityParse(res.object);
+            tab.entity = entityParse(allFormData);
 
             if (tab.key === 'tab-0') {
-                tab.entity = service.praseJSON(res.object.pregnantInfo);
+                tab.entity = service.praseJSON(allFormData.pregnantInfo);
             } else if (tab.key === 'tab-1'){
-                tab.entity = service.praseJSON(res.object.hisInfo);
-                // tab.entity['operationHistory'] = !!res.object.operationHistory.operationHistorys ? res.object.operationHistory.operationHistorys : [];
+                tab.entity = service.praseJSON(allFormData.hisInfo);
             } else if (tab.key === 'tab-2') {
-                tab.entity = service.praseJSON({...res.object.menstruationMarriage, ...res.object.biography});
+                tab.entity = service.praseJSON({...allFormData.menstruationMarriage, ...allFormData.biography});
             } else if (tab.key === 'tab-3') {
                 tab.entity = [];
-                tab.entity['preghiss'] = !!res.object.gestation.preghiss ? res.object.gestation.preghiss : [];
-                // let pregNum = 1
-                // if(tab.entity['preghiss'].length > 0) {
-                //     pregNum = parseInt(tab.entity['preghiss'][tab.entity['preghiss'].length - 1].pregnum) + 1;
-                // }
-                // baseData.initYCData.pregnum = pregNum;
-                // tab.entity['preghiss'].push(baseData.initYCData);
+                tab.entity['preghiss'] = !!allFormData.gestation.preghiss ? allFormData.gestation.preghiss : [];
             } else if (tab.key === 'tab-4') {
-                tab.entity = service.praseJSON(res.object.checkUp);
+                tab.entity = service.praseJSON(allFormData.checkUp);
                 // 初始化BMI数值
                 tab.entity["ckbmi"] = common.getBMI( tab.entity["cktizh"], tab.entity["cksheng"] );
                 tab.entity.ckpressure = typeof tab.entity.ckpressure === "object" 
@@ -105,14 +89,14 @@ export default class Patient extends Component {
                 tab.entity.vascularMurmurOther = !!tab.entity.vascularMurmurOther ? tab.entity.vascularMurmurOther : [{"label": "无", "value": ""}];
                 tab.entity.ckfuzh = !!tab.entity.ckfuzh ? tab.entity.ckfuzh : [{"label": "-", "value": ""}];
             } else if (tab.key === 'tab-5') {
-                tab.entity = service.praseJSON(res.object.specialityCheckUp);
+                tab.entity = service.praseJSON(allFormData.specialityCheckUp);
                 let ckjc = tab.entity.add_FIELD_ckjc;
                 if(tab.entity.add_FIELD_ckjc === null){
                     ckjc = '';
                 }
                 tab.entity['add_FIELD_ckjc'] = (ckjc !== '' && typeof ckjc !== 'object') ? JSON.parse(ckjc) : ckjc;
             } else if (tab.key === 'tab-6') {
-                tab.entity = service.praseJSON(res.object.lis);
+                tab.entity = service.praseJSON(allFormData.lis);
                 if(tab.entity.ogtt[0]['label'] === "GDM") {
                     const data = {"value": {
                         "input0": tab.entity['add_FIELD_ogtt_gdm_empty'],
@@ -122,23 +106,16 @@ export default class Patient extends Component {
                     tab.entity['ogtt'] = [Object.assign(tab.entity.ogtt[0], data)];
                 }
             } else if (tab.key === 'tab-7') {
-                tab.entity = service.praseJSON(res.object.diagnosis); 
+                tab.entity = service.praseJSON(allFormData.diagnosis); 
             } else {
-                tab.entity = service.praseJSON(res.object);
+                tab.entity = service.praseJSON(allFormData);
             }
             console.log(tab.key, tab.entity);
             this.setState({ step }, () => {
                 const form = document.querySelector(".shouzhen");
                 fireForm(form, "valid");
             });
-        }).catch(e => { // TODO: 仅仅在mock时候用
-            service.praseJSON(tab.entity);
-            console.warn(e);
-            this.setState({ step }, () => {
-                const form = document.querySelector('.shouzhen');
-                fireForm(form, 'valid');
-            });
-        });
+        }
     }
 
     // 如果想把handleChange的逻辑移动到对应的tab页里面去，请参考tab-0：yunfuxinxi.js这个文件的handleChange
@@ -232,10 +209,8 @@ export default class Patient extends Component {
             // 数据提交前再对数据进行一些处理，请实现entitySave方法，请参考tab-0：yunfuxinxi.js这个文件
             const entitySave = tab.entitySave || (i=>i);
             tab.error = !valid;
-
             // 异步手动移除
-            setTimeout(hide, 2000);
-
+            setTimeout(hide, 300);
             if (this.change) {
                 // if(tab.key === 'tab-1') {
                 //     service.shouzhen.saveOperations(tab.key, entitySave(tab.entity)).then(() => {
@@ -306,14 +281,14 @@ export default class Patient extends Component {
 
                     service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
                         message.success('信息保存成功',3);
-                        // tab.entity.preghiss.push(baseData.initYCData);
+                        allFormData.gestation.preghiss = tab.entity.preghiss;
+                        const action = getAllFormDataAction(allFormData);
+                        store.dispatch(action);
                         valid && this.activeTab(key || next.key);
-                        service.getuserDoc().then(res => this.setState({
-                            info: res.object
-                        }, () => {
+                        service.getuserDoc().then(res => {
                             const action = getUserDocAction(res.object);
                             store.dispatch(action);
-                        }))
+                        })
                     });
                 }
                 if (tab.key === 'tab-4') {
@@ -333,16 +308,40 @@ export default class Patient extends Component {
                         valid && this.activeTab(key || next.key);
                         /*修改预产期-B超    G、P、妊娠 同步数据*/
                         if(tab.key === 'tab-0') {
-                            service.getuserDoc().then(res => this.setState({
-                                info: res.object
-                            }, () => {
+                            allFormData.pregnantInfo = tab.entity;
+                            const action = getAllFormDataAction(allFormData);
+                            store.dispatch(action);
+                            service.getuserDoc().then(res => {
                                 const action = getUserDocAction(res.object);
                                 store.dispatch(action);
-                            }))
+                            })
                         }
-                        // if(tab.key === 'tab-7' && type === 'open') {
-                        //     service.shouzhen.uploadHisDiagnosis(1).then(res => { })
-                        // }
+                        if(tab.key === 'tab-1') {
+                            allFormData.hisInfo = tab.entity;
+                            const action = getAllFormDataAction(allFormData);
+                            store.dispatch(action);
+                        }
+                        if(tab.key === 'tab-2') {
+                            allFormData.menstruationMarriage = tab.entity;
+                            allFormData.biography = tab.entity;
+                            const action = getAllFormDataAction(allFormData);
+                            store.dispatch(action);
+                        }
+                        if(tab.key === 'tab-4') {
+                            allFormData.checkUp = tab.entity;
+                            const action = getAllFormDataAction(allFormData);
+                            store.dispatch(action);
+                        }
+                        if(tab.key === 'tab-5') {
+                            allFormData.specialityCheckUp = tab.entity;
+                            const action = getAllFormDataAction(allFormData);
+                            store.dispatch(action);
+                        }
+                        if(tab.key === 'tab-6') {
+                            allFormData.lis = tab.entity;
+                            const action = getAllFormDataAction(allFormData);
+                            store.dispatch(action);
+                        }
                     });
                 }
             } else {
@@ -411,17 +410,18 @@ export default class Patient extends Component {
             if(tab.key === 'tab-7') {
                 service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(res => {
                     message.success('信息保存成功',3);
+                    allFormData.diagnosis = tab.entity;
+                    const action = getAllFormDataAction(allFormData);
+                    store.dispatch(action);
                     const idAction = getIdAction(res.object.ivisitId);
                     store.dispatch(idAction);
                     const whichAction = getWhichAction('sz');
                     store.dispatch(whichAction);
                     service.shouzhen.batchAdd(1, res.object.ivisitId, szList).then(res => {
-                        service.getuserDoc().then(res => this.setState({
-                            info: res.object
-                        }, () => {
+                        service.getuserDoc().then(res => {
                             const action = getUserDocAction(res.object);
                             store.dispatch(action);
-                        }))
+                        })
                     })
                 })
                 if(type === 'open') {
@@ -446,7 +446,7 @@ export default class Patient extends Component {
     }
 
     render() {
-        const { tabs, info, step } = this.state;
+        const { tabs, step, userDoc } = this.state;
         const printIvisit = () => {
             service.shouzhen.printPdfByFile().then(res => {
                 common.printPdf(res.object);
@@ -469,7 +469,7 @@ export default class Patient extends Component {
                     </span>
                   }>
                   <div className="bgWhite pad-mid " style={{ maxWidth: "1400px" }}>
-                    {step === key ? (<Content info={info} entity={{ ...entity }} onChange={(e, item) => this.handleChange(e, item, entity)}/>) : null}
+                    {step === key ? (<Content info={userDoc} entity={{ ...entity }} onChange={(e, item) => this.handleChange(e, item, entity)}/>) : null}
                   </div>
                 </Tabs.TabPane>
               ))}

@@ -10,7 +10,8 @@ import * as common from '../utils/common';
 import store from "./store";
 import { getUserDocAction, isFormChangeAction, getAlertAction, closeAlertAction, showTrialAction, showTrialCardAction,
          showPharAction, showPharCardAction, showReminderAction, closeReminderAction, getDiagnisisAction, isMeetPharAction,
-         checkedKeysAction, trailVisibleAction, showSypAction, szListAction, fzListAction,
+         checkedKeysAction, trailVisibleAction, showSypAction, szListAction, fzListAction, getAllFormDataAction, 
+         templateTree1Action
       } from "./store/actionCreators.js";
 import AppModal from './components/app-modal';
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
@@ -62,7 +63,7 @@ export default class App extends Component {
     common.setCookie('clinicCode', service.getQueryString('clinicCode'));
     service.authorize(service.getQueryString('doctorId')).then(res => {
       common.setCookie('docToken', res.object);
-      service.getuserDoc().then(res =>
+      service.getuserDoc().then(res => {
         this.setState({ ...res.object, loading: false, highriskEntity: { ...res.object }}, () => { 
           const action = getUserDocAction(res.object);
           store.dispatch(action);
@@ -75,7 +76,39 @@ export default class App extends Component {
             store.dispatch(action);
           });
         })
-      );
+
+        service.shouzhen.getAllForm().then(data => {
+          const action = getAllFormDataAction(service.praseJSON(data.object));
+          store.dispatch(action);
+
+          service.shouzhen.findTemplateTree(0).then(res => {
+            let keys = [];
+            res.object.data.map(item => {
+              if (item.selected === true) {
+                keys.push(String(item.id))
+              }
+            })
+            const action = checkedKeysAction(keys);
+            store.dispatch(action);
+            const treeAction = templateTree1Action(res.object.data);
+            store.dispatch(treeAction);
+            this.setState({ pharVisible1: res.object.vislble})
+            if(!res.object.vislble) { 
+              this.setCheckedKeys(data.object);
+            }
+          });
+        })
+      });
+
+      service.shouzhen.findTemplateTree(1).then(res => {
+        let keys = [];
+        res.object.data.map(item => {
+          if (item.selected === true) {
+            keys.push(String(item.id))
+          }
+        })
+        this.setState({templateTree2: res.object.data, pharVisible2: res.object.vislble, pharKeys: keys})
+      });
 
       service.shouzhen.findTemplateTree(2).then(res => {
         let keys = [];
@@ -89,33 +122,6 @@ export default class App extends Component {
         this.setState({templateTree: res.object.data, trialKeys: keys})
         const action = trailVisibleAction(res.object.vislble);
         store.dispatch(action);
-      });
-
-      service.shouzhen.findTemplateTree(0).then(res => {
-        let keys = [];
-        res.object.data.map(item => {
-          if (item.selected === true) {
-            keys.push(String(item.id))
-          }
-        })
-        const action = checkedKeysAction(keys);
-        store.dispatch(action);
-        this.setState({templateTree1: res.object.data, pharVisible1: res.object.vislble})
-        if(!res.object.vislble) { 
-          service.shouzhen.getAllForm().then(res => {
-            this.setCheckedKeys(res.object);
-          })
-        }
-      });
-
-      service.shouzhen.findTemplateTree(1).then(res => {
-        let keys = [];
-        res.object.data.map(item => {
-          if (item.selected === true) {
-            keys.push(String(item.id))
-          }
-        })
-        this.setState({templateTree2: res.object.data, pharVisible2: res.object.vislble, pharKeys: keys})
       });
 
       service.shouzhen.getList(1).then(res => {
@@ -172,7 +178,8 @@ export default class App extends Component {
     const diagnosis = params.diagnosisList;
     const bmi = params.checkUp.ckbmi;
     const age = params.gravidaInfo.userage;
-    const preghiss = params.gestation.preghiss || [];
+    const chanc = params.diagnosis.chanc;
+    const ivf = JSON.parse(params.pregnantInfo.add_FIELD_shouyun);
     const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);
 
     const getKey = (val) => {
@@ -185,8 +192,9 @@ export default class App extends Component {
 
     if(bmi > 30) checkedKeys.push(getKey("肥胖（BMI>30kg/m)"));
     if(age > 35) checkedKeys.push(getKey("年龄>35岁"));
-    if(preghiss.length >= 3) checkedKeys.push(getKey("产次≥3"));
-    if(!!xiyan && xiyan[0] && xiyan[0].label ===" 有") checkedKeys.push(getKey("吸烟"));
+    if(chanc >= 3) checkedKeys.push(getKey("产次≥3"));
+    if(!!ivf && ivf[0] && ivf[0].label === "IVF") checkedKeys.push(getKey("IVF/ART"));
+    if(!!xiyan && xiyan[0] && xiyan[0].label === "有") checkedKeys.push(getKey("吸烟"));
 
     if(checkedKeys.length > 0) {
       const action = isMeetPharAction(true);
@@ -455,7 +463,7 @@ export default class App extends Component {
     const {userDoc, checkedKeys, templateTree1, templateTree2, isShowPharModal, tuserweek, pharKeys } = this.state;
     let newTemplateTree1 = templateTree1;
     let newTemplateTree2 = templateTree2;
-    newTemplateTree1.forEach(item => {
+    newTemplateTree1 && newTemplateTree1.forEach(item => {
       if(checkedKeys.includes(String(item.id))) {
         item.selected = true;
       }

@@ -7,7 +7,7 @@ import service from '../../service';
 import Yfxx from './yunfuxinxi';
 import Zfxx from './zhangfuxinxi';
 import store from "../store";
-import { getAllFormDataAction, isFormChangeAction, isSaveAction } from "../store/actionCreators.js";
+import { getAllFormDataAction, getUserDocAction, isFormChangeAction, isSaveAction } from "../store/actionCreators.js";
 
 import editors from './editors';
 import "./index.less";
@@ -38,29 +38,27 @@ export default class Patient extends Component {
     };
 
     activeTab(step) {
-        const { tabs } = this.state;
+        const { tabs, allFormData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
-        service.shouzhen.getForm(tab.key).then(res => {
-            const action = getAllFormDataAction(service.praseJSON(res.object));
-            store.dispatch(action);
+        if (!!allFormData) {
             if (tab.key === 'tab-0') {
-                tab.entity = service.praseJSON(res.object.gravidaInfo);
-                const userconstant = res.object.gravidaInfo.userconstant;
-                const userconstantd = res.object.gravidaInfo.userconstantd;
+                tab.entity = service.praseJSON(allFormData.gravidaInfo);
+                const userconstant = allFormData.gravidaInfo.userconstant;
+                const userconstantd = allFormData.gravidaInfo.userconstantd;
                 tab.entity["root"] = {
                   0: userconstant ? userconstant.split(",") : [],
                   1: userconstantd ? userconstantd : ''
                 };
-                const useraddress = res.object.gravidaInfo.useraddress;
-                const useraddressd = res.object.gravidaInfo.useraddressd;
+                const useraddress = allFormData.gravidaInfo.useraddress;
+                const useraddressd = allFormData.gravidaInfo.useraddressd;
                 tab.entity["address"] = {
                   0: useraddress ? useraddress.split(",") : [],
                   1: useraddressd ? useraddressd : ''
                 };
             } else if (tab.key === 'tab-1') { 
-                tab.entity = service.praseJSON(res.object.husbandInfo);
-                const h_userconstant = res.object.husbandInfo.add_FIELD_h_userconstant;
-                const h_userconstantd = res.object.husbandInfo.add_FIELD_h_userconstantd;
+                tab.entity = service.praseJSON(allFormData.husbandInfo);
+                const h_userconstant = allFormData.husbandInfo.add_FIELD_h_userconstant;
+                const h_userconstantd = allFormData.husbandInfo.add_FIELD_h_userconstantd;
                 tab.entity["h_root"] = {
                   0: h_userconstant ? h_userconstant.split(",") : [],
                   1: h_userconstantd ? h_userconstantd : ''
@@ -72,18 +70,11 @@ export default class Patient extends Component {
               const form = document.querySelector(".shouzhen");
               fireForm(form, "valid");
             });
-        }).catch(e => {
-            service.praseJSON(tab.entity);
-            console.warn(e);
-            this.setState({ step }, () => {
-                const form = document.querySelector('.shouzhen');
-                fireForm(form, 'valid');
-            });
-        });
+        }
     }
 
     handleChange(e, { name, value, target }, entity) {
-        console.log(name, target, value, entity);
+        console.log(name, target, value, entity, '11');
         entity[name] = value;
         this.change = true;
         const action = isFormChangeAction(true);
@@ -95,7 +86,7 @@ export default class Patient extends Component {
     }
 
     handleSave(key, type) {
-        const { tabs, step } = this.state;
+        const { tabs, step, allFormData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step };
@@ -115,7 +106,7 @@ export default class Patient extends Component {
             tab.error = !valid;
 
             // 异步手动移除
-            setTimeout(hide, 2000);
+            setTimeout(hide, 300);
 
             if (this.change) {
                 if (tab.key === "tab-0") {
@@ -130,8 +121,22 @@ export default class Patient extends Component {
                     tab.entity.add_FIELD_h_userconstant = `${tab.entity.h_root[0].join(',')}`;
                     tab.entity.add_FIELD_h_userconstantd = `${tab.entity.h_root[1]}`;
                 }
-                service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
+                service.jiben.saveForm(tab.key, entitySave(tab.entity)).then(() => {
                     message.success('信息保存成功',3);
+                    if(tab.key === 'tab-0') {
+                        allFormData.gravidaInfo = tab.entity;
+                        const action = getAllFormDataAction(allFormData);
+                        store.dispatch(action);
+                        service.getuserDoc().then(res => {
+                            const action = getUserDocAction(res.object);
+                            store.dispatch(action);
+                      })
+                    }
+                    if(tab.key === 'tab-1') {
+                        allFormData.husbandInfo = tab.entity;
+                        const action = getAllFormDataAction(allFormData);
+                        store.dispatch(action);
+                    }
                     valid && this.activeTab(key || next.key);
                 });
             } else {
@@ -154,28 +159,11 @@ export default class Patient extends Component {
         });
     }
 
-    printPdf(url) {
-        var iframe = this._printIframe;
-        if (!this._printIframe) {
-            iframe = this._printIframe = document.createElement('iframe');
-            document.body.appendChild(iframe);
-
-            iframe.style.display = 'none';
-            iframe.onload = function() {
-            setTimeout(function() {
-                iframe.focus();
-                iframe.contentWindow.print();
-            }, 1);
-          };
-        }
-        iframe.src = service.getUrl(url);
-    }
-
     render() {
         const { tabs, step } = this.state;
         const printIvisit = () => {
             service.shouzhen.printPdfByFile().then(res => {
-                this.printPdf(res.object);
+                common.printPdf(res.object);
             })
         }
 

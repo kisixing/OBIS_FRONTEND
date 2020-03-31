@@ -1,7 +1,7 @@
 import { GET_USER_DOC, ALL_FORM_DATA, IS_FORM_CHANGE, CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, 
         SHOW_TRIAL_CARD, SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS, ALL_REMINDER_MODAL, CLOSE_REMINDER_MODAL, 
         SHOW_REMINDER_MODAL, OPEN_MEDICAL_ADVICE, GET_DIAGNOSIS, OPEN_YCQ, TRIAL_VISIBLE, IS_SAVE, SHOW_SYP_MODAL, 
-        GET_SZ_LIST, GET_FZ_LIST, GET_RELATEDID, GET_WHICH, } from './actionTypes.js'
+        GET_SZ_LIST, GET_FZ_LIST, GET_RELATEDID, GET_WHICH, TEMPLATE_TREE1 } from './actionTypes.js'
 const defaultState = {
   userDoc: {},
   allFormData: null,
@@ -13,6 +13,7 @@ const defaultState = {
   isShowPharCard: false,
   isMeetPhar: false,
   checkedKeys: [],
+  templateTree1: null,
   allReminderModal: [],
   isOpenMedicalAdvice: true,
   isShowReminderModal: false,
@@ -86,6 +87,11 @@ export default (state = defaultState, action) => {
     if(action.type === CHECKED_KEYS) {
       const newState = JSON.parse(JSON.stringify(state));
       newState.checkedKeys = action.arr;
+      return newState;
+    }
+    if(action.type === TEMPLATE_TREE1) {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.templateTree1 = action.list;
       return newState;
     }
     

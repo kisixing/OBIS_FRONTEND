@@ -331,23 +331,37 @@ export default class extends Component{
   }
 
   updateCheckedKeys(data) {
-    const { checkedKeys, szList } = this.state;
+    const { checkedKeys, szList, templateTree1 } = this.state;
     let newCheckedKeys = checkedKeys;
 
+    const getKey = (val) => {
+      let ID = '';
+      templateTree1&&templateTree1.map(item => {
+        if(item.name === val) ID = item.id;
+      })
+      return ID.toString();
+    }
+
     szList.map(item => {
-      if(item.data.indexOf("静脉曲张") !== -1 && !newCheckedKeys.includes('11')) newCheckedKeys.push('11');
-      if(item.data === "妊娠子痫前期" && !newCheckedKeys.includes('10')) newCheckedKeys.push("10");
-      if(item.data === "多胎妊娠" && !newCheckedKeys.includes('14')) newCheckedKeys.push("14");
+      if(item.data.indexOf("静脉曲张") !== -1 && !newCheckedKeys.includes(getKey("静脉曲张"))) {
+        newCheckedKeys.push(getKey("静脉曲张"));
+      } 
+      if(item.data === "妊娠子痫前期" && !newCheckedKeys.includes(getKey("本次妊娠子痫前期"))) {
+        newCheckedKeys.push(getKey("本次妊娠子痫前期"));
+      } 
+      if(item.data === "多胎妊娠" && !newCheckedKeys.includes(getKey("多胎妊娠"))) {
+        newCheckedKeys.push(getKey("多胎妊娠"));
+      } 
     })
 
-    if(data && data.indexOf("静脉曲张") !== -1 && newCheckedKeys.includes('11')) {
-      newCheckedKeys.splice(newCheckedKeys.indexOf('11'), 1)
+    if(data && data.indexOf("静脉曲张") !== -1 && newCheckedKeys.includes(getKey("静脉曲张"))) {
+      newCheckedKeys.splice(newCheckedKeys.indexOf(getKey("静脉曲张")), 1)
     }
-    if(data && data === "妊娠子痫前期" && newCheckedKeys.includes('10')) {
-      newCheckedKeys.splice(newCheckedKeys.indexOf('10'), 1)
+    if(data && data === "妊娠子痫前期" && newCheckedKeys.includes(getKey("本次妊娠子痫前期"))) {
+      newCheckedKeys.splice(newCheckedKeys.indexOf(getKey("本次妊娠子痫前期")), 1)
     }
-    if(data && data === "多胎妊娠" && newCheckedKeys.includes('14')) {
-      newCheckedKeys.splice(newCheckedKeys.indexOf('14'), 1)
+    if(data && data === "多胎妊娠" && newCheckedKeys.includes(getKey("多胎妊娠"))) {
+      newCheckedKeys.splice(newCheckedKeys.indexOf(getKey("多胎妊娠")), 1)
     }
 
     const action = checkedKeysAction(newCheckedKeys);

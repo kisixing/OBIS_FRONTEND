@@ -3,12 +3,21 @@ import React, { Component } from "react";
 import * as common from '../../utils/common';
 import formRender from '../../render/form';
 import * as baseData from './data';
+import service from '../../service';
+import store from "../store";
 
 export default class extends Component {
   static Title = '预产期';
   constructor(props) {
     super(props);
+    this.state = {
+      ...store.getState()
+    }
+    store.subscribe(this.handleStoreChange);
   }
+  handleStoreChange = () => {
+    this.setState(store.getState());
+  };
 
   config() {
     const { onChange } = this.props;
@@ -91,9 +100,16 @@ export default class extends Component {
 
   render(){
     const { entity, onChange } = this.props;
+    // 首个tab页作下特别处理
+    const { allFormData } = this.state;
+    let Entity = {};
+    if (!!allFormData) {
+      Entity = service.praseJSON(allFormData.pregnantInfo);
+    }
+
     return (
       <div className="width_7">
-        {formRender(entity, this.config(), onChange)}
+        {formRender(Entity, this.config(), onChange)}
       </div>
     )
   }

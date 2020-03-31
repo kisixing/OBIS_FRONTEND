@@ -8,6 +8,7 @@ import { default as yunqi } from './yunqi';
 import { default as xuetang } from './xuetang';
 import { default as yingxiang } from './yingxiang';
 import { default as chanhou } from './chanhou';
+import { default as jiben } from './jiben';
 
 let userId = null;
 let watchInfoList = [];
@@ -95,4 +96,9 @@ export default {
      * 产后所需API
      */
     chanhou: Object.assign(chanhou, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),
+
+    /**
+     * 产后所需API
+     */
+    jiben: Object.assign(jiben, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),
 }

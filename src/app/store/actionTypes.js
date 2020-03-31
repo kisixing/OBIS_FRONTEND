@@ -12,6 +12,7 @@ export const SHOW_PHAR_MODAL = 'show_phar_modal';
 export const SHOW_PHAR_CARD = 'show_phar_card';
 export const IS_MEET_PHAR = 'is_meet_phar';
 export const CHECKED_KEYS = 'checked_keys';
+export const TEMPLATE_TREE1 = 'template_tree1';
 
 export const SHOW_REMINDER_MODAL = 'show_reminder_modal';
 export const ALL_REMINDER_MODAL = 'all_reminder_modal';
