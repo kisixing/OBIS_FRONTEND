@@ -14,6 +14,8 @@ import { getUserDocAction, isFormChangeAction, getAlertAction, closeAlertAction,
          templateTree1Action
       } from "./store/actionCreators.js";
 import AppModal from './components/app-modal';
+// import Benyunqingkuang from "bundle-loader?lazy&name=shouzhen-benyunqingkuang!./shouzhen/benyunqingkuang";
+// import Guoqushi from "bundle-loader?lazy&name=shouzhen-guoqushi!./shouzhen/guoqushi";
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
 import Fuzhen from "bundle-loader?lazy&name=fuzhen!./fuzhen";
 import Yingxiang from "bundle-loader?lazy&name=yingxiang!./yingxiang";
@@ -27,6 +29,8 @@ import "./app.less";
 const ButtonGroup = Button.Group;
 
 const routers = [
+  // { name: "孕产期", path: "/sz/benyunqingkuang", component: bundle(Benyunqingkuang) },
+  // { name: "一般病史", path: "/sz/guoqushi", component: bundle(Guoqushi) },
   { name: "首检信息", path: "/sz", component: bundle(Shouzhen) },
   { name: "复诊记录", path: "/fz", component: bundle(Fuzhen) },
   // { name: "产后复诊记录", path: "/ch", component: bundle(Chanhou) },
@@ -179,8 +183,8 @@ export default class App extends Component {
     const bmi = params.checkUp.ckbmi;
     const age = params.gravidaInfo.userage;
     const chanc = params.diagnosis.chanc;
-    const ivf = JSON.parse(params.pregnantInfo.add_FIELD_shouyun);
-    const xiyan = JSON.parse(params.biography.add_FIELD_grxiyan);
+    const ivf = params.pregnantInfo.add_FIELD_shouyun;
+    const xiyan = params.biography.add_FIELD_grxiyan;
 
     const getKey = (val) => {
       let ID = '';
@@ -320,7 +324,6 @@ export default class App extends Component {
         store.dispatch(action2);
       }
       if (index === 0 && isOpenMedicalAdvice) {
-        this.props.history.push('/sz');
         common.closeWindow();
       }
 
@@ -345,7 +348,6 @@ export default class App extends Component {
       //     const action2 = showReminderAction(false);
       //     store.dispatch(action2);
       //   }else if(index === 0 && isOpenMedicalAdvice) {
-      //     this.props.history.push('/sz');
       //     common.closeWindow();
       //   }
       // })
@@ -353,7 +355,6 @@ export default class App extends Component {
     };
 
     const goToOpen = () => {
-      this.props.history.push('/sz');
       common.closeWindow();
     }
 
@@ -571,7 +572,7 @@ export default class App extends Component {
       service.getuserDoc().then(res => {
         this.setState({ ...res.object, highriskEntity: { ...res.object }})
       })
-      if (userDoc.infectious.indexOf('梅毒') !== -1) {
+      if (userDoc.infectious && userDoc.infectious.indexOf('梅毒') !== -1) {
         const action = showSypAction(true);
         store.dispatch(action);
       }
@@ -598,7 +599,13 @@ export default class App extends Component {
         </p>
         <div className="patient-Info_btnList">
           <ButtonGroup>
-            <Button className="danger-btn-5" onClick={()=>handleDanger()}>{userDoc.risklevel}</Button>
+            <Button className={userDoc.risklevel === 'Ⅴ' ? "danger-btn-5" : 
+                               userDoc.risklevel === 'Ⅳ' ? "danger-btn-4" :
+                               userDoc.risklevel === 'Ⅲ' ? "danger-btn-3" :
+                               userDoc.risklevel === 'Ⅱ' ? "danger-btn-2" : 'level-btn danger-btn-1'  }
+                    onClick={()=>handleDanger()}>
+                      {userDoc.risklevel}
+            </Button>
             {userDoc.infectious ? <Button className="danger-btn-infectin" onClick={()=>handleDanger()}>{userDoc.infectious}</Button> : null}
             {trialVisible || isShowTrialCard ? <Button className="danger-btn-trial" onClick={() => this.handleCardClick('trial')}>疤</Button> : null}
             {(pharVisible1 && checkedKeys.length > 0) || (pharVisible2 && pharKeys.length > 0) || isShowPharCard ? 

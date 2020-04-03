@@ -128,26 +128,7 @@ export default class Patient extends Component {
           param.ckshrinkpressure = res.object.systolic ? res.object.systolic : '';
           param.cktizh = res.object.weight;
           this.setState({ initData: {...initData, ...param} }, () => {
-            service.fuzhen.getRecentRvisit().then(res => {
-              res.object = res.object || [];
-              let bool = false;
-              res.object && res.object.map(item => {
-                if(item.checkdate == util.futureDate(0)) {
-                  bool = true;
-                  if (!!item.medicationPlan) item.medicationPlan = [{}];
-                  if (!!item.fetalCondition) item.fetalCondition = [{}, {}];
-                  if (!!item.fetalUltrasound) item.fetalUltrasound = [{}, {}];
-                  this.setState({
-                    hasRecord: true, 
-                    initData: service.praseJSON(item)
-                  })
-                }
-              })
-              if(!bool) {
-                res.object.push(this.state.initData);
-              } 
-              this.setState({recentRvisit: res.object})
-            })
+            this.getRecentList();
           });
         });
       }),
@@ -178,6 +159,38 @@ export default class Patient extends Component {
   onKeyUp() {
     const { diagnosi, isShowZhenduan } = this.state;
     if (!!diagnosi && isShowZhenduan) this.adddiagnosis();
+  }
+
+  getRecentList() {
+    const { initData } = this.state;
+    service.fuzhen.getRecentRvisit().then(res => {
+      res.object = res.object || [];
+      let bool = false;
+      res.object && res.object.map(item => {
+        if(item.checkdate == util.futureDate(0)) {
+          bool = true;
+          if (!!item.medicationPlan) item.medicationPlan = [{}];
+          if (!!item.fetalCondition) item.fetalCondition = [{}, {}];
+          if (!!item.fetalUltrasound) item.fetalUltrasound = [{}, {}];
+          this.setState({
+            hasRecord: true, 
+            initData: service.praseJSON(item)
+          })
+        }
+      })
+      if(!bool) {
+        const hours = new Date().getHours();
+        if (hours >= 12) {
+          initData.ckappointmentArea = {"0":"下","1":"午","label":"下午","describe":"下","value":'下午'};
+        } else {
+          initData.ckappointmentArea = {"0":"上","1":"午","label":"上午","describe":"上","value":'上午'};
+        }
+        this.setState({ initData }, () => {
+          res.object.push(initData);
+        })
+      } 
+      this.setState({recentRvisit: res.object})
+    })
   }
 
   adddiagnosis() {
@@ -603,7 +616,7 @@ export default class Patient extends Component {
   }
 
   renderLeft() {
-    const { reportStr, planData, collapseActiveKey, jyEntity, info, scArr, scKeys } = this.state;
+    const { reportStr, planData, collapseActiveKey, jyEntity, info, scArr, scKeys, loading } = this.state;
     /**
    * 检验报告结果
    */
@@ -745,14 +758,10 @@ export default class Patient extends Component {
       <div className="fuzhen-left ant-col-5">
         <Collapse defaultActiveKey={collapseActiveKey}>
           <Panel header={<span>诊 断<Button type="ghost" className="header-btn" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
-            {
-            // loading ?
-            //   <div style={{ height: '2em' }}><Spin />&nbsp;...</div> : this.renderZD()
-              this.renderZD()
-            }
+            { this.renderZD() }
           </Panel>
           <Panel header={<span>缺少检验报告<Button type="ghost" className="header-btn" size="small" onClick={e => handleOtherClick(e) }>其他</Button></span>} key="2">
-            <p className="pad-small">{reportStr || '无'}</p>
+            {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : <p className="pad-small">{reportStr || '无'}</p>}
           </Panel>
           
           <Panel className="cq-check" header="产前筛查和诊断" key="3">
@@ -763,12 +772,15 @@ export default class Patient extends Component {
 
           <Panel header="诊疗计划" key="4">
             <Timeline className="pad-small" pending={<Button type="ghost" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button>}>
-              {planData&&planData.length>0 ? planData.map((item, index) => (
-                <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
-                  <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
-                  <p className="font-16">{item.event}</p>
-                </Timeline.Item>
-              )) : <div>无</div>}
+              {loading 
+                ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> 
+                : planData&&planData.length>0 ? planData.map((item, index) => (
+                  <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
+                    <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
+                    <p className="font-16">{item.event}</p>
+                  </Timeline.Item>
+                )) : <div>无</div>
+              }
             </Timeline>
           </Panel>
         </Collapse>
@@ -781,7 +793,7 @@ export default class Patient extends Component {
 
   renderTable() {
     const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, 
-            hasRecord, isTwins, printData, userDoc, hasPrint } = this.state;
+            hasRecord, isTwins, printData, userDoc, hasPrint, loading, initData } = this.state;
     const handleMoreBtn = () => {
       service.fuzhen.getRvisitPage(10, pageCurrent).then(res => this.setState({
         recentRvisitAll: res.object.list,
@@ -812,20 +824,7 @@ export default class Patient extends Component {
       }
 
       service.fuzhen.saveRvisitForm(row).then(res => {
-        service.fuzhen.getRecentRvisit().then(res => {
-          let bool = false;
-          res.object&&res.object.map(item => {
-            if(item.checkdate == util.futureDate(0)) {
-              bool = true;
-              if (!!item.medicationPlan) item.medicationPlan = [{}];
-              if (!!item.fetalCondition) item.fetalCondition = [{}, {}];
-              if (!!item.fetalUltrasound) item.fetalUltrasound = [{}, {}];
-              this.setState({hasRecord: true, initData: service.praseJSON(item)})
-            }
-          })
-          if(!bool) res.object.push(this.state.initData);
-          this.setState({recentRvisit: res.object})
-        })
+        this.getRecentList();
       })
     }
 
@@ -882,7 +881,9 @@ export default class Patient extends Component {
         if(typeof item.ckappointmentArea === 'object') describe1 = item.ckappointmentArea.describe;
         if(typeof item.rvisitOsType === 'object') describe2 = item.rvisitOsType.describe;
         item.ckpressure = (!item.ckpressure || item.ckpressure === "") ?  item.ckshrinkpressure +'/'+ item.ckdiastolicpressure : item.ckpressure;
-        item.nextRvisitText = item.ckappointment.slice(5) + ' ' + describe1 + ' ' + describe2;
+        if (item.ckappointment) {
+          item.nextRvisitText = item.ckappointment.slice(5) + ' ' + describe1 + ' ' + describe2;
+        }
         
         // 胎心率、先露数据处理
         if(!item.cktaix && !item.ckxianl) {
@@ -1049,7 +1050,7 @@ export default class Patient extends Component {
           onEdit: true, hasRecord: hasRecord, isTwins: isTwins, tableLayout: "fixed", scroll: { x: 1100, y: 220 },
           iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onRowChange: handleSaveChange
         })}
-        {/* {!recentRvisit ? <div style={{ height: '4em' }}><Spin />&nbsp;...</div> : null} */}
+        {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
             {recentRvisitAll && allInitTable(recentRvisitAll, { className: "fuzhenTable2", scroll: { x: 1100 }, editable: true,
@@ -1129,7 +1130,6 @@ export default class Patient extends Component {
 
   saveForm(entity) {
     const { fzList } = this.state;
-    this.setState({ loading: true });
     const action = isFormChangeAction(false);
     store.dispatch(action);
     return new Promise(resolve => {
@@ -1152,7 +1152,7 @@ export default class Patient extends Component {
           this.setState({loading: false, recentRvisit: res.object, initData: newInitData})
         });
         resolve();
-      }, () => this.setState({ loading: false }));
+      });
     })
   }
 

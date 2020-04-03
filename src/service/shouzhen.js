@@ -126,5 +126,11 @@ export default {
      */
     editSyp: function(data) {
         return this.userId().then(r => myAxios.post(`/api/syphilisMng/edit`, { ...data, userid: r.object.userid}));
-    }
+    },
+    /**
+     * 更改末次月经获取孕产期数据
+     */
+    findCkzdataByUserid: function(time) {
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/findCkzdataByUserid?userid=${r.object.userid}&gesmoc=${time}`));
+    },
 };

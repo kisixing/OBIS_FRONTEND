@@ -25,7 +25,15 @@ export function select({
   const handleChange = e => {
     // 新增支持多选
     if(Object.prototype.toString.call(e) === '[object Array]'){
-      let r = e.map(v => options.filter(o=>o.value==v).pop());
+      let r;
+      if (e[e.length - 1] === '无') {
+        r = options.filter(o => o.value === '无').pop();
+      } else if(e[0] === '无' && e.length > 1) {
+        e = e.filter(o=>o !== '无');
+        r = e.map(v => options.filter(o=>o.value==v).pop());
+      } else {
+        r = e.map(v => options.filter(o=>o.value==v).pop());
+      }
       onChange(e, r).then(()=>onBlur({checkedChange:true}));
     }else{
       // 一般对象
@@ -34,7 +42,8 @@ export function select({
   };
   const handleSearch = e => {
     if(e) {
-      autoInsert ? onChange(e, e).then(() =>  {}) : null;  
+      let data = {"label": e, "value": e};
+      autoInsert ? onChange(e, data).then(() =>  {}) : null;  
     }
   };
   const handleBlur = e => {

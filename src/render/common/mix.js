@@ -117,7 +117,7 @@ export function checkinput$x(
   count,
   ...args
 ) {
-  const optionList = unselect?[{label:unselect,value:'unselect',unselect:true}].concat(options):options;
+  const optionList = unselect ? [{label: unselect, value: unselect, unselect: true}].concat(options) : options;
   // const optionList = unselect
   //   ? options.concat([
   //       { label: unselect, value: "unselect", unselect: true }

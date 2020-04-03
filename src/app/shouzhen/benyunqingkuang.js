@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-
-import * as common from '../../utils/common';
 import formRender from '../../render/form';
 import * as baseData from './data';
 import service from '../../service';
@@ -25,38 +23,14 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            {
-              name: "gesmoc[末次月经]",
-              type: "date",
-              span: 6,
-              valid: "required"
-            },
-            {
-              name: "gesexpect[预产期-日期]",
-              type: "date",
-              span: 6,
-              valid: "required"
-            },
-            {
-              name: "gesexpectrv[预产期-B超]",
-              type: "date",
-              span: 6,
-              valid: "required"
-            }
+            { name: "gesmoc[末次月经]", type: "date", span: 6, valid: "required" },
+            { name: "gesexpect[预产期-日期]", type: "date", span: 6, valid: "required" },
+            { name: "gesexpectrv[预产期-B超]", type: "date", span: 6, valid: "required" }
           ]
         },
         {
           columns: [
-            {
-              name: "ckzdate[早孕-B超]",
-              type: "date",
-              span: 6,
-              onChange: (e, { value }) =>
-                onChange(e, {
-                  name: "ckztingj",
-                  value: common.countWeek(value)
-                })
-            },
+            { name: "ckzdate[早孕-B超]", type: "date", span: 6 },
             { name: "ckztingj(周)[停@@经]", type: "input", span: 4 },
             { name: "ckzcrl(mm)[CRL]", type: "input", span: 4 },
             { name: "ckzbpd(mm)[NT]", type: "input", span: 4 },
@@ -71,14 +45,7 @@ export default class extends Component {
         // { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required',options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
         {
           columns: [
-            {
-              name: "add_FIELD_shouyun[受孕方式]",
-              type: "checkinput-4",
-              span: 14,
-              valid: "required",
-              radio: true,
-              options: baseData.syfsOptions
-            }
+            { name: "add_FIELD_shouyun[受孕方式]",  type: "checkinput-4", span: 14, valid: "required", radio: true, options: baseData.syfsOptions }
           ]
         }
         // {
@@ -100,16 +67,9 @@ export default class extends Component {
 
   render(){
     const { entity, onChange } = this.props;
-    // 首个tab页作下特别处理
-    const { allFormData } = this.state;
-    let Entity = {};
-    if (!!allFormData) {
-      Entity = service.praseJSON(allFormData.pregnantInfo);
-    }
-
     return (
       <div className="width_7">
-        {formRender(Entity, this.config(), onChange)}
+        {formRender(entity, this.config(), onChange)}
       </div>
     )
   }

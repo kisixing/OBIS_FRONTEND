@@ -143,49 +143,31 @@ class FormItem extends Component {
   }
 
   componentDidMount() {
+    const { name } = this.state;
     this.componentWillUnmount = AddResize(() => this.resize())
     this.refs.formItem.fireReact = (type, ...args) => {
-      if(this.refs.formItem.className.indexOf('ckpressure') !== -1 ||
-      this.refs.formItem.className.indexOf('add_FIELD_pulse') !== -1 ||
-      this.refs.formItem.className.indexOf('cksheng') !== -1 || 
-      this.refs.formItem.className.indexOf('ckbmi') !== -1) {
-        return new Promise(resolve => {
-          switch (type) {
-            case 'valid':
-              this.onBlur(...args).then(resolve)
-              break;
-            case 'reset':
-              this.setState({
-                dirty: false,
-                error: ''
-              }, resolve);
-              break;
-          }
-        });
-      }
+      return new Promise(resolve => {
+        switch (type) {
+          case 'valid':
+            this.onBlur(...args).then(resolve)
+            break;
+          case 'reset':
+            this.setState({
+              dirty: false,
+              error: ''
+            }, resolve);
+            break;
+        }
+      });
+    }
+    if(name === 'ckpressure' || name === 'add_FIELD_pulse'|| name === 'cksheng' ||  name === 'ckbmi') {
+      this.onBlur();
     }
   }
 
   componentWillReceiveProps(newProps) {
-    const { name, isFormChange, isSave } = this.state;
+    const { name, isFormChange } = this.state;
     const { entity, width } = this.props;
-    if(isFormChange || isSave) {
-      this.refs.formItem.fireReact = (type, ...args) => {
-        return new Promise(resolve => {
-          switch (type) {
-            case 'valid':
-              this.onBlur(...args).then(resolve)
-              break;
-            case 'reset':
-              this.setState({
-                dirty: false,
-                error: ''
-              }, resolve);
-              break;
-          }
-        });
-      }
-    }
     
     if (!entity || (JSON.stringify(entity && entity[name]) !== JSON.stringify(newProps.entity[name]))) {
       this.setState({

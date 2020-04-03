@@ -21,7 +21,7 @@ import Zdcl from './zhenduanchuli';
 
 import store from "../store";
 import { getUserDocAction, getAllFormDataAction, isFormChangeAction, allReminderAction, showReminderAction, openMedicalAction,
-         isSaveAction, getIdAction, getWhichAction,
+         getIdAction, getWhichAction,
     } from "../store/actionCreators.js";
 
 import * as baseData from './data';
@@ -111,29 +111,36 @@ export default class Patient extends Component {
                 tab.entity = service.praseJSON(allFormData);
             }
             console.log(tab.key, tab.entity);
-            this.setState({ step }, () => {
-                const form = document.querySelector(".shouzhen");
-                fireForm(form, "valid");
-            });
+            this.setState({ step });
         }
     }
 
     // 如果想把handleChange的逻辑移动到对应的tab页里面去，请参考tab-0：yunfuxinxi.js这个文件的handleChange
     handleChange(e, { name, value, target }, entity) {
         console.log(name, target, value, entity);
-        entity[name] = value
+        entity[name] = value;
         switch (name) {
-            case 'dopupt':
-                entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],value);
-                break;
+            // case 'dopupt':
+            //     entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],value);
+            //     break;
             case 'ckzdate':
                 entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],value);
                 break;
             case 'gesmoc':
                 entity['gesexpect'] = common.GetExpected(value);
                 entity['gesexpectrv'] = common.GetExpected(value);
-                entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],entity['dopupt']);
-                entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],entity['ckzdate']);
+                // entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],entity['dopupt']);
+                service.shouzhen.findCkzdataByUserid(value).then(res => {
+                    if (!!res.object.ckzdate) entity['ckzdate'] = res.object.ckzdate;
+                    if (!!res.object.ckzcrl) entity['ckzcrl'] = res.object.ckzcrl;
+                    if (!!res.object.ckzbpd) entity['ckzbpd'] = res.object.ckzbpd;
+                    if (!!res.object.ckzweek) entity['ckzweek'] = res.object.ckzweek;
+                    if (!!res.object.ckztingj) {
+                        entity['ckztingj'] = res.object.ckztingj;
+                    } else {
+                        entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],entity['ckzdate']);
+                    }
+                })
                 break;
             // 孕前体重
             case 'cktizh':
@@ -166,10 +173,15 @@ export default class Patient extends Component {
                     var item = entity['preghiss'].pop();
                     entity['preghiss'].splice(-1, 0, item);
                 }
-            break; 
+                break; 
             case 'nextRvisitWeek':
                 entity['xiacsfdate'] = util.futureDate(value.value);
-            break; 
+                break; 
+            case 'xiacsfdate':
+                entity['nextRvisitWeek'] = '';
+                break; 
+            default:
+                break;
         }
         this.change = true;
         const action = isFormChangeAction(true);
@@ -185,8 +197,6 @@ export default class Patient extends Component {
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
-        const action = isSaveAction(true);
-        store.dispatch(action);
         let isJump = false;
         if (key) {
             isJump = key.slice(-1) >= step.slice(-1) ? false : true;
@@ -305,7 +315,6 @@ export default class Patient extends Component {
                 if (tab.key !== 'tab-3' && tab.key !== 'tab-7') {
                     service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
                         message.success('信息保存成功',3);
-                        valid && this.activeTab(key || next.key);
                         /*修改预产期-B超    G、P、妊娠 同步数据*/
                         if(tab.key === 'tab-0') {
                             allFormData.pregnantInfo = tab.entity;
@@ -342,6 +351,7 @@ export default class Patient extends Component {
                             const action = getAllFormDataAction(allFormData);
                             store.dispatch(action);
                         }
+                        valid && this.activeTab(key || next.key);
                     });
                 }
             } else {
@@ -438,21 +448,24 @@ export default class Patient extends Component {
                     this.activeTab(key);
                 } else {
                     this.forceUpdate();
-                }  
-                const action = isSaveAction(false);
-                store.dispatch(action);
+                }
             }
         });
     }
 
     render() {
-        const { tabs, step, userDoc } = this.state;
+        const { tabs, step, userDoc, allFormData } = this.state;
         const printIvisit = () => {
             service.shouzhen.printPdfByFile().then(res => {
                 common.printPdf(res.object);
             })
         }
-
+        
+        // 首个tab页作下特别处理
+        if (!!allFormData && JSON.stringify(tabs[0].entity) === "{}") {
+            tabs[0].entity = allFormData.pregnantInfo;
+        }
+        
         return (
           <Page className="shouzhen pad-T-mid">
             <Button type="primary" className="top-save-btn" size="small" onClick={() => this.handleSave(step, 'save')}>保存</Button>

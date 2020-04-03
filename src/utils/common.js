@@ -2,7 +2,6 @@ import service from '../service';
 
 export function GetExpected(gesmoc) {
   var tmpdate = new Date(gesmoc).getTime();
-  console.log(tmpdate);
   tmpdate = tmpdate + 280 * 24 * 60 * 60 * 1000;
   tmpdate = new Date(tmpdate);
   var new_y = tmpdate.getFullYear();
@@ -25,7 +24,6 @@ export function GetWeek(expected, today) {
   var day = "";
   if (date3 > 0) {
       var days = 280 - Math.floor(date3 / (24 * 3600 * 1000));
-      console.log(days);
       if (days > 0) {
           week = Math.floor((days / 7));
           day = Math.floor((days % 7));
@@ -174,13 +172,17 @@ export function closeWindow() {
   } else if (navigator.userAgent.indexOf("Firefox") > 0) {//close firefox
     window.location.href = 'about:blank ';
   } else {//close chrome;It is effective when it is only one.
-    window.opener = null;
-    window.open(' ', '_self');
-    window.close();
+    const len = window.history.length - 1;
+    window.history.go(-len);
+
+    window.open(location, '_self').close();
+
+    // window.opener = null;
+    // window.open(' ', '_self');
+    // window.close();
 
     // window.location.href = 'about:blank';
     // window.close();
-    window.close();
   }
 }
 

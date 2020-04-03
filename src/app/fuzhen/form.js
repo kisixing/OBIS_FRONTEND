@@ -440,6 +440,11 @@ export default class FuzhenForm extends Component {
       case 'ckappointmentWeek':
         data.ckappointment = util.futureDate(value.value);
         break;
+      case 'ckappointment':
+        data.ckappointmentWeek = '';
+        break;
+      default:
+        break;
     }
     onChange(e, data);
     this.setState({
@@ -540,7 +545,6 @@ export default class FuzhenForm extends Component {
           this.setState({ error: {} }, () => {
             getReminder();
             if (act && allReminderModal.length === 0) {
-              history.push('/sz');
               common.closeWindow();
             }
           })
@@ -666,7 +670,7 @@ export default class FuzhenForm extends Component {
     const treeNodes = initTree(0);
 
     return (
-      <Modal title="处理模板" closable visible={openTemplate} width={800} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
+      <Modal title="处理模板" closable visible={openTemplate} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
         <Row>
           <Col span={12}>
             <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
@@ -699,7 +703,7 @@ export default class FuzhenForm extends Component {
         {openTemplate && this.renderTreatment()}
         {this.renderMenZhen()}
         {this.renderAdviceModal()}
-        {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />}
+        {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />} */}
       </div>
     );
   }

@@ -7,7 +7,7 @@ import service from '../../service';
 import Yfxx from './yunfuxinxi';
 import Zfxx from './zhangfuxinxi';
 import store from "../store";
-import { getAllFormDataAction, getUserDocAction, isFormChangeAction, isSaveAction } from "../store/actionCreators.js";
+import { getAllFormDataAction, getUserDocAction, isFormChangeAction } from "../store/actionCreators.js";
 
 import editors from './editors';
 import "./index.less";
@@ -66,10 +66,7 @@ export default class Patient extends Component {
                 tab.entity['add_FIELD_husband_drink_data'] = { 0: tab.entity["add_FIELD_husband_drink_type"], 1: tab.entity['add_FIELD_husband_drink'] }
             }
             console.log(tab.key, tab.entity);
-            this.setState({ step }, () => {
-              const form = document.querySelector(".shouzhen");
-              fireForm(form, "valid");
-            });
+            this.setState({ step });
         }
     }
 
@@ -90,8 +87,6 @@ export default class Patient extends Component {
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step };
-        const action = isSaveAction(true);
-        store.dispatch(action);
         let isJump = false;
         if (key) {
             isJump = key.slice(-1) > step.slice(-1) ? false : true;
@@ -116,7 +111,7 @@ export default class Patient extends Component {
                     tab.entity.useraddressd = `${tab.entity.address[1]}`;
                 }
                 if (tab.key === 'tab-1') {
-                    tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink_data[0] || '';
+                    tab.entity.add_FIELD_husband_drink_type = tab.entity.add_FIELD_husband_drink_data[0] || [];
                     tab.entity.add_FIELD_husband_drink = tab.entity.add_FIELD_husband_drink_data[1] || '';
                     tab.entity.add_FIELD_h_userconstant = `${tab.entity.h_root[0].join(',')}`;
                     tab.entity.add_FIELD_h_userconstantd = `${tab.entity.h_root[1]}`;
@@ -153,8 +148,6 @@ export default class Patient extends Component {
                 } else {
                     this.forceUpdate();
                 }
-                const action = isSaveAction(false);
-                store.dispatch(action);
             }
         });
     }

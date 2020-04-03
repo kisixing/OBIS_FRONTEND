@@ -131,13 +131,39 @@ export default class Patient extends Component {
     // })
     service.yunqi.getbmi().then(res => {
       if(res.object.bmi < 18.5){
-        this.setState({bmiIntro: '体重过轻,建议孕期体重增长目标:12.5~18kg'})
+        this.setState({
+          bmiIntro: '体重过轻,建议孕期体重增长目标:12.5~18kg',
+          bmiDashLine1: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 12.5 }],
+          bmiDashLine2: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 3 }, { 'x': 39, 'y': 18 }],
+          bmiDashPoints: [
+            { 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 12.5 },
+            { 'x': 39, 'y': 18 }, { 'x': 12, 'y': 3 }, { 'x': 0, 'y': 0 }
+          ],
+        })
       }else if(res.object.bmi < 25){
-        this.setState({bmiIntro: '体重正常，建议增长体重增长目标11.5~16kg'})
+        this.setState({
+          bmiIntro: '体重正常，建议增长体重增长目标11.5~16kg'
+        })
       }else if(res.object.bmi < 30){
-        this.setState({bmiIntro: '体重超重，建议增长体重增长目标7~11.5kg'})
+        this.setState({
+          bmiIntro: '体重超重，建议增长体重增长目标7~11.5kg',
+          bmiDashLine1: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 7 }],
+          bmiDashLine2: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 3 }, { 'x': 39, 'y': 11.5 }],
+          bmiDashPoints: [
+            { 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 7 },
+            { 'x': 39, 'y': 11.5 }, { 'x': 12, 'y': 3 }, { 'x': 0, 'y': 0 }
+          ],
+        })
       }else if(res.object.bmi >= 30){
-        this.setState({bmiIntro: '体重肥胖，建议增长体重增长目标5~9kg'})
+        this.setState({
+          bmiIntro: '体重肥胖，建议增长体重增长目标5~9kg',
+          bmiDashLine1: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 5 }],
+          bmiDashLine2: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 3 }, { 'x': 39, 'y': 9 }],
+          bmiDashPoints: [
+            { 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 5 },
+            { 'x': 39, 'y': 9 }, { 'x': 12, 'y': 3 }, { 'x': 0, 'y': 0 }
+          ],
+        })
       }
 
       this.setState({
