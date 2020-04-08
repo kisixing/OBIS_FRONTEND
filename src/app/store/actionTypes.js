@@ -33,3 +33,5 @@ export const GET_SZ_LIST = 'get_sz_list';
 export const GET_FZ_LIST = 'get_fz_list';
 export const GET_RELATEDID = 'get_relatedid';
 export const GET_WHICH = 'get_which';
+
+export const SET_EMPTY_DATA = 'set_empty_data';

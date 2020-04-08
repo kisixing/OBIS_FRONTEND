@@ -71,9 +71,9 @@ export default class FuzhenForm extends Component {
     /*关联表单操作*/
     const searchParam = {
       'diabetes': {
-        'diagKeyword': ['糖尿病'],
-        'digWord': [],
-        'signWord': ['内分泌疾病']
+        'diagKeyword': ['糖尿病'],    //  诊断关键词
+        'digWord': [],                //  诊断
+        'signWord': ['内分泌疾病']    //  诊断标记
       },
       'hypertension': {
         'diagKeyword': ['高血压', '子痫', '肾炎', '肾脏', '肾病', '红斑狼疮'],
@@ -458,7 +458,7 @@ export default class FuzhenForm extends Component {
   }
 
   handleSave(form, act) {
-    const { onSave, initData, history } = this.props;
+    const { onSave, initData } = this.props;
     const { allFormData, isFormChange, fzList } = this.state;
     let newEntity = initData;
     let ckpressure = initData.ckpressure.split('/');
@@ -548,9 +548,9 @@ export default class FuzhenForm extends Component {
               common.closeWindow();
             }
           })
-          if(act) {
+          // if(act) {
             service.shouzhen.uploadHisDiagnosis(2).then(res => { })
-          }
+          // }
         });
       } else if(!valid) {
         message.error('必填项不能为空！');
@@ -695,10 +695,10 @@ export default class FuzhenForm extends Component {
             onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form")), 100)}>
             保存
           </Button>
-          <Button className="blue-btn" type="ghost"
+          {/* <Button className="blue-btn" type="ghost"
             onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form"), "open"), 100)}>
             保存并开立医嘱
-          </Button>
+          </Button> */}
         </div>
         {openTemplate && this.renderTreatment()}
         {this.renderMenZhen()}

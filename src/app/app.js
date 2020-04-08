@@ -85,48 +85,11 @@ export default class App extends Component {
           const action = getAllFormDataAction(service.praseJSON(data.object));
           store.dispatch(action);
 
-          service.shouzhen.findTemplateTree(0).then(res => {
-            let keys = [];
-            res.object.data.map(item => {
-              if (item.selected === true) {
-                keys.push(String(item.id))
-              }
-            })
-            const action = checkedKeysAction(keys);
-            store.dispatch(action);
-            const treeAction = templateTree1Action(res.object.data);
-            store.dispatch(treeAction);
-            this.setState({ pharVisible1: res.object.vislble})
-            if(!res.object.vislble) { 
-              this.setCheckedKeys(data.object);
-            }
-          });
+          this.getPharData();
         })
       });
 
-      service.shouzhen.findTemplateTree(1).then(res => {
-        let keys = [];
-        res.object.data.map(item => {
-          if (item.selected === true) {
-            keys.push(String(item.id))
-          }
-        })
-        this.setState({templateTree2: res.object.data, pharVisible2: res.object.vislble, pharKeys: keys})
-      });
-
-      service.shouzhen.findTemplateTree(2).then(res => {
-        let keys = [];
-        res.object.data.map(item => {
-          item.child.map(subItem => {
-            if (subItem.note == 'true') {
-              keys.push(String(subItem.id))
-            }
-          })
-        })
-        this.setState({templateTree: res.object.data, trialKeys: keys})
-        const action = trailVisibleAction(res.object.vislble);
-        store.dispatch(action);
-      });
+      this.getTrialData();
 
       service.shouzhen.getList(1).then(res => {
         res.object && res.object.map(item => {
@@ -175,6 +138,51 @@ export default class App extends Component {
     this.componentWillUnmount = service.watchInfo(info =>
       this.setState(info.object)
     );
+  }
+
+  getPharData() {
+    service.shouzhen.findTemplateTree(0).then(res => {
+      let keys = [];
+      res.object.data.map(item => {
+        if (item.selected === true) {
+          keys.push(String(item.id))
+        }
+      })
+      const action = checkedKeysAction(keys);
+      store.dispatch(action);
+      const treeAction = templateTree1Action(res.object.data);
+      store.dispatch(treeAction);
+      this.setState({ pharVisible1: res.object.vislble})
+      if(!res.object.vislble) { 
+        this.setCheckedKeys(data.object);
+      }
+    });
+
+    service.shouzhen.findTemplateTree(1).then(res => {
+      let keys = [];
+      res.object.data.map(item => {
+        if (item.selected === true) {
+          keys.push(String(item.id))
+        }
+      })
+      this.setState({templateTree2: res.object.data, pharVisible2: res.object.vislble, pharKeys: keys})
+    });
+  }
+
+  getTrialData() {
+    service.shouzhen.findTemplateTree(2).then(res => {
+      let keys = [];
+      res.object.data.map(item => {
+        item.child.map(subItem => {
+          if (subItem.note == 'true') {
+            keys.push(String(subItem.id))
+          }
+        })
+      })
+      this.setState({templateTree: res.object.data, trialKeys: keys})
+      const action = trailVisibleAction(res.object.vislble);
+      store.dispatch(action);
+    });
   }
 
   setCheckedKeys(params) {
@@ -390,9 +398,11 @@ export default class App extends Component {
     const pharAction = showPharAction(true);
     switch(name) {
       case 'trial':
+        this.getTrialData();
         store.dispatch(trialAction);
         break;
       case 'phar':
+        this.getPharData();
         store.dispatch(pharAction);
         break;
     }
@@ -604,7 +614,7 @@ export default class App extends Component {
                                userDoc.risklevel === 'Ⅲ' ? "danger-btn-3" :
                                userDoc.risklevel === 'Ⅱ' ? "danger-btn-2" : 'level-btn danger-btn-1'  }
                     onClick={()=>handleDanger()}>
-                      {userDoc.risklevel}
+              {!!userDoc.risklevel ? userDoc.risklevel : 'Ⅰ'}
             </Button>
             {userDoc.infectious ? <Button className="danger-btn-infectin" onClick={()=>handleDanger()}>{userDoc.infectious}</Button> : null}
             {trialVisible || isShowTrialCard ? <Button className="danger-btn-trial" onClick={() => this.handleCardClick('trial')}>疤</Button> : null}

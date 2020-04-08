@@ -1158,13 +1158,12 @@ export default class Patient extends Component {
 
   render() {
     const { fzList, relatedObj, initData } = this.state;
-    const { history } = this.props;
     return (
       <Page className="fuzhen font-16 ant-col">
         <div className="bgDOM"></div>
         <div className="fuzhen-right ant-col-19 pad-mid">
           {this.renderTable()}
-          <FuzhenForm initData={initData} diagList={fzList} relatedObj={relatedObj} history={ history }
+          <FuzhenForm initData={initData} diagList={fzList} relatedObj={relatedObj}
             onSave={data => this.saveForm(data)} onChange={this.handleChange.bind(this)} onChangeInfo={this.onChangeInfo.bind(this)}/>
           <p className="pad_ie">
             &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>

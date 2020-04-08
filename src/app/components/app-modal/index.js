@@ -38,12 +38,14 @@ export default class RegForm extends Component {
     const { allFormData } = this.state;
     if (!!param) {
       all[value] = util.getWeek(40, util.countWeek(allFormData.pregnantInfo.gesexpectrv, param));
+    } else {
+      all[value] = '';
     }
   }
 
   // 梅毒表单
   sypFormConfig() {
-    const { sypFormEntity} = this.state;
+    const { sypFormEntity } = this.state;
     return {
       rows: [
         {

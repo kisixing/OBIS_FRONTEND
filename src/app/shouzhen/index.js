@@ -21,7 +21,7 @@ import Zdcl from './zhenduanchuli';
 
 import store from "../store";
 import { getUserDocAction, getAllFormDataAction, isFormChangeAction, allReminderAction, showReminderAction, openMedicalAction,
-         getIdAction, getWhichAction,
+         getIdAction, getWhichAction, setEmptyAction
     } from "../store/actionCreators.js";
 
 import * as baseData from './data';
@@ -42,6 +42,7 @@ export default class Patient extends Component {
         this.state = {
             tabs: tabs,
             step: tabs[0].key, // 从0开始
+            requiredData: baseData.requiredForm,
             ...store.getState(),
         }
         store.subscribe(this.handleStoreChange);
@@ -117,8 +118,10 @@ export default class Patient extends Component {
 
     // 如果想把handleChange的逻辑移动到对应的tab页里面去，请参考tab-0：yunfuxinxi.js这个文件的handleChange
     handleChange(e, { name, value, target }, entity) {
+        const { step } = this.state;
         console.log(name, target, value, entity);
         entity[name] = value;
+        this.updateEmptyData(step, name, value);
         switch (name) {
             // case 'dopupt':
             //     entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],value);
@@ -188,18 +191,28 @@ export default class Patient extends Component {
         store.dispatch(action);
 
         // 避免200ms内界面渲染多次
-        clearTimeout(this.timeout);
-        this.timeout = setTimeout(() => this.forceUpdate(), 200);
+        // clearTimeout(this.timeout);
+        // this.timeout = setTimeout(() => this.forceUpdate(), 200);
     }
 
     handleSave(key, type) {
-        const { tabs, step, allFormData, szList } = this.state;
+        const { tabs, step, allFormData, szList, emptyData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
         let isJump = false;
+        let emptyTab = '';
         if (key) {
-            isJump = key.slice(-1) >= step.slice(-1) ? false : true;
+            const keyNum = parseInt(key.slice(-1));
+            const stepNum = parseInt(step.slice(-1));
+            isJump = keyNum >= stepNum ? false : true;
+            if (!isJump && keyNum > stepNum + 1) {
+                for (let i = stepNum + 1; i < keyNum; i++) {
+                    if (emptyData[`tab-${i}`].length > 1) {
+                        // emptyTab += emptyData[`tab-${i}`][0] + '；';
+                    }
+                }
+            }
         }
         console.log('handleSave', key, step, tab.entity);
 
@@ -291,10 +304,15 @@ export default class Patient extends Component {
 
                     service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
                         message.success('信息保存成功',3);
-                        allFormData.gestation.preghiss = tab.entity.preghiss;
-                        const action = getAllFormDataAction(allFormData);
-                        store.dispatch(action);
-                        valid && this.activeTab(key || next.key);
+                        service.shouzhen.getAllForm().then(res => {
+                            const action = getAllFormDataAction(service.praseJSON(res.object));
+                            store.dispatch(action);
+                            if (valid && !emptyTab) {
+                                this.activeTab(key || next.key);
+                            } else if (valid && emptyTab.length > 0) {
+                                message.error(`${emptyTab}有未填写的必填项，请前往填写！`, 5);
+                            }
+                        })
                         service.getuserDoc().then(res => {
                             const action = getUserDocAction(res.object);
                             store.dispatch(action);
@@ -351,11 +369,19 @@ export default class Patient extends Component {
                             const action = getAllFormDataAction(allFormData);
                             store.dispatch(action);
                         }
-                        valid && this.activeTab(key || next.key);
+                        if (valid && !emptyTab) {
+                            this.activeTab(key || next.key);
+                        } else if (valid && emptyTab.length > 0) {
+                            message.error(`${emptyTab}有未填写的必填项，请前往填写！`, 5);
+                        }
                     });
                 }
             } else {
-                valid && this.activeTab(key || next.key);
+                if (valid && !emptyTab) {
+                    this.activeTab(key || next.key);
+                } else if (valid && emptyTab.length > 0) {
+                    message.error(`${emptyTab}有未填写的必填项，请前往填写！`, 5);
+                }
             }
             if (tab.key === 'tab-7' && key === 'tab-7') {
                 const Lis = service.praseJSON(allFormData.lis);
@@ -434,7 +460,7 @@ export default class Patient extends Component {
                         })
                     })
                 })
-                if(type === 'open') {
+                if(key === 'tab-7') {
                     service.shouzhen.uploadHisDiagnosis(1).then(res => { })
                 }
             }
@@ -447,10 +473,50 @@ export default class Patient extends Component {
                 if (key && isJump) {
                     this.activeTab(key);
                 } else {
-                    this.forceUpdate();
+                    // this.forceUpdate();
                 }
             }
         });
+    }
+
+    getIndex(val, arr) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === val) return i;
+        }
+        return -1;
+    }
+
+    updateEmptyData(tab, name, value) {
+        const { requiredData, emptyData } = this.state;
+        if (requiredData[tab].includes(name)) {
+            if (!value || JSON.stringify(value) === '[]' || JSON.stringify(value) === '{}' && !emptyData[tab].includes(name)) {
+                emptyData[tab].push(name);
+            }
+            if (value && JSON.stringify(value) !== '[]' || JSON.stringify(value) !== '{}' && emptyData[tab].includes(name)) {
+                emptyData[tab].splice(this.getIndex(name, emptyData[tab]), 1);
+            }
+        }
+        const action = setEmptyAction(emptyData);
+        store.dispatch(action);
+    }
+
+    getEachData(tab, list) {
+        const { requiredData, emptyData } = this.state;
+        requiredData[tab].forEach(item => {
+            if (!list[item] || JSON.stringify(list[item]) === '[]' || JSON.stringify(list[item]) === '{}') {
+                emptyData[tab].push(item);
+            } 
+        })
+        const action = setEmptyAction(emptyData);
+        store.dispatch(action);
+    }
+
+    getEmptyData(data) {
+        this.getEachData('tab-1', data.hisInfo);
+        this.getEachData('tab-2', {...data.menstruationMarriage, ...data.biography});
+        this.getEachData('tab-4', data.checkUp);
+        this.getEachData('tab-5', data.specialityCheckUp);
+        this.getEachData('tab-6', data.lis);
     }
 
     render() {
@@ -464,6 +530,7 @@ export default class Patient extends Component {
         // 首个tab页作下特别处理
         if (!!allFormData && JSON.stringify(tabs[0].entity) === "{}") {
             tabs[0].entity = allFormData.pregnantInfo;
+            this.getEmptyData(allFormData);
         }
         
         return (
@@ -493,8 +560,8 @@ export default class Patient extends Component {
                 { step !== tabs[tabs.length - 1].key
                     ? <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>下一页</Button>
                     : <div>
-                        <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(step, 'open') }, 100)}>保存并开医嘱</Button>
-                        <Button className="shouzhen-bbtn2" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>保存</Button>
+                        {/* <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(step, 'open') }, 100)}>保存并开医嘱</Button> */}
+                        <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>保存</Button>
                       </div>
                 }
               </Col>

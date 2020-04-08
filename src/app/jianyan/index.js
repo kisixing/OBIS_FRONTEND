@@ -73,7 +73,7 @@ export default class Patient extends Component {
       const columns = [
         { title: '检验项目', dataIndex: 'item', key: 'item' },
         { title: '结果', dataIndex: 'result', key: 'result' },
-        { title: '单位', dataIndex: 'unit', key: 'unit', className: 'aa' },
+        { title: '单位', dataIndex: 'unit', key: 'unit' },
         { title: '参考值', dataIndex: 'reference', key: 'reference' },
         { title: '状态', dataIndex: 'status', key: 'status' },
       ];
