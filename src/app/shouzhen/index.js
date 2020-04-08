@@ -73,6 +73,8 @@ export default class Patient extends Component {
             } else if (tab.key === 'tab-3') {
                 tab.entity = [];
                 tab.entity['preghiss'] = !!allFormData.gestation.preghiss ? allFormData.gestation.preghiss : [];
+                // 本孕胎数不显示
+                tab.entity.preghiss[tab.entity.preghiss.length - 1].births = '';
             } else if (tab.key === 'tab-4') {
                 tab.entity = service.praseJSON(allFormData.checkUp);
                 // 初始化BMI数值
@@ -196,7 +198,7 @@ export default class Patient extends Component {
     }
 
     handleSave(key, type) {
-        const { tabs, step, allFormData, szList, emptyData } = this.state;
+        const { tabs, step, allFormData, szList, emptyData, isFormChange } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
@@ -209,7 +211,7 @@ export default class Patient extends Component {
             if (!isJump && keyNum > stepNum + 1) {
                 for (let i = stepNum + 1; i < keyNum; i++) {
                     if (emptyData[`tab-${i}`].length > 1) {
-                        // emptyTab += emptyData[`tab-${i}`][0] + '；';
+                        emptyTab += emptyData[`tab-${i}`][0] + '；';
                     }
                 }
             }
@@ -261,15 +263,16 @@ export default class Patient extends Component {
                     tab.entity.mzxuan = arr.join(',');
                 }
                 if (tab.key === 'tab-3') {
-                    //删除空数据以及去掉本孕一行
-                    tab.entity.preghiss = tab.entity.preghiss.filter(item => Object.keys(item).length !== 1)
-                    // tab.entity.preghiss.pop();
+                    //删除空数据
+                    tab.entity.preghiss = tab.entity.preghiss.filter(item => Object.keys(item).length !== 1);
                     // 孕产史数据同步  数据校验
                     let isDateSpecial = false;
                     let isPregSpecial = false;
+                    let hasYearMonth = true;
                     let len = tab.entity.preghiss.length;
                     tab.entity.preghiss.forEach((item) => {
                         let bool = true;
+                        if (!item.hasOwnProperty('datagridYearMonth')) hasYearMonth = false;
                         tab.entity.preghiss.forEach((subItem) => {
                             if (item.datagridYearMonth == subItem.datagridYearMonth && bool) {
                                 item.zir = subItem.zir;
@@ -300,24 +303,29 @@ export default class Patient extends Component {
                     if (isPregSpecial && !tab.entity.preghiss[len-1].pregnum) {
                         message.error('孕次格式不规范，请手动输入本孕孕次！', 6);
                         key = step;
-                    }  
+                    } 
+                    
+                    if (hasYearMonth) {
+                        service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
+                            message.success('信息保存成功',3);
+                            service.shouzhen.getAllForm().then(res => {
+                                const action = getAllFormDataAction(service.praseJSON(res.object));
+                                store.dispatch(action);
+                                if (valid && !emptyTab) {
+                                    this.activeTab(key || next.key);
+                                } else if (valid && emptyTab.length > 0) {
+                                    message.error(`${emptyTab}有未填写的必填项，请前往填写！`, 5);
+                                }
+                            })
+                            service.getuserDoc().then(res => {
+                                const action = getUserDocAction(res.object);
+                                store.dispatch(action);
+                            })
+                        });
+                    } else {
+                        message.error('请输入年月！', 5);
+                    }
 
-                    service.shouzhen.savePregnancies(tab.key, tab.entity).then(() => {
-                        message.success('信息保存成功',3);
-                        service.shouzhen.getAllForm().then(res => {
-                            const action = getAllFormDataAction(service.praseJSON(res.object));
-                            store.dispatch(action);
-                            if (valid && !emptyTab) {
-                                this.activeTab(key || next.key);
-                            } else if (valid && emptyTab.length > 0) {
-                                message.error(`${emptyTab}有未填写的必填项，请前往填写！`, 5);
-                            }
-                        })
-                        service.getuserDoc().then(res => {
-                            const action = getUserDocAction(res.object);
-                            store.dispatch(action);
-                        })
-                    });
                 }
                 if (tab.key === 'tab-4') {
                     tab.entity.ckshrinkpressure = tab.entity.ckpressure[0];
@@ -380,7 +388,7 @@ export default class Patient extends Component {
                 if (valid && !emptyTab) {
                     this.activeTab(key || next.key);
                 } else if (valid && emptyTab.length > 0) {
-                    message.error(`${emptyTab}有未填写的必填项，请前往填写！`, 5);
+                    message.error(`${emptyTab}有必填项为空，请完善！`, 5);
                 }
             }
             if (tab.key === 'tab-7' && key === 'tab-7') {
@@ -422,7 +430,6 @@ export default class Patient extends Component {
                     getAllReminder(modalObj);
                 }
 
-                console.log(allReminderModal, '666')
                 if(allReminderModal.length > 0) {
                     const action2 = allReminderAction(allReminderModal);
                     store.dispatch(action2);
@@ -443,7 +450,10 @@ export default class Patient extends Component {
                 }
             }     
             // 保存诊断数据
-            if(tab.key === 'tab-7') {
+            if(tab.key === 'tab-7' && isFormChange) {
+                if (!allFormData.add_FIELD_first_save_ivisit_time) {
+                    tab.entity.add_FIELD_first_save_ivisit_time = util.futureDate(0);
+                }
                 service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(res => {
                     message.success('信息保存成功',3);
                     allFormData.diagnosis = tab.entity;
@@ -491,8 +501,7 @@ export default class Patient extends Component {
         if (requiredData[tab].includes(name)) {
             if (!value || JSON.stringify(value) === '[]' || JSON.stringify(value) === '{}' && !emptyData[tab].includes(name)) {
                 emptyData[tab].push(name);
-            }
-            if (value && JSON.stringify(value) !== '[]' || JSON.stringify(value) !== '{}' && emptyData[tab].includes(name)) {
+            } else if (value && JSON.stringify(value) !== '[]' || JSON.stringify(value) !== '{}' && emptyData[tab].includes(name)) {
                 emptyData[tab].splice(this.getIndex(name, emptyData[tab]), 1);
             }
         }

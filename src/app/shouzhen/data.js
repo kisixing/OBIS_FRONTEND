@@ -599,7 +599,7 @@ export const initYCData = {
  * 首检必填项项
  */
 export const requiredForm = {
-	'tab-0': [],
+	'tab-0': ['gesmoc', 'gesexpect', 'gesexpectrv', 'add_FIELD_shouyun'],
 	'tab-1': ['add_FIELD_gaoxueya', 'add_FIELD_tangniaobing', 'add_FIELD_xinzangbing', 
 						'add_FIELD_has_operation_history', 'bsguomin', 'hobtabp'],
 	'tab-2': ['yjcuch', 'yjzhouq', 'yjchix', 'yjtongj', 'maritalHistory', 'userjiehn', 'userjinqjh', 

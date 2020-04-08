@@ -1,4 +1,4 @@
-
+@import './antd/antd-1.x.min.css';
 /* @page :pseudo-class {
   size: A5 landscape;
   width: 21cm;
@@ -30,5 +30,17 @@
   }
   .has-print .print-table tbody tr {
     visibility: hidden;
+  }
+
+  .xt-table .ant-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  .xt-table tr th,
+  .xt-table tr td {
+    border-collapse: collapse;
+    text-align: center;
+    border: 1px solid #ccc;
+    word-break: keep-all;
   }
 }

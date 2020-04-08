@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Button, Table, Modal } from "antd";
 import Page from '../../render/page';
-import tableRender from "../../render/table";
 import service from '../../service';
 import "./index.less";
 
@@ -9,69 +8,6 @@ export default class Patient extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableKey: [
-        {
-          title: '日期',
-          key: 'date',
-        },
-        {
-          title: '早餐前',
-          key: 'beforeBreakfast',
-        },
-        {
-          title: '备注',
-          key: 'beforeBreakfastNote',
-        },
-        {
-          title: '早餐后',
-          key: 'afterBreakfast',
-        },
-        {
-          title: '备注',
-          key: 'afterBreakfastNote',
-        },
-        {
-          title: '午餐前',
-          key: 'beforeDinner',
-        },
-        {
-          title: '备注',
-          key: 'beforeDinnerNote',
-        },
-        {
-          title: '午餐后',
-          key: 'afterDinner',
-        },
-        {
-          title: '备注',
-          key: 'afterDinnerNote',
-        },
-
-        {
-          title: '晚餐前',
-          key: 'beforeLunch',
-        },
-        {
-          title: '备注',
-          key: 'beforeLunchNote',
-        },
-        {
-          title: '晚餐后',
-          key: 'afterLunch',
-        },
-        {
-          title: '备注',
-          key: 'afterLunchNote',
-        },
-        {
-          title: '睡前',
-          key: 'beforeSleep',
-        },
-        {
-          title: '备注',
-          key: 'beforeSleepNote',
-        },
-      ],
       tableData: []
     }
   }
@@ -83,16 +19,42 @@ export default class Patient extends Component {
   }
 
   renderTable() {
-    const {tableKey, tableData} = this.state;
-    const initTable = data => tableRender(tableKey, data, { pagination: false, buttons: null, editable: true});
+    const  { tableData } = this.state;
+    const columns = [
+      { title: '日期', dataIndex: 'date', key: 'date' },
+      { title: '早餐前', dataIndex: 'beforeBreakfast', key: 'beforeBreakfast',
+        render: (text, record) => setClassName(text, record, 1) },
+      { title: '备注', dataIndex: 'beforeBreakfastNote', key: 'beforeBreakfastNote', width: 380 },
+      { title: '早餐后', dataIndex: 'afterBreakfast', key: 'afterBreakfast', 
+        render: (text, record) => setClassName(text, record, 2) },
+      { title: '备注', dataIndex: 'afterBreakfastNote', key: 'afterBreakfastNote', width: 380 },
+      { title: '午餐后', dataIndex: 'afterDinner', key: 'afterDinner', 
+        render: (text, record) => setClassName(text, record, 2) },
+      { title: '备注', dataIndex: 'afterDinnerNote', key: 'afterDinnerNote', width: 380 },
+      { title: '晚餐后', dataIndex: 'afterLunch', key: 'afterLunch', 
+        render: (text, record) => setClassName(text, record, 2) },
+      { title: '备注', dataIndex: 'afterLunchNote', key: 'afterLunchNote', width: 380 },
+    ];
+
+    const setClassName = (text, record, index) => {
+      if (index === 1 && text > 5.3) {
+        return (<span style={{color: 'red'}}>{text}</span>);
+      }
+      if (index === 2 && text > 6.7) {
+        return (<span style={{color: 'red'}}>{text}</span>);
+      }
+      return text;
+    }
 
     return (
-      <div>{initTable(tableData)}</div>
+      <div>
+        <Table className="xt-table" columns={columns} dataSource={tableData} pagination={false}/> 
+      </div>
     )
   }
 
   handleBtnClick() {
-    window.print();
+    $(".xt-table").jqprint();
   }
 
   render() {

@@ -15,7 +15,6 @@ import store from '../store';
 import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAction,
       } from '../store/actionCreators.js';
 import RegForm from '../components/reg-form';
-import chartDemoData from './chart-demo';
 
 const renderChart = function(){
   var loaded = new Promise(resolve=>setTimeout(()=>loadWidget('echarts').then(resolve), 1000));
@@ -86,12 +85,12 @@ export default class FuzhenForm extends Component {
         'signWord': ['心血管疾病', '血液系统疾病']
       },
       'twins': {
-        'diagKeyword': [],
+        'diagKeyword': ['双胎'],
         'digWord': ['双胎妊娠'],
         'signWord': []
       },
       'multiple': {
-        'diagKeyword': [],
+        'diagKeyword': ['多胎'],
         'digWord': ['多胎妊娠'],
         'signWord': []
       },
@@ -437,6 +436,11 @@ export default class FuzhenForm extends Component {
       case 'ckweek':
         this.state.openYCQ = ()=>{};
         break;
+      case 'rvisitOsType':
+        if (value.label === '高危门诊') {
+          data.ckappointmentArea = {"0":"上","1":"午","label":"上午","describe":"上","value":'上午'};
+        }
+        break;
       case 'ckappointmentWeek':
         data.ckappointment = util.futureDate(value.value);
         break;
@@ -459,7 +463,7 @@ export default class FuzhenForm extends Component {
 
   handleSave(form, act) {
     const { onSave, initData } = this.props;
-    const { allFormData, isFormChange, fzList } = this.state;
+    const { allFormData, fzList } = this.state;
     let newEntity = initData;
     let ckpressure = initData.ckpressure.split('/');
     let allReminderModal = [];

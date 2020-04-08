@@ -9,7 +9,7 @@ import * as baseData from './../fuzhen/data';
 import * as util from '../fuzhen/util';
 import store from '../store';
 import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, getDiagnisisAction, getUserDocAction,
-         showSypAction, szListAction,
+         showSypAction, szListAction, isFormChangeAction
       } from '../store/actionCreators.js';
 import RegForm from '../components/reg-form';
 import './index.less';
@@ -146,6 +146,8 @@ export default class extends Component{
     const { szList, diagnosi, userDoc, signList } = this.state;
     const specialList = ['妊娠', '早孕', '中孕', '晚孕'];
     if (diagnosi && !szList.filter(i => i.data === diagnosi).length) {
+      const changeAction = isFormChangeAction(true);
+      store.dispatch(changeAction);
       // 诊断互斥项
       let specialIndex = -1;
       let diagData = { 'data': diagnosi, 'highriskmark': ''};
@@ -266,6 +268,8 @@ export default class extends Component{
   deldiagnosis(id, data) {
     const { userDoc, szList, signList } = this.state;
     const newList = szList.filter(i => i.data !== data);
+    const changeAction = isFormChangeAction(true);
+    store.dispatch(changeAction);
     const action = szListAction(newList);
     store.dispatch(action);
     modal('info', '删除诊断信息成功');
@@ -413,6 +417,8 @@ export default class extends Component{
     const content = (item, i) => {
       const handleHighriskmark = () => {
         item.highriskmark = item.highriskmark === 1 ? 0 : 1;
+        const changeAction = isFormChangeAction(true);
+        store.dispatch(changeAction);
         const action = szListAction(szList);
         store.dispatch(action);
 
@@ -429,6 +435,8 @@ export default class extends Component{
       const handleVisibleChange = fx => () => {
         szList[i] = szList[i + fx];
         szList[i + fx] = item;
+        const changeAction = isFormChangeAction(true);
+        store.dispatch(changeAction);
         const action = szListAction(szList);
         store.dispatch(action);
         // service.fuzhen.updateSort(item.id, fx).then(() => {

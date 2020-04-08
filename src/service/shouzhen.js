@@ -73,7 +73,8 @@ export default {
      * 首诊页面打印
      */
     printPdfByFile: function(){
-        return this.userId().then(r => myAxios.get(`/print/printPdfByFileRestful?userid=${r.object.userid}&modelType=ivisit`));
+        // 参数：ivisit(A4) ivisitA5(A5)
+        return this.userId().then(r => myAxios.get(`/print/printPdfByFileRestful?userid=${r.object.userid}&modelType=ivisitA5`));
     },
     /**
      * 获取医嘱接口

@@ -104,9 +104,12 @@ export default class Patient extends Component {
             <li className="msg-item">年龄: {detailData.age}</li>
             <li className="msg-item">标本部位: {detailData.specimen}</li>
           </ul>
-          <div>{!repAmy ? <Table columns={columns} dataSource={detailData.lisDetails} pagination={false}
-                rowClassName={(record, index) => setClassName(record, index)}/> 
-                : null}</div>
+          <div>
+            { !repAmy 
+                ? <Table columns={columns} dataSource={detailData.lisDetails} pagination={false} rowClassName={(record, index) => setClassName(record, index)} /> 
+                : null
+            }
+          </div>
         </div>
       )
     }

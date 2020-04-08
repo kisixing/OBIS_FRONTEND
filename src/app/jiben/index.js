@@ -36,7 +36,6 @@ export default class Patient extends Component {
     handleStoreChange = () => {
         this.setState(store.getState());
     };
-
     activeTab(step) {
         const { tabs, allFormData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};

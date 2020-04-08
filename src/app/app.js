@@ -84,8 +84,11 @@ export default class App extends Component {
         service.shouzhen.getAllForm().then(data => {
           const action = getAllFormDataAction(service.praseJSON(data.object));
           store.dispatch(action);
-
-          this.getPharData();
+          this.getPharData(data);
+          if (data.object.add_FIELD_first_save_ivisit_time && data.object.add_FIELD_first_save_ivisit_time !== util.futureDate(0)) {
+            this.setState({ muneIndex: 1 });
+            this.onRouterClick(routers[1]);
+          }
         })
       });
 
@@ -140,7 +143,7 @@ export default class App extends Component {
     );
   }
 
-  getPharData() {
+  getPharData(data) {
     service.shouzhen.findTemplateTree(0).then(res => {
       let keys = [];
       res.object.data.map(item => {
@@ -394,6 +397,7 @@ export default class App extends Component {
    * 瘢痕子宫阴道试产表
    */
   handleCardClick = (name) => {
+    const { allFormData } = this.state;
     const trialAction = showTrialAction(true);
     const pharAction = showPharAction(true);
     switch(name) {
@@ -402,7 +406,7 @@ export default class App extends Component {
         store.dispatch(trialAction);
         break;
       case 'phar':
-        this.getPharData();
+        this.getPharData(allFormData);
         store.dispatch(pharAction);
         break;
     }
