@@ -27,7 +27,7 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            { name: "userage[年龄]", type: "input", span: 5, valid: "required|number" },
+            { name: "userage[年龄]", type: "input", span: 5, valid: "required|pureNumber" },
             { span: 1 },
             { name: "userbirth[出生日期]", type: "date", span: 5, valid: "required" },
             { span: 1 },
@@ -47,9 +47,9 @@ export default class extends Component {
         },
         {
           columns: [
-            { name: "usermobile[手机]", type: "input", span: 5, valid: "number|required" },
+            { name: "usermobile[手机]", type: "input", span: 5, valid: "pureNumber|required" },
             { span: 1 },
-            { name: "phone[固话]", type: "input", span: 5 },
+            { name: "phone[固话]", type: "input", span: 5, valid: "symbol(-)" },
             { span: 1 },
             { name: "useridtype[证件类型]", type: "select", span: 4, showSearch: false, options: baseData.sfzOptions, valid: "required" },
             { span: 1 },

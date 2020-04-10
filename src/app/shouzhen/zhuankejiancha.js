@@ -26,7 +26,7 @@ export default class extends Component {
         {
           columns:[
             { span: 1 },
-            { name: 'ckgongg[宫高](cm)', type: 'input', span: 4 },
+            { name: 'ckgongg[宫高](cm)', type: 'input', span: 4, valid: 'number' },
             { span: 1 },
             // {name:'ckfuw[腹围](cm)', type:'input', span:5}
           ]
@@ -37,7 +37,7 @@ export default class extends Component {
               {
                 columns: [
                   { span: 1, className: 'noContent', name: `[胎${index + 1}]`, type: '**' },
-                  { name: 'tx(bpm)[胎心率]', type: 'input', span: 4, valid: 'required' },
+                  { name: 'tx(bpm)[胎心率]', type: 'input', span: 4, valid: 'required|number' },
                   { span: 1 },
                   { name: 'xl[先露]', type: 'select', span: 4, options: baseData2.xlOptions },
                   { span: 1 },

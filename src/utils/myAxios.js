@@ -66,7 +66,7 @@ const myAxios = axios.create({
     timeout: 10000,
     headers: {'X-Requested-With': 'XMLHttpRequest'},
     headers: {'Content-Type': 'application/json;charset=utf-8'},
-    headers: {'User-Token': common.getCookie('docToken')},
+    // headers: {'User-Token': common.getCookie('docToken')},
     // headers: {'Content-Type': 'application/x-www-form-urlencode;charset=utf-8'},
 });
 
@@ -85,6 +85,7 @@ myAxios.interceptors.request.use(config => {
             config.headers['Content-Type'] = 'application/json;charset=utf-8';
         }
     }
+    config.headers['User-Token'] = common.getCookie('docToken');
     config.url = getUrl(config.url);
     return config;
 }, error => {

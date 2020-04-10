@@ -21,6 +21,17 @@ const validationFns = {
           return '不能大于' + max;
       }
   },
+  symbol: function(sym, value) {
+    let reg =new RegExp("^(\\d+)?\\" + sym + "?\\d+$");
+    if (value && !reg.test(value)) {
+      return '输入格式不正确';
+    } 
+  },
+  pureNumber: function(value) {
+    if (value && !/^\d+$/.test(value)) {
+      return '只能输入纯数字';
+    }
+  }
 };
 
 /**

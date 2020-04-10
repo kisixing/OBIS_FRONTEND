@@ -448,6 +448,7 @@ export const pregnanciesColumns = [
 		title: '胎数',
 		type: 'input',
 		key: 'births',
+		valid: 'pureNumber',
 	},
 	{
 		title: '小孩情况',
@@ -493,7 +494,8 @@ export const pregnanciesColumns = [
 				title: '出生体重(kg)',
 				key: 'tizh',
 				type: 'input',
-				width: 120
+				width: 120,
+				valid: 'number',
 			}
 		]
 	},

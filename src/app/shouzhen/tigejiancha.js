@@ -20,14 +20,14 @@ export default class extends Component{
               name: 'ckpressure(mmHg)[血@@压 ]', type: ['input(/)','input'], span: 5, valid: (value)=>{
               let message = '';
               if(value){
-                message = [0,1].map(i=>valid(`number|required|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
+                message = [0,1].map(i=>valid(`pureNumber|required|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
               }else{
                 message = valid('required',value)
               }
               return message;
             }},
             {span:3},
-            {name:'add_FIELD_pulse(次/分)[脉@@搏 ]', type:'input', span:4, valid: 'required|number|rang(0,100)'},
+            {name:'add_FIELD_pulse(次/分)[脉@@搏 ]', type:'input', span:4, valid: 'required|pureNumber|rang(0,100)'},
             {span:4},
             {name:'cksheng(cm)[身@@高 ]', type:'input', span:4, valid: 'required|number|rang(150,250)'},
           ]
@@ -57,7 +57,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'cardiac(次/分)[心@@率 ]', type:'input',valid: 'required|number', span:4},
+            {name:'cardiac(次/分)[心@@率 ]', type:'input',valid: 'required|pureNumber', span:4},
             {span:4},
             {name:'heart[心@@律 ]', type:'checkinput-3',valid: 'required', options: baseData.xinlvOptions,radio:true,span:8},
             {name:'murmurs[杂@@音 ]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
