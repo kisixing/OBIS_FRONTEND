@@ -255,4 +255,11 @@ export default {
     getHistory: function(){
         return this.userId().then(r => myAxios.get(`/outpatientRestful/diagnosis/getHistory?userid=${r.object.userid}`));
     },
+
+    /**
+     * 查询高危门诊数据
+     */
+    checkIsAddNum: function(date, noon){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/checkIsAddNum?userid=${r.object.userid}&date=${date}&noon=${noon}`));
+    },
 }

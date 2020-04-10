@@ -28,7 +28,7 @@ export default class extends Component{
             }},
             {span:3},
             {name:'add_FIELD_pulse(次/分)[脉@@搏 ]', type:'input', span:4, valid: 'required|number|rang(0,100)'},
-            {span:3},
+            {span:4},
             {name:'cksheng(cm)[身@@高 ]', type:'input', span:4, valid: 'required|number|rang(150,250)'},
           ]
         },
@@ -37,8 +37,8 @@ export default class extends Component{
             {name:'ckcurtizh(kg)[现 体 重 ]', type:'input', span:3, valid: 'required|number|rang(0,500)'},
             {span:5},
             {name:'cktizh(kg)[孕前体重]', type:'input', span:3, valid: 'required|number|rang(10,100)'},
-            {span:4},
-            {name:'ckbmi(kg/㎡)[孕前BMI ]',className:'col-97-sp', type:'input', span:4, valid: 'required|number|rang(18.5,24.9)'},
+            {span:5},
+            {name:'ckbmi(kg/㎡)[孕前 BMI ]',className:'col-97-sp', type:'input', span:4, valid: 'required|number|rang(18.5,24.9)'},
           ]
         },
         {

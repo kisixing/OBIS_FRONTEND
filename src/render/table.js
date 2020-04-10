@@ -383,7 +383,7 @@ export default function(
             }
           }
         }
-        if(isPreghiss && dataSource.length >  1 && row > 1 && row <= dataSource.length) {
+        if(isPreghiss && dataSource.length >  1 && row > 1 && row <= dataSource.length && item.pregnum) {
           const numArr = [14, 15, 16, 17, 18, 19];
           if ((row === 2 && item.pregnum === dataSource[row - 1].pregnum && !numArr.includes(column)) ||
           (row > 2 && item.pregnum === dataSource[row - 1].pregnum && item.pregnum !== dataSource[row - 3].pregnum && !numArr.includes(column))) {

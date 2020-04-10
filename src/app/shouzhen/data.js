@@ -509,7 +509,7 @@ export const pregnanciesColumns = [
 	},
 	{
 		title: '备注',
-		key: 'xinseother',
+		key: 'unhealth',
 		type: 'input',
 		width: 400
 	},

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Select, Button, Popover, Input, Tabs, Tree, Modal, Icon, Spin, Timeline, Collapse, message, DatePicker } from 'antd';
+import { Select, Button, Popover, Input, Tabs, Tree, Modal, Icon, Spin, Timeline, Collapse, message, Table } from 'antd';
 import formRender, {fireForm} from '../../render/form';
 import {valid} from '../../render/common';
 import tableRender from '../../render/table';
@@ -197,6 +197,8 @@ export default class Patient extends Component {
     const { fzList, diagnosi, userDoc, signList } = this.state;
     const specialList = ['妊娠', '早孕', '中孕', '晚孕'];
     if (diagnosi && !fzList.filter(i => i.data === diagnosi).length) {
+      const changeAction = isFormChangeAction(true);
+      store.dispatch(changeAction);
       // 诊断互斥项
       let specialIndex = -1;
       let diagData = { 'data': diagnosi, 'highriskmark': ''};
@@ -323,6 +325,8 @@ export default class Patient extends Component {
   deldiagnosis(id, data) {
     const { userDoc, fzList, signList } = this.state;
     const newList = fzList.filter(i => i.data !== data);
+    const changeAction = isFormChangeAction(true);
+    store.dispatch(changeAction);
     const action = fzListAction(newList);
     store.dispatch(action);
     modal('info', '删除诊断信息成功');
@@ -465,6 +469,8 @@ export default class Patient extends Component {
     const content = (item, i) => {
       const handleHighriskmark = () => {
         item.highriskmark = item.highriskmark === 1 ? 0 : 1;
+        const changeAction = isFormChangeAction(true);
+        store.dispatch(changeAction);
         const action = fzListAction(fzList);
         store.dispatch(action);
 
@@ -481,6 +487,8 @@ export default class Patient extends Component {
       const handleVisibleChange = fx => () => {
         fzList[i] = fzList[i + fx];
         fzList[i + fx] = item;
+        const changeAction = isFormChangeAction(true);
+        store.dispatch(changeAction);
         const action = fzListAction(fzList);
         store.dispatch(action);
         // service.fuzhen.updateSort(item.id, fx).then(() => {
@@ -702,10 +710,26 @@ export default class Patient extends Component {
       const handleClick = () => {
         this.setState({isShowHis: false})
       }
-      const initTable = data => tableRender(baseData.listHisKey(), data, { pagination: false, buttons: null });
+      const setLine = (text, record) => {
+        return (
+          <div>
+            {text && text.map(item => (
+              <span className={item.flag === 'ADD' ? 'add-class' : item.flag === 'DEL' ? 'del-class' : 'normal-class'}>{item.data};</span>
+            ))}
+          </div>
+        )
+      }
+      const columns = [
+        { title: '诊断', dataIndex: 'items', key: 'items',
+          render: (text, record) => setLine(text, record) },
+        { title: '诊断医生', dataIndex: 'doctor', key: 'doctor', width: 150  },
+        { title: '诊断孕周', dataIndex: 'gesweek', key: 'gesweek', width: 150 },
+        { title: '诊断日期', dataIndex: 'createdate', key: 'createdate', width: 150 },
+      ];
+
       return (
-        <Modal width="80%" footer={null} title="诊断历史" visible={isShowHis} onCancel={() => handleClick()}>
-          {initTable(listHistory)}
+        <Modal className="hisn-modal" width="80%" footer={null} title="诊断历史" visible={isShowHis} onCancel={() => handleClick()}>
+          <Table columns={columns} dataSource={listHistory} pagination={false}/> 
         </Modal>
       )
     }

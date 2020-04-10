@@ -84,7 +84,7 @@ export default class App extends Component {
         service.shouzhen.getAllForm().then(data => {
           const action = getAllFormDataAction(service.praseJSON(data.object));
           store.dispatch(action);
-          this.getPharData(data);
+          this.getPharData(data.object);
           if (data.object.add_FIELD_first_save_ivisit_time && data.object.add_FIELD_first_save_ivisit_time !== util.futureDate(0)) {
             this.setState({ muneIndex: 1 });
             this.onRouterClick(routers[1]);
@@ -156,9 +156,9 @@ export default class App extends Component {
       const treeAction = templateTree1Action(res.object.data);
       store.dispatch(treeAction);
       this.setState({ pharVisible1: res.object.vislble})
-      if(!res.object.vislble) { 
-        this.setCheckedKeys(data.object);
-      }
+      // if(!res.object.vislble) { 
+        this.setCheckedKeys(data);
+      // }
     });
 
     service.shouzhen.findTemplateTree(1).then(res => {
@@ -189,8 +189,7 @@ export default class App extends Component {
   }
 
   setCheckedKeys(params) {
-    const { checkedKeys, templateTree1 } = this.state;
-    const diagnosis = params.diagnosisList;
+    const { checkedKeys, templateTree1, fzList } = this.state;
     const bmi = params.checkUp.ckbmi;
     const age = params.gravidaInfo.userage;
     const chanc = params.diagnosis.chanc;
@@ -216,7 +215,7 @@ export default class App extends Component {
       store.dispatch(action);
     }
 
-    diagnosis && diagnosis.map(item => {
+    fzList && fzList.map(item => {
       if(item.data.indexOf("静脉曲张") !== -1) checkedKeys.push(getKey("静脉曲张"));
       if(item.data === "妊娠子痫前期") checkedKeys.push(getKey("本次妊娠子痫前期"));
       if(item.data === "多胎妊娠") checkedKeys.push(getKey("多胎妊娠"));
@@ -414,12 +413,11 @@ export default class App extends Component {
 
   renderTrialModal() {
     const { templateTree, isShowTrialModal, username, trialKeys } = this.state;
-    let newTemplateTree = templateTree;
     const closeModal = (bool) => {
       const action = showTrialAction(false);
       store.dispatch(action);
       if (bool) {
-        service.shouzhen.saveTemplateTreeUser(2, newTemplateTree).then(res => {
+        service.shouzhen.saveTemplateTreeUser(2, templateTree).then(res => {
           const action = showTrialCardAction(true);
           store.dispatch(action);
           const action2 = trailVisibleAction(true);
@@ -437,16 +435,16 @@ export default class App extends Component {
     ));
 
     const handleCheck = (keys, { checked }) => {
-      this.setState({trialKeys: keys});
-      newTemplateTree.forEach(tt => {
+      templateTree.forEach(tt => {
         tt.child.forEach(item => {
-          if (keys.indexOf(`${item.id}`) !== -1) {
-            item.note = checked;
+          if (keys.includes(String(item.id))) {
+            item.note = true;
           }else {
             item.note = null;
           }
         })
       })
+      this.setState({trialKeys: keys, templateTree});
     };
 
     let buttons = [
@@ -455,7 +453,7 @@ export default class App extends Component {
       <Button onClick={() => closeModal()}>打印</Button>
     ]
 
-    const treeNodes = initTree(newTemplateTree);
+    const treeNodes = initTree(templateTree);
     return (
       templateTree.length>0 ?
       <Modal title="瘢痕子宫阴道试产表" visible={isShowTrialModal} width={800} className="trial-modal"
@@ -476,9 +474,7 @@ export default class App extends Component {
    */
   renderPharModal() {
     const {userDoc, checkedKeys, templateTree1, templateTree2, isShowPharModal, tuserweek, pharKeys } = this.state;
-    let newTemplateTree1 = templateTree1;
-    let newTemplateTree2 = templateTree2;
-    newTemplateTree1 && newTemplateTree1.forEach(item => {
+    templateTree1 && templateTree1.forEach(item => {
       if(checkedKeys.includes(String(item.id))) {
         item.selected = true;
       }
@@ -491,7 +487,7 @@ export default class App extends Component {
       store.dispatch(action2);
       if (bool) {   
         // 新增与诊疗计划关联
-        if (newTemplateTree2[3].selected === true) {
+        if (templateTree2[3].selected === true) {
           let data = {
             "userid": userDoc.userid,
             "time": "",
@@ -500,11 +496,19 @@ export default class App extends Component {
             "event": "VTE预防用药"
           };
           data.time = util.getWeek(28, tuserweek);
-          service.fuzhen.addRecentRvisit(data).then(res => {})
+          service.fuzhen.getRecentRvisitList().then(res => {
+            let bool = false;
+            res.object && res.object.forEach(item => {
+              if (item.event === "VTE预防用药") bool = true;
+            })
+            if (!bool) {
+              service.fuzhen.addRecentRvisit(data).then(res => {})
+            }
+          })
         }
         Promise.all([
-          service.shouzhen.saveTemplateTreeUser(0, newTemplateTree1).then(res => {}),
-          service.shouzhen.saveTemplateTreeUser(1, newTemplateTree2).then(res => {})
+          service.shouzhen.saveTemplateTreeUser(0, templateTree1).then(res => {}),
+          service.shouzhen.saveTemplateTreeUser(1, templateTree2).then(res => {})
         ]).then(() => {
           if(checkedKeys.length > 0 || pharKeys.length > 0) {
             const action = showPharCardAction(true);
@@ -524,26 +528,27 @@ export default class App extends Component {
     const handleCheck1 = (keys, { checked }) => {
       const action = checkedKeysAction(keys);
       store.dispatch(action);
-      newTemplateTree1.forEach(item => {
-        if (keys.indexOf(`${item.id}`) !== -1) {
-          item.selected = checked;
-        }else {
+      templateTree1.forEach(item => {
+        if (keys.includes(String(item.id))) {
+          item.selected = true;
+        } else {
           item.selected = null;
         }
       })
+      this.setState({ templateTree1 });
     };
     const handleCheck2 = (keys, { checked }) => {
-      this.setState({pharKeys: keys})
-      newTemplateTree2.forEach(item => {
-        if (keys.indexOf(`${item.id}`) !== -1) {
-          item.selected = checked;
+      templateTree2.forEach(item => {
+        if (keys.includes(String(item.id))) {
+          item.selected = true;
         }else {
           item.selected = null;
         }
       })
+      this.setState({ pharKeys: keys, templateTree2 });
     };
-    const treeNodes1 = newTemplateTree1&&initTree(newTemplateTree1);
-    const treeNodes2 = newTemplateTree2&&initTree(newTemplateTree2);
+    const treeNodes1 = templateTree1 && initTree(templateTree1);
+    const treeNodes2 = templateTree2 && initTree(templateTree2);
 
     return (
       <Modal title="深静脉血栓高危因素孕期用药筛查表" visible={isShowPharModal} width={900} className="phar-modal"

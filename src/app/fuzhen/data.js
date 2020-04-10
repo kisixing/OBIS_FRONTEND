@@ -432,12 +432,12 @@ export const listHisKey = () => [
 	},
 	{
 		title: '诊断孕周',
-		key: 'event',
+		key: 'gesweek',
 		width: 20,
 	},
 	{
 		title: '诊断日期',
-		key: 'gesweek',
+		key: 'createdate',
 		width: 50,
 	},
 ];
@@ -524,7 +524,14 @@ export const nextRvisitWeekOptions = [
 /**
  * 门诊
  */
-export const rvisitOsTypeOptions = toOptions(['', '普通门诊', '高危门诊', '教授门诊'], (v,i)=>({value:i-1,describe:v.slice(0,1)}));
+// export const rvisitOsTypeOptions = toOptions(['', '普通门诊', '高危门诊', '教授门诊'], (v,i)=>({value:i-1,describe:v.slice(0,1)}));
+
+export const rvisitOsTypeOptions = [
+	{ label: '', value: '', describe: '' },
+	{ label: '普通门诊', value: 0, describe: '普' },
+	{ label: '高危门诊', value: 1, describe: '高' },
+	{ label: '教授门诊', value: 10, describe: '教' },
+];
 
 /**
  * 上午/下午

@@ -109,8 +109,8 @@ export default class extends Component{
           className: 'top-column',
           columns: [
             { name: 'yunc[1、G]', type: 'input', span: 3 },
-            { name: 'chanc[P]', type: 'input', span: 3 },
-            { name: 'add_FIELD_tuserweek[妊娠](周)', type: 'input', span: 3 },
+            { name: 'chanc[P]', className: 'short-label', type: 'input', span: 3 },
+            { name: 'add_FIELD_tuserweek[妊娠](周)', className: 'short-label', type: 'input', span: 3 },
           ]
         },
       ]

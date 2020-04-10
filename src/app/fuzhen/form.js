@@ -1,14 +1,13 @@
 
 import React, { Component } from "react";
 import { Row, Col, Input, Icon, Select, Button, message, Table, Modal, Spin, Tree, DatePicker } from 'antd';
-import addrOptions from '../../utils/cascader-address-options';
 import * as util from './util';
 import * as common from '../../utils/common';
 import * as baseData from './data';
 import formRender, {fireForm} from '../../render/form';
 import {valid} from '../../render/common';
 import service from '../../service';
-import modal from '../../utils/modal';
+import cModal from '../../render/modal';
 import {loadWidget} from '../../utils/common';
 import './form.less';
 import store from '../store';
@@ -35,6 +34,10 @@ export default class FuzhenForm extends Component {
       adviceList: [],
       openAdvice: false,
       isShowRegForm: false,
+      isShowHighModal: false,
+      appointmentNum: 0,
+      addNum: 0,
+      totalNum: 0,
       error: {},
       treatTemp: [],
       treatKey1: [],
@@ -418,6 +421,38 @@ export default class FuzhenForm extends Component {
     }
   }
 
+  checkAddNum(e, type, value) {
+    const { initData } = this.props;
+    let date = '';
+    let noon = 1;
+
+    if (type === 1 && !!initData.ckappointment) {
+      date = initData.ckappointment;
+    }
+    if (type === 2 && !!initData.rvisitOsType && initData.rvisitOsType.label === '高危门诊') {
+      date = value;
+    }
+    if (type === 3 && !!initData.rvisitOsType && initData.rvisitOsType.label === '高危门诊' && !!initData.ckappointment) {
+      date = initData.ckappointment;
+      if (value.label === '下午') noon = 2;
+    }
+    if (!!date) {
+      service.fuzhen.checkIsAddNum(date, noon).then(res => {
+        if (res.object.isScheduling && res.object.appointmentNum === res.object.totalNum) {
+          this.setState({ 
+            isShowHighModal: true,
+            appointmentNum: res.object.appointmentNum,
+            addNum: res.object.addNum,
+            totalNum: res.object.totalNum,
+          })
+        } else {
+          message.error('该日期已设停诊，请选择别的日期', 5);
+          this.handleChange(e, { name: 'ckappointment', value: '' });
+        }
+      })
+    }
+  }
+
   handleChange(e, { name, value, valid }) {
     console.log(name, '11')
     console.log(value, '22')
@@ -439,13 +474,19 @@ export default class FuzhenForm extends Component {
       case 'rvisitOsType':
         if (value.label === '高危门诊') {
           data.ckappointmentArea = {"0":"上","1":"午","label":"上午","describe":"上","value":'上午'};
+          this.checkAddNum(e, 1);
         }
         break;
       case 'ckappointmentWeek':
         data.ckappointment = util.futureDate(value.value);
+        this.checkAddNum(e, 2, util.futureDate(value.value));
         break;
       case 'ckappointment':
         data.ckappointmentWeek = '';
+        this.checkAddNum(e, 2, value);
+        break;
+      case 'ckappointmentArea':
+        this.checkAddNum(e, 3, value);
         break;
       default:
         break;
@@ -576,17 +617,22 @@ export default class FuzhenForm extends Component {
     const panelChange = (date, dateString) => {
       this.setState({menzhenData: dateString})
     }
+    const timeSelect = v => {
+      this.setState({
+        menzhenData: util.getOrderTime(v)
+      })
+    }
 
     return (
       <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
               visible={openMenzhen} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
         <span>糖尿病门诊预约</span>
-        <Select defaultValue={"本周五"} style={{ width: 120 }}>
+        <Select onSelect={(value) => timeSelect(value)} defaultValue={"本周五"} style={{ width: 120 }}>
           <Select.Option value={"本周五"}>本周五</Select.Option>
           <Select.Option value={"下周五"}>下周五</Select.Option>
           <Select.Option value={"下下周五"}>下下周五</Select.Option>
         </Select>
-        <DatePicker defaultValue={menzhenData} onChange={(date, dateString) => panelChange(date, dateString)}/>
+        <DatePicker value={menzhenData} onChange={(date, dateString) => panelChange(date, dateString)}/>
       </Modal>
     );
   }
@@ -595,7 +641,44 @@ export default class FuzhenForm extends Component {
     this.setState({isShowRegForm: false})
   }
 
-    /**
+  /**
+   * 高危门诊弹窗
+   */
+  renderHighModal = () => {
+    const { isShowHighModal, appointmentNum, addNum, totalNum } = this.state;
+    const content = () => {
+      return (
+        <div className="high-modal">
+          <p className="high-info">该日期高危门诊已约满，是否给孕妇加号</p>
+          <p className="high-msg">
+            <span>已约：<i>{appointmentNum}</i></span>
+            <span>已加号：<i>{addNum}</i></span>
+            <span>限号：{totalNum}</span>
+          </p>
+        </div>
+      )
+    };
+    const onCancel = () => {
+      this.setState({ isShowHighModal: false });
+    }
+    const onOK = (e) => {
+      this.handleChange(e, { name: 'ckappointment', value: '' });
+      this.setState({ isShowHighModal: false });
+    }
+    const buttons = [
+      <Button onClick={e => onOK(e)}>修改日期</Button>,
+      <Button type="primary" onClick={() => onCancel()}>加号</Button>
+    ]
+    cModal({
+      visible: isShowHighModal, 
+      content: content, 
+      onCancel: onCancel,
+      footer: buttons,
+      closable: false
+    })
+  }
+
+  /**
    * 医嘱弹窗
    */
   renderAdviceModal() {
@@ -707,6 +790,7 @@ export default class FuzhenForm extends Component {
         {openTemplate && this.renderTreatment()}
         {this.renderMenZhen()}
         {this.renderAdviceModal()}
+        {this.renderHighModal()}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />} */}
       </div>
     );
