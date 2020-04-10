@@ -114,9 +114,6 @@ export default class Patient extends Component {
 
   componentDidMount() {
     service.yunqi.getPacsGrowth().then(res => {
-      // demodata = res.object;
-      // drawgrid('canvas');
-      // printline();
       this.setState({
         fetusList: res.object
       }, () => {
@@ -124,11 +121,6 @@ export default class Patient extends Component {
       })
     });
 
-    // service.yunqi.getPreg().then(res => {
-    //   this.setState({pregList: res.object}, () => {
-    //     this.drawPregCanvas();
-    //   })
-    // })
     service.yunqi.getbmi().then(res => {
       if(res.object.bmi < 18.5){
         this.setState({
@@ -175,7 +167,6 @@ export default class Patient extends Component {
       })
     })
 
-    // this.drawPregCanvas();
     this.drawBmiCanvas();
     this.drawFetusCanvas();
   }
@@ -266,81 +257,6 @@ export default class Patient extends Component {
       }
     }
   }
-
-  // drawPregCanvas() {
-  //   const { pregDashLine1, pregDashLine2, pregSolidLine1, pregSolidLine2, pregList } = this.state;
-
-  //   const resetItem = (item) => {
-  //     if(item.week.indexOf('+') !== -1) {
-  //       let arr = item.week.split('+');
-  //       item.week = parseInt(arr[0]) + parseInt(arr[1]) / 7;
-  //     }
-  //     item.week = item.week - 15;
-  //     item.gonggao = item.gonggao - 12;
-  //     return item;
-  //   }
-
-  //   let newPregData = pregList.filter(i => i.week >= 15 && i.week <= 42 && i.gonggao >= 12 && i.gonggao <= 41);
-  //   newPregData && newPregData.map((item) => {
-  //     item = resetItem(item);
-  //   })
-  
-  //   const canvas = document.getElementById('pregCanvas');
-  //   const context = canvas.getContext("2d");
-  //   canvas.width = '700';
-  //   canvas.height = '600';
-  //   const baseLeft = 100;
-  //   const baseTop = 70;
-
-  //   context.font = 'bold 18px KaiTi';
-  //   context.fillText('妊娠图', 350, 20);
-  //   context.font = 'normal 12px KaiTi';
-
-  //   //x轴线
-  //   const setVertical = () => {
-  //     context.strokeStyle = 'gray'; // 横轴线
-  //     for (var i = 0; i < 30; i++) {
-  //       context.beginPath();
-  //       context.lineWidth = 0.5;
-  //       context.moveTo(baseLeft, baseTop + 15 * i);
-  //       context.lineTo(baseLeft + 540, baseTop + 15 * i);
-  //       if(i%2 == 0) {
-  //         context.textBaseline='middle';
-  //         context.fillText(13 + i, 80, 520 - (i + 1) * 15);
-  //       }
-  //       context.stroke();
-  //     }
-  //     context.fillText('宫高(cm)', 80, 55);
-  //   }
-
-  //   //y轴线
-  //   const setHorizontal = () => {
-  //     for (var i = 0; i < 28; i++) {
-  //       context.beginPath();
-  //       context.lineWidth = 0.5;
-  //       context.moveTo(20 * i + baseLeft, baseTop);
-  //       context.lineTo(20 * i + baseLeft, baseTop + 450);
-  //       if(i%2 == 0) {
-  //         context.textAlign='center';
-  //         context.fillText(16 + i, baseLeft + (i + 1) * 20, 535);
-  //       }
-  //       context.stroke();
-  //     }
-  //     context.fillText('孕周(周)', 670, 520);
-  //   }
-
-  //   setVertical();
-  //   setHorizontal();
-  //   this.setVerRules(context, [baseLeft, baseTop + 450], 540, 'black', 1, 20, 5);
-  //   this.setHorRules(context, [baseLeft, baseTop + 450], 450, 'black', 1, 15, 5);
-
-  //   this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregDashLine1, ["week", "gonggao"], '#607b8b', [3]);
-  //   this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregDashLine2, ["week", "gonggao"], '#607b8b', [3]);
-  //   this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregSolidLine1, ["week", "gonggao"], '#607b8b', []);
-  //   this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], pregSolidLine2, ["week", "gonggao"], '#607b8b', []);
-
-  //   this.drawScaleLine(context, [baseLeft, baseTop + 450],  [20, 15], newPregData, ["week", "gonggao"], 'pink', []);
-  // }
 
   drawBmiCanvas() {
     const { bmiDashLine1, bmiDashLine2, bmiDashPoints, bmiNum, bmiTz, bmiList, bmiIntro } = this.state;
@@ -581,15 +497,9 @@ export default class Patient extends Component {
       <Page className="yunqi font-16 ant-col">
         <Button type="ghost" className="btn-tz" onClick={() => this.printCanvas('bmiCanvas')}>打印体重曲线</Button>
         <Button type="ghost" className="btn-sz" onClick={() => this.printCanvas('fetusCanvas')}>打印生长曲线</Button>
-        {/* <canvas id="canvas" className='canvas'>
-          您的浏览器不支持canvas，请更换浏览器.
-        </canvas> */}
         <canvas id="fetusCanvas" className='fetusCanvas'>
           您的浏览器不支持canvas，请更换浏览器.
         </canvas>
-        {/* <canvas id="pregCanvas" style={{border: "1px solid gray"}}>
-          您的浏览器不支持canvas，请更换浏览器.
-        </canvas> */}
         <canvas id="bmiCanvas" className='bmiCanvas'>
           您的浏览器不支持canvas，请更换浏览器.
         </canvas>

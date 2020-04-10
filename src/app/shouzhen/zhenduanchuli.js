@@ -35,20 +35,6 @@ export default class extends Component{
       openAdvice: false,
       openMenzhen: false,
       menzhenData: new Date(),
-      // modalState: [
-      //   {
-      //     "title": "糖尿病门诊预约",
-      //     "gesmoc": "2019-07-03",
-      //     "options": ["本周五", "下周五","下下周五",""]
-      //   },
-      //   {
-      //     "title": "产前诊断预约",
-      //     "gesmoc": "2019-07-31",
-      //     "options": ["预约1","预约2","预约3"],
-      //     "counts": "3"
-      //   }
-      // ],
-      // modalData: {},
       treatTemp: [],
       treatKey1: [],
       treatKey2: [],
@@ -491,17 +477,6 @@ export default class extends Component{
     return (
       <div className="shouzhen-left-zd">
         <div className="pad-LR-mid">
-          {/* <Row className="shouzhen-left-default margin-TB-mid">
-            <Col span={20}>
-              <span className="font-12">1、&nbsp;</span>
-              G&nbsp;<Input value={yunc}/>&nbsp;
-              P&nbsp;<Input value={chanc}/>&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              妊娠&nbsp;<Input value={info.tuserweek}/>&nbsp;周
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              {info.doctor}
-            </Col>
-          </Row> */}
           {szList && szList.map((item, i) => (
             <Row key={`diagnos-${item.data}-${i}-${Date.now()}`}>
               <Col span={8}>
@@ -526,10 +501,6 @@ export default class extends Component{
             <span className="font-18">诊&nbsp;&nbsp;断:</span>
           </Col>
           <Col span={17} className="shouzhen-pop">
-            {/* <Select combobox showSearch size="large" style={{ width: '100%' }} placeholder="请输入诊断信息" value={diagnosi} onChange={e => this.setState({ diagnosi: e })}>
-              {baseData.diagnosis.filter(d=>d.top || diagnosi).map(o => <Select.Option key={`diagnosi-${o.value}`} value={o.value}>{o.label}</Select.Option>)}
-            </Select> */}
-
             <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
                  onFocus={() => this.setState({isShowZhenduan: true})}
                  onBlur={() => setTimeout(() => this.setState({isShowZhenduan: false}), 200)}

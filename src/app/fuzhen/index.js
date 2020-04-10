@@ -266,57 +266,6 @@ export default class Patient extends Component {
       })
       this.setState({ diagnosi: '' });
 
-      // service.fuzhen.adddiagnosis(diagnosi).then(() => {
-      //   modal('success', '添加诊断信息成功');
-      //   if ((diagnosi==='瘢痕子宫' || diagnosi==='疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
-      //     const action = showTrialAction(true);
-      //     store.dispatch(action);
-      //   }
-      //   if (diagnosi.indexOf("梅毒") !== -1) {
-      //     if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf("梅毒") === -1)) {
-      //       let arr = userDoc.infectious ? userDoc.infectious.split(',') : [];
-      //       arr.push('梅毒');
-      //       userDoc.infectious = arr.join();
-      //       service.savehighriskform(userDoc).then(res => {
-      //         service.getuserDoc().then(res => {
-      //           const action = getUserDocAction(res.object);
-      //           store.dispatch(action);
-      //         })
-      //       });
-      //     }
-      //     const action = showSypAction(true);
-      //     store.dispatch(action);
-      //   }
-      //   if(diagnosi === '双胎妊娠' || diagnosi === '多胎妊娠') {
-      //     this.setState({ isTwins: true })
-      //   }
-      //   service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
-      //     let data = res.object;
-      //     if(data.length > 0) {
-      //       data.map(item => ( item.visible = true ))
-      //     }
-      //     const action = getAlertAction(data);
-      //     store.dispatch(action);
-      //   })
-      //   service.fuzhen.getdiagnosis().then(res => {
-      //     const action = getDiagnisisAction(res.object.list);
-      //     store.dispatch(action);
-      //     this.setState({
-      //       diagnosi: ''
-      //   }, () => {
-      //     if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
-      //       this.updateCheckedKeys();
-      //       const action = showPharAction(true);
-      //       store.dispatch(action);
-      //     }
-      //   })});
-      //   service.getuserDoc().then(res => {
-      //     const action = getUserDocAction(res.object);
-      //     store.dispatch(action);
-      //   })
-      // })
-
-
     } else if (diagnosi) {
       modal('warning', '添加数据重复');
     }
@@ -362,41 +311,6 @@ export default class Patient extends Component {
         })
       });
     }
-
-    // service.fuzhen.deldiagnosis(id).then(() => {
-    //   modal('info', '删除诊断信息成功');
-    //   service.fuzhen.getdiagnosis().then(res => {
-    //     const action = getDiagnisisAction(res.object.list);
-    //     store.dispatch(action);
-    //     this.updateCheckedKeys(data);
-
-    //     let bool = true;
-    //     let hasSyp = false;
-    //     res.object.list && res.object.list.forEach(item => {
-    //       if (item.data === '双胎妊娠' || item.data === '多胎妊娠') bool = false;
-    //       if (item.data.indexOf('梅毒') !== -1) hasSyp = true;
-    //     })
-    //     if (bool) this.setState({ isTwins: false });
-
-    //     if (!hasSyp && userDoc.infectious && userDoc.infectious.indexOf('梅毒') !== -1) {
-    //       let arr = userDoc.infectious.split(',');
-    //       arr.splice(arr.indexOf('梅毒'), 1);
-    //       userDoc.infectious = arr.join();
-    //       service.savehighriskform(userDoc).then(res => {
-    //         service.getuserDoc().then(res => {
-    //           const action = getUserDocAction(res.object);
-    //           store.dispatch(action);
-    //         })
-    //       });
-    //     } else {
-    //       service.getuserDoc().then(res => {
-    //         const action = getUserDocAction(res.object);
-    //         store.dispatch(action);
-    //       })
-    //     }
-    //   })
-    // })
-
   }
 
   updateCheckedKeys(data) {
@@ -473,15 +387,6 @@ export default class Patient extends Component {
         store.dispatch(changeAction);
         const action = fzListAction(fzList);
         store.dispatch(action);
-
-        // let highriskmark = item.highriskmark == 1 ? 0 : 1;
-        // service.fuzhen.updateHighriskmark(item.id, highriskmark).then(() => {
-        //   service.fuzhen.getdiagnosis().then(res => {
-        //     const action = getDiagnisisAction(res.object.list);
-        //     store.dispatch(action);
-        //   })
-        // })
-
       }
 
       const handleVisibleChange = fx => () => {
@@ -491,12 +396,6 @@ export default class Patient extends Component {
         store.dispatch(changeAction);
         const action = fzListAction(fzList);
         store.dispatch(action);
-        // service.fuzhen.updateSort(item.id, fx).then(() => {
-        //   service.fuzhen.getdiagnosis().then(res => {
-        //     const action = getDiagnisisAction(res.object.list);
-        //     store.dispatch(action);
-        //   })
-        // })
       }
 
       const handleRelated = (subItem, data) => () => {

@@ -14,8 +14,6 @@ import { getUserDocAction, isFormChangeAction, getAlertAction, closeAlertAction,
          templateTree1Action
       } from "./store/actionCreators.js";
 import AppModal from './components/app-modal';
-// import Benyunqingkuang from "bundle-loader?lazy&name=shouzhen-benyunqingkuang!./shouzhen/benyunqingkuang";
-// import Guoqushi from "bundle-loader?lazy&name=shouzhen-guoqushi!./shouzhen/guoqushi";
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
 import Fuzhen from "bundle-loader?lazy&name=fuzhen!./fuzhen";
 import Yingxiang from "bundle-loader?lazy&name=yingxiang!./yingxiang";
@@ -29,8 +27,6 @@ import "./app.less";
 const ButtonGroup = Button.Group;
 
 const routers = [
-  // { name: "孕产期", path: "/sz/benyunqingkuang", component: bundle(Benyunqingkuang) },
-  // { name: "一般病史", path: "/sz/guoqushi", component: bundle(Guoqushi) },
   { name: "首检信息", path: "/sz", component: bundle(Shouzhen) },
   { name: "复诊记录", path: "/fz", component: bundle(Fuzhen) },
   // { name: "产后复诊记录", path: "/ch", component: bundle(Chanhou) },
@@ -113,16 +109,6 @@ export default class App extends Component {
         const action = fzListAction(res.object);
         store.dispatch(action);
       })
-
-      // service.fuzhen.getdiagnosis().then(res => {
-      //   res.object.list && res.object.list.map(item => {
-      //     if(item.data === '妊娠期糖尿病') {
-      //       this.setState({isShowXTRouter: true})
-      //     }
-      //   })
-      //   const action = getDiagnisisAction(res.object.list);
-      //   store.dispatch(action);
-      // });
 
     })
   }
@@ -336,31 +322,6 @@ export default class App extends Component {
       if (index === 0 && isOpenMedicalAdvice) {
         common.closeWindow();
       }
-
-      // item && service.fuzhen.adddiagnosis(item.diagnosis).then(() => {
-      //   service.fuzhen.checkHighriskAlert(item.diagnosis).then(res => {
-      //     let data = res.object;
-      //     if(data.length > 0) {
-      //       data.map(item => ( item.visible = true ))
-      //     }
-      //     const action = getAlertAction(data);
-      //     store.dispatch(action);
-      //   })
-      //   service.fuzhen.getdiagnosis().then(res => {
-      //     const action = getDiagnisisAction(res.object.list);
-      //     store.dispatch(action);
-      //   });
-      //   service.getuserDoc().then(res => {
-      //     const action = getUserDocAction(res.object);
-      //     store.dispatch(action);
-      //   })
-      //   if (index === 0) {
-      //     const action2 = showReminderAction(false);
-      //     store.dispatch(action2);
-      //   }else if(index === 0 && isOpenMedicalAdvice) {
-      //     common.closeWindow();
-      //   }
-      // })
 
     };
 

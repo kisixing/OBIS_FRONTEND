@@ -33,7 +33,6 @@ export default class Patient extends Component {
     const columns = [
       { title: '标题', dataIndex: 'title', key: 'title' },
       { title: '检查日期', dataIndex: 'sendDate', key: 'sendDate',  render: (text, record) => text.substr(0, 10)},
-      // { title: '类型', dataIndex: 'type', key: 'type' },
       { title: '报告医生', dataIndex: 'reportDoctor', key: 'reportDoctor', width: 120 },
       { title: '诊断', dataIndex: 'diagnosis', key: 'diagnosis', width: 350 },
       { title: '结论', dataIndex: 'result', key: 'result', width: 400 },
