@@ -286,6 +286,11 @@ export default class App extends Component {
             const action = getUserDocAction(res.object);
             store.dispatch(action);
           })
+          service.shouzhen.uploadHisDiagnosis(1).then(res => { })
+          service.shouzhen.getList(1).then(res => {
+            const action = szListAction(res.object);
+            store.dispatch(action);
+          })
         })
         service.fuzhen.checkHighriskAlert(item.diagnosis).then(res => {
           let data = res.object;
@@ -302,6 +307,11 @@ export default class App extends Component {
         service.shouzhen.batchAdd(2, relatedid, fzList).then(res => {
           service.getuserDoc().then(res => {
             const action = getUserDocAction(res.object);
+            store.dispatch(action);
+          })
+          service.shouzhen.uploadHisDiagnosis(2).then(res => { })
+          service.shouzhen.getList(2).then(res => {
+            const action = fzListAction(res.object);
             store.dispatch(action);
           })
         })

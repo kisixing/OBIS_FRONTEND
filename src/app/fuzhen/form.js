@@ -593,9 +593,6 @@ export default class FuzhenForm extends Component {
               common.closeWindow();
             }
           })
-          // if(act) {
-            service.shouzhen.uploadHisDiagnosis(2).then(res => { })
-          // }
         });
       } else if(!valid) {
         message.error('必填项不能为空！');

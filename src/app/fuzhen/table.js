@@ -31,7 +31,7 @@ export default class FuzhenForm extends Component {
       rows: [
         {
           columns: [
-            { name: "gestation(周)[孕周]", type: "input", span: 6, valid: 'number' },
+            { name: "gestation(周)[孕周]", type: "input", span: 6, valid: 'symbol(+)' },
             { name: "item[产检项目]", type: "select", span: 7, options: baseData.cjOptions },
             { name: "event[提醒事件]", type: "input", span: 8 },
             { type: "button", span: 3, text: "添加", color: "#1890ff", size: "small",	onClick: this.addRecentPlan.bind(this) }
@@ -52,7 +52,7 @@ export default class FuzhenForm extends Component {
 				{
           columns: [
             { span: 1 },
-            { name: "gestation(周)[孕周]", type: "input", span: 6 },
+            { name: "gestation(周)[孕周]", type: "input", span: 6, valid: 'symbol(+)' },
             { name: "event[提醒事件]", type: "input", span: 7 },
             { span: 1 },
             { type: "button", span: 3, text: "添加", color: "#1890ff", size: "small",	onClick: this.writePlanGroup.bind(this) }

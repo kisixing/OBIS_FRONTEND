@@ -41,8 +41,6 @@ export default class extends Component{
       isShowRegForm: false,
       openTemplate: false,
       ...store.getState(),
-      chanc: 0,
-      yunc: 1,
       signList: [
         { 'word': '大三阳', 'diag': '乙肝大三阳' },
         { 'word': '小三阳', 'diag': '乙肝小三阳' },
@@ -94,8 +92,8 @@ export default class extends Component{
         {
           className: 'top-column',
           columns: [
-            { name: 'yunc[1、G]', type: 'input', span: 3 },
-            { name: 'chanc[P]', className: 'short-label', type: 'input', span: 3 },
+            { name: 'yunc[1、G]', type: 'input', span: 3, valid: 'pureNumber' },
+            { name: 'chanc[P]', className: 'short-label', type: 'input', span: 3, valid: 'pureNumber' },
             { name: 'add_FIELD_tuserweek[妊娠](周)', className: 'short-label', type: 'input', span: 3 },
           ]
         },

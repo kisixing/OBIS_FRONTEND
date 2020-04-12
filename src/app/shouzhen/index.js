@@ -21,7 +21,7 @@ import Zdcl from './zhenduanchuli';
 
 import store from "../store";
 import { getUserDocAction, getAllFormDataAction, isFormChangeAction, allReminderAction, showReminderAction, openMedicalAction,
-         getIdAction, getWhichAction, setEmptyAction
+         getIdAction, getWhichAction, setEmptyAction, szListAction
     } from "../store/actionCreators.js";
 
 import * as baseData from './data';
@@ -468,11 +468,13 @@ export default class Patient extends Component {
                             const action = getUserDocAction(res.object);
                             store.dispatch(action);
                         })
+                        service.shouzhen.uploadHisDiagnosis(1).then(res => { })
+                        service.shouzhen.getList(1).then(res => {
+                            const action = szListAction(res.object);
+                            store.dispatch(action);
+                        })
                     })
                 })
-                if(key === 'tab-7') {
-                    service.shouzhen.uploadHisDiagnosis(1).then(res => { })
-                }
             }
             this.change = false;
             const action = isFormChangeAction(false);

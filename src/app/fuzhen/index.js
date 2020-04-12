@@ -1068,6 +1068,11 @@ export default class Patient extends Component {
             const action = getUserDocAction(res.object);
             store.dispatch(action);
           })
+          service.shouzhen.uploadHisDiagnosis(2).then(res => { })
+          service.shouzhen.getList(2).then(res => {
+            const action = fzListAction(res.object);
+            store.dispatch(action);
+          })
         })
         service.fuzhen.getRecentRvisit().then(res => {
           let newInitData = service.praseJSON(res.object[res.object.length - 1]);

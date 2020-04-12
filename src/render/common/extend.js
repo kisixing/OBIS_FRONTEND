@@ -22,16 +22,16 @@ export function eventFns({onKeyUp, ...props}) {
     ...props,
     onKeyUp: e=>{
       // 添加扩展逻辑
-      if(([37,39].indexOf(e.keyCode) !== -1)) {
-        const nextEl = findNext(e.currentTarget,e.target,e.keyCode-38)
-        nextEl&&setTimeout(()=>{
-          nextEl.focus();
-          if(!noAutoClick(nextEl)){
-            nextEl.click();
-          }
-        });
-        e.preventDefault();
-      }
+      // if(([37,39].indexOf(e.keyCode) !== -1)) {
+      //   const nextEl = findNext(e.currentTarget,e.target,e.keyCode-38)
+      //   nextEl&&setTimeout(()=>{
+      //     nextEl.focus();
+      //     if(!noAutoClick(nextEl)){
+      //       nextEl.click();
+      //     }
+      //   });
+      //   e.preventDefault();
+      // }
       if(onKeyUp){
         return onKeyUp(e);
       }
