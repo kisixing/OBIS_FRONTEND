@@ -224,7 +224,7 @@ export default class Patient extends Component {
             if (!isJump && keyNum > stepNum + 1) {
                 for (let i = stepNum + 1; i < keyNum; i++) {
                     if (emptyData[`tab-${i}`].length > 1) {
-                        emptyTab += emptyData[`tab-${i}`][0] + '；';
+                        // emptyTab += emptyData[`tab-${i}`][0] + '；';
                     }
                 }
             }
