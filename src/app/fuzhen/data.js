@@ -181,7 +181,6 @@ export const tableKey = () => [
 				key: 'ckgongg',
 				width: 50,
 				type: 'input',
-				valid: 'number'
 			},
 		]
 	},

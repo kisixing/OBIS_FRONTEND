@@ -186,7 +186,7 @@ export default class FuzhenForm extends Component {
                       {
                         label: `胎${index+1}`, columns: [
                           { name: 'location[位置]', type: 'select', span: 6, showSearch:true, options: baseData.wzOptions },
-                          { name: 'taix(bmp)[胎心率]', type: 'input', span: 6, valid: 'number' },
+                          { name: 'taix(bmp)[胎心率]', type: 'input', span: 6 },
                           { name: 'xianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
                           { span: 1 },
                           {

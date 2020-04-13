@@ -56,6 +56,19 @@ export default class Patient extends Component {
         this.setState(store.getState());
     };
 
+    componentDidMount() {
+        window.addEventListener('keyup', e => {
+            if (e.code === 'Enter') this.handleKeyUp(e);
+        })
+    }
+
+    handleKeyUp(e) {
+        const { step } = this.state;
+        if (e.target.getAttribute('name') === 'add_FIELD_pulse' && step === 'tab-4') {
+            document.querySelector('.cardiac input').select();
+        }
+    }
+
     activeTab(step) {
         const { tabs, allFormData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};

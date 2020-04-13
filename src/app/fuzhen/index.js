@@ -45,7 +45,7 @@ export default class Patient extends Component {
       activeElement: '',
       info: {},
       diagnosi: '',
-      diagnosislist: {},
+      diagnosislist: null,
       relatedObj: {},
       recentRvisit: null,
       recentRvisitAll: null,
@@ -137,8 +137,6 @@ export default class Patient extends Component {
         const action = getDiagnisisAction(res.object.list);
         store.dispatch(action);
       }),
-
-      service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object})),
     ]).then(() => this.setState({ loading: false }));
     
     service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
@@ -265,7 +263,7 @@ export default class Patient extends Component {
         store.dispatch(action);
       })
       this.setState({ diagnosi: '' });
-
+      service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
     } else if (diagnosi) {
       modal('warning', '添加数据重复');
     }
@@ -458,6 +456,11 @@ export default class Patient extends Component {
       }
     }
 
+    const handleIptFocus = () => {
+      service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
+      this.setState({isShowZhenduan: true});
+    }
+
     /**
      * 诊断设置窗口
      */
@@ -490,10 +493,10 @@ export default class Patient extends Component {
         </ol>
         <div className="fuzhen-left-input font-16">
           <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
-                 onFocus={() => this.setState({isShowZhenduan: true})}
+                 onFocus={() => handleIptFocus()}
                  onBlur={() => setTimeout(() => this.setState({isShowZhenduan: false}), 200)}
                  />
-          { isShowZhenduan || isMouseIn ?
+          { (isShowZhenduan || isMouseIn) && diagnosislist ?
             <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}>
               <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
                 <Tabs.TabPane tab="全部" key="1">
@@ -514,7 +517,7 @@ export default class Patient extends Component {
                   {diagnosislist['personal'].map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() =>  setIptVal(item.name)}>{item.name}</p>)}
                 </Tabs.TabPane>
               </Tabs>
-            </div>  : ""}
+            </div>  : null}
           {renderSetModal()}
         </div>
         <Button className="fuzhen-left-button margin-TB-mid" type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>

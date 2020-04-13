@@ -26,8 +26,7 @@ export default class extends Component{
     this.state = {
       entity: {},
       diagnosi: '',
-      diagnosis: [],
-      diagnosislist: {},
+      diagnosislist: null,
       isShowZhenduan: false,
       isMouseIn: false,
       isShowSetModal: false,
@@ -69,8 +68,6 @@ export default class extends Component{
         store.dispatch(action);
       }
     })
-
-    service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
 
     service.shouzhen.getAdviceTreeList().then(res => {
       res.object.length > 1 && this.setState({adviceList: res.object, openAdvice: true})
@@ -195,6 +192,7 @@ export default class extends Component{
         store.dispatch(action);
       })
       this.setState({ diagnosi: '' });
+      service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
 
       // service.fuzhen.adddiagnosis(diagnosi).then(() => {
       //   modal('success', '添加诊断信息成功');
@@ -457,6 +455,11 @@ export default class extends Component{
       }
     }
 
+    const handleIptFocus = () => {
+      service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
+      this.setState({isShowZhenduan: true});
+    }
+
     /**
      * 诊断设置窗口
      */
@@ -500,10 +503,10 @@ export default class extends Component{
           </Col>
           <Col span={17} className="shouzhen-pop">
             <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
-                 onFocus={() => this.setState({isShowZhenduan: true})}
+                 onFocus={() => handleIptFocus()}
                  onBlur={() => setTimeout(() => this.setState({isShowZhenduan: false}), 200)}
                  />
-            { isShowZhenduan || isMouseIn ?
+            { (isShowZhenduan || isMouseIn) && diagnosislist ?
             <div className="shouzhen-list" onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}>
               <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
                 <Tabs.TabPane tab="全部" key="1">
@@ -524,7 +527,7 @@ export default class extends Component{
                   {diagnosislist['personal'].map((item, i) => <p className="shouzhen-left-item" key={i} onClick={() =>  setIptVal(item.name)}>{item.name}</p>)}
                 </Tabs.TabPane>
               </Tabs>
-            </div>  : ""}
+            </div>  : null}
             {renderSetModal()}
           </Col>
           <Col span={5}>
