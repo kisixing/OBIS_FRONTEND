@@ -371,7 +371,8 @@ export const pregnanciesColumns = [
 			{
 				title: '自然',
 				key: 'zir',
-				type: 'input'
+				type: 'checkbox',
+				holdeditor: true
 			},
 			{
 				title: '清宫',
@@ -382,7 +383,8 @@ export const pregnanciesColumns = [
 			{
 				title: '人工',
 				key: 'reng',
-				type: 'input'
+				type: 'checkbox',
+				holdeditor: true
 			}
 		]
     },

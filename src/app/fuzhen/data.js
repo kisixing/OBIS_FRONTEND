@@ -136,7 +136,7 @@ export const tableKey = () => [
 	{
 		title: '孕周',
 		key: 'ckweek',
-		type: 'input',
+		// type: 'input',
 		width: 50,
 	},
 	{
@@ -335,10 +335,10 @@ export const tableKey = () => [
 		key: 'nextRvisitText',
 		width: 80,
 	},
-	// {
-	// 	title: '医生',
-	// 	key: 'sign',
-	// },
+	{
+		title: '医生',
+		key: 'sign',
+	},
 ];
 
 /**

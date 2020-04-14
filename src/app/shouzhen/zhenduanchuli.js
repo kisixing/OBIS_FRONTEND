@@ -74,7 +74,7 @@ export default class extends Component{
     });
 
     window.addEventListener('keyup', e => {
-      if (e.code === 'Enter') this.onKeyUp();
+      if (e.keyCode === 13 || e.keyCode === 108) this.onKeyUp();
     })
   }
 

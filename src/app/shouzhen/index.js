@@ -58,7 +58,7 @@ export default class Patient extends Component {
 
     componentDidMount() {
         window.addEventListener('keyup', e => {
-            if (e.code === 'Enter') this.handleKeyUp(e);
+            if (e.keyCode === 13 || e.keyCode === 108) this.handleKeyUp(e);
         })
     }
 

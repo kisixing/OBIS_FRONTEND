@@ -29,7 +29,7 @@ export default class extends Component{
     const rows = this.getheades(printKeys);
     const keysArr = [];
 
-    printKeys.splice(printKeys.length - 3, 3);
+    printKeys.splice(printKeys.length - 4, 3);
     printKeys.forEach(item => {
       !item.className ? keysArr.push(item.key) : null;
     })
