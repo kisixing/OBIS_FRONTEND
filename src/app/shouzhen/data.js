@@ -209,8 +209,8 @@ export const sxfOptions = toOptions('存在,亢起{#FF3300},消失{#FF3300},引�
 /**
  *乙肝两对半
 */
-export const ygOptions = toOptions('正常,阳性{#FF3300}(input),小三阳{#FF3300},大三阳{#FF3300},慢活肝{#FF3300},未查{#FF3300}');
-
+// export const ygOptions = toOptions('正常,阳性{#FF3300}(input),小三阳{#FF3300},大三阳{#FF3300},慢活肝{#FF3300},未查{#FF3300}');
+export const ygOptions = toOptions('正常,异常{#FF3300}(input),未查{#FF3300}');
 /**
  *阴阳未查
 */
@@ -234,7 +234,7 @@ export const ogttOptions = toOptions(['正常',{k:'GDM{#FF3300}(shouzhenyy-空�
 /**
  *地贫
 */
-export const dpOptions = toOptions('正常,甲型{#FF3300}(input),乙型{#FF3300}(input),未查{#FF3300},其他{#FF3300}(input)');
+export const dpOptions = toOptions('正常,α型{#FF3300}(input),β型{#FF3300}(input),未查{#FF3300},其他{#FF3300}(input)');
 
 /**
  *尿蛋白

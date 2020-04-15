@@ -15,40 +15,18 @@ export default class extends Component{
       rows: [
         {
           columns:[
+            {name:'husbandCkxuex[男方血型]', icon:'male-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
+            {name:'husbandRh[]', type: 'select',span:2, options: baseData.xuexing2Options},
+            {span: 2},
+            {name:'husbandThalassemia[男方地贫]', icon:'male-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
+          ]
+        },
+        {
+          columns:[
             {name:'ckxuex[女方血型]', icon:'female-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
             {name:'ckrh[]', type: 'select',span:2, options: baseData.xuexing2Options},
             {span:2},
             {name:'thalassemia[女方地贫]', icon:'female-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
-          ]
-        },
-        {
-          columns:[
-            {name:'hbsAg[乙肝两对半]', className:' col-tg-sp', type:'checkinput-5',valid: 'required', options: baseData.ygOptions,radio:true,span:18}
-          ]
-        },
-        {
-          columns:[
-            {name:'hbsAgDNA(IU/ml)[乙肝DNA]', type:'input', span:5},
-            {span:1},
-            {name:'hbsAgALT(U/L)[ALT]', type:'input', span:5},
-            {span:1},
-            {name:'hbsAgAST(U/L)[AST]',type:'input', span:5}
-          ]
-        },
-        {
-          columns:[
-            {name:'hcvAb[丙肝抗体]', type:'checkinput-5',valid: 'required', options: baseData.yywOptions,radio:true,span:12},
-            {name:'hcvAbRNA[丙肝RNA]', type:'checkinput-5', valid: 'required', options: baseData.yywOptions,radio:true,span:12}
-          ]
-        },
-        {
-          columns:[
-            {name:'rpr[梅毒]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.mdOptions,span: 15}
-          ]
-        },
-        {
-          columns:[
-            {name:'aids[HIV]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:15}
           ]
         },
         {
@@ -62,12 +40,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'proteinuria[尿蛋白]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dbnOptions,span:15}
-          ]
-        },
-        {
-          columns:[
-            {name:'hb(g/L)[Hb]', type:'input', span:5},
+            {name:'hb(g/L)[HB]', type:'input', span:5},
             {span:1},
             {name:'mcv(fL)[MCV]',type:'input', span:5},
             {span:1},
@@ -76,20 +49,41 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'ogtt[OGTT]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.ogttOptions,span:15}
+            {name:'proteinuria[尿蛋白]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dbnOptions,span:12}
           ]
         },
         {
           columns:[
-            {name:'gbs[GBS]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:15}
+            {name:'hbsAg[乙肝两对半]', className: 'yi-gan', type:'checkinput-5',valid: 'required', options: baseData.ygOptions,radio:true,span:12},
+            {name:'hbsAgDNA(IU/ml)[HBV DNA]', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
+            {name:'hbsAgALT(U/L)[ALT]', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
+            {name:'hbsAgAST(U/L)[AST]', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'}
           ]
         },
         {
           columns:[
-            {name:'husbandCkxuex[男方血型]', icon:'male-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
-            {name:'husbandRh[]', type: 'select',span:2, options: baseData.xuexing2Options},
-            {span: 2},
-            {name:'husbandThalassemia[男方地贫]', icon:'male-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
+            {name:'hcvAb[丙肝抗体]', type:'checkinput-5',valid: 'required', options: baseData.yywOptions,radio:true,span:12},
+            {name:'hcvAbRNA[丙肝RNA]', type:'checkinput-5', valid: 'required', options: baseData.yywOptions,radio:true,span:12}
+          ]
+        },
+        {
+          columns:[
+            {name:'rpr[梅毒]', className: 'short-item', type:'checkinput-5',radio:true, valid: 'required', options: baseData.mdOptions,span:24}
+          ]
+        },
+        {
+          columns:[
+            {name:'aids[HIV]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:12}
+          ]
+        },
+        {
+          columns:[
+            {name:'gbs[GBS]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:12}
+          ]
+        },
+        {
+          columns:[
+            {name:'ogtt[OGTT]', className: 'short-item', type:'checkinput-5',radio:true, valid: 'required', options: baseData.ogttOptions,span:24}
           ]
         },
       ]
@@ -99,7 +93,7 @@ export default class extends Component{
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div className="width_7">
+      <div className="width_7 jian-yan-jc">
         {formRender(entity, this.config(), onChange)}
       </div>
     )

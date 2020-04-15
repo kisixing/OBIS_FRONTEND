@@ -60,7 +60,7 @@ export default {
      * 获取token
      */
     authorize: function(doctorId){
-        return myAxios.post('/outpatientRestful/authorize', {doctorId: doctorId});
+        return myAxios.post('/outpatientRestful/authorizeVO', {doctorId: doctorId});
     },
     /**
      * 复诊所需API

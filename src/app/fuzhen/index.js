@@ -640,13 +640,21 @@ export default class Patient extends Component {
       e.stopPropagation();
       service.fuzhen.getLisResult().then(res => {
         let data = service.praseJSON(res.object);
-        if(data.ogtt[0]['label'] === "GDM") {
+        if(data.ogtt && data.ogtt[0] && data.ogtt[0].label === "GDM") {
           const param = {"value": {
             "input0": data['ogttGdmEmpty'],
             "input1": data['ogttGdm1H'],
             "input2": data['ogttGdm2H'],
           }};
           data['ogtt'] = [Object.assign(data.ogtt[0], param)];
+        }
+        // 乙肝两对半选项更改后作下特别处理
+        console.log(data.hbsAg[0].label, data.hbsAg, '456');
+        if (data.hbsAg && data.hbsAg[0]) {
+          const hbsAgArr = ['阳性', '小三阳', '大三阳', '慢活肝'];
+          if (hbsAgArr.includes(data.hbsAg[0].label)) {
+              data.hbsAg = [{"label": "异常", "value": ""}];
+          }
         }
         this.setState({jyEntity: data})
       })
@@ -802,6 +810,11 @@ export default class Patient extends Component {
       let hasRiSl = false;
 
       obj.map(item => {
+        // 是否修改过预产期-超声
+        if (item.updateExpectFlag === '1' && item.ckweek && String(item.ckweek).indexOf('修') === -1) {
+          item.ckweek += '(修)';
+        }
+
         // 下次复诊数据处理
         let describe1 = '', describe2 = '';
         if(typeof item.ckappointmentArea === 'object') describe1 = item.ckappointmentArea.describe;
@@ -1034,7 +1047,9 @@ export default class Patient extends Component {
           const tingjTip = ycqEntity.ckztingj ? `停经${ycqEntity.ckztingj}周；` : '';
           const weekTip = ycqEntity.ckzweek ? `如孕${ycqEntity.ckzweek}周；` : '';
           const trvTip = ycqEntity.gesexpectrv ? `修订预产期为${ycqEntity.gesexpectrv}；` : '';
-          initData.ckweek = util.getWeek(40, util.countWeek(ycqEntity.gesexpectrv, initData.checkdate))+'(修)';
+          // initData.ckweek = util.getWeek(40, util.countWeek(ycqEntity.gesexpectrv, initData.checkdate))+'(修)';
+          initData.ckweek = util.getWeek(40, util.countWeek(ycqEntity.gesexpectrv, initData.checkdate));
+          initData.updateExpectFlag = '1';
           initData.treatment += dateTip + tingjTip + weekTip + trvTip;
 
           recentRvisit.pop();
@@ -1057,6 +1072,10 @@ export default class Patient extends Component {
     const { fzList, ycqEntity, isChangeYCQ } = this.state;
     const action = isFormChangeAction(false);
     store.dispatch(action);
+    // 处理下加了‘修’字的孕周
+    if (entity.ckweek && String(entity.ckweek).indexOf('修') !== -1) {
+      entity.ckweek = entity.ckweek.slice(0, -3);
+    }
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then((res) => {
         modal('success', '诊断信息保存成功');

@@ -113,13 +113,20 @@ export default class Patient extends Component {
                 tab.entity['add_FIELD_ckjc'] = (ckjc !== '' && typeof ckjc !== 'object') ? JSON.parse(ckjc) : ckjc;
             } else if (tab.key === 'tab-6') {
                 tab.entity = service.praseJSON(allFormData.lis);
-                if(tab.entity.ogtt[0]['label'] === "GDM") {
+                if(tab.entity.ogtt && tab.entity.ogtt[0] && tab.entity.ogtt[0].label === "GDM") {
                     const data = {"value": {
                         "input0": tab.entity['add_FIELD_ogtt_gdm_empty'],
                         "input1": tab.entity['add_FIELD_ogtt_gdm_1h'],
                         "input2": tab.entity['add_FIELD_ogtt_gdm_2h'],
                     }};
                     tab.entity['ogtt'] = [Object.assign(tab.entity.ogtt[0], data)];
+                }
+                // 乙肝两对半选项更改后作下特别处理
+                if (tab.entity.hbsAg && tab.entity.hbsAg[0]) {
+                    const hbsAgArr = ['阳性', '小三阳', '大三阳', '慢活肝'];
+                    if (hbsAgArr.includes(tab.entity.hbsAg[0].label)) {
+                        tab.entity.hbsAg = [{"label": "异常", "value": ""}];
+                    }
                 }
             } else if (tab.key === 'tab-7') {
                 tab.entity = service.praseJSON(allFormData.diagnosis); 

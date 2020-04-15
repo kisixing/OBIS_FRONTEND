@@ -211,8 +211,8 @@ export default class FuzhenForm extends Component {
             { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onDBClick: handleDBClick});
 
       return (
-				<Modal width="60%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => this.onReturn(2)}>返回</Button>} 
-					visible={isShowMplanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+				<Modal width="80%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => this.onReturn(2)}>返回</Button>} 
+					visible={isShowMplanModal} maskClosable={false} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
           <div>{planGroup.length > 0 ? initTable(planGroup) : ""}</div>
 					<Button className="blue-btn margin-TB-mid" type="ghost" onClick={() => addNewPlan()}>新增诊疗计划组</Button>
         </Modal>
@@ -246,14 +246,13 @@ export default class FuzhenForm extends Component {
             { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onChange: handleTableChange});
       
       return (
-				<Modal width="60%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => this.onReturn(4)}>返回</Button>} 
-					visible={isShowNewplanModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
+				<Modal width="80%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => this.onReturn(4)}>返回</Button>} 
+					visible={isShowNewplanModal} maskClosable={false} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
 					{formRender(allPlanEntity, this.allPlanConfig(), handleChange)}
           <div>{allPlanDataList.diagnosisPlans.length > 0 ? initTable(allPlanDataList.diagnosisPlans) : ""}</div>
         </Modal>
       )
     }
-    
     const handleCheck = (keys) => {
       this.setState({ checkTreeKeys: keys })
     }

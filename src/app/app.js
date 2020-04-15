@@ -62,7 +62,8 @@ export default class App extends Component {
 
     common.setCookie('clinicCode', service.getQueryString('clinicCode'));
     service.authorize(service.getQueryString('doctorId')).then(res => {
-      common.setCookie('docToken', res.object);
+      common.setCookie('docToken', res.object.token);
+      common.setCookie('docName', res.object.doctorName);
       service.getuserDoc().then(res => {
         this.setState({ ...res.object, loading: false, highriskEntity: { ...res.object }}, () => { 
           const action = getUserDocAction(res.object);
@@ -353,7 +354,7 @@ export default class App extends Component {
     allReminderModal.map((item, index) => item.visible ? 
       (
         <Modal className="reminder-wrapper" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
-          visible={item.visible} footer={footer(index, item)} onCancel={() => handelClose(index)} >
+          visible={item.visible} maskClosable={false} footer={footer(index, item)} onCancel={() => handelClose(index)} >
           <div className="reminder-content"><span className="reminder-word">{item.reminder}</span>,是否添加诊断</div>
           <div className="reminder-item">{item.diagnosis}</div>
         </Modal>

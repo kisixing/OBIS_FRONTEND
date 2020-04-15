@@ -22,12 +22,18 @@ export default {
         if(tab === 'tab-0' || tab === 'tab-5'|| tab === 'tab-4' || tab === 'tab-6' || tab === 'tab-7'){
             uri='saveivisit'
         }
-        data = entity
-        //console.log(entity)
+        data = entity;
         var arr2 = JSON.stringify(data).replace(/add_/g, "ADD_");
         data=JSON.parse(arr2) 
         const clinicCode = common.getCookie('clinicCode');
-        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, ...data}));
+
+        let doctorName = {};
+        if (uri === 'udpateDoc') {
+            doctorName = { 'ADD_FIELD_first_ivisit_doctor': common.getCookie('docName') };
+        } else  {
+            doctorName = { 'ADD_FIELD_ivisit_doctor': common.getCookie('docName') };
+        }
+        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, ...doctorName, ...data}));
     },
     /**
      * 保存孕产史
