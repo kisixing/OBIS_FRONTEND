@@ -229,12 +229,13 @@ export const mdOptions = toOptions(['阴性',{k:'阳性{#FF3300}(shouzhenyy-TPPA
 /**
  *OGTT
 */
-export const ogttOptions = toOptions(['正常',{k:'GDM{#FF3300}(shouzhenyy-空腹血糖,餐后1H血糖,餐后2H血糖)',addspan:4},'未查{#FF3300}']);
+export const ogttOptions = toOptions(['正常',{k:'GDM{#FF3300}(shouzhenyy-空腹血糖（mmol/L）,餐后1H血糖,餐后2H血糖)',addspan:4},'未查{#FF3300}']);
 
 /**
  *地贫
 */
-export const dpOptions = toOptions('正常,α型{#FF3300}(input),β型{#FF3300}(input),未查{#FF3300},其他{#FF3300}(input)');
+// export const dpOptions = toOptions('正常,甲型{#FF3300}(input),乙型{#FF3300}(input),未查{#FF3300},其他{#FF3300}(input)');
+export const dpOptions = toOptions('α型{#FF3300}(input),β型{#FF3300}(input),未查{#FF3300},其他{#FF3300}(input)');
 
 /**
  *尿蛋白
@@ -284,6 +285,11 @@ export const gwwjjOptions = toOptions('未做检查');
  * 专科检查未见异常
  */
 export const wjycOptions = toOptions('未见异常');
+
+/**
+ * 末次月经不详
+ */
+export const bxOptions = toOptions('不详');
 
 /**
  * 手术医院
@@ -391,7 +397,8 @@ export const pregnanciesColumns = [
 	{
 		title: '引产',
 		key: 'yinch',
-		type: 'input'
+		type: 'checkbox',
+		holdeditor: true
 	},
 	{
 		title: '死胎',
@@ -402,7 +409,8 @@ export const pregnanciesColumns = [
 	{
 		title: '早产',
 		key: 'zaoch',
-		type: 'input'
+		type: 'checkbox',
+		holdeditor: true
 	},
 	{
 		title: '足月产',
@@ -511,17 +519,17 @@ export const pregnanciesColumns = [
 		dropdownMatchSelectWidth: false,
 		width: 160
 	},
-	{
-		title: '备注',
-		key: 'unhealth',
-		type: 'input',
-		width: 400
-	},
+	// {
+	// 	title: '备注',
+	// 	key: 'unhealth',
+	// 	type: 'input',
+	// 	width: 400
+	// },
 	{
 		title: '特殊情况',
 		key: 'bingfzh',
 		type: 'input',
-		width: '200',
+		width: 600,
 	},
 ]
 
@@ -603,7 +611,7 @@ export const initYCData = {
  * 首检必填项项
  */
 export const requiredForm = {
-	'tab-0': ['gesmoc', 'gesexpect', 'gesexpectrv', 'add_FIELD_shouyun'],
+	'tab-0': ['gesmoc', 'gesexpectrv', 'add_FIELD_shouyun'],
 	'tab-1': ['add_FIELD_gaoxueya', 'add_FIELD_tangniaobing', 'add_FIELD_xinzangbing', 
 						'add_FIELD_has_operation_history', 'bsguomin', 'hobtabp'],
 	'tab-2': ['yjcuch', 'yjzhouq', 'yjchix', 'yjtongj', 'maritalHistory', 'userjiehn', 'userjinqjh', 

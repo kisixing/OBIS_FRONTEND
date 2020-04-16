@@ -18,7 +18,7 @@ export default class extends Component{
             {name:'husbandCkxuex[男方血型]', icon:'male-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
             {name:'husbandRh[]', type: 'select',span:2, options: baseData.xuexing2Options},
             {span: 2},
-            {name:'husbandThalassemia[男方地贫]', icon:'male-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
+            {name:'husbandThalassemia[男方地贫]', className: 'short-dipin', icon:'male-Gender', type:'checkinput-5', unselect: '正常', valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
         {
@@ -26,7 +26,7 @@ export default class extends Component{
             {name:'ckxuex[女方血型]', icon:'female-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
             {name:'ckrh[]', type: 'select',span:2, options: baseData.xuexing2Options},
             {span:2},
-            {name:'thalassemia[女方地贫]', icon:'female-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
+            {name:'thalassemia[女方地贫]', className: 'short-dipin', icon:'female-Gender', type:'checkinput-5', unselect: '正常', valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
         {
@@ -57,7 +57,7 @@ export default class extends Component{
             {name:'hbsAg[乙肝两对半]', className:'yi-gan', type:'checkinput-5',valid: 'required', options: baseData.ygOptions,radio:true,span:12},
             {name:'add_FIELD_hbsAg_DNA(IU/ml)[HBV DNA]', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
             {name:'add_FIELD_hbsAg_ALT(U/L)[ALT]', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
-            {name:'add_FIELD_hbsAg_ALT(U/L)[ALT]', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
+            {name:'add_FIELD_hbsAg_AST(U/L)[AST]', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
           ]
         },
         {

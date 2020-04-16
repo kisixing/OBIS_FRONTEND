@@ -119,8 +119,8 @@ export default {
     /**
      * 批量插入诊断
      */
-    batchAdd: function(relatedtype, relatedid, list) {
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/batchAdd', {userid: r.object.userid, relatedtype, relatedid, list }));
+    batchAdd: function(relatedtype, relatedid, list, uploadFlag) {
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/batchAdd', {userid: r.object.userid, relatedtype, relatedid, list, uploadFlag }));
     },
     /**
      * 查询梅毒数据

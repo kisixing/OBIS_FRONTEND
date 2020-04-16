@@ -18,7 +18,7 @@ export default class extends Component{
             {name:'husbandCkxuex[男方血型]', icon:'male-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
             {name:'husbandRh[]', type: 'select',span:2, options: baseData.xuexing2Options},
             {span: 2},
-            {name:'husbandThalassemia[男方地贫]', icon:'male-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
+            {name:'husbandThalassemia[男方地贫]', className: 'short-dipin', icon:'male-Gender', type:'checkinput-5', unselect: '正常', valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
         {
@@ -26,7 +26,7 @@ export default class extends Component{
             {name:'ckxuex[女方血型]', icon:'female-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
             {name:'ckrh[]', type: 'select',span:2, options: baseData.xuexing2Options},
             {span:2},
-            {name:'thalassemia[女方地贫]', icon:'female-Gender', type:'checkinput-5',radio:true, valid: 'required', options: baseData.dpOptions,span:15}
+            {name:'thalassemia[女方地贫]', className: 'short-dipin', icon:'female-Gender', type:'checkinput-5', unselect: '正常', valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
         {

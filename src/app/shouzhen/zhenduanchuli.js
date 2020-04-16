@@ -12,6 +12,7 @@ import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, get
          showSypAction, szListAction, isFormChangeAction
       } from '../store/actionCreators.js';
 import RegForm from '../components/reg-form';
+import cModal from '../../render/modal';
 import './index.less';
 import service from '../../service';
 
@@ -38,6 +39,10 @@ export default class extends Component{
       treatKey1: [],
       treatKey2: [],
       isShowRegForm: false,
+      isShowHighModal: false,
+      appointmentNum: 0,
+      addNum: 0,
+      totalNum: 0,
       openTemplate: false,
       ...store.getState(),
       signList: [
@@ -682,10 +687,107 @@ export default class extends Component{
     )
   }
 
+    /**
+   * 高危门诊弹窗
+   */
+  renderHighModal = () => {
+    const { isShowHighModal, appointmentNum, addNum, totalNum } = this.state;
+    const { onChange } = this.props;
+    const content = () => {
+      return (
+        <div className="high-modal">
+          <p className="high-info">该日期高危门诊已约满，是否给孕妇加号</p>
+          <p className="high-msg">
+            <span>已约：<i>{appointmentNum}</i></span>
+            <span>已加号：<i>{addNum}</i></span>
+            <span>限号：{totalNum}</span>
+          </p>
+        </div>
+      )
+    };
+    const onCancel = () => {
+      this.setState({ isShowHighModal: false });
+    }
+    const onOK = (e) => {
+      onChange(e, { name: 'nextRvisitWeek', value: '' });
+      onChange(e, { name: 'xiacsfdate', value: '' });
+      this.setState({ isShowHighModal: false });
+    }
+    const buttons = [
+      <Button onClick={e => onOK(e)}>修改日期</Button>,
+      <Button type="primary" onClick={() => onCancel()}>加号</Button>
+    ]
+    cModal({
+      visible: isShowHighModal, 
+      content: content, 
+      onCancel: onCancel,
+      footer: buttons,
+      closable: false
+    })
+  }
+
+  checkAddNum(e, type, value) {
+    const { entity, onChange } = this.props;
+    console.log(entity, '123')
+    let date = '';
+    let noon = 1;
+
+    if (type === 1 && !!entity.xiacsfdate) {
+      date = entity.xiacsfdate;
+    }
+    if (type === 2 && !!entity.xiacsftype && entity.xiacsftype.label === '高危门诊') {
+      date = value;
+    }
+    if (type === 3 && !!entity.xiacsftype && entity.xiacsftype.label === '高危门诊' && !!entity.xiacsfdatearea) {
+      date = entity.xiacsfdate;
+      // if (value.label === '下午') noon = 2;
+    }
+    if (!!date) {
+      service.fuzhen.checkIsAddNum(date, noon).then(res => {
+        if (res.object.isScheduling) {
+          if (res.object.appointmentNum === res.object.totalNum) {
+            this.setState({ 
+              isShowHighModal: true,
+              appointmentNum: res.object.appointmentNum,
+              addNum: res.object.addNum,
+              totalNum: res.object.totalNum,
+            })
+          }
+        } else {
+          message.error('该日期已设停诊，请选择别的日期', 5);
+          onChange(e, { name: 'nextRvisitWeek', value: '' });
+          onChange(e, { name: 'xiacsfdate', value: '' });
+        }
+      })
+    }
+  }
+
   handleChange(e, { name, value, target }){
     const { onChange } = this.props;
-    // console.log(name, value, target, '123')
-    onChange(e, { name, value, target })
+    onChange(e, { name, value, target });
+    switch (name) {
+      case 'xiacsftype':
+        if (value.label === '高危门诊') {
+          onChange(e, { name: 'xiacsfdatearea', value: {"0":"上","1":"午","label":"上午","describe":"上","value":'上午'} });
+          this.checkAddNum(e, 1);
+        }
+        break;
+      case 'nextRvisitWeek':
+        if (value && value.value) {
+          onChange(e, { name: 'xiacsfdate', value: util.futureDate(value.value) });
+          this.checkAddNum(e, 2, util.futureDate(value.value));
+        }
+        break; 
+      case 'xiacsfdate':
+        onChange(e, { name: 'nextRvisitWeek', value: '' });
+        this.checkAddNum(e, 2, value);
+        break; 
+      case 'xiacsfdatearea':
+        this.checkAddNum(e, 3, value);
+        break;
+      default:
+        break;
+    }
   }
 
   closeRegForm = () => {
@@ -704,6 +806,7 @@ export default class extends Component{
         {openTemplate && this.renderTreatment()}
         {this.renderMenZhen()}
         {this.renderAdviceModal()}
+        {this.renderHighModal()}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>} */}
       </div>
     )

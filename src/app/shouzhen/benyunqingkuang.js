@@ -24,7 +24,14 @@ export default class extends Component {
         {
           columns: [
             { name: "gesmoc[末次月经]", type: "date", span: 6, valid: "required" },
-            { name: "gesexpect[预产期-日期]", type: "date", span: 6, valid: "required" },
+            // { name: "all_gesmoc[末次月经]", span: 6, valid: "required", 
+            //   type: [
+            //     { type: 'date', filter: entity => !(entity.all_gesmoc && entity.all_gesmoc['1'] && entity.all_gesmoc['1'][0] && entity.all_gesmoc['1'][0].label === '不详') },
+            //     // { type: 'date' },
+            //     { type: 'checkinput', options: baseData.bxOptions }
+            //   ] 
+            // },
+            { name: "gesexpect[预产期-日期]", type: "date", span: 6 },
             { name: "gesexpectrv[预产期-B超]", type: "date", span: 6, valid: "required" }
           ]
         },

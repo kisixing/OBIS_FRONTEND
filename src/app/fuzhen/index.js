@@ -649,9 +649,8 @@ export default class Patient extends Component {
           data['ogtt'] = [Object.assign(data.ogtt[0], param)];
         }
         // 乙肝两对半选项更改后作下特别处理
-        console.log(data.hbsAg[0].label, data.hbsAg, '456');
         if (data.hbsAg && data.hbsAg[0]) {
-          const hbsAgArr = ['阳性', '小三阳', '大三阳', '慢活肝'];
+          const hbsAgArr = ['阳性', '小三阳', '大三阳', '慢活肝', '其他'];
           if (hbsAgArr.includes(data.hbsAg[0].label)) {
               data.hbsAg = [{"label": "异常", "value": ""}];
           }
@@ -1090,7 +1089,7 @@ export default class Patient extends Component {
           });
         }
         // 保存诊断数据
-        service.shouzhen.batchAdd(2, res.object, fzList).then(res => {
+        service.shouzhen.batchAdd(2, res.object, fzList, 1).then(res => {
           service.getuserDoc().then(res => {
             const action = getUserDocAction(res.object);
             store.dispatch(action);

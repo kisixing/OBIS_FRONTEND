@@ -434,17 +434,19 @@ export default class FuzhenForm extends Component {
     }
     if (type === 3 && !!initData.rvisitOsType && initData.rvisitOsType.label === '高危门诊' && !!initData.ckappointment) {
       date = initData.ckappointment;
-      if (value.label === '下午') noon = 2;
+      // if (value.label === '下午') noon = 2;
     }
     if (!!date) {
       service.fuzhen.checkIsAddNum(date, noon).then(res => {
-        if (res.object.isScheduling && res.object.appointmentNum === res.object.totalNum) {
-          this.setState({ 
-            isShowHighModal: true,
-            appointmentNum: res.object.appointmentNum,
-            addNum: res.object.addNum,
-            totalNum: res.object.totalNum,
-          })
+        if (res.object.isScheduling) {
+          if (res.object.appointmentNum === res.object.totalNum) {
+            this.setState({ 
+              isShowHighModal: true,
+              appointmentNum: res.object.appointmentNum,
+              addNum: res.object.addNum,
+              totalNum: res.object.totalNum,
+            })
+          }
         } else {
           message.error('该日期已设停诊，请选择别的日期', 5);
           this.handleChange(e, { name: 'ckappointment', value: '' });
@@ -478,8 +480,10 @@ export default class FuzhenForm extends Component {
         }
         break;
       case 'ckappointmentWeek':
-        data.ckappointment = util.futureDate(value.value);
-        this.checkAddNum(e, 2, util.futureDate(value.value));
+        if (value && value.value) {
+          data.ckappointment = util.futureDate(value.value);
+          this.checkAddNum(e, 2, util.futureDate(value.value));
+        }
         break;
       case 'ckappointment':
         data.ckappointmentWeek = '';
@@ -546,12 +550,12 @@ export default class FuzhenForm extends Component {
           let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
           getAllReminder(modalObj);
       }
-      if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === '甲型') {
-          let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
+      if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === 'α型') {
+          let modalObj = {'reminder': '女方地贫为α型', 'diagnosis': 'α地中海贫血', 'visible': true};
           getAllReminder(modalObj);
       }
-      if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === '乙型') {
-          let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
+      if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === 'β型') {
+          let modalObj = {'reminder': '女方地贫为β型', 'diagnosis': 'β地中海贫血', 'visible': true};
           getAllReminder(modalObj);
       }
 

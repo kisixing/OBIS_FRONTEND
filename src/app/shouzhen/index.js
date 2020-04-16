@@ -56,19 +56,6 @@ export default class Patient extends Component {
         this.setState(store.getState());
     };
 
-    componentDidMount() {
-        window.addEventListener('keyup', e => {
-            if (e.keyCode === 13 || e.keyCode === 108) this.handleKeyUp(e);
-        })
-    }
-
-    handleKeyUp(e) {
-        const { step } = this.state;
-        if (e.target.getAttribute('name') === 'add_FIELD_pulse' && step === 'tab-4') {
-            document.querySelector('.cardiac input').select();
-        }
-    }
-
     activeTab(step) {
         const { tabs, allFormData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
@@ -79,6 +66,7 @@ export default class Patient extends Component {
 
             if (tab.key === 'tab-0') {
                 tab.entity = service.praseJSON(allFormData.pregnantInfo);
+                // tab.entity.all_gesmoc = { '0': tab.entity.gesmoc, '1': null };
             } else if (tab.key === 'tab-1'){
                 tab.entity = service.praseJSON(allFormData.hisInfo);
             } else if (tab.key === 'tab-2') {
@@ -123,7 +111,7 @@ export default class Patient extends Component {
                 }
                 // 乙肝两对半选项更改后作下特别处理
                 if (tab.entity.hbsAg && tab.entity.hbsAg[0]) {
-                    const hbsAgArr = ['阳性', '小三阳', '大三阳', '慢活肝'];
+                    const hbsAgArr = ['阳性', '小三阳', '大三阳', '慢活肝', '其他'];
                     if (hbsAgArr.includes(tab.entity.hbsAg[0].label)) {
                         tab.entity.hbsAg = [{"label": "异常", "value": ""}];
                     }
@@ -167,6 +155,10 @@ export default class Patient extends Component {
                     }
                 })
                 break;
+            // 脉搏同步心率
+            case 'add_FIELD_pulse':
+                entity['cardiac'] = entity['add_FIELD_pulse'];
+                break;
             // 孕前体重
             case 'cktizh':
                 entity['ckbmi'] = common.getBMI(entity['cktizh'],entity['cksheng']);
@@ -199,12 +191,6 @@ export default class Patient extends Component {
                     entity['preghiss'].splice(-1, 0, item);
                 }
                 break; 
-            case 'nextRvisitWeek':
-                entity['xiacsfdate'] = util.futureDate(value.value);
-                break; 
-            case 'xiacsfdate':
-                entity['nextRvisitWeek'] = '';
-                break; 
             default:
                 break;
         }
@@ -223,18 +209,10 @@ export default class Patient extends Component {
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
         let isJump = false;
-        let emptyTab = '';
         if (key) {
             const keyNum = parseInt(key.slice(-1));
             const stepNum = parseInt(step.slice(-1));
             isJump = keyNum >= stepNum ? false : true;
-            if (!isJump && keyNum > stepNum + 1) {
-                for (let i = stepNum + 1; i < keyNum; i++) {
-                    if (emptyData[`tab-${i}`].length > 1) {
-                        // emptyTab += emptyData[`tab-${i}`][0] + '；';
-                    }
-                }
-            }
         }
         console.log('handleSave', key, step, tab.entity);
 
@@ -295,21 +273,23 @@ export default class Patient extends Component {
                         if (!item.hasOwnProperty('datagridYearMonth')) hasYearMonth = false;
                         tab.entity.preghiss.forEach((subItem) => {
                             if (item.datagridYearMonth == subItem.datagridYearMonth && bool) {
-                                item.zir = subItem.zir;
-                                item.removalUterus = subItem.removalUterus;
-                                item.reng = subItem.reng;
-                                item.yinch = subItem.yinch;
-                                item.sit = subItem.sit;
-                                item.zaoch = subItem.zaoch;
-                                item.zuych = subItem.zuych;
-                                item.shunch = subItem.shunch;
-                                item.shouShuChanType = subItem.shouShuChanType;
-                                item.chuxue = subItem.chuxue;
-                                item.chanrure = subItem.chanrure;
-                                item.bingfzh = subItem.bingfzh;
-                                item.hospital = subItem.hospital;
-                                item.xinseother = subItem.xinseother;
-                                bool = false;
+                                if (item.zir !== "true" && item.reng!== "true" && !item.yinch && subItem.zir !== "true" && subItem.reng!== "true" && !subItem.yinch) {
+                                    item.zir = subItem.zir;
+                                    item.removalUterus = subItem.removalUterus;
+                                    item.reng = subItem.reng;
+                                    item.yinch = subItem.yinch;
+                                    item.sit = subItem.sit;
+                                    item.zaoch = subItem.zaoch;
+                                    item.zuych = subItem.zuych;
+                                    item.shunch = subItem.shunch;
+                                    item.shouShuChanType = subItem.shouShuChanType;
+                                    item.chuxue = subItem.chuxue;
+                                    item.chanrure = subItem.chanrure;
+                                    item.bingfzh = subItem.bingfzh;
+                                    item.hospital = subItem.hospital;
+                                    item.xinseother = subItem.xinseother;
+                                    bool = false;
+                                }
                             }
                         })
                         if (item.datagridYearMonth && item.datagridYearMonth.indexOf('~') !== -1) isDateSpecial = true;
@@ -331,10 +311,8 @@ export default class Patient extends Component {
                             service.shouzhen.getAllForm().then(res => {
                                 const action = getAllFormDataAction(service.praseJSON(res.object));
                                 store.dispatch(action);
-                                if (valid && !emptyTab) {
+                                if (valid) {
                                     this.activeTab(key || next.key);
-                                } else if (valid && emptyTab.length > 0) {
-                                    message.error(`${emptyTab}有未填写的必填项，请前往填写！`, 5);
                                 }
                             })
                             service.getuserDoc().then(res => {
@@ -397,18 +375,14 @@ export default class Patient extends Component {
                             const action = getAllFormDataAction(allFormData);
                             store.dispatch(action);
                         }
-                        if (valid && !emptyTab) {
+                        if (valid) {
                             this.activeTab(key || next.key);
-                        } else if (valid && emptyTab.length > 0) {
-                            message.error(`${emptyTab}有未填写的必填项，请前往填写！`, 5);
                         }
                     });
                 }
             } else {
-                if (valid && !emptyTab) {
+                if (valid) {
                     this.activeTab(key || next.key);
-                } else if (valid && emptyTab.length > 0) {
-                    message.error(`${emptyTab}有必填项为空，请完善！`, 5);
                 }
             }
             if (tab.key === 'tab-7' && key === 'tab-7') {
@@ -441,12 +415,12 @@ export default class Patient extends Component {
                     let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
                     getAllReminder(modalObj);
                 }
-                if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === '甲型') {
-                    let modalObj = {'reminder': '女方地贫为甲型', 'diagnosis': 'α地中海贫血', 'visible': true};
+                if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === 'α型') {
+                    let modalObj = {'reminder': '女方地贫为α型', 'diagnosis': 'α地中海贫血', 'visible': true};
                     getAllReminder(modalObj);
                 }
-                if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === '乙型') {
-                    let modalObj = {'reminder': '女方地贫为乙型', 'diagnosis': 'β地中海贫血', 'visible': true};
+                if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === 'β型') {
+                    let modalObj = {'reminder': '女方地贫为β型', 'diagnosis': 'β地中海贫血', 'visible': true};
                     getAllReminder(modalObj);
                 }
 
@@ -468,6 +442,18 @@ export default class Patient extends Component {
                     const action = openMedicalAction(false);
                     store.dispatch(action);
                 }
+
+                // 校验中间必填项
+                let emptyTab = '';
+                for (let i = 0; i < 7; i++) {
+                    if (emptyData[`tab-${i}`].length > 1) {
+                        emptyTab += emptyData[`tab-${i}`][0] + '；';
+                    }
+                }
+                if (emptyTab.length > 0) {
+                    message.error(`${emptyTab}有必填项为空，请完善！`, 5);
+                }
+                
             }     
             // 保存诊断数据
             if(tab.key === 'tab-7' && isFormChange) {
@@ -483,7 +469,7 @@ export default class Patient extends Component {
                     store.dispatch(idAction);
                     const whichAction = getWhichAction('sz');
                     store.dispatch(whichAction);
-                    service.shouzhen.batchAdd(1, res.object.ivisitId, szList).then(res => {
+                    service.shouzhen.batchAdd(1, res.object.ivisitId, szList, 1).then(res => {
                         service.getuserDoc().then(res => {
                             const action = getUserDocAction(res.object);
                             store.dispatch(action);

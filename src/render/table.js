@@ -161,42 +161,42 @@ class TableItem extends Component {
     if(isPreghiss) {
       let threeCount = 0;
       let fourCount = 0;
-      if (!!entity.zir) threeCount++;
-      if (!!entity.reng) threeCount++;
-      if (!!entity.yinch) threeCount++;
+      if (entity.zir === 'true') threeCount++;
+      if (entity.reng === 'true') threeCount++;
+      if (entity.yinch === 'true') threeCount++;
 
-      if (!!entity.zaoch) fourCount++;
+      if (entity.zaoch === 'true') fourCount++;
       if (entity.zuych === 'true') fourCount++;
       if (entity.shunch === 'true') fourCount++;
       if (!!entity.shouShuChanType) fourCount++;
 
-      if( (name === 'zir' && value && fourCount > 0) || 
-          (name === 'reng' && value && fourCount > 0) ||
-          (name === 'yinch' && value && fourCount > 0) ) {
+      if( (name === 'zir' && value === 'true' && fourCount > 0) || 
+          (name === 'reng' && value === 'true' && fourCount > 0) ||
+          (name === 'yinch' && value === 'true' && fourCount > 0) ) {
           message.error('早产、足月产、顺产、手术产式中已有数据！', 4);
       }
 
-      if( (name === 'zaoch' && value  && threeCount > 0) || 
+      if( (name === 'zaoch' && value === 'true'  && threeCount > 0) || 
           (name === 'zuych' && value === 'true' && threeCount > 0) ||
           (name === 'shunch' && value === 'true' && threeCount > 0) ||
           (name === 'shouShuChanType' && value && threeCount > 0) ) {
           message.error('自然流产、人工流产、引产中已有数据！', 4);
       }
 
-      if (name === 'zir' && value && (entity.reng || entity.yinch)) {
+      if (name === 'zir' && value === 'true' && (entity.reng === 'true' || entity.yinch === 'true')) {
         message.error('人工流产、引产中已有数据！', 4);
       } 
-      if (name === 'reng' && value && (entity.zir || entity.yinch)) {
+      if (name === 'reng' && value === 'true' && (entity.zir === 'true' || entity.yinch === 'true')) {
         message.error('自然流产、引产中已有数据！', 4);
       }
-      if (name === 'yinch' && value && (entity.zir || entity.reng)) {
+      if (name === 'yinch' && value === 'true' && (entity.zir === 'true' || entity.reng === 'true')) {
         message.error('自然流产、人工流产中已有数据！', 4);
       }
 
-      if (name === 'zaoch' && value && entity.zuych === 'true') {
+      if (name === 'zaoch' && value === 'true' && entity.zuych === 'true') {
         message.error('足月产已有数据！', 4);
       }
-      if (name === 'zuych' && value === 'true' && entity.zaoch)  {
+      if (name === 'zuych' && value === 'true' && entity.zaoch === 'true')  {
         message.error('早产已有数据！', 4);
       }
 
