@@ -18,7 +18,7 @@ export default class extends Component {
   };
 
   config() {
-    const { onChange } = this.props;
+    const { onChange, entity } = this.props;
     return {
       rows: [
         {
@@ -26,8 +26,8 @@ export default class extends Component {
             { name: "gesmoc[末次月经]", type: "date", span: 6, valid: "required" },
             // { name: "all_gesmoc[末次月经]", span: 6, valid: "required", 
             //   type: [
-            //     { type: 'date', filter: entity => !(entity.all_gesmoc && entity.all_gesmoc['1'] && entity.all_gesmoc['1'][0] && entity.all_gesmoc['1'][0].label === '不详') },
-            //     // { type: 'date' },
+            //     // { type: 'date', filter: entity => !(entity.all_gesmoc && entity.all_gesmoc[1] && entity.all_gesmoc[1][0] && entity.all_gesmoc[1][0].label === '不详') },
+            //     { type: 'date' },
             //     { type: 'checkinput', options: baseData.bxOptions }
             //   ] 
             // },

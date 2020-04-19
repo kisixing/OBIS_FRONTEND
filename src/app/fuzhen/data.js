@@ -530,6 +530,7 @@ export const rvisitOsTypeOptions = [
 	{ label: '普通门诊', value: 0, describe: '普' },
 	{ label: '高危门诊', value: 1, describe: '高' },
 	{ label: '教授门诊', value: 10, describe: '教' },
+	{ label: '特需门诊', value: 50, describe: '特' },
 ];
 
 /**

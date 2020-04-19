@@ -79,11 +79,8 @@ export function input({onChange, onBlur, value, filterDate, ...props}){
       onBlur(e)
     }
   }
-  const handlePress = (e) => {
-    return false;
-  }
   return (
-    <Input {...props} title={value} value={value} onChange={handleChange} onBlur={handleBlur} onPressEnter={handlePress} />
+    <Input {...props} title={value} value={value} onChange={handleChange} onBlur={handleBlur} />
   )
 }
 

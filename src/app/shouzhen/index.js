@@ -66,7 +66,7 @@ export default class Patient extends Component {
 
             if (tab.key === 'tab-0') {
                 tab.entity = service.praseJSON(allFormData.pregnantInfo);
-                // tab.entity.all_gesmoc = { '0': tab.entity.gesmoc, '1': null };
+                // tab.entity.all_gesmoc = { 0: tab.entity.gesmoc, 1: tab.entity.add_FIELD_gesmoc_unknown };
             } else if (tab.key === 'tab-1'){
                 tab.entity = service.praseJSON(allFormData.hisInfo);
             } else if (tab.key === 'tab-2') {
@@ -75,7 +75,9 @@ export default class Patient extends Component {
                 tab.entity = [];
                 tab.entity['preghiss'] = !!allFormData.gestation.preghiss ? allFormData.gestation.preghiss : [];
                 // 本孕胎数不显示
-                tab.entity.preghiss[tab.entity.preghiss.length - 1].births = '';
+                if (tab.entity.preghiss) {
+                    tab.entity.preghiss[tab.entity.preghiss.length - 1].births = '';
+                }
             } else if (tab.key === 'tab-4') {
                 tab.entity = service.praseJSON(allFormData.checkUp);
                 // 初始化BMI数值
@@ -131,7 +133,6 @@ export default class Patient extends Component {
         const { step } = this.state;
         console.log(name, target, value, entity);
         entity[name] = value;
-        this.updateEmptyData(step, name, value);
         switch (name) {
             // case 'dopupt':
             //     entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],value);
@@ -140,18 +141,35 @@ export default class Patient extends Component {
                 entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],value);
                 break;
             case 'gesmoc':
+                // if (value[1] && value[1][0] && value[1][0].label === '不详') {
+                //     entity['gesmoc'] = '';
+                //     entity['add_FIELD_gesmoc_unknown'] = value[1];
+                //     entity['all_gesmoc'] = { 0: '', 1: value[1] };
+                // } else {
+                //     entity['gesmoc'] = value[0];
+                //     entity['add_FIELD_gesmoc_unknown'] = '';
+                //     entity['all_gesmoc'] = { 0: value[0], 1: '' };  
+                // }
                 entity['gesexpect'] = common.GetExpected(value);
                 entity['gesexpectrv'] = common.GetExpected(value);
                 // entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],entity['dopupt']);
                 service.shouzhen.findCkzdataByUserid(value).then(res => {
-                    if (!!res.object.ckzdate) entity['ckzdate'] = res.object.ckzdate;
-                    if (!!res.object.ckzcrl) entity['ckzcrl'] = res.object.ckzcrl;
-                    if (!!res.object.ckzbpd) entity['ckzbpd'] = res.object.ckzbpd;
-                    if (!!res.object.ckzweek) entity['ckzweek'] = res.object.ckzweek;
+                    if (!!res.object.ckzdate) {
+                        this.handleChange(e, { name: 'ckzdate', value: res.object.ckzdate, target }, entity);
+                    } 
+                    if (!!res.object.ckzcrl) {
+                        this.handleChange(e, { name: 'ckzcrl', value: res.object.ckzcrl, target }, entity);
+                    } 
+                    if (!!res.object.ckzbpd) {
+                        this.handleChange(e, { name: 'ckzbpd', value: res.object.ckzbpd, target }, entity);
+                    };
+                    if (!!res.object.ckzweek) {
+                        this.handleChange(e, { name: 'ckzweek', value: res.object.ckzweek, target }, entity);
+                    }
                     if (!!res.object.ckztingj) {
-                        entity['ckztingj'] = res.object.ckztingj;
+                        this.handleChange(e, { name: 'ckztingj', value: res.object.ckztingj, target }, entity);
                     } else {
-                        entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],entity['ckzdate']);
+                        this.handleChange(e, { name: 'ckztingj', value: common.GetWeek(entity['gesexpectrv'],entity['ckzdate']), target }, entity);
                     }
                 })
                 break;
@@ -214,6 +232,9 @@ export default class Patient extends Component {
             const stepNum = parseInt(step.slice(-1));
             isJump = keyNum >= stepNum ? false : true;
         }
+        if (tab.key === 'tab-7' && key === 'tab-7') {
+            this.getEmptyData(allFormData);
+        }
         console.log('handleSave', key, step, tab.entity);
 
         message.destroy();
@@ -240,6 +261,10 @@ export default class Patient extends Component {
                 //         message.success('信息保存成功',3);
                 //         valid && this.activeTab(key || next.key);
                 //     });
+                // }
+                // if (tab.key === 'tab-0') {
+                //     tab.entity.gesmoc = tab.entity.all_gesmoc[0];
+                //     tab.entity.add_FIELD_gesmoc_unknown = tab.entity.all_gesmoc[1];
                 // }
                 if (tab.key === 'tab-2') {
                     let arr = [];
@@ -547,7 +572,6 @@ export default class Patient extends Component {
         // 首个tab页作下特别处理
         if (!!allFormData && JSON.stringify(tabs[0].entity) === "{}") {
             tabs[0].entity = allFormData.pregnantInfo;
-            this.getEmptyData(allFormData);
         }
         
         return (

@@ -329,7 +329,7 @@ export default function (entity, config, onChange, { children, ...props } = {}) 
     console.warn('entity最好不为空,否则可能导致保存不上');
   }
   return (
-    <form {...events(props)}>
+    <form {...events(props)} onSubmit={ e => e.preventDefault() }>
       {render(entity, onChange, config)}
       {children}
     </form>

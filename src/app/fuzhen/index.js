@@ -133,10 +133,10 @@ export default class Patient extends Component {
         });
       }),
 
-      service.fuzhen.getdiagnosis().then(res => {
-        const action = getDiagnisisAction(res.object.list);
-        store.dispatch(action);
-      }),
+      // service.fuzhen.getdiagnosis().then(res => {
+      //   const action = getDiagnisisAction(res.object.list);
+      //   store.dispatch(action);
+      // }),
     ]).then(() => this.setState({ loading: false }));
     
     service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
@@ -693,11 +693,11 @@ export default class Patient extends Component {
           <Panel header={<span>诊 断<Button type="ghost" className="header-btn" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
             { this.renderZD() }
           </Panel>
-          <Panel header={<span>缺少检验报告<Button type="ghost" className="header-btn" size="small" onClick={e => handleOtherClick(e) }>其他</Button></span>} key="2">
+          <Panel className="panel-jy" header={<span>缺少检验报告<Button type="ghost" className="header-btn" size="small" onClick={e => handleOtherClick(e) }>必查清单</Button></span>} key="2">
             {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : <p className="pad-small">{reportStr || '无'}</p>}
           </Panel>
           
-          <Panel className="cq-check" header="产前筛查和诊断" key="3">
+          <Panel className="panel-cq" header="产前筛查和诊断" key="3">
               <Tree checkable checkedKeys={scKeys} onCheck={handleCheck}>
                 {scArr.map(item => <Tree.TreeNode key={item.id} title={item.name}></Tree.TreeNode>)}
               </Tree>
