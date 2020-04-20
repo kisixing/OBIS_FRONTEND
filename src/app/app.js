@@ -82,7 +82,7 @@ export default class App extends Component {
           const action = getAllFormDataAction(service.praseJSON(data.object));
           store.dispatch(action);
           this.getPharData(data.object);
-          if (data.object.add_FIELD_first_save_ivisit_time && data.object.add_FIELD_first_save_ivisit_time !== util.futureDate(0)) {
+          if (data.object.diagnosis.add_FIELD_first_save_ivisit_time && data.object.diagnosis.add_FIELD_first_save_ivisit_time !== util.futureDate(0)) {
             this.setState({ muneIndex: 1 });
             this.onRouterClick(routers[1]);
           }

@@ -66,13 +66,7 @@ export default class Patient extends Component {
 
             if (tab.key === 'tab-0') {
                 tab.entity = service.praseJSON(allFormData.pregnantInfo);
-                // tab.entity.all_gesmoc = { 0: tab.entity.gesmoc, 1: tab.entity.add_FIELD_gesmoc_unknown };
-                // 预产期页头信息处理
-                if (!!tab.entity.gesexpectrv && tab.entity.gesexpectrv !== tab.entity.gesexpect) {
-                    tab.title = `预产期：${tab.entity.gesexpectrv}（超）`;
-                } else  {
-                    tab.title = '预产期';
-                }
+                tab.entity.all_gesmoc = { 0: tab.entity.gesmoc, 1: tab.entity.add_FIELD_gesmoc_unknown };
             } else if (tab.key === 'tab-1'){
                 tab.entity = service.praseJSON(allFormData.hisInfo);
             } else if (tab.key === 'tab-2') {
@@ -146,38 +140,34 @@ export default class Patient extends Component {
             case 'ckzdate':
                 entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],value);
                 break;
-            case 'gesmoc':
-                // if (value[1] && value[1][0] && value[1][0].label === '不详') {
-                //     entity['gesmoc'] = '';
-                //     entity['add_FIELD_gesmoc_unknown'] = value[1];
-                //     entity['all_gesmoc'] = { 0: '', 1: value[1] };
-                // } else {
-                //     entity['gesmoc'] = value[0];
-                //     entity['add_FIELD_gesmoc_unknown'] = '';
-                //     entity['all_gesmoc'] = { 0: value[0], 1: '' };  
-                // }
-                entity['gesexpect'] = common.GetExpected(value);
-                entity['gesexpectrv'] = common.GetExpected(value);
-                // entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],entity['dopupt']);
-                service.shouzhen.findCkzdataByUserid(value).then(res => {
-                    if (!!res.object.ckzdate) {
-                        this.handleChange(e, { name: 'ckzdate', value: res.object.ckzdate, target }, entity);
-                    } 
-                    if (!!res.object.ckzcrl) {
-                        this.handleChange(e, { name: 'ckzcrl', value: res.object.ckzcrl, target }, entity);
-                    } 
-                    if (!!res.object.ckzbpd) {
-                        this.handleChange(e, { name: 'ckzbpd', value: res.object.ckzbpd, target }, entity);
-                    };
-                    if (!!res.object.ckzweek) {
-                        this.handleChange(e, { name: 'ckzweek', value: res.object.ckzweek, target }, entity);
-                    }
-                    if (!!res.object.ckztingj) {
-                        this.handleChange(e, { name: 'ckztingj', value: res.object.ckztingj, target }, entity);
-                    } else {
-                        this.handleChange(e, { name: 'ckztingj', value: common.GetWeek(entity['gesexpectrv'],entity['ckzdate']), target }, entity);
-                    }
-                })
+            case 'all_gesmoc':
+                if (!!value[0]) {
+                    entity['gesexpect'] = common.GetExpected(value[0]);
+                    entity['gesexpectrv'] = common.GetExpected(value[0]);
+                    // entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],entity['dopupt']);
+                    service.shouzhen.findCkzdataByUserid(value[0]).then(res => {
+                        if (!!res.object.ckzdate) {
+                            this.handleChange(e, { name: 'ckzdate', value: res.object.ckzdate, target }, entity);
+                        } 
+                        if (!!res.object.ckzcrl) {
+                            this.handleChange(e, { name: 'ckzcrl', value: res.object.ckzcrl, target }, entity);
+                        } 
+                        if (!!res.object.ckzbpd) {
+                            this.handleChange(e, { name: 'ckzbpd', value: res.object.ckzbpd, target }, entity);
+                        };
+                        if (!!res.object.ckzweek) {
+                            this.handleChange(e, { name: 'ckzweek', value: res.object.ckzweek, target }, entity);
+                        }
+                        if (!!res.object.ckztingj) {
+                            this.handleChange(e, { name: 'ckztingj', value: res.object.ckztingj, target }, entity);
+                        } else {
+                            this.handleChange(e, { name: 'ckztingj', value: common.GetWeek(entity['gesexpectrv'],entity['ckzdate']), target }, entity);
+                        }
+                    })
+                } 
+                if (!value[0] || (value[1] && value[1][0] && value[1][0].label === '不详')) {
+                    entity['gesexpect'] = null;
+                } 
                 break;
             // 脉搏同步心率
             case 'add_FIELD_pulse':
@@ -268,10 +258,15 @@ export default class Patient extends Component {
                 //         valid && this.activeTab(key || next.key);
                 //     });
                 // }
-                // if (tab.key === 'tab-0') {
-                //     tab.entity.gesmoc = tab.entity.all_gesmoc[0];
-                //     tab.entity.add_FIELD_gesmoc_unknown = tab.entity.all_gesmoc[1];
-                // }
+                if (tab.key === 'tab-0') {
+                    if (tab.entity.all_gesmoc[1] && tab.entity.all_gesmoc[1][0] && tab.entity.all_gesmoc[1][0].label === '不详') {
+                        tab.entity.gesmoc = null;
+                        tab.entity.add_FIELD_gesmoc_unknown = tab.entity.all_gesmoc[1];
+                    } else {
+                        tab.entity.gesmoc = tab.entity.all_gesmoc[0];
+                        tab.entity.add_FIELD_gesmoc_unknown = [];
+                    }
+                }
                 if (tab.key === 'tab-2') {
                     let arr = [];
                     if (tab.entity.add_FIELD_jzgaoxueya && tab.entity.add_FIELD_jzgaoxueya[0] && tab.entity.add_FIELD_jzgaoxueya[0].label === '有') {
@@ -372,12 +367,6 @@ export default class Patient extends Component {
                         message.success('信息保存成功',3);
                         /*修改预产期-B超    G、P、妊娠 同步数据*/
                         if(tab.key === 'tab-0') {
-                            // 预产期页头信息处
-                            if (!!tab.entity.gesexpectrv && tab.entity.gesexpectrv !== tab.entity.gesexpect) {
-                                tab.title = `预产期：${tab.entity.gesexpectrv}（超）`;
-                            } else  {
-                                tab.title = '预产期';
-                            }
                             allFormData.pregnantInfo = tab.entity;
                             const action = getAllFormDataAction(allFormData);
                             store.dispatch(action);
@@ -498,7 +487,7 @@ export default class Patient extends Component {
             }     
             // 保存诊断数据
             if(tab.key === 'tab-7' && isFormChange) {
-                if (!allFormData.add_FIELD_first_save_ivisit_time) {
+                if (!tab.entity.add_FIELD_first_save_ivisit_time) {
                     tab.entity.add_FIELD_first_save_ivisit_time = util.futureDate(0);
                 }
                 service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(res => {
@@ -550,7 +539,7 @@ export default class Patient extends Component {
         if (requiredData[tab].includes(name)) {
             if (!value || JSON.stringify(value) === '[]' || JSON.stringify(value) === '{}' && !emptyData[tab].includes(name)) {
                 emptyData[tab].push(name);
-            } else if (value && JSON.stringify(value) !== '[]' || JSON.stringify(value) !== '{}' && emptyData[tab].includes(name)) {
+            } else if (value && JSON.stringify(value) !== '[]' && JSON.stringify(value) !== '{}' && emptyData[tab].includes(name)) {
                 emptyData[tab].splice(this.getIndex(name, emptyData[tab]), 1);
             }
         }
@@ -563,7 +552,9 @@ export default class Patient extends Component {
         requiredData[tab].forEach(item => {
             if (!list[item] || JSON.stringify(list[item]) === '[]' || JSON.stringify(list[item]) === '{}') {
                 emptyData[tab].push(item);
-            } 
+            } else if (list[item] && JSON.stringify(list[item]) !== '[]' && JSON.stringify(list[item]) !== '{}' && emptyData[tab].includes(item)) {
+                emptyData[tab].splice(emptyData[tab].indexOf(item), 1);
+            }
         })
         const action = setEmptyAction(emptyData);
         store.dispatch(action);
@@ -588,6 +579,7 @@ export default class Patient extends Component {
         // 首个tab页作下特别处理
         if (!!allFormData && JSON.stringify(tabs[0].entity) === "{}") {
             tabs[0].entity = allFormData.pregnantInfo;
+            tabs[0].entity.all_gesmoc = { 0: allFormData.pregnantInfo.gesmoc, 1: allFormData.pregnantInfo.add_FIELD_gesmoc_unknown };
         }
         
         return (
