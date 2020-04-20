@@ -67,6 +67,12 @@ export default class Patient extends Component {
             if (tab.key === 'tab-0') {
                 tab.entity = service.praseJSON(allFormData.pregnantInfo);
                 // tab.entity.all_gesmoc = { 0: tab.entity.gesmoc, 1: tab.entity.add_FIELD_gesmoc_unknown };
+                // 预产期页头信息处理
+                if (!!tab.entity.gesexpectrv && tab.entity.gesexpectrv !== tab.entity.gesexpect) {
+                    tab.title = `预产期：${tab.entity.gesexpectrv}（超）`;
+                } else  {
+                    tab.title = '预产期';
+                }
             } else if (tab.key === 'tab-1'){
                 tab.entity = service.praseJSON(allFormData.hisInfo);
             } else if (tab.key === 'tab-2') {
@@ -75,7 +81,7 @@ export default class Patient extends Component {
                 tab.entity = [];
                 tab.entity['preghiss'] = !!allFormData.gestation.preghiss ? allFormData.gestation.preghiss : [];
                 // 本孕胎数不显示
-                if (tab.entity.preghiss) {
+                if (tab.entity.preghiss && tab.entity.preghiss.length > 0) {
                     tab.entity.preghiss[tab.entity.preghiss.length - 1].births = '';
                 }
             } else if (tab.key === 'tab-4') {
@@ -366,9 +372,19 @@ export default class Patient extends Component {
                         message.success('信息保存成功',3);
                         /*修改预产期-B超    G、P、妊娠 同步数据*/
                         if(tab.key === 'tab-0') {
+                            // 预产期页头信息处
+                            if (!!tab.entity.gesexpectrv && tab.entity.gesexpectrv !== tab.entity.gesexpect) {
+                                tab.title = `预产期：${tab.entity.gesexpectrv}（超）`;
+                            } else  {
+                                tab.title = '预产期';
+                            }
                             allFormData.pregnantInfo = tab.entity;
                             const action = getAllFormDataAction(allFormData);
                             store.dispatch(action);
+                            service.shouzhen.getAllForm().then(res => {
+                                const action = getAllFormDataAction(service.praseJSON(res.object));
+                                store.dispatch(action);
+                            })
                             service.getuserDoc().then(res => {
                                 const action = getUserDocAction(res.object);
                                 store.dispatch(action);

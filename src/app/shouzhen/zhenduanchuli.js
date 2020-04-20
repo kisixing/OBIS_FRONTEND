@@ -726,39 +726,75 @@ export default class extends Component{
     })
   }
 
-  checkAddNum(e, type, value) {
+  checkAddNum(e, select, value) {
     const { entity, onChange } = this.props;
-    console.log(entity, '123')
+    let type = null;
     let date = '';
-    let noon = 1;
+    let noon = null;
 
-    if (type === 1 && !!entity.xiacsfdate) {
-      date = entity.xiacsfdate;
+    const getType = (theType) => {
+      if (!!theType && theType.label) {
+        if (theType.label === '高危门诊') type = 1;
+        if (theType.label === '普通门诊' || theType.label === '教授门诊') type = 2;
+      }
     }
-    if (type === 2 && !!entity.xiacsftype && entity.xiacsftype.label === '高危门诊') {
-      date = value;
+    const getDate = (theDate) => {
+      if (!!theDate) {
+        date = theDate;
+      } 
     }
-    if (type === 3 && !!entity.xiacsftype && entity.xiacsftype.label === '高危门诊' && !!entity.xiacsfdatearea) {
-      date = entity.xiacsfdate;
-      // if (value.label === '下午') noon = 2;
+    const getNoon = (theNoon) => {
+      if (!!theNoon && theNoon.label) {
+        if (theNoon.label === '上午') noon = 1;
+        if (theNoon.label === '下午') noon = 2;
+      }
     }
-    if (!!date) {
-      service.fuzhen.checkIsAddNum(date, noon).then(res => {
-        if (res.object.isScheduling) {
-          if (res.object.appointmentNum === res.object.totalNum) {
-            this.setState({ 
-              isShowHighModal: true,
-              appointmentNum: res.object.appointmentNum,
-              addNum: res.object.addNum,
-              totalNum: res.object.totalNum,
+
+    if (select === 1) {
+      getType(value);
+      getDate(entity.xiacsfdate);
+      getNoon(entity.xiacsfdatearea);
+    }
+    if (select === 2) {
+      getType(entity.xiacsftype);
+      getDate(value);
+      getNoon(entity.xiacsfdatearea);
+    }
+    if (select === 3) {
+      getType(entity.xiacsftype);
+      getDate(entity.xiacsfdate);
+      getNoon(value);
+    }
+    
+    if (!!type && !!date && !!noon) {
+      if (type === 1) {
+        service.fuzhen.checkIsAddNum(date, noon).then(res => {
+          if (res.object.isScheduling) {
+            if (res.object.appointmentNum === res.object.totalNum) {
+              this.setState({ 
+                isShowHighModal: true,
+                appointmentNum: res.object.appointmentNum,
+                addNum: res.object.addNum,
+                totalNum: res.object.totalNum,
+              })
+            }
+          } else {
+            service.fuzhen.checkImpact(date, noon, type).then(res => {
+              onChange(e, { name: 'nextRvisitWeek', value: '' });
+              onChange(e, { name: 'xiacsfdate', value: res.object });
+              message.error('该日期已设停诊，已延后选择最近日期！', 5);
             })
           }
-        } else {
-          message.error('该日期已设停诊，请选择别的日期', 5);
-          onChange(e, { name: 'nextRvisitWeek', value: '' });
-          onChange(e, { name: 'xiacsfdate', value: '' });
-        }
-      })
+        })
+      } else if (type === 2) {
+        service.fuzhen.checkImpact(date, noon, type).then(res => {
+          if (date !== res.object) {
+            onChange(e, { name: 'nextRvisitWeek', value: '' });
+            onChange(e, { name: 'xiacsfdate', value: res.object });
+            message.error('该日期已设停诊，已延后选择最近日期！', 5);
+          }
+        })
+      }
     }
   }
 
@@ -769,8 +805,8 @@ export default class extends Component{
       case 'xiacsftype':
         if (value.label === '高危门诊') {
           onChange(e, { name: 'xiacsfdatearea', value: {"0":"上","1":"午","label":"上午","describe":"上","value":'上午'} });
-          this.checkAddNum(e, 1);
         }
+        this.checkAddNum(e, 1, value);
         break;
       case 'nextRvisitWeek':
         if (value && value.value) {

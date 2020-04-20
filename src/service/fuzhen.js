@@ -262,4 +262,11 @@ export default {
     checkIsAddNum: function(date, noon){
         return this.userId().then(r => myAxios.get(`/outpatientRestful/checkIsAddNum?userid=${r.object.userid}&date=${date}&noon=${noon}`));
     },
+
+    /**
+     * 下次复诊日期延后选择
+     */
+    checkImpact: function(date, noon, type){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/checkImpact?userid=${r.object.userid}&date=${date}&noon=${noon}&type=${type}`));
+    },
 }

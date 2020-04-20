@@ -299,7 +299,7 @@ export const ssyyOptions = toOptions('中山一院,中山二院,中山三院,广
 /**
  * 手术产式
  */
-export const sscsOptions = toOptions('剖宫产,吸引,钳产,臀助产');
+export const sscsOptions = toOptions(',剖宫产,吸引,钳产,臀助产');
 
 /**
  * 分娩医院

@@ -526,7 +526,7 @@ export const nextRvisitWeekOptions = [
 // export const rvisitOsTypeOptions = toOptions(['', '普通门诊', '高危门诊', '教授门诊'], (v,i)=>({value:i-1,describe:v.slice(0,1)}));
 
 export const rvisitOsTypeOptions = [
-	{ label: '', value: '', describe: '' },
+	{ label: '', value: null, describe: '' },
 	{ label: '普通门诊', value: 0, describe: '普' },
 	{ label: '高危门诊', value: 1, describe: '高' },
 	{ label: '教授门诊', value: 10, describe: '教' },

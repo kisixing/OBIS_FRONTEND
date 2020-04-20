@@ -421,37 +421,73 @@ export default class FuzhenForm extends Component {
     }
   }
 
-  checkAddNum(e, type, value) {
+  checkAddNum(e, select, value) {
     const { initData } = this.props;
+    let type = null;
     let date = '';
-    let noon = 1;
+    let noon = null;
 
-    if (type === 1 && !!initData.ckappointment) {
-      date = initData.ckappointment;
+    const getType = (theType) => {
+      if (!!theType && theType.label) {
+        if (theType.label === '高危门诊') type = 1;
+        if (theType.label === '普通门诊' || theType.label === '教授门诊') type = 2;
+      }
     }
-    if (type === 2 && !!initData.rvisitOsType && initData.rvisitOsType.label === '高危门诊') {
-      date = value;
+    const getDate = (theDate) => {
+      if (!!theDate) {
+        date = theDate;
+      } 
     }
-    if (type === 3 && !!initData.rvisitOsType && initData.rvisitOsType.label === '高危门诊' && !!initData.ckappointment) {
-      date = initData.ckappointment;
-      // if (value.label === '下午') noon = 2;
+    const getNoon = (theNoon) => {
+      if (!!theNoon && theNoon.label) {
+        if (theNoon.label === '上午') noon = 1;
+        if (theNoon.label === '下午') noon = 2;
+      }
     }
-    if (!!date) {
-      service.fuzhen.checkIsAddNum(date, noon).then(res => {
-        if (res.object.isScheduling) {
-          if (res.object.appointmentNum === res.object.totalNum) {
-            this.setState({ 
-              isShowHighModal: true,
-              appointmentNum: res.object.appointmentNum,
-              addNum: res.object.addNum,
-              totalNum: res.object.totalNum,
+
+    if (select === 1) {
+      getType(value);
+      getDate(initData.ckappointment);
+      getNoon(initData.ckappointmentArea);
+    }
+    if (select === 2) {
+      getType(initData.rvisitOsType);
+      getDate(value);
+      getNoon(initData.ckappointmentArea);
+    }
+    if (select === 3) {
+      getType(initData.rvisitOsType);
+      getDate(initData.ckappointment);
+      getNoon(value);
+    }
+
+    if (!!type && !!date && !!noon) {
+      if (type === 1) {
+        service.fuzhen.checkIsAddNum(date, noon).then(res => {
+          if (res.object.isScheduling) {
+            if (res.object.appointmentNum === res.object.totalNum) {
+              this.setState({ 
+                isShowHighModal: true,
+                appointmentNum: res.object.appointmentNum,
+                addNum: res.object.addNum,
+                totalNum: res.object.totalNum,
+              })
+            }
+          } else {
+            service.fuzhen.checkImpact(date, noon, type).then(res => {
+              this.handleChange(e, { name: 'ckappointment', value: res.object });
+              message.error('该日期已设停诊，已延后选择最近日期！', 5);
             })
           }
-        } else {
-          message.error('该日期已设停诊，请选择别的日期', 5);
-          this.handleChange(e, { name: 'ckappointment', value: '' });
-        }
-      })
+        })
+      } else if (type === 2) {
+        service.fuzhen.checkImpact(date, noon, type).then(res => {
+          if (date !== res.object) {
+            this.handleChange(e, { name: 'ckappointment', value: res.object });
+            message.error('该日期已设停诊，已延后选择最近日期！', 5);
+          }
+        })
+      }
     }
   }
 
@@ -476,8 +512,8 @@ export default class FuzhenForm extends Component {
       case 'rvisitOsType':
         if (value.label === '高危门诊') {
           data.ckappointmentArea = {"0":"上","1":"午","label":"上午","describe":"上","value":'上午'};
-          this.checkAddNum(e, 1);
         }
+        this.checkAddNum(e, 1, value);
         break;
       case 'ckappointmentWeek':
         if (value && value.value) {
