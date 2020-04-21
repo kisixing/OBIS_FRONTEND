@@ -69,19 +69,19 @@ export default class extends Component {
             }
           ]
         },
-        {
-          columns: [
-            { span: 1 },
-            {
-              name: "noneChecked1[ ]",
-              type: "checkinput",
-              className: "none_check",
-              radio: true,
-              options: baseData.noneOptions,
-              span: 23
-            }
-          ]
-        },
+        // {
+        //   columns: [
+        //     { span: 1 },
+        //     {
+        //       name: "noneChecked1[ ]",
+        //       type: "checkinput",
+        //       className: "none_check",
+        //       radio: true,
+        //       options: baseData.noneOptions,
+        //       span: 23
+        //     }
+        //   ]
+        // },
         // {
         //   columns: [
         //     { span: 1 },

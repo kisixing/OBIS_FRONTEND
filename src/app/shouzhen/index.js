@@ -69,8 +69,13 @@ export default class Patient extends Component {
                 tab.entity.all_gesmoc = { 0: tab.entity.gesmoc, 1: tab.entity.add_FIELD_gesmoc_unknown };
             } else if (tab.key === 'tab-1'){
                 tab.entity = service.praseJSON(allFormData.hisInfo);
+                // 其他默认选无
+                tab.entity.add_FIELD_qitabingshi = !!tab.entity.add_FIELD_qitabingshi ? tab.entity.add_FIELD_qitabingshi : [{"label": "无", "value": ""}];
             } else if (tab.key === 'tab-2') {
                 tab.entity = service.praseJSON({...allFormData.menstruationMarriage, ...allFormData.biography});
+                // 其他默认选无
+                tab.entity.add_FIELD_grqita = !!tab.entity.add_FIELD_grqita ? tab.entity.add_FIELD_grqita : [{"label": "无", "value": ""}];
+                tab.entity.add_FIELD_jzqita = !!tab.entity.add_FIELD_jzqita ? tab.entity.add_FIELD_jzqita : [{"label": "无", "value": ""}];
             } else if (tab.key === 'tab-3') {
                 tab.entity = [];
                 tab.entity['preghiss'] = !!allFormData.gestation.preghiss ? allFormData.gestation.preghiss : [];
@@ -85,6 +90,8 @@ export default class Patient extends Component {
                 tab.entity.ckpressure = typeof tab.entity.ckpressure === "object" 
                                     ? tab.entity.ckpressure : [ tab.entity.ckshrinkpressure, tab.entity.ckdiastolicpressure ];
                 // 体格检查数据初始化
+                tab.entity.add_FIELD_headFeatures = !!tab.entity.add_FIELD_headFeatures ? tab.entity.add_FIELD_headFeatures : [{"label": "正常", "value": ""}];
+                tab.entity.ckrut = !!tab.entity.ckrut ? tab.entity.ckrut : [{"label": "正常", "value": ""}];
                 tab.entity.ckpifu = !!tab.entity.ckpifu ? tab.entity.ckpifu : [{"label": "正常", "value": ""}];
                 tab.entity.ckjiazhx = !!tab.entity.ckjiazhx ? tab.entity.ckjiazhx : [{"label": "正常", "value": ""}];
                 tab.entity.ckganz = !!tab.entity.ckganz ? tab.entity.ckganz : [{"label": "未触及", "value": ""}];
@@ -132,85 +139,87 @@ export default class Patient extends Component {
     handleChange(e, { name, value, target }, entity) {
         const { step } = this.state;
         console.log(name, target, value, entity);
-        entity[name] = value;
-        switch (name) {
-            // case 'dopupt':
-            //     entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],value);
-            //     break;
-            case 'ckzdate':
-                entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],value);
-                break;
-            case 'all_gesmoc':
-                if (!!value[0]) {
-                    entity['gesexpect'] = common.GetExpected(value[0]);
-                    entity['gesexpectrv'] = common.GetExpected(value[0]);
-                    // entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],entity['dopupt']);
-                    service.shouzhen.findCkzdataByUserid(value[0]).then(res => {
-                        if (!!res.object.ckzdate) {
-                            this.handleChange(e, { name: 'ckzdate', value: res.object.ckzdate, target }, entity);
-                        } 
-                        if (!!res.object.ckzcrl) {
-                            this.handleChange(e, { name: 'ckzcrl', value: res.object.ckzcrl, target }, entity);
-                        } 
-                        if (!!res.object.ckzbpd) {
-                            this.handleChange(e, { name: 'ckzbpd', value: res.object.ckzbpd, target }, entity);
-                        };
-                        if (!!res.object.ckzweek) {
-                            this.handleChange(e, { name: 'ckzweek', value: res.object.ckzweek, target }, entity);
-                        }
-                        if (!!res.object.ckztingj) {
-                            this.handleChange(e, { name: 'ckztingj', value: res.object.ckztingj, target }, entity);
-                        } else {
-                            this.handleChange(e, { name: 'ckztingj', value: common.GetWeek(entity['gesexpectrv'],entity['ckzdate']), target }, entity);
-                        }
-                    })
-                } 
-                if (!value[0] || (value[1] && value[1][0] && value[1][0].label === '不详')) {
-                    entity['gesexpect'] = null;
-                } 
-                break;
-            // 脉搏同步心率
-            case 'add_FIELD_pulse':
-                entity['cardiac'] = entity['add_FIELD_pulse'];
-                break;
-            // 孕前体重
-            case 'cktizh':
-                entity['ckbmi'] = common.getBMI(entity['cktizh'],entity['cksheng']);
-                break;
-            case 'cksheng':
-                entity['ckbmi'] = common.getBMI(entity['cktizh'],entity['cksheng']);
-                break;
-            case 'noneChecked1':
-                entity = common.ResetData(entity, 'noneChecked1');
-                break;
-            case 'add_FIELD_gaoxueya': case 'add_FIELD_tangniaobing': case 'add_FIELD_xinzangbing': case 'add_FIELD_qitabingshi':
-                target==="有-checkbox" ? entity['noneChecked1'] = [{"label": "", "value": ""}] : null;
-                break;
-            case 'noneChecked2':
-                entity = common.ResetData(entity, 'noneChecked2');
-                break;
-            case 'add_FIELD_grxiyan': case 'add_FIELD_gryinjiu': case 'add_FIELD_gryouhai': case 'add_FIELD_grfangshe': case 'add_FIELD_grqita':
-                target==="有-checkbox" ? entity['noneChecked2'] = [{"label": "", "value": ""}] : null;
-                break;
-            case 'noneChecked3':
-                entity = common.ResetData(entity, 'noneChecked3');
-                break;
-            case 'add_FIELD_jzgaoxueya': case 'add_FIELD_jztangniaobing': case 'add_FIELD_jzjixing': case 'add_FIELD_jzyichuanbing': case 'add_FIELD_jzqita':
-                target==="有-checkbox" ? entity['noneChecked3'] = [{"label": "", "value": ""}] : null;
-                break;
-            case 'preghiss':
-                var data = value.slice(-1);
-                if(data[0]['$type'] === 'CREATE') {
-                    var item = entity['preghiss'].pop();
-                    entity['preghiss'].splice(-1, 0, item);
-                }
-                break; 
-            default:
-                break;
+        if (!this.isSaving) {
+            entity[name] = value;
+            switch (name) {
+                // case 'dopupt':
+                //     entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],value);
+                //     break;
+                case 'ckzdate':
+                    entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],value);
+                    break;
+                case 'all_gesmoc':
+                    if (!!value[0]) {
+                        entity['gesexpect'] = common.GetExpected(value[0]);
+                        entity['gesexpectrv'] = common.GetExpected(value[0]);
+                        // entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],entity['dopupt']);
+                        service.shouzhen.findCkzdataByUserid(value[0]).then(res => {
+                            if (!!res.object.ckzdate) {
+                                this.handleChange(e, { name: 'ckzdate', value: res.object.ckzdate, target }, entity);
+                            } 
+                            if (!!res.object.ckzcrl) {
+                                this.handleChange(e, { name: 'ckzcrl', value: res.object.ckzcrl, target }, entity);
+                            } 
+                            if (!!res.object.ckzbpd) {
+                                this.handleChange(e, { name: 'ckzbpd', value: res.object.ckzbpd, target }, entity);
+                            };
+                            if (!!res.object.ckzweek) {
+                                this.handleChange(e, { name: 'ckzweek', value: res.object.ckzweek, target }, entity);
+                            }
+                            if (!!res.object.ckztingj) {
+                                this.handleChange(e, { name: 'ckztingj', value: res.object.ckztingj, target }, entity);
+                            } else {
+                                this.handleChange(e, { name: 'ckztingj', value: common.GetWeek(entity['gesexpectrv'],entity['ckzdate']), target }, entity);
+                            }
+                        })
+                    } 
+                    if (!value[0] || (value[1] && value[1][0] && value[1][0].label === '不详')) {
+                        entity['gesexpect'] = '';
+                    } 
+                    break;
+                // 脉搏同步心率
+                case 'add_FIELD_pulse':
+                    entity['cardiac'] = entity['add_FIELD_pulse'];
+                    break;
+                // 孕前体重
+                case 'cktizh':
+                    entity['ckbmi'] = common.getBMI(entity['cktizh'],entity['cksheng']);
+                    break;
+                case 'cksheng':
+                    entity['ckbmi'] = common.getBMI(entity['cktizh'],entity['cksheng']);
+                    break;
+                case 'noneChecked1':
+                    entity = common.ResetData(entity, 'noneChecked1');
+                    break;
+                case 'add_FIELD_gaoxueya': case 'add_FIELD_tangniaobing': case 'add_FIELD_xinzangbing': case 'add_FIELD_qitabingshi':
+                    target==="有-checkbox" ? entity['noneChecked1'] = [{"label": "", "value": ""}] : null;
+                    break;
+                case 'noneChecked2':
+                    entity = common.ResetData(entity, 'noneChecked2');
+                    break;
+                case 'add_FIELD_grxiyan': case 'add_FIELD_gryinjiu': case 'add_FIELD_gryouhai': case 'add_FIELD_grfangshe': case 'add_FIELD_grqita':
+                    target==="有-checkbox" ? entity['noneChecked2'] = [{"label": "", "value": ""}] : null;
+                    break;
+                case 'noneChecked3':
+                    entity = common.ResetData(entity, 'noneChecked3');
+                    break;
+                case 'add_FIELD_jzgaoxueya': case 'add_FIELD_jztangniaobing': case 'add_FIELD_jzjixing': case 'add_FIELD_jzyichuanbing': case 'add_FIELD_jzqita':
+                    target==="有-checkbox" ? entity['noneChecked3'] = [{"label": "", "value": ""}] : null;
+                    break;
+                case 'preghiss':
+                    var data = value.slice(-1);
+                    if(data[0]['$type'] === 'CREATE') {
+                        var item = entity['preghiss'].pop();
+                        entity['preghiss'].splice(-1, 0, item);
+                    }
+                    break; 
+                default:
+                    break;
+            }
+            this.change = true;
+            const action = isFormChangeAction(true);
+            store.dispatch(action);
         }
-        this.change = true;
-        const action = isFormChangeAction(true);
-        store.dispatch(action);
 
         // 避免200ms内界面渲染多次
         // clearTimeout(this.timeout);
@@ -223,6 +232,7 @@ export default class Patient extends Component {
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
         let isJump = false;
+        this.isSaving = true;
         if (key) {
             const keyNum = parseInt(key.slice(-1));
             const stepNum = parseInt(step.slice(-1));
@@ -260,7 +270,7 @@ export default class Patient extends Component {
                 // }
                 if (tab.key === 'tab-0') {
                     if (tab.entity.all_gesmoc[1] && tab.entity.all_gesmoc[1][0] && tab.entity.all_gesmoc[1][0].label === '不详') {
-                        tab.entity.gesmoc = null;
+                        tab.entity.gesmoc = '';
                         tab.entity.add_FIELD_gesmoc_unknown = tab.entity.all_gesmoc[1];
                     } else {
                         tab.entity.gesmoc = tab.entity.all_gesmoc[0];
@@ -513,6 +523,7 @@ export default class Patient extends Component {
                 })
             }
             this.change = false;
+            this.isSaving = false;
             const action = isFormChangeAction(false);
             store.dispatch(action);
 

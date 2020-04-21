@@ -125,22 +125,16 @@ export function ResetData(entity, name){
   return entity;
 }
 
-export function setCookie(c_name, value, expiredays) {                   
-  var exdate = new Date();                   
-  exdate.setDate(exdate.getDate() + expiredays);                   
-  document.cookie = c_name + "=" + escape(value) + "; expires=" + exdate.toGMTString() + "; path=/";         
+export function setCookie(name, value, hours){
+  var exp = new Date();
+  exp.setTime(exp.getTime() + hours*60*60*1000);
+  document.cookie = name + "="+ encodeURIComponent(value) + ";expires=" + exp.toGMTString();
 }
 
-export function getCookie(name){
-  var strcookie = document.cookie;
-  var arrcookie = strcookie.split("; ");
-  for ( var i = 0; i < arrcookie.length; i++) {
-      var arr = arrcookie[i].split("=");
-      if (arr[0] == name){
-        return arr[1];
-      }
-  }
-  return "";
+export function getCookie(name){ 
+  var reg = new RegExp(["(?:^| )", name, "=([^;]*)"].join(""),"i"),
+  arr = document.cookie.match(reg);
+  return arr ? decodeURIComponent(arr[1]) : null;
 }
 
 export function printPdf(url){

@@ -614,7 +614,7 @@ export const requiredForm = {
 	'tab-0': ['gesmoc', 'gesexpectrv', 'add_FIELD_shouyun'],
 	'tab-1': ['add_FIELD_gaoxueya', 'add_FIELD_tangniaobing', 'add_FIELD_xinzangbing', 
 						'add_FIELD_has_operation_history', 'bsguomin', 'hobtabp'],
-	'tab-2': ['yjcuch', 'yjzhouq', 'yjchix', 'yjtongj', 'maritalHistory', 'userjiehn', 'userjinqjh', 
+	'tab-2': ['yjcuch', 'yjzhouq', 'yjchix', 'yjtongj', 'maritalHistory',
 						'add_FIELD_grxiyan', 'add_FIELD_gryinjiu', 'add_FIELD_gryouhai', 'add_FIELD_grfangshe', 
 						'add_FIELD_jzgaoxueya', 'add_FIELD_jztangniaobing', 'add_FIELD_jzjixing', 'add_FIELD_jzyichuanbing'],
 	'tab-3': [],					

@@ -24,7 +24,7 @@ export default class extends Component {
         {
           columns: [
             // { name: "gesmoc[末次月经]", type: "date", span: 6, valid: "required" },
-            { name: "all_gesmoc[末次月经]", className: entity.all_gesmoc && entity.all_gesmoc[1] && entity.all_gesmoc[1][0] && entity.all_gesmoc[1][0].label === '不详' ? 'hide-date' : '', span: 6, valid: "required", 
+            { name: "all_gesmoc[末次月经]", className: entity.all_gesmoc && entity.all_gesmoc[1] && entity.all_gesmoc[1][0] && entity.all_gesmoc[1][0].label === '不详' ? 'hide-date' : '', span: 7, valid: "required", 
               type: [
                 { type: 'date'},
                 { type: 'checkinput', options: baseData.bxOptions }
@@ -37,6 +37,7 @@ export default class extends Component {
         {
           columns: [
             { name: "ckzdate[早孕-B超]", type: "date", span: 6 },
+            { span: 1 },
             { name: "ckztingj(周)[停@@经]", type: "input", span: 4 },
             { name: "ckzcrl(mm)[CRL]", type: "input", span: 4 },
             { name: "ckzbpd(mm)[NT]", type: "input", span: 4 },

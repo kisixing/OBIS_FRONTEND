@@ -17,7 +17,7 @@ export default class extends Component{
         {
           columns:[
             { 
-              name: 'ckpressure(mmHg)[血@@压 ]', type: ['input(/)','input'], span: 5, valid: (value)=>{
+              name: 'ckpressure(mmHg)[血压]', type: ['input(/)','input'], span: 4, valid: (value)=>{
               let message = '';
               if(value){
                 message = [0,1].map(i=>valid(`pureNumber|required|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
@@ -26,53 +26,59 @@ export default class extends Component{
               }
               return message;
             }},
-            {span:3},
-            {name:'add_FIELD_pulse(次/分)[脉@@搏 ]', type:'input', span:4, valid: 'required|pureNumber|rang(0,100)'},
-            {span:4},
-            {name:'cksheng(cm)[身@@高 ]', type:'input', span:4, valid: 'required|number|rang(150,250)'},
-          ]
-        },
-        {
-          columns:[
-            {name:'ckcurtizh(kg)[现 体 重 ]', type:'input', span:3, valid: 'required|number|rang(0,500)'},
-            {span:5},
+            {name:'add_FIELD_pulse(次/分)[脉搏]', className: 'now-pulse', type:'input', span:3, valid: 'required|pureNumber|rang(0,100)'},
+            {span: 1},
+            {name:'cksheng(cm)[身高]', type:'input', span:3, valid: 'required|number|rang(150,250)'},
+            {span: 1},
             {name:'cktizh(kg)[孕前体重]', type:'input', span:3, valid: 'required|number|rang(10,100)'},
-            {span:5},
-            {name:'ckbmi(kg/㎡)[孕前 BMI ]',className:'col-97-sp', type:'input', span:4, valid: 'required|number|rang(18.5,24.9)'},
+            {span: 1},
+            {name:'ckcurtizh(kg)[现体重]', type:'input', span:3, valid: 'required|number|rang(0,500)'},
+            {span: 1},
+            {name:'ckbmi(kg/㎡)[孕前BMI]',className:'col-97-sp', type:'input', span:4, valid: 'required|number|rang(18.5,24.9)'},
           ]
         },
+        // {
+        //   columns:[
+        //     {name:'cktizh(kg)[孕前体重]', type:'input', span:3, valid: 'required|number|rang(10,100)'},
+        //     {span:5},
+        //     {name:'ckcurtizh(kg)[现体重]', type:'input', span:3, valid: 'required|number|rang(0,500)'},
+        //     {span:5},
+        //     {name:'ckbmi(kg/㎡)[孕前BMI]',className:'col-97-sp', type:'input', span:4, valid: 'required|number|rang(18.5,24.9)'},
+        //   ]
+        // },
         {
           columns:[
+            {name:'add_FIELD_headFeatures[头颅五官]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
             {name:'ckpifu[皮肤黏膜]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'ckjiazhx[甲 状 腺 ]', type:'checkinput-3', valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'ckjiazhx[甲状腺]', type:'checkinput-3', valid: 'required', options: baseData.noOptions,radio:true,span:8},
             // {name:'vascularMurmur[血管杂音]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            // {name:'ckrut[乳@@房 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'breathSounds[呼 吸 音 ]', type:'checkinput-3',valid: 'required', options: baseData.coOptions,radio:true,span:8},
-            {name:'breathSoundsOther[啰@@音 ]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
+            {name:'ckrut[乳房乳腺]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'breathSounds[呼吸音]', type:'checkinput-3',valid: 'required', options: baseData.coOptions,radio:true,span:8},
+            {name:'breathSoundsOther[啰音]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            {name:'cardiac(次/分)[心@@率 ]', type:'input',valid: 'required|pureNumber', span:4},
+            {name:'cardiac(次/分)[心率]', type:'input',valid: 'required|pureNumber', span:4},
             {span:4},
-            {name:'heart[心@@律 ]', type:'checkinput-3',valid: 'required', options: baseData.xinlvOptions,radio:true,span:8},
-            {name:'murmurs[杂@@音 ]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
+            {name:'heart[心律]', type:'checkinput-3',valid: 'required', options: baseData.xinlvOptions,radio:true,span:8},
+            {name:'murmurs[杂音]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            {name:'ckganz[肝@@脏 ]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:8},
-            {name:'ckpiz[脾@@脏 ]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:8},
+            {name:'ckganz[肝脏]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:8},
+            {name:'ckpiz[脾脏]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:8},
             {name:'ckshenz[肾区叩痛]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            {name:'ckjizh[脊@@柱 ]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'ckjizh[脊柱]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
             {name:'nervousReflex[生理反射]', type:'checkinput-3', valid: 'required', options: baseData.slfsOptions,radio:true,span:8},
             {name:'vascularMurmurOther[病理反射]', type:'checkinput-3', valid: 'required', options: baseData.nhOptions,radio:true,span:8},
             // {name:'nervousReflex[双膝反射]', type:'checkinput', className:'col-97-sp', valid: 'required', options: baseData.sxfOptions,radio:true,span:9},
@@ -85,7 +91,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'add_FIELD_checkup_other[其@@他]', type:'input', span:12},
+            {name:'add_FIELD_checkup_other[其他]', type:'input', span:12},
           ]
         }
       ]
@@ -95,7 +101,7 @@ export default class extends Component{
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div className="">
+      <div className="ti-ge-jc">
         {formRender(entity, this.config(), onChange)}
       </div>
     )

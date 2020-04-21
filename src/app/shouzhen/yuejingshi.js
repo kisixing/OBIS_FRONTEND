@@ -29,8 +29,8 @@ export default class extends Component {
           columns: [
             { span: 1 },
             { name: 'maritalHistory[婚姻史]', className:'col-xz-sp hun-yin-shi', type: 'checkinput', span: 11, radio: true, valid: 'required', options: baseData.hysOptions },
-            { name: 'userjiehn(岁)[本次结婚年龄]', className: 'input_width_4',  type: 'input', span: 5, valid: 'pureNumber|required' },
-            { name: 'userjinqjh[近亲结婚]', className:'col-yjs-sp', type: 'checkinput', span: 5, radio: true, valid: 'required', options: baseData.jinqOptions },
+            { name: 'userjiehn(岁)[本次结婚年龄]', className: 'input_width_4',  type: 'input', span: 5, valid: 'pureNumber' },
+            { name: 'userjinqjh[近亲结婚]', className:'col-yjs-sp', type: 'checkinput', span: 5, radio: true, options: baseData.jinqOptions },
           ]
         },
         //kisi 2020/1/2 合并表单
@@ -67,12 +67,12 @@ export default class extends Component {
             {name:'add_FIELD_grqita[其@他]', className: 'long-ipt', type:'checkinput-5',radio:true, options: baseData.nhOptions,span: 15}
           ]
         },
-        {
-          columns:[
-            { span: 1 },
-            { name: 'noneChecked2[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
-          ]
-        },
+        // {
+        //   columns:[
+        //     { span: 1 },
+        //     { name: 'noneChecked2[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
+        //   ]
+        // },
         {
           label: '家族史', span: 12, columns: [],className:'labelclass'
         },
@@ -106,12 +106,12 @@ export default class extends Component {
             {name:'add_FIELD_jzqita[其@他]', className: 'long-ipt', type:'checkinput-5',radio:true, options: baseData.nhOptions,span: 15}
           ]
         },
-        {
-          columns:[
-            { span: 1 },
-            { name: 'noneChecked3[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
-          ]
-        },
+        // {
+        //   columns:[
+        //     { span: 1 },
+        //     { name: 'noneChecked3[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
+        //   ]
+        // },
         // {
         //   columns: [
         //     { name: 'historyOfInfertility[不孕病史]',className:'col-yjs-sp', type: 'checkinput-1', valid: 'required', unselect: '无', options: baseData.bybsOptions.map(v => ({ ...v, span: 8 })) },

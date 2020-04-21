@@ -106,7 +106,7 @@ export default class Patient extends Component {
         const action = showTrialAction(true);
         store.dispatch(action);
       }
-      if(item.data === '双胎妊娠' || item.data === '多胎妊娠') {
+      if(item.data.indexOf('双胎') !== -1 || item.data.indexOf('多胎') !== -1) {
         this.setState({ isTwins: true })
       }
       if (item.data.indexOf('梅毒') !== -1) {
@@ -167,9 +167,9 @@ export default class Patient extends Component {
       res.object && res.object.map(item => {
         if(item.checkdate == util.futureDate(0)) {
           bool = true;
-          if (!!item.medicationPlan) item.medicationPlan = [{}];
-          if (!!item.fetalCondition) item.fetalCondition = [{}, {}];
-          if (!!item.fetalUltrasound) item.fetalUltrasound = [{}, {}];
+          if (!item.medicationPlan) item.medicationPlan = [{}];
+          if (!item.fetalCondition) item.fetalCondition = [{}, {}];
+          if (!item.fetalUltrasound) item.fetalUltrasound = [{}, {}];
           this.setState({
             hasRecord: true, 
             initData: service.praseJSON(item)
@@ -221,7 +221,7 @@ export default class Patient extends Component {
         const action = showTrialAction(true);
         store.dispatch(action);
       }
-      if(diagnosi === '双胎妊娠' || diagnosi === '多胎妊娠') {
+      if(diagnosi.indexOf('双胎') !== -1 || diagnosi.indexOf('多胎') !== -1) {
         this.setState({ isTwins: true })
       }
       // 传染病标记
@@ -281,7 +281,7 @@ export default class Patient extends Component {
 
     let bool = true;
     newList && newList.forEach(item => {
-      if (item.data === '双胎妊娠' || item.data === '多胎妊娠') bool = false;
+      if (item.data.indexOf('双胎') !== -1 || item.data.indexOf('多胎') !== -1) bool = false;
     })
     if (bool) this.setState({ isTwins: false });
 
@@ -751,7 +751,7 @@ export default class Patient extends Component {
       let ckpressure = row.ckpressure.split('/');
       if(ckpressure[0]) row.ckshrinkpressure = ckpressure[0];
       if(ckpressure[1]) row.ckdiastolicpressure = ckpressure[1];
-      if(row.cktaix || row.ckxianl) {
+      if(!isTwins) {
         row.cktaix = row.allTaix;
         row.ckxianl = row.allXianl;
       }
@@ -824,7 +824,7 @@ export default class Patient extends Component {
         }
         
         // 胎心率、先露数据处理
-        if(!item.cktaix && !item.ckxianl) {
+        if(isTwins) {
           item.allTaix = "";
           item.allXianl = "";
           if(item.fetalCondition && item.fetalCondition[0].location) {

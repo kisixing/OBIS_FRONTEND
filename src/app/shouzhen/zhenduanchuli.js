@@ -94,9 +94,9 @@ export default class extends Component{
         {
           className: 'top-column',
           columns: [
-            { name: 'yunc[1、G]', type: 'input', span: 3, valid: 'pureNumber' },
-            { name: 'chanc[P]', className: 'short-label', type: 'input', span: 3, valid: 'pureNumber' },
-            { name: 'add_FIELD_tuserweek[妊娠](周)', className: 'short-label', type: 'input', span: 3 },
+            { name: 'yunc[1、G]', className: 'short-yunc', type: 'input', span: 3, valid: 'pureNumber' },
+            { name: 'chanc[P]', className: 'short-chanc', type: 'input', span: 3, valid: 'pureNumber' },
+            { name: 'add_FIELD_tuserweek[妊娠](周)', className: 'short-week', type: 'input', span: 3 },
           ]
         },
       ]
@@ -491,17 +491,17 @@ export default class extends Component{
         <div className="pad-LR-mid">
           {szList && szList.map((item, i) => (
             <Row key={`diagnos-${item.data}-${i}-${Date.now()}`}>
-              <Col span={8}>
+              <Col span={6}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                   <div title={item.data}>
-                    <span className="font-12">{i + 2}、</span>
+                    <span className="zd-num">{i + 2}、</span>
                     <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
                   </div>
                 </Popover>
               </Col>
-              <Col span={6}>{item.createdate}</Col>
-              <Col span={6}>{item.doctor||info.doctor}</Col>
-              <Col span={4}>
+              <Col span={2}>{item.createdate}</Col>
+              <Col span={2}>{item.doctor||info.doctor}</Col>
+              <Col span={2}>
                 <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => this.deldiagnosis(item.id, item.data)} />
               </Col>
             </Row>
@@ -512,7 +512,7 @@ export default class extends Component{
           <Col span={1} className="text-right" style={{width:'90px',paddingRight:'5px'}}>
             <span className="font-18">诊&nbsp;&nbsp;断:</span>
           </Col>
-          <Col span={17} className="shouzhen-pop">
+          <Col span={7} className="shouzhen-pop">
             <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
                  onFocus={() => handleIptFocus()}
                  onBlur={() => setTimeout(() => this.setState({isShowZhenduan: false}), 200)}
