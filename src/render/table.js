@@ -34,7 +34,7 @@ class TableItem extends Component {
 
   componentDidMount(){
     const { iseditable = () => true, entity, row, name, value, onEdit, hasRecord, style, isTwins } = this.props;
-    const arr = ["cktizh", "ckzijzhz", "allTaix", "allXianl", "ckgongg", "ckfuzh"];
+    const arr = ["ckzijzhz", "allTaix", "allXianl", "ckgongg", "ckfuzh"];
     if (iseditable({entity, row, name, value}) && onEdit) {
       if (arr.includes(name)) {
         this.setState({force:true});
@@ -155,7 +155,7 @@ class TableItem extends Component {
   onBlur = (e) => {
     const { valid, onChange, name, entity, isPreghiss, onEdit } = this.props;
     const { value } = this.state;
-    const arr = ["cktizh", "ckzijzhz", "allTaix", "allXianl", "ckgongg", "ckfuzh"];
+    const arr = ["ckzijzhz", "allTaix", "allXianl", "ckgongg", "ckfuzh"];
     const error = validFn(valid, value);
 
     if(isPreghiss) {

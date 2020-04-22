@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Input, Select, Button, Tree, Modal } from "antd";
+import { Row, Col, Input, message, Button, Tree, Modal } from "antd";
 
 import tableRender from "../../render/table";
 import formRender, { fireForm } from "../../render/form";
@@ -31,7 +31,11 @@ export default class FuzhenForm extends Component {
       rows: [
         {
           columns: [
-            { name: "gestation(周)[孕周]", type: "input", span: 6, valid: 'symbol(+)' },
+            { name: "gestation(周)[孕周]", type: "input", span: 6, valid: (value) => {
+              if (value && !/^\d+?\+?\d+$/.test(value)) {
+                return '*输入格式不正确';
+              } 
+            } },
             { name: "item[产检项目]", type: "select", span: 7, options: baseData.cjOptions },
             { name: "event[提醒事件]", type: "input", span: 8 },
             { type: "button", span: 3, text: "添加", color: "#1890ff", size: "small",	onClick: this.addRecentPlan.bind(this) }
@@ -99,15 +103,19 @@ export default class FuzhenForm extends Component {
 	addRecentPlan() {
     const { planEntity, initPlanEntity } = this.state;
     const { info } = this.props;
-    if (!!planEntity.gestation) {
-      planEntity.time = util.getWeek(planEntity.gestation, info.tuserweek);
-      this.setState({planEntity}, () => {
-        service.fuzhen.addRecentRvisit(planEntity).then(res => {
-          service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object, planEntity: initPlanEntity }));  
-          this.props.changeRecentRvisit();
+    fireForm(document.querySelector('.left-form'), 'valid').then((valid) => {
+      if (valid && !!planEntity.gestation) {
+        planEntity.time = util.getWeek(planEntity.gestation, info.tuserweek);
+        this.setState({planEntity}, () => {
+          service.fuzhen.addRecentRvisit(planEntity).then(res => {
+            service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object, planEntity: initPlanEntity }));  
+            this.props.changeRecentRvisit();
+          })
         })
-      })
-    }
+      } else {
+        message.error('请输入正确的孕周格式！');
+      }
+    })
   }
   
   writePlanGroup() {
@@ -143,7 +151,11 @@ export default class FuzhenForm extends Component {
 			if (name == 'item') data.item = value.label;
 			this.setState({ planEntity: {...planEntity, ...data}})
 		}
-    return formRender(planEntity, this.planConfig(), handleChange);
+    return (
+      <div className="left-form">
+        {formRender(planEntity, this.planConfig(), handleChange)}
+      </div>
+    )
   }
 
   renderLeftTable() {

@@ -575,7 +575,7 @@ export default class App extends Component {
           <div><strong>年龄:</strong>{userDoc.userage}</div>
           <div><strong>孕周:</strong>{userDoc.tuserweek}</div>
           <div><strong>孕产:</strong>{userDoc.tuseryunchan}</div>
-          <div><strong>预产期:</strong>{userDoc.gesexpect}</div>
+          <div><strong>预产期:</strong>{userDoc.gesexpectrv === userDoc.gesexpect ? userDoc.gesexpectrv : `${userDoc.gesexpectrv}(超)`}</div>
           <div><strong>就诊卡:</strong>{userDoc.usermcno}</div>
           <div><strong>产检编号:</strong>{userDoc.chanjno}</div>
           <div><strong>高危因素:</strong><strong className="high-risk">{userDoc.highriskFactor}</strong></div>

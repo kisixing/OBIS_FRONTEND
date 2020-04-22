@@ -827,13 +827,14 @@ export default class Patient extends Component {
         if(isTwins) {
           item.allTaix = "";
           item.allXianl = "";
-          if(item.fetalCondition && item.fetalCondition[0].location) {
+          if(item.fetalCondition) {
             item.fetalCondition.map(subItem => {
-              if(subItem.location && subItem.taix) {
-                item.allTaix += `${subItem.location.label}：${subItem.taix}；`;
+              let locLabel = subItem.location ? `${subItem.location.label}：` : '';
+              if(subItem.taix) {
+                item.allTaix += `${locLabel}${subItem.taix}；`;
               }
-              if(subItem.location && subItem.xianl) {
-                item.allXianl += `${subItem.location.label}：${subItem.xianl.label}；`;
+              if(subItem.xianl) {
+                item.allXianl += `${locLabel}${subItem.xianl.label}；`;
               }
             })
           } 
@@ -843,7 +844,7 @@ export default class Patient extends Component {
         }
 
         // 胎儿超声数据处理
-        if(item.fetalUltrasound && item.fetalUltrasound[0].tetz) {
+        if(item.fetalUltrasound) {
           hasUltrasound = true;
           item.allTetz = "";
           item.allTeafv = "";

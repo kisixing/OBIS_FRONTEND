@@ -127,6 +127,7 @@ export default class Patient extends Component {
                 }
             } else if (tab.key === 'tab-7') {
                 tab.entity = service.praseJSON(allFormData.diagnosis); 
+                tab.entity.add_FIELD_first_clinical_doctor = !!tab.entity.add_FIELD_first_clinical_doctor ? tab.entity.add_FIELD_first_clinical_doctor : common.getCookie('docName');
             } else {
                 tab.entity = service.praseJSON(allFormData);
             }
@@ -213,6 +214,11 @@ export default class Patient extends Component {
                         entity['preghiss'].splice(-1, 0, item);
                     }
                     break; 
+                case 'maritalHistory':
+                    if (entity['maritalHistory'][0] && entity['maritalHistory'][0].label === '未婚') {
+                        entity['userjiehn'] = '';
+                        entity['userjinqjh'] = [];
+                    }
                 default:
                     break;
             }

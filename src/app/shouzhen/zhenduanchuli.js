@@ -127,7 +127,7 @@ export default class extends Component{
         {
           columns: [
             { name: 'add_FIELD_first_save_ivisit_time[初诊日期]', type:'date', span: 4 },
-            { name: 'add_FIELD_ivisit_doctor[初诊医生]', type:'input', span: 4 },
+            { name: 'add_FIELD_first_clinical_doctor[初诊医生]', type:'input', span: 4 },
           ]
         }
       ]
