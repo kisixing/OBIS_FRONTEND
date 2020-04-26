@@ -82,11 +82,11 @@ export default class Patient extends Component {
       listHistory: null,
       isShowHis: false,
       signList: [
-        { 'word': '大三阳', 'diag': '乙肝大三阳' },
-        { 'word': '小三阳', 'diag': '乙肝小三阳' },
-        { 'word': '梅毒', 'diag': '梅毒' },
-        { 'word': 'HIV', 'diag': 'HIV' },
-        { 'word': '艾滋', 'diag': 'HIV' },
+        { 'word': ['大三阳'], 'without': [], 'diag': '乙肝大三阳' },
+        { 'word': ['小三阳'], 'without': [], 'diag': '乙肝小三阳' },
+        { 'word': ['梅毒'], 'without': [], 'diag': '梅毒' },
+        { 'word': ['HIV', '艾滋'], 'without': [], 'diag': 'HIV' },
+        { 'word': ['乙肝', '乙型肝炎'], 'without': ['大三阳', '小三阳'], 'diag': '乙肝表面抗原携带者' },
       ],
       ...store.getState(),
     };
@@ -227,8 +227,16 @@ export default class Patient extends Component {
       // 传染病标记
       let signDiag = '';
       signList.forEach(item => {
-        if (diagnosi.indexOf(item.word) !== -1) {
-          signDiag = item.diag;
+        let hasWord = false;
+        let isSign = true;
+        item.word.forEach(wordItem => {
+          if (diagnosi.indexOf(wordItem) !== -1) hasWord = true;
+        })
+        if (hasWord) {
+          item.without.forEach(withItem => {
+            if (diagnosi.indexOf(withItem) !== -1) isSign = false;
+          })
+          if (isSign) signDiag = item.diag;
         }
       })
       if (!!signDiag) {
@@ -269,15 +277,15 @@ export default class Patient extends Component {
     }
   }
 
-  deldiagnosis(id, data) {
+  deldiagnosis(id, diagnosi) {
     const { userDoc, fzList, signList } = this.state;
-    const newList = fzList.filter(i => i.data !== data);
+    const newList = fzList.filter(i => i.data !== diagnosi);
     const changeAction = isFormChangeAction(true);
     store.dispatch(changeAction);
     const action = fzListAction(newList);
     store.dispatch(action);
     modal('info', '删除诊断信息成功');
-    this.updateCheckedKeys(data);
+    this.updateCheckedKeys(diagnosi);
 
     let bool = true;
     newList && newList.forEach(item => {
@@ -287,14 +295,28 @@ export default class Patient extends Component {
 
     // 删除传染病标记
     let signDiag = '';
+    let signWord = [];
     let signDel = true;
     signList.forEach(item => {
-      if (data.indexOf(item.word) !== -1) {
-        signDiag = item.diag;
+      let hasWord = false;
+      let isSign = true;
+      item.word.forEach(wordItem => {
+        if (diagnosi.indexOf(wordItem) !== -1) hasWord = true;
+      })
+      if (hasWord) {
+        item.without.forEach(withItem => {
+          if (diagnosi.indexOf(withItem) !== -1) isSign = false;
+        })
+        if (isSign) {
+          signDiag = item.diag;
+          signWord = item.word;
+        } 
         newList && newList.forEach(subItem => {
-          if (subItem.data.indexOf(item.word) !== -1) {
-            signDel = false;
-          }
+          signWord.forEach(wordItem => {
+            if (subItem.data.indexOf(wordItem) !== -1) {
+              signDel = false;
+            }
+          })
         })
       }
     })
@@ -829,7 +851,7 @@ export default class Patient extends Component {
           item.allXianl = "";
           if(item.fetalCondition) {
             item.fetalCondition.map(subItem => {
-              let locLabel = subItem.location ? `${subItem.location.label}：` : '';
+              let locLabel = subItem.location ? `${subItem.location.label}:` : '';
               if(subItem.taix) {
                 item.allTaix += `${locLabel}${subItem.taix}；`;
               }
@@ -860,22 +882,22 @@ export default class Patient extends Component {
         if(item.riMo && item.riMo[0] && item.riMo[1]) {
           hasRiMo = true;
           let firstParam = typeof item.riMo[0] === 'object' ? item.riMo[0].label : item.riMo[0];
-          item.allRiMo = firstParam + '：' + item.riMo[1] + 'U';
+          item.allRiMo = firstParam + ':' + item.riMo[1] + 'U';
         }
         if(item.riNo && item.riNo[0] && item.riNo[1]) {
           hasRiNo = true;
           let firstParam = typeof item.riNo[0] === 'object' ? item.riNo[0].label : item.riNo[0];
-          item.allRiNo = firstParam + '：' + item.riNo[1] + 'U';
+          item.allRiNo = firstParam + ':' + item.riNo[1] + 'U';
         }
         if(item.riEv && item.riEv[0] && item.riEv[1]) {
           hasRiEv = true;
           let firstParam = typeof item.riEv[0] === 'object' ? item.riEv[0].label : item.riEv[0];
-          item.allRiEv = firstParam + '：' + item.riEv[1] + 'U';
+          item.allRiEv = firstParam + ':' + item.riEv[1] + 'U';
         }
         if(item.riSl && item.riSl[0] && item.riSl[1]) {
           hasRiSl = true;
           let firstParam = typeof item.riSl[0] === 'object' ? item.riSl[0].label : item.riSl[0];
-          item.allRiSl = firstParam + '：' + item.riSl[1] + 'U';
+          item.allRiSl = firstParam + ':' + item.riSl[1] + 'U';
         }
 
         // 用药方案数据处理
@@ -985,14 +1007,14 @@ export default class Patient extends Component {
     const allInitTable = (data, props) => tableRender(rvisitAllKeys, data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
-        {recentRvisit && initTable(recentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable",
-          onEdit: true, hasRecord: hasRecord, isTwins: isTwins, tableLayout: "fixed", scroll: { x: 1100, y: 220 },
+        {recentRvisit && initTable(recentRvisit, { width: 1200, size: "small", pagination: false, editable: true, className: "fuzhenTable",
+          onEdit: true, hasRecord: hasRecord, isTwins: isTwins, tableLayout: "fixed", scroll: { x: 1200, y: 220 },
           iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onRowChange: handleSaveChange
         })}
         {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
-            {recentRvisitAll && allInitTable(recentRvisitAll, { className: "fuzhenTable2", scroll: { x: 1100 }, editable: true,
+            {recentRvisitAll && allInitTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true,
               onRowChange: handelTableChange, tableLayout: "fixed",
               pagination: { pageSize: 12, total: totalRow + 2, onChange: handlePageChange, showQuickJumper: true }
             })}
@@ -1043,7 +1065,7 @@ export default class Patient extends Component {
       store.dispatch(action);
       if(isOk){
         if(isChangeYCQ) {
-          const dateTip = ycqEntity.ckzdate ? `B超时间：${ycqEntity.ckzdate}；` : '';
+          const dateTip = ycqEntity.ckzdate ? `B超时间:${ycqEntity.ckzdate}；` : '';
           const tingjTip = ycqEntity.ckztingj ? `停经${ycqEntity.ckztingj}周；` : '';
           const weekTip = ycqEntity.ckzweek ? `如孕${ycqEntity.ckzweek}周；` : '';
           const trvTip = ycqEntity.gesexpectrv ? `修订预产期为${ycqEntity.gesexpectrv}；` : '';

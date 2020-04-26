@@ -695,7 +695,7 @@ export default class App extends Component {
                   <Select className="highrisk-infec" multiple
                           value={!!highriskEntity.infectious ? highriskEntity.infectious.split(",") : []}
                           onChange={e => handleChange("infectious", e.join())}>
-                    {"乙肝大三阳,乙肝小三阳,梅毒,HIV,结核病,重症感染性肺炎,特殊病毒感染（H1N7、寨卡等）,传染病：其他".split(",").map(i => (
+                    {"乙肝大三阳,乙肝小三阳,乙肝表面抗原携带者,梅毒,HIV,结核病,重症感染性肺炎,特殊病毒感染（H1N7、寨卡等）,传染病：其他".split(",").map(i => (
                         <Select.Option key={i} value={i}>{i}</Select.Option>
                       ))}
                   </Select>

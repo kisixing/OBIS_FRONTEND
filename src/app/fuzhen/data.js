@@ -191,7 +191,7 @@ export const tableKey = () => [
 			{
 				title: '(bpm)',
 				key: 'allTaix',
-				width: 30,
+				width: 60,
 				type: 'input'
 			},
 		]

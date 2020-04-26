@@ -46,11 +46,11 @@ export default class extends Component{
       openTemplate: false,
       ...store.getState(),
       signList: [
-        { 'word': '大三阳', 'diag': '乙肝大三阳' },
-        { 'word': '小三阳', 'diag': '乙肝小三阳' },
-        { 'word': '梅毒', 'diag': '梅毒' },
-        { 'word': 'HIV', 'diag': 'HIV' },
-        { 'word': '艾滋', 'diag': 'HIV' },
+        { 'word': ['大三阳'], 'without': [], 'diag': '乙肝大三阳' },
+        { 'word': ['小三阳'], 'without': [], 'diag': '乙肝小三阳' },
+        { 'word': ['梅毒'], 'without': [], 'diag': '梅毒' },
+        { 'word': ['HIV', '艾滋'], 'without': [], 'diag': 'HIV' },
+        { 'word': ['乙肝', '乙型肝炎'], 'without': ['大三阳', '小三阳'], 'diag': '乙肝表面抗原携带者' },
       ],
     };
     store.subscribe(this.handleStoreChange);
@@ -167,8 +167,16 @@ export default class extends Component{
       // 传染病标记
       let signDiag = '';
       signList.forEach(item => {
-        if (diagnosi.indexOf(item.word) !== -1) {
-          signDiag = item.diag;
+        let hasWord = false;
+        let isSign = true;
+        item.word.forEach(wordItem => {
+          if (diagnosi.indexOf(wordItem) !== -1) hasWord = true;
+        })
+        if (hasWord) {
+          item.without.forEach(withItem => {
+            if (diagnosi.indexOf(withItem) !== -1) isSign = false;
+          })
+          if (isSign) signDiag = item.diag;
         }
       })
       if (!!signDiag) {
@@ -258,26 +266,40 @@ export default class extends Component{
     }
   }
 
-  deldiagnosis(id, data) {
+  deldiagnosis(id, diagnosi) {
     const { userDoc, szList, signList } = this.state;
-    const newList = szList.filter(i => i.data !== data);
+    const newList = szList.filter(i => i.data !== diagnosi);
     const changeAction = isFormChangeAction(true);
     store.dispatch(changeAction);
     const action = szListAction(newList);
     store.dispatch(action);
     modal('info', '删除诊断信息成功');
-    this.updateCheckedKeys(data);
+    this.updateCheckedKeys(diagnosi);
 
     // 删除传染病标记
     let signDiag = '';
+    let signWord = [];
     let signDel = true;
     signList.forEach(item => {
-      if (data.indexOf(item.word) !== -1) {
-        signDiag = item.diag;
+      let hasWord = false;
+      let isSign = true;
+      item.word.forEach(wordItem => {
+        if (diagnosi.indexOf(wordItem) !== -1) hasWord = true;
+      })
+      if (hasWord) {
+        item.without.forEach(withItem => {
+          if (diagnosi.indexOf(withItem) !== -1) isSign = false;
+        })
+        if (isSign) {
+          signDiag = item.diag;
+          signWord = item.word;
+        } 
         newList && newList.forEach(subItem => {
-          if (subItem.data.indexOf(item.word) !== -1) {
-            signDel = false;
-          }
+          signWord.forEach(wordItem => {
+            if (subItem.data.indexOf(wordItem) !== -1) {
+              signDel = false;
+            }
+          })
         })
       }
     })

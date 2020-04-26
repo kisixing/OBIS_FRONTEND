@@ -61,7 +61,7 @@ class TableItem extends Component {
   }
 
   onDbClick = () => {
-    const { iseditable = ()=> true, entity, row, name, value, onEdit, isTwins, onDBClick } = this.props;
+    const { iseditable = ()=> true, type, entity, row, name, value, onEdit, isTwins, onDBClick } = this.props;
     if(onDBClick) {
       return onDBClick(entity);
     }
@@ -71,8 +71,12 @@ class TableItem extends Component {
         return;
       }
       this.setState({force:true}, ()=>{
-        const input = this.refs.tableItem.querySelector(types.join());
-        if(input)input.focus();
+        if (type !== 'editableSelect') {
+          const input = this.refs.tableItem.querySelector(types.join());
+          if(input) input.focus();
+        } else {
+          this.refs.tableItem.querySelector('input').focus();
+        }
       });
       if(onEdit && name==="ckweek") {
         const action = openYCQAction(true);

@@ -9,6 +9,7 @@ import * as buttons from './button';
 import * as mixs from './mix';
 import * as cascader from "./cascader";
 import * as districtSelect from "./district-select";
+import * as editableSelect from "./editable-select";
 
 /**
  * 所有编辑组件
@@ -31,7 +32,8 @@ export const editors = {
   ...buttons,
   ...mixs,
   ...cascader,
-  ...districtSelect
+  ...districtSelect,
+  ...editableSelect,
 };
 
 export default {
