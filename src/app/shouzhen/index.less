@@ -188,40 +188,6 @@
   }
 }
 
-.shouzhen-left-zd {
-  .zd-num {
-    font-size: 16px;
-    font-weight: 600;
-  }
-}
-.shouzhen-left-input {
-  .ant-tabs-nav .ant-tabs-tab {
-    padding: 0 5px;
-  }
-  .anticon.anticon-setting {
-    cursor: pointer;
-    padding: 11px 30px;
-  }
-  .shouzhen-pop {
-    position: relative;
-    .shouzhen-list {
-      background-color: #f9f9f9;
-      .ant-tree {
-        font-size: 1rem;
-      }
-    }
-    .ant-tabs-tabpane {
-      padding: 5px 8px;
-    }
-    .shouzhen-left-item {
-      cursor: pointer;
-      &:hover {
-        background-color: #bae7ff;
-      }
-    }
-  }
-}
-
 .yuModal, .adviceModal {
   .ant-modal-header, .ant-modal-body, .ant-modal-footer {
       background: #fffbe6;
@@ -255,6 +221,56 @@
 }
 
 .zhen-duan {
+  .shouzhen-left-top {
+    .zd-num {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .ant-col-6 {
+      display: flex;
+    }
+    .remark-ipt {
+      width: 0;
+      flex: 1;
+      border: 0 none;
+      outline: none;
+      border-bottom: 1px #ccc solid;
+      &::-ms-input-placeholder {
+        text-align: center;
+      }
+      &::-webkit-input-placeholder {
+        text-align: center;
+      }
+    }
+  }
+  .shouzhen-left-input {
+    .ant-tabs-nav .ant-tabs-tab {
+      padding: 0 5px;
+    }
+    .anticon.anticon-setting {
+      cursor: pointer;
+      padding: 11px 30px;
+    }
+    .shouzhen-pop {
+      position: relative;
+      .shouzhen-list {
+        background-color: #f9f9f9;
+        .ant-tree {
+          font-size: 1rem;
+        }
+      }
+      .ant-tabs-tabpane {
+        padding: 5px 8px;
+      }
+      .shouzhen-left-item {
+        cursor: pointer;
+        &:hover {
+          background-color: #bae7ff;
+        }
+      }
+    }
+  }
+
   .top-column {
     margin-left: -34px;
     .colon {

@@ -823,7 +823,9 @@ export default class Patient extends Component {
       let upDosage24hCount = 0;    
       let heartRateCount = 0;
       let examinationCount = 0;
-      let hasUltrasound = false;
+      let hasTz = false;
+      let hasAvf = false;
+      let hasQxl = false;
       let hasPlan = false;
       let hasRiMo = false;
       let hasRiNo = false;
@@ -867,14 +869,22 @@ export default class Patient extends Component {
 
         // 胎儿超声数据处理
         if(item.fetalUltrasound) {
-          hasUltrasound = true;
           item.allTetz = "";
           item.allTeafv = "";
           item.allTeqxl = "";
           item.fetalUltrasound.map((subItem, index) => {
-            if(subItem.tetz) item.allTetz += subItem.tetz + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
-            if(subItem.teafv) item.allTeafv += subItem.teafv + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
-            if(subItem.teqxl) item.allTeqxl += subItem.teqxl + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
+            if(subItem.tetz) {
+              hasTz = true;
+              item.allTetz += subItem.tetz + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
+            } 
+            if(subItem.teafv) {
+              hasAvf = true;
+              item.allTeafv += subItem.teafv + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
+            } 
+            if(subItem.teqxl) {
+              hasQxl = true;
+              item.allTeqxl += subItem.teqxl + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
+            } 
           })
         }
 
@@ -957,11 +967,15 @@ export default class Patient extends Component {
       }
       if(heartRateCount === obj.length) keys[getIndex(keys, '心率')].className = 'isHide';
       if(examinationCount === obj.length) keys[getIndex(keys, '化验')].className = 'isHide';
-      if(!hasUltrasound) {
+      if(!hasTz) {
         keys[getIndex(keys, '胎儿体重')].className = 'isHide';
+      } 
+      if(!hasAvf) {
         keys[getIndex(keys, 'AVF')].className = 'isHide';
+      } 
+      if(!hasQxl) {
         keys[getIndex(keys, '脐血流')].className = 'isHide';
-      };
+      } 
       if(!hasRiMo) {
         keys[getIndex(keys, '早')].className = 'isHide';
       } 

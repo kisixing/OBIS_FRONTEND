@@ -470,6 +470,15 @@ export default class extends Component{
       );
     }
 
+    // 诊断备注输入
+    const setRemark = (v, i) => {
+      szList[i].remark = v;
+      const changeAction = isFormChangeAction(true);
+      store.dispatch(changeAction);
+      const action = szListAction(szList);
+      store.dispatch(action);
+    }
+
     /**
      * 点击填充input
      */
@@ -510,9 +519,9 @@ export default class extends Component{
 
     return (
       <div className="shouzhen-left-zd">
-        <div className="pad-LR-mid">
+        <div className="shouzhen-left-top pad-LR-mid">
           {szList && szList.map((item, i) => (
-            <Row key={`diagnos-${item.data}-${i}-${Date.now()}`}>
+            <Row key={`diagnos-${item.data}-${i}`}>
               <Col span={6}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                   <div title={item.data}>
@@ -520,6 +529,7 @@ export default class extends Component{
                     <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
                   </div>
                 </Popover>
+                <input className="remark-ipt" placeholder="备注" value={item.remark} onChange={e => setRemark(e.target.value, i)} />
               </Col>
               <Col span={2}>{item.createdate}</Col>
               <Col span={2}>{item.doctor||info.doctor}</Col>

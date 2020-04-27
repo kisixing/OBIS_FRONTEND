@@ -42,7 +42,7 @@ export function input({onChange, onBlur, value, filterDate, ...props}){
         finalYear = getCentury(finalYear) + finalYear;
         finalMonth = finalMonth > 10 ? finalMonth : '0' + finalMonth;
         finalDate = finalYear + '-' + finalMonth;
-      } else if (iptValue.length === 4 && initValue.length === 4) {
+      } else if (iptValue.length === 4 && (initValue.length === 4 || initValue[initValue.length - 1] === '年')) {
         finalDate = iptValue;
       } else if (iptValue.length === 4 && initValue.length !== 4) {
         finalYear = iptValue.substring(0, 2);

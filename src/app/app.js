@@ -61,6 +61,8 @@ export default class App extends Component {
     store.subscribe(this.handleStoreChange);
 
     common.setCookie('clinicCode', service.getQueryString('clinicCode'));
+    common.setCookie('opid', service.getQueryString('opid'));
+    common.setCookie('regno', service.getQueryString('regno'));
     service.authorize(service.getQueryString('doctorId')).then(res => {
       common.setCookie('docToken', res.object.token);
       common.setCookie('docName', res.object.doctorName);
