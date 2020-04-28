@@ -157,7 +157,7 @@ export default class extends Component {
             { span: 1 },
             {
               name: "add_FIELD_symptom[其@他]",
-              type: "select",
+              type: "editableSelect",
               options: baseData.zsOptions,
               autoInsert: true,
               showSearch: true,

@@ -52,6 +52,25 @@
     text-align: center;
     padding: 0.8rem 0 0.5rem;
   }
+  .fuzhen-left-zd .font-12 {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .fuzhen-left-zd .first-diag {
+    margin-bottom: 0.5rem;
+    input {
+      width: 11%;
+      font-size: 14px;
+      border: 0 none;
+      outline: none;
+      border-radius: 0;
+      border-bottom: 1px #ccc solid;
+      background-color: #e8f4ff;
+    }
+    .tuserweek-ipt {
+      width: 21%;
+    }
+  }
   .fuzhen-left-zd ol {
     margin-bottom: 5px;
     li {
@@ -61,6 +80,27 @@
       padding-bottom: 2px;
       line-height: 1.4em;
       margin-bottom: 5px;
+      .diag-wrapper {
+        display: flex;
+        .zd-num {
+          vertical-align: top;
+        }
+        .remark-ipt {
+          width: 0;
+          height: 100%;
+          flex: 1;
+          border: 0 none;
+          outline: none;
+          border-bottom: 1px #ccc solid;
+          background-color: #e8f4ff;
+          &::-ms-input-placeholder {
+            text-align: center;
+          }
+          &::-webkit-input-placeholder {
+            text-align: center;
+          }
+        }
+      }
       &>div > span {
         vertical-align: top;
       }
@@ -74,7 +114,7 @@
       }
       .character7 {
         display: inline-block;
-        width: 8em;
+        max-width: 6em;
         overflow: hidden;
         white-space: nowrap;
         -o-text-overflow: ellipsis; /* for Opera */

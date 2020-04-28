@@ -9,7 +9,7 @@ import * as buttons from './button';
 import * as mixs from './mix';
 import * as cascader from "./cascader";
 import * as districtSelect from "./district-select";
-import * as editableSelect from "./editable-select";
+import * as editableSelect from "./editable-select2";
 
 /**
  * 所有编辑组件

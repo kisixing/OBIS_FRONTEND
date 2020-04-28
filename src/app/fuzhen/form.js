@@ -252,19 +252,19 @@ export default class FuzhenForm extends Component {
         {
           filter:()=>check('diabetes'), label:'胰岛素方案', columns:[
             { name: 'riMo(U)[早]', span: 6, 
-              type: [{type:'select', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
+              type: [{type:'editableSelect', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
                     {type:'input', placeholder:'剂量', span:8}] 
             },
             { name: 'riNo(U)[中]', span: 6, 
-              type: [{type:'select', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
+              type: [{type:'editableSelect', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
                     {type:'input', placeholder:'剂量', span:8}]
             },
             { name: 'riEv(U)[晚]', span: 6, 
-              type: [{type:'select', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
+              type: [{type:'editableSelect', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
                     {type:'input',placeholder:'剂量', span:8}] 
             },
             { name: 'riSl(U)[睡前]', span: 6, 
-              type: [{type:'select', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
+              type: [{type:'editableSelect', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
                     {type:'input',placeholder:'剂量', span:8}] 
             },
           ]

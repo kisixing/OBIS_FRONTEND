@@ -73,19 +73,19 @@ export default class extends Component {
         {
           filter: entity => !entity.add_FIELD_gynecological_examination || isShow(entity.add_FIELD_gynecological_examination), columns: [
             { span: 1 },
-            { name: 'ckwaiy[外阴]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
+            { name: 'ckwaiy[外阴]', type: 'editableSelect', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
             { span: 1 },
-            { name: 'ckyind[阴道]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
+            { name: 'ckyind[阴道]', type: 'editableSelect', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
             { span: 1 },
-            { name: 'ckgongj[宫颈]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
+            { name: 'ckgongj[宫颈]', type: 'editableSelect', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
             { span: 1 },
-            { name: 'ckgongt[子宫]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions }
+            { name: 'ckgongt[子宫]', type: 'editableSelect', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions }
           ]
         },
         {
           filter: entity => !entity.add_FIELD_gynecological_examination || isShow(entity.add_FIELD_gynecological_examination), columns: [
             { span: 1 },
-            { name: 'ckfuj[附件]', type: 'select', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
+            { name: 'ckfuj[附件]', type: 'editableSelect', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
           ]
         },
         // {

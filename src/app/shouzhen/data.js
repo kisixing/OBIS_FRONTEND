@@ -512,7 +512,7 @@ export const pregnanciesColumns = [
 	{
 		title: '分娩医院',
 		key: 'hospital',
-		type: 'select',
+		type: 'editableSelect',
 		showSearch: true,
 		options: fmyyOptions,
 		autoInsert: true,

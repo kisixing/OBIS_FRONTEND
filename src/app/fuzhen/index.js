@@ -389,7 +389,7 @@ export default class Patient extends Component {
    * 诊断列表
    */
   renderZD() {
-    const { diagnosi, fzList, diagnosislist, isShowZhenduan, isMouseIn, relatedObj } = this.state;
+    const { diagnosi, fzList, diagnosislist, isShowZhenduan, isMouseIn, relatedObj, allFormData } = this.state;
     // const delConfirm = (item) => {
     //   Modal.confirm({
     //     title: '您是否确认要删除这项诊断',
@@ -460,6 +460,15 @@ export default class Patient extends Component {
       return JSON.stringify(data, null, 4)
     }
 
+    // 诊断备注输入
+    const setRemark = (v, i) => {
+      fzList[i].remark = v;
+      const changeAction = isFormChangeAction(true);
+      store.dispatch(changeAction);
+      const action = fzListAction(fzList);
+      store.dispatch(action);
+    }
+
     /**
      * 点击填充input
      */
@@ -500,15 +509,24 @@ export default class Patient extends Component {
 
     return (
       <div className="fuzhen-left-zd">
+        <div className="first-diag">
+          <span className="zd-num font-12">1、</span>
+          G<Input value={allFormData.diagnosis.yunc} />&nbsp;
+          P<Input value={allFormData.diagnosis.chanc} />&nbsp;
+          妊娠<Input className="tuserweek-ipt" value={allFormData.diagnosis.add_FIELD_tuserweek} />周
+        </div>
         <ol>
           {fzList&&fzList.map((item, i) => (
-            <li key={`diagnos-${item.data}-${i}-${Date.now()}`}>
-              <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
-                <div title={title(item)}>
-                  <span className="font-12">{i + 1}、</span>
-                  <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
-                </div>
-              </Popover>
+            <li key={`diagnos-${item.data}-${i}`}>
+              <div className="diag-wrapper">
+                <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
+                  <div title={title(item)}>
+                    <span className="zd-num font-12">{i + 2}、</span>
+                    <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
+                  </div>
+                </Popover>
+                <input className="remark-ipt" placeholder="备注" value={item.remark} onChange={e => setRemark(e.target.value, i)} />
+              </div>
               <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => this.deldiagnosis(item.id, item.data)} />
             </li>
           ))}

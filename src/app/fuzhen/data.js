@@ -166,7 +166,7 @@ export const tableKey = () => [
 	{
 		title: '自觉症状',
 		key: 'ckzijzhz',
-		type: 'select',
+		type: 'editableSelect',
 		width: 80,
 		showSearch: true,
 		autoInsert: true,
