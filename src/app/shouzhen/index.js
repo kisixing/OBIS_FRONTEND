@@ -109,6 +109,7 @@ export default class Patient extends Component {
                 }
                 tab.entity['add_FIELD_ckjc'] = (ckjc !== '' && typeof ckjc !== 'object') ? JSON.parse(ckjc) : ckjc;
             } else if (tab.key === 'tab-6') {
+                const unusualArr = ["↑", "↓"];
                 tab.entity = service.praseJSON(allFormData.lis);
                 if(tab.entity.ogtt && tab.entity.ogtt[0] && tab.entity.ogtt[0].label === "GDM") {
                     const data = {"value": {
@@ -117,6 +118,22 @@ export default class Patient extends Component {
                         "input2": tab.entity['add_FIELD_ogtt_gdm_2h'],
                     }};
                     tab.entity['ogtt'] = [Object.assign(tab.entity.ogtt[0], data)];
+                }
+                // 异常指标处理
+                if (tab.entity.add_FIELD_TSH && unusualArr.includes(tab.entity.add_FIELD_TSH_unusual)) {
+                    tab.entity.all_add_FIELD_TSH = tab.entity.add_FIELD_TSH + tab.entity.add_FIELD_TSH_unusual;
+                } else {
+                    tab.entity.all_add_FIELD_TSH = tab.entity.add_FIELD_TSH;
+                }
+                if (tab.entity.add_FIELD_free_t3 && unusualArr.includes(tab.entity.add_FIELD_free_t3_unusual)) {
+                    tab.entity.all_add_FIELD_free_t3 = tab.entity.add_FIELD_free_t3 + tab.entity.add_FIELD_free_t3_unusual;
+                } else {
+                    tab.entity.all_add_FIELD_free_t3 = tab.entity.add_FIELD_free_t3;
+                }
+                if (tab.entity.add_FIELD_free_t4 && unusualArr.includes(tab.entity.add_FIELD_free_t4_unusual)) {
+                    tab.entity.all_add_FIELD_free_t4 = tab.entity.add_FIELD_free_t4 + tab.entity.add_FIELD_free_t4_unusual;
+                } else {
+                    tab.entity.all_add_FIELD_free_t4 = tab.entity.add_FIELD_free_t4;
                 }
                 // 乙肝两对半选项更改后作下特别处理
                 if (tab.entity.hbsAg && tab.entity.hbsAg[0]) {
@@ -377,6 +394,24 @@ export default class Patient extends Component {
                         tab.entity.add_FIELD_ogtt_gdm_1h = tab.entity.ogtt[0].value.input1;
                         tab.entity.add_FIELD_ogtt_gdm_2h = tab.entity.ogtt[0].value.input2;
                     }
+                    if (tab.entity.all_add_FIELD_TSH && tab.entity.all_add_FIELD_TSH.indexOf("↑") !== -1 || tab.entity.all_add_FIELD_TSH.indexOf("↓") !== -1) {
+                        let arrow = tab.entity.add_FIELD_TSH_unusual;
+                        tab.entity.add_FIELD_TSH = tab.entity.all_add_FIELD_TSH.slice(0, tab.entity.all_add_FIELD_TSH.indexOf(arrow));
+                    } else {
+                        tab.entity.add_FIELD_TSH = tab.entity.all_add_FIELD_TSH;
+                    }
+                    if (tab.entity.all_add_FIELD_free_t3 && tab.entity.all_add_FIELD_free_t3.indexOf("↑") !== -1 || tab.entity.all_add_FIELD_free_t3.indexOf("↓") !== -1) {
+                        let arrow = tab.entity.add_FIELD_free_t3_unusual;
+                        tab.entity.add_FIELD_free_t3 = tab.entity.all_add_FIELD_free_t3.slice(0, tab.entity.all_add_FIELD_free_t3.indexOf(arrow));
+                    } else {
+                        tab.entity.add_FIELD_free_t3 = tab.entity.all_add_FIELD_free_t3;
+                    }
+                    if (tab.entity.all_add_FIELD_free_t4 && tab.entity.all_add_FIELD_free_t4.indexOf("↑") !== -1 || tab.entity.all_add_FIELD_free_t4.indexOf("↓") !== -1) {
+                        let arrow = tab.entity.add_FIELD_free_t4_unusual;
+                        tab.entity.add_FIELD_free_t4 = tab.entity.all_add_FIELD_free_t4.slice(0, tab.entity.all_add_FIELD_free_t4.indexOf(arrow));
+                    } else {
+                        tab.entity.add_FIELD_free_t4 = tab.entity.all_add_FIELD_free_t4;
+                    }
                 }   
                 if (tab.key !== 'tab-3' && tab.key !== 'tab-7') {
                     service.shouzhen.saveForm(tab.key, entitySave(tab.entity)).then(() => {
@@ -515,7 +550,7 @@ export default class Patient extends Component {
                     store.dispatch(idAction);
                     const whichAction = getWhichAction('sz');
                     store.dispatch(whichAction);
-                    service.shouzhen.batchAdd(1, res.object.ivisitId, szList, 1).then(res => {
+                    service.shouzhen.batchAdd(1, res.object.ivisitId, szList, 1, common.getCookie('redirectUrl')).then(res => {
                         service.getuserDoc().then(res => {
                             const action = getUserDocAction(res.object);
                             store.dispatch(action);

@@ -88,6 +88,7 @@ export default class Patient extends Component {
         { 'word': ['HIV', '艾滋'], 'without': [], 'diag': 'HIV' },
         { 'word': ['乙肝', '乙型肝炎'], 'without': ['大三阳', '小三阳'], 'diag': '乙肝表面抗原携带者' },
       ],
+      unusualFlag: '',
       ...store.getState(),
     };
     store.subscribe(this.handleStoreChange);
@@ -147,6 +148,10 @@ export default class Patient extends Component {
 
     service.fuzhen.getGesweekForm().then(res => {
       this.setState({ ycqEntity: res.object })
+    })
+
+    service.fuzhen.getLisResult().then(res => {
+      this.setState({ unusualFlag: res.object.unusualFlag })
     })
 
     window.addEventListener('keyup', e => {
@@ -511,8 +516,8 @@ export default class Patient extends Component {
       <div className="fuzhen-left-zd">
         <div className="first-diag">
           <span className="zd-num font-12">1、</span>
-          G<Input value={allFormData.diagnosis.yunc} />&nbsp;
-          P<Input value={allFormData.diagnosis.chanc} />&nbsp;
+          G<Input value={allFormData.diagnosis.yunc} />
+          P<Input value={allFormData.diagnosis.chanc} />
           妊娠<Input className="tuserweek-ipt" value={allFormData.diagnosis.add_FIELD_tuserweek} />周
         </div>
         <ol>
@@ -566,7 +571,7 @@ export default class Patient extends Component {
   }
 
   renderLeft() {
-    const { reportStr, planData, collapseActiveKey, jyEntity, info, scArr, scKeys, loading } = this.state;
+    const { reportStr, planData, collapseActiveKey, jyEntity, info, scArr, scKeys, loading, unusualFlag } = this.state;
     /**
    * 检验报告结果
    */
@@ -577,6 +582,24 @@ export default class Patient extends Component {
           jyEntity.ogttGdmEmpty = jyEntity.ogtt[0].value.input0;
           jyEntity.ogttGdm1H = jyEntity.ogtt[0].value.input1;
           jyEntity.ogttGdm2H = jyEntity.ogtt[0].value.input2;
+        }
+        if (jyEntity.all_tsh && jyEntity.all_tsh.indexOf("↑") !== -1 || jyEntity.all_tsh.indexOf("↓") !== -1) {
+          let arrow = jyEntity.tshUnusual;
+          jyEntity.tsh = jyEntity.all_tsh.slice(0, jyEntity.all_tsh.indexOf(arrow));
+        } else {
+            jyEntity.tsh = jyEntity.all_tsh;
+        }
+        if (jyEntity.all_freeT3 && jyEntity.all_freeT3.indexOf("↑") !== -1 || jyEntity.all_freeT3.indexOf("↓") !== -1) {
+            let arrow = jyEntity.freeT3Unusual;
+            jyEntity.freeT3 = jyEntity.all_freeT3.slice(0, jyEntity.all_freeT3.indexOf(arrow));
+        } else {
+            jyEntity.freeT3 = jyEntity.all_freeT3;
+        }
+        if (jyEntity.all_freeT4 && jyEntity.all_freeT4.indexOf("↑") !== -1 || jyEntity.all_freeT4.indexOf("↓") !== -1) {
+            let arrow = jyEntity.freeT4Unusual;
+            jyEntity.freeT4 = jyEntity.all_freeT4.slice(0, jyEntity.all_freeT4.indexOf(arrow));
+        } else {
+            jyEntity.freeT4 = jyEntity.all_freeT4;
         }
         if(bool) {
           const form = document.querySelector('.jy-modal');
@@ -679,6 +702,7 @@ export default class Patient extends Component {
     const handleOtherClick = e => {
       e.stopPropagation();
       service.fuzhen.getLisResult().then(res => {
+        const unusualArr = ["↑", "↓"];
         let data = service.praseJSON(res.object);
         if(data.ogtt && data.ogtt[0] && data.ogtt[0].label === "GDM") {
           const param = {"value": {
@@ -688,6 +712,22 @@ export default class Patient extends Component {
           }};
           data['ogtt'] = [Object.assign(data.ogtt[0], param)];
         }
+          // 异常指标处理
+          if (data.tsh && unusualArr.includes(data.tshUnusual)) {
+              data.all_tsh = data.tsh + data.tshUnusual;
+          } else {
+              data.all_tsh = data.tsh;
+          }
+          if (data.freeT3 && unusualArr.includes(data.freeT3Unusual)) {
+              data.all_freeT3 = data.freeT3 + data.freeT3Unusual;
+          } else {
+              data.all_freeT3 = data.freeT3;
+          }
+          if (data.freeT4 && unusualArr.includes(data.freeT4Unusual)) {
+              data.all_freeT4 = data.freeT4 + data.freeT4Unusual;
+          } else {
+              data.all_freeT4 = data.freeT4;
+          }
         // 乙肝两对半选项更改后作下特别处理
         if (data.hbsAg && data.hbsAg[0]) {
           const hbsAgArr = ['阳性', '小三阳', '大三阳', '慢活肝', '其他'];
@@ -733,7 +773,7 @@ export default class Patient extends Component {
           <Panel header={<span>诊 断<Button type="ghost" className="header-btn" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
             { this.renderZD() }
           </Panel>
-          <Panel className="panel-jy" header={<span>缺少检验报告<Button type="ghost" className="header-btn" size="small" onClick={e => handleOtherClick(e) }>必查清单</Button></span>} key="2">
+          <Panel className="panel-jy" header={<span>缺少检验报告<Button type="ghost" className={unusualFlag === '1' ? "header-btn isUnusual" : "header-btn"} size="small" onClick={e => handleOtherClick(e) }>必查清单</Button></span>} key="2">
             {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : <p className="pad-small">{reportStr || '无'}</p>}
           </Panel>
           

@@ -119,10 +119,10 @@ export default {
     /**
      * 批量插入诊断
      */
-    batchAdd: function(relatedtype, relatedid, list, uploadFlag) {
+    batchAdd: function(relatedtype, relatedid, list, uploadFlag, redirectUrl) {
         const opid = common.getCookie('opid');
         const regno = common.getCookie('regno');
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/batchAdd', {userid: r.object.userid, relatedtype, relatedid, list, uploadFlag, opid, regno }));
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/batchAdd', {userid: r.object.userid, relatedtype, relatedid, list, uploadFlag, opid, regno, redirectUrl }));
     },
     /**
      * 查询梅毒数据

@@ -10,6 +10,8 @@ export default class extends Component{
   }
 
   config(){
+    const { entity } = this.props;
+    const unusualArr = ["↑", "↓", "异常"];
     return {
       step: 1,
       rows: [
@@ -31,20 +33,20 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'tsh[TSH](uIU/ml)', type:'input', span:5},
+            {name:'all_tsh[TSH](uIU/ml)', className: unusualArr.includes(entity.tshUnusual) ? 'isRed' : '', type:'input', span:5},
             {span:1},
-            {name:'freeT3[游离T3](pmol/L)', type:'input', span:5},
+            {name:'all_freeT3[游离T3](pmol/L)', className: unusualArr.includes(entity.freeT3Unusual) ? 'isRed' : '', type:'input', span:5},
             {span:1},
-            {name:'freeT4[游离T4](pmol/L)',type:'input', span:5}
+            {name:'all_freeT4[游离T4](pmol/L)',className: unusualArr.includes(entity.freeT4Unusual) ? 'isRed' : '', type:'input', span:5}
           ]
         },
         {
           columns:[
-            {name:'hb(g/L)[HB]', type:'input', span:5},
+            {name:'hb(g/L)[HB]', className: unusualArr.includes(entity.hbUnusual) ? 'isRed' : '', type:'input', span:5},
             {span:1},
-            {name:'mcv(fL)[MCV]',type:'input', span:5},
+            {name:'mcv(fL)[MCV]',className: unusualArr.includes(entity.mcvUnusual) ? 'isRed' : '', type:'input', span:5},
             {span:1},
-            {name:'plt(x10^9/L)[PLT]', type:'input', span:5},
+            {name:'plt(x10^9/L)[PLT]', className: unusualArr.includes(entity.pltUnusual) ? 'isRed' : '', type:'input', span:5},
           ]
         },
         {

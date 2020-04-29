@@ -10,6 +10,8 @@ export default class extends Component{
   }
 
   config(){
+    const { entity } = this.props;
+    const unusualArr = ["↑", "↓", "异常"];
     return {
       step: 1,
       rows: [
@@ -31,20 +33,20 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'add_FIELD_TSH[TSH](uIU/ml)', type:'input', span:5},
+            {name:'all_add_FIELD_TSH[TSH](uIU/ml)', className: unusualArr.includes(entity.add_FIELD_TSH_unusual) ? 'isRed' : '', type:'input', span:5},
             {span:1},
-            {name:'add_FIELD_free_t3[游离T3](pmol/L)', type:'input', span:5},
+            {name:'all_add_FIELD_free_t3[游离T3](pmol/L)', className: unusualArr.includes(entity.add_FIELD_free_t3_unusual) ? 'isRed' : '', type:'input', span:5},
             {span:1},
-            {name:'add_FIELD_free_t4[游离T4](pmol/L)',type:'input', span:5}
+            {name:'all_add_FIELD_free_t4[游离T4](pmol/L)',  className: unusualArr.includes(entity.add_FIELD_free_t4_unusual) ? 'isRed' : '', type:'input', span:5}
           ]
         },
         {
           columns:[
-            {name:'add_FIELD_lis_hb(g/L)[HB]', type:'input', span:5},
+            {name:'add_FIELD_lis_hb(g/L)[HB]', className: unusualArr.includes(entity.add_FIELD_lis_hb_unusual) ? 'isRed' : '', type:'input', span:5},
             {span:1},
-            {name:'add_FIELD_lis_mcv(fL)[MCV]',type:'input', span:5},
+            {name:'add_FIELD_lis_mcv(fL)[MCV]',  className: unusualArr.includes(entity.add_FIELD_lis_mcv_unusual) ? 'isRed' : '', type:'input', span:5},
             {span:1},
-            {name:'add_FIELD_lis_plt(x10^9/L)[PLT]', type:'input', span:5},
+            {name:'add_FIELD_lis_plt(x10^9/L)[PLT]', className: unusualArr.includes(entity.add_FIELD_lis_plt_unusual) ? 'isRed' : '', type:'input', span:5},
           ]
         },
         {

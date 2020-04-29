@@ -63,6 +63,7 @@ export default class App extends Component {
     common.setCookie('clinicCode', service.getQueryString('clinicCode'));
     common.setCookie('opid', service.getQueryString('opid'));
     common.setCookie('regno', service.getQueryString('regno'));
+    common.setCookie('redirectUrl', service.getQueryString('redirectUrl'));
     service.authorize(service.getQueryString('doctorId')).then(res => {
       common.setCookie('docToken', res.object.token);
       common.setCookie('docName', res.object.doctorName);

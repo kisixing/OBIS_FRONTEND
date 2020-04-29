@@ -815,7 +815,7 @@ export default class FuzhenForm extends Component {
         <strong className="fuzhen-form-TIT">本次产检记录</strong>
         {formRender(initData, this.formConfig(), this.handleChange.bind(this))}
         <div style={{ minHeight: '32px', textAlign: 'right' }}>
-          <Button className="blue-btn" type="ghost" style={{ marginRight: '12px' }}
+          <Button className="fz-save-btn" icon="save" type="primary"
             onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form")), 100)}>
             保存
           </Button>
