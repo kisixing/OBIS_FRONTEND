@@ -111,17 +111,17 @@ export default class extends Component{
           columns: [
             { name: "diagnosisHandle[处理措施]", type: "textarea", span: 10, className: "table-wrapper" },
             { name: "treatment[模板]", type: "buttons", span: 14,
-              text: "(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(green)[入院],(#1890ff)[更多]",
+              text: "(green)[糖尿病日间门诊],(#1890ff)[更多]",
               onClick: this.handleTreatmentClick.bind(this)
             }
           ]
         },
         {
           columns: [
-            { name: 'xiacsftype[下次复诊]', type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
-            { name: 'nextRvisitWeek', type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
-            { name: 'xiacsfdate', type:'date', valid: 'required', span: 4 },
-            { name: 'xiacsfdatearea', type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
+            { name: 'xiacsftype[下次复诊]', type:'select', placeholder: '门诊类型', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
+            { name: 'nextRvisitWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
+            { name: 'xiacsfdate', type:'date', placeholder: '日期', valid: 'required', span: 4 },
+            { name: 'xiacsfdatearea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
           ]
         },
         {
@@ -406,14 +406,16 @@ export default class extends Component{
   }
 
   handleTreatmentClick(e, {text,index},resolve){
-    text==='更多' ?  this.getTreatTemp() : this.addTreatment(e, text);
     if (text==='糖尿病日间门诊') {
       this.setState({openMenzhen: true});
     } else if (text==='产前诊断') {
       // this.setState({openMenzhen: true});
     } else if (text==='入院') {
       this.setState({isShowRegForm: true})
+    } else if (text==='更多') {
+      this.getTreatTemp();
     }
+    if (text!=='更多') this.addTreatment(e, text);
   }
 
   renderZD(){

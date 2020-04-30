@@ -29,7 +29,6 @@ export default class FuzhenForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openTemplate: false,
       openYy: false,
       adviceList: [],
       openAdvice: false,
@@ -40,9 +39,14 @@ export default class FuzhenForm extends Component {
       totalNum: 0,
       error: {},
       treatTemp: [],
+      openTemplate: false,
       treatKey1: [],
       treatKey2: [],
-      getPacsGrowth: {},
+      lisImportTree: null,
+      openListImport: false,
+      lisExpandedKeys: '',
+      lisImportKey: [],
+      lisCheckedNodes: [],
       openMenzhen: false,
       menzhenData: new Date(),
       ...store.getState(),
@@ -344,11 +348,11 @@ export default class FuzhenForm extends Component {
                 }
               ]
             },
-            {
-              columns: [
-                { name: 'examination[化验]', type: 'textarea', span: 12 }
-              ]
-            }
+            // {
+            //   columns: [
+            //     { name: 'examination[化验]', type: 'textarea', span: 12 }
+            //   ]
+            // }
           ]
         },
         // {
@@ -358,19 +362,28 @@ export default class FuzhenForm extends Component {
         // },
         {
           columns:[
+            { name: 'examination[化验]', type: 'textarea', span: 12 },
             { name: 'treatment[处理措施]', type: 'textarea', span: 12 },
+          ]
+        },
+        {
+          columns:[
+            { name: 'examination[化验]', className: "examination-btn", type: 'buttons', span: 12,
+              text: '(green)[结果导入]',
+              onClick: this.handleTreatmentClick.bind(this)
+            },
             { name:'treatment[模板]', type: 'buttons',span: 12, 
-              text: '(green)[尿常规],(green)[B 超],(green)[胎监],(green)[糖尿病日间门诊],(green)[产前诊断],(green)[入院],(#1890ff)[更多]',
+              text: '(green)[糖尿病日间门诊],(#1890ff)[更多]',
               onClick: this.handleTreatmentClick.bind(this)
             }
           ]
         },
         {
           columns:[
-            { name: 'rvisitOsType[下次复诊]', type:'select', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 3 },
-            { name: 'ckappointmentWeek', type:'select', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
-            { name: 'ckappointment', type:'date', valid: 'required', span: 3 },
-            { name: 'ckappointmentArea', type:'select', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
+            { name: 'rvisitOsType[下次复诊]', type:'select', placeholder: '门诊类型', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
+            { name: 'ckappointmentWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
+            { name: 'ckappointment', type:'date', placeholder: '日期', valid: 'required', span: 4 },
+            { name: 'ckappointmentArea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
           ]
         }
       ]
@@ -403,6 +416,16 @@ export default class FuzhenForm extends Component {
     }
   }
 
+  addExamination(e, value){
+    const { initData } = this.props;
+    if (initData.examination.indexOf(value) === -1) {
+      this.handleChange(e, {
+        name: 'examination',
+        value: initData.examination + value + '； '
+      })
+    }
+  }
+
   getTreatTemp() {
     service.fuzhen.treatTemp().then(res => this.setState({ 
       treatTemp: res.object,
@@ -410,15 +433,29 @@ export default class FuzhenForm extends Component {
     }));
   }
 
+  getLisImport() {
+    service.fuzhen.getLisImportTree().then(res => {
+      if (res.object && res.object[0]) this.setState({ lisExpandedKeys: String(res.object[0].id) });
+      this.setState({
+        lisImportTree: res.object,
+        openListImport: true
+      })
+    })
+  }
+
   handleTreatmentClick(e, {text,index},resolve){
-    text==='更多' ?  this.getTreatTemp() : this.addTreatment(e, text);
     if (text==='糖尿病日间门诊') {
       this.setState({openMenzhen: true});
     } else if (text==='产前诊断') {
       // this.setState({openMenzhen: true});
     } else if (text==='入院') {
       this.setState({isShowRegForm: true})
+    } else if (text==='更多') {
+      this.getTreatTemp();
+    } else if (text==='结果导入') {
+      this.getLisImport();
     }
+    if (text!=='更多' && text!=='结果导入') this.addTreatment(e, text);
   }
 
   checkAddNum(e, select, value) {
@@ -807,8 +844,63 @@ export default class FuzhenForm extends Component {
     )
   }
 
+  /**
+   * 检验结果导入
+   */
+  renderLisImport() {
+    const { lisImportTree, openListImport, lisImportKey, lisExpandedKeys, lisCheckedNodes } = this.state;
+    const unusualArr = ["↑", "↓"];
+    const closeDialog = (e, bool) => {
+      this.setState({ 
+        openListImport: false, 
+        lisImportKey: []
+      });
+      if (bool && lisCheckedNodes.length > 0) {
+        let nodeStr = '查';
+        lisCheckedNodes.forEach(item => {
+          nodeStr += ' ' + item + '，';
+        })
+        nodeStr = nodeStr.substr(0, nodeStr.length - 1);  
+        this.addExamination(e, nodeStr);
+      }
+    }
+
+    const handleCheck = (keys, {checkedNodes}) => {
+      let checkItems = [];
+      checkedNodes.forEach(node => {
+        if (node.props.children.length === 0) checkItems.push(node.props.title);
+      })
+      this.setState({
+        lisImportKey: keys,
+        lisCheckedNodes: checkItems
+      });
+    };
+
+    const initTree = (list) => list && list.map(item => (
+      <Tree.TreeNode 
+        className={item.unusual==="1" ? "isRed" : ''} 
+        key={item.id} 
+        title={unusualArr.includes(item.unusualDesc) ? `${item.title}+${item.unusualDesc}` : item.title}
+      >
+        {initTree(item.items)}
+      </Tree.TreeNode>
+    ));
+
+    const treeNodes = initTree(lisImportTree);
+
+    return (
+      <Modal className="lis-modal" title="检验结果导入" closable visible={openListImport} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, true)}>
+        <Row>
+          <Col span={24}>
+            <Tree checkable defaultExpandedKeys={[lisExpandedKeys]} checkedKeys={lisImportKey} onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
+          </Col>
+        </Row>
+      </Modal>
+    )
+  }
+
   render() {
-    const { isShowRegForm, openTemplate } = this.state;
+    const { isShowRegForm, openTemplate, openListImport } = this.state;
     const { initData } = this.props;
     return (
       <div className="fuzhen-form">
@@ -825,6 +917,7 @@ export default class FuzhenForm extends Component {
           </Button> */}
         </div>
         {openTemplate && this.renderTreatment()}
+        {openListImport && this.renderLisImport()}
         {this.renderMenZhen()}
         {this.renderAdviceModal()}
         {this.renderHighModal()}

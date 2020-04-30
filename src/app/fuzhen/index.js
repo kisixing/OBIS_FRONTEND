@@ -15,7 +15,8 @@ import editors from '../shouzhen/editors';
 import * as util from './util'; 
 import store from '../store';
 import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, isFormChangeAction, openYCQAction,
-         getDiagnisisAction, getUserDocAction, showSypAction, fzListAction, getIdAction, getWhichAction
+         getDiagnisisAction, getUserDocAction, showSypAction, fzListAction, getIdAction, getWhichAction,
+         getYCQAction,
       } from '../store/actionCreators.js';
 
 import "../index.less";
@@ -65,7 +66,6 @@ export default class Patient extends Component {
       initData: { ...baseData.formEntity },
       hasRecord: false,
       isTwins: false,
-      ycqEntity: {},
       isChangeYCQ: false,
       reportStr: '',
       jyEntity: {},
@@ -144,10 +144,6 @@ export default class Patient extends Component {
 
     service.fuzhen.getLackLis().then(res => {
       this.setState({reportStr: String(res.object)})
-    })
-
-    service.fuzhen.getGesweekForm().then(res => {
-      this.setState({ ycqEntity: res.object })
     })
 
     service.fuzhen.getLisResult().then(res => {
@@ -1024,7 +1020,7 @@ export default class Patient extends Component {
         keys[getIndex(keys, '定量')].className = 'isHide';
       }
       if(heartRateCount === obj.length) keys[getIndex(keys, '心率')].className = 'isHide';
-      if(examinationCount === obj.length) keys[getIndex(keys, '化验')].className = 'isHide';
+      // if(examinationCount === obj.length) keys[getIndex(keys, '化验')].className = 'isHide';
       if(!hasTz) {
         keys[getIndex(keys, '胎儿体重')].className = 'isHide';
       } 
@@ -1129,8 +1125,17 @@ export default class Patient extends Component {
     }
     const handleYCQChange = (e, { name, value, target }) => {
       let data = {[name]: value};
-      if(name === 'gesexpectrv') this.setState({ isChangeYCQ: true });
-      this.setState({ ycqEntity: {...ycqEntity, ...data} });
+      if(name !== 'ckztingj') this.setState({ isChangeYCQ: true });
+      let newYcqEntity = {...ycqEntity, ...data};
+      if (name === 'ckzdate' || name === 'ckzweek') {
+        service.fuzhen.autoGesweekForm(newYcqEntity).then(res => {
+          const getAction = getYCQAction(res.object);
+          store.dispatch(getAction);
+        })
+      } else {
+        const getAction = getYCQAction(newYcqEntity);
+        store.dispatch(getAction);
+      }
     }
     const handelClick = (e, isOk) => {
       const action = openYCQAction(false);
@@ -1141,23 +1146,21 @@ export default class Patient extends Component {
           const tingjTip = ycqEntity.ckztingj ? `停经${ycqEntity.ckztingj}周；` : '';
           const weekTip = ycqEntity.ckzweek ? `如孕${ycqEntity.ckzweek}周；` : '';
           const trvTip = ycqEntity.gesexpectrv ? `修订预产期为${ycqEntity.gesexpectrv}；` : '';
-          // initData.ckweek = util.getWeek(40, util.countWeek(ycqEntity.gesexpectrv, initData.checkdate))+'(修)';
           initData.ckweek = util.getWeek(40, util.countWeek(ycqEntity.gesexpectrv, initData.checkdate));
           initData.updateExpectFlag = '1';
           initData.treatment += dateTip + tingjTip + weekTip + trvTip;
 
           recentRvisit.pop();
           recentRvisit.push(initData);
-          this.setState({initData, recentRvisit});
+          this.setState({initData, recentRvisit, isChangeYCQ: false});
         }
-      } else {
-        this.setState({ isChangeYCQ: false });
+        service.fuzhen.saveGesweekForm(ycqEntity).then(res => {});
       }
     }
     return (
       <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
              width={800} closable visible={openYCQ} onCancel={e => handelClick(e, false)} onOk={e => handelClick(e, true)}>
-        {formRender(ycqEntity, ycqConfig(), handleYCQChange)}
+        {ycqEntity && formRender(ycqEntity, ycqConfig(), handleYCQChange)}
       </Modal>
     );
   }
@@ -1178,11 +1181,11 @@ export default class Patient extends Component {
         const whichAction = getWhichAction('fz');
         store.dispatch(whichAction);
         // 更新修订孕产期-B超
-        if (isChangeYCQ) {
-          service.fuzhen.saveGesweekForm(ycqEntity).then(res => {
-            this.setState({ isChangeYCQ: false })
-          });
-        }
+        // if (isChangeYCQ) {
+        //   service.fuzhen.saveGesweekForm(ycqEntity).then(res => {
+        //     this.setState({ isChangeYCQ: false })
+        //   });
+        // }
         // 保存诊断数据
         service.shouzhen.batchAdd(2, res.object, fzList, 1).then(res => {
           service.getuserDoc().then(res => {

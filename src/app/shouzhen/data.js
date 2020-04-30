@@ -456,7 +456,6 @@ export const pregnanciesColumns = [
 	},
 	{
 		title: '胎数',
-		type: 'input',
 		key: 'births',
 		valid: 'pureNumber',
 	},
@@ -505,7 +504,6 @@ export const pregnanciesColumns = [
 				key: 'tizh',
 				type: 'input',
 				width: 120,
-				valid: 'number',
 			}
 		]
 	},

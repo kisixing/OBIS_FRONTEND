@@ -250,6 +250,20 @@ export default {
     },
 
     /**
+     * 自动自算孕周弹出表单信息
+     */
+    autoGesweekForm: function(params){
+        return this.userId().then(r => myAxios.post(`/outpatientRestful/autoGesweekForm`, {userid: r.object.userid, ...params}));
+    },
+
+    /**
+     * 模板检验导入
+     */
+    getLisImportTree: function(){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getLisImportTree?userid=${r.object.userid}`));
+    },
+
+    /**
      * 查询诊断历史
      */
     getHistory: function(){

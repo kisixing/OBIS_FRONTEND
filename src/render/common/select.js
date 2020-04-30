@@ -14,6 +14,9 @@ export function select({
   ...props
 }) {
   const getValue = () => {
+    if (!value) {
+      return undefined;
+    }
     if(value && Object.prototype.toString.call(value) === '[object Object]'){
       return value.value;
     }

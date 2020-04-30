@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Button, Table, message } from 'antd';
-
+import service from '../service';
 import {events, types, editors, valid as validFn} from './common';
 import store from '../app/store';
-import { openYCQAction } from '../app/store/actionCreators.js';
+import { openYCQAction, getYCQAction } from '../app/store/actionCreators.js';
 
 import './table.less';
 
@@ -61,7 +61,7 @@ class TableItem extends Component {
   }
 
   onDbClick = () => {
-    const { iseditable = ()=> true, type, entity, row, name, value, onEdit, isTwins, onDBClick } = this.props;
+    const { iseditable = ()=> true, type, entity, row, name, value, onEdit, isTwins, onDBClick, isPreghiss } = this.props;
     if(onDBClick) {
       return onDBClick(entity);
     }
@@ -79,8 +79,15 @@ class TableItem extends Component {
         }
       });
       if(onEdit && name==="ckweek") {
-        const action = openYCQAction(true);
-        store.dispatch(action);
+        service.fuzhen.getGesweekForm().then(res => {
+          const getAction = getYCQAction(res.object);
+          store.dispatch(getAction);
+          const openAction = openYCQAction(true);
+          store.dispatch(openAction);
+        })
+      }
+      if (isPreghiss && name === "births") {
+        message.info('胎数自动生成不可修改，请选择某行点击删除按钮，或添加同年月的记录来增加胎数。', 5);
       }
     }
   }
