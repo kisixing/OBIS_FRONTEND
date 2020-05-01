@@ -88,6 +88,18 @@ export default class extends Component{
             {name:'ogtt[OGTT]', className: 'short-item', type:'checkinput-5',radio:true, valid: 'required', options: baseData.ogttOptions,span:24}
           ]
         },
+        {
+          columns:[
+            {name:'add_FIELD_early_downs_syndrome[早唐]', type:'checkinput-5', radio:true, options: baseData.fxOptions, span: 12},
+            {name:'add_FIELD_mk_downs_syndrome[中唐]', type:'checkinput-5', radio:true, options: baseData.fxOptions, span: 12},
+          ]
+        },
+        {
+          columns:[
+            {name:'add_FIELD_nipt[NIPT]', type:'checkinput-5', radio:true, options: baseData.fxOptions, span: 12},
+            {name:'add_FIELD_outpatient[产前诊断]', type:'checkinput-5', radio:true, options: baseData.cqzdOptions, span: 12},
+          ]
+        },
       ]
     };
   }

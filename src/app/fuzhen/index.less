@@ -86,9 +86,6 @@
       margin-bottom: 5px;
       .diag-wrapper {
         display: flex;
-        .zd-num {
-          vertical-align: top;
-        }
         .remark-ipt {
           width: 0;
           height: 100%;
@@ -117,7 +114,6 @@
         background-color: #F1F9FE;
       }
       .character7 {
-        display: inline-block;
         max-width: 6em;
         overflow: hidden;
         white-space: nowrap;
@@ -198,9 +194,24 @@
       padding-left: 28px;
     }
   }
-  .panel-cq .ant-tree li {
-    font-size: 14px;
-    float: left;
+  // .panel-cq .ant-tree li {
+  //   font-size: 14px;
+  //   float: left;
+  // }
+  .panel-cq {
+    .form-row {
+      margin: 0;
+    }
+    .form-item .form-label {
+      width: 40px;
+      font-size: 14px;
+    }
+    .form-item .form-content {
+      vertical-align: middle;
+      span {
+        font-size: 14px;
+      }
+    } 
   }
   .ant-collapse .ant-collapse-header {
     background: #237EE3;

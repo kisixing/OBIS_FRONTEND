@@ -287,6 +287,16 @@ export const gwwjjOptions = toOptions('未做检查');
 export const wjycOptions = toOptions('未见异常');
 
 /**
+ * 高风险、低风险 
+ */
+export const fxOptions = toOptions('高风险,低风险');
+
+/**
+ * 产前诊断
+ */
+export const cqzdOptions = toOptions('高风险,低风险,拒绝产前诊断和知情同意书');
+
+/**
  * 末次月经不详
  */
 export const bxOptions = toOptions('不详');

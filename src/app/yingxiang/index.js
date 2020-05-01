@@ -25,6 +25,7 @@ export default class Patient extends Component {
     const title = () => '影像检查报告';
     const handleBtnClick = (text, record) => {
       const pdfPath = service.getUrl(record.pdfPath)
+      // const pdfPath = `https://10.168.199.138:1808/HBackend/getReportPdf.go?docUniqueid=${record.docUniqueid}&docType=XDS.UR2.USBG`;
       this.setState({pdfPath}, () => {
         this.setState({isShowModal: true})
       })

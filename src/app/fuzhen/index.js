@@ -11,12 +11,13 @@ import PrintTable from './print-table';
 import service from '../../service';
 import * as common from '../../utils/common';
 import * as baseData from './data';
+import * as szBaseData from '../shouzhen/data';
 import editors from '../shouzhen/editors';
 import * as util from './util'; 
 import store from '../store';
 import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, isFormChangeAction, openYCQAction,
          getDiagnisisAction, getUserDocAction, showSypAction, fzListAction, getIdAction, getWhichAction,
-         getYCQAction,
+         getYCQAction, getAllFormDataAction, 
       } from '../store/actionCreators.js';
 
 import "../index.less";
@@ -69,14 +70,14 @@ export default class Patient extends Component {
       isChangeYCQ: false,
       reportStr: '',
       jyEntity: {},
-      scArr: [
-        {key: '0', id: 'add_FIELD_early_downs_syndrome', name: '早唐'},
-        {key: '1', id: 'add_FIELD_mk_downs_syndrome', name: '中唐'},
-        {key: '2', id: 'add_FIELD_nipt', name: 'NIPT'},
-        {key: '3', id: 'add_FIELD_outpatient', name: '产前诊断'},
-        {key: '4', id: 'add_FIELD_refuse_outpatient', name: '拒绝产前诊断和知情同意书'},
-      ],
-      scKeys: [],
+      // scArr: [
+      //   {key: '0', id: 'add_FIELD_early_downs_syndrome', name: '早唐'},
+      //   {key: '1', id: 'add_FIELD_mk_downs_syndrome', name: '中唐'},
+      //   {key: '2', id: 'add_FIELD_nipt', name: 'NIPT'},
+      //   {key: '3', id: 'add_FIELD_outpatient', name: '产前诊断'},
+      //   {key: '4', id: 'add_FIELD_refuse_outpatient', name: '拒绝产前诊断和知情同意书'},
+      // ],
+      // scKeys: [],
       printData: null,
       hasPrint: false,
       listHistory: null,
@@ -119,11 +120,11 @@ export default class Patient extends Component {
     Promise.all([
       service.getuserDoc().then(res => {
         let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
-        let arr = [];
-        for (let k in res.object) {
-          if(res.object[k] === 'true') arr.push(k);
-        }
-        this.setState({ info: res.object, scKeys: arr });
+        // let arr = [];
+        // for (let k in res.object) {
+        //   if(res.object[k] === 'true') arr.push(k);
+        // }
+        this.setState({ info: res.object });
         service.fuzhen.getRvisitPhysicalExam().then(res => {
           param.ckdiastolicpressure = res.object.diastolic ? res.object.diastolic : '';
           param.ckshrinkpressure = res.object.systolic ? res.object.systolic : '';
@@ -567,7 +568,7 @@ export default class Patient extends Component {
   }
 
   renderLeft() {
-    const { reportStr, planData, collapseActiveKey, jyEntity, info, scArr, scKeys, loading, unusualFlag } = this.state;
+    const { reportStr, planData, collapseActiveKey, jyEntity, info, scArr, scKeys, loading, unusualFlag, allFormData } = this.state;
     /**
    * 检验报告结果
    */
@@ -746,22 +747,61 @@ export default class Patient extends Component {
       })
     }
 
-    const handleCheck = (keys) => {
-      this.setState({ scKeys: keys });
-      const allKeys = ['add_FIELD_early_downs_syndrome','add_FIELD_mk_downs_syndrome', 
-            'add_FIELD_nipt', 'add_FIELD_outpatient', 'add_FIELD_refuse_outpatient'];
-
-      allKeys.forEach(item => {
-        let k = item;
-        info[k] = false;
-      })
-      
-      keys.forEach(item => {
-        let k = item;
-        info[k] = true;
-      })
-      service.shouzhen.saveForm('sc', info).then(res => {})
+    /**
+     * 产前筛查和诊断
+     */
+    const cqCnfig = () => {
+      return {
+        step: 1,
+        rows: [
+          {
+            columns:[
+              {name:'add_FIELD_early_downs_syndrome[早唐]', type:'checkinput-2', radio:true, options: szBaseData.fxOptions, span: 24},
+            ]
+          },
+          {
+            columns:[
+              {name:'add_FIELD_mk_downs_syndrome[中唐]', type:'checkinput-2', radio:true, options: szBaseData.fxOptions, span: 24},
+            ]
+          },
+          {
+            columns:[
+              {name:'add_FIELD_nipt[NIPT]', type:'checkinput-2', radio:true, options: szBaseData.fxOptions, span: 24},
+            ]
+          },
+          {
+            columns:[
+              {name:'add_FIELD_outpatient[产前诊断]', type:'checkinput-1', radio:true, options: szBaseData.cqzdOptions, span: 24},
+            ]
+          },
+        ]
+      }
     }
+    const cqChange = (e, {name, value}) => {
+      console.log(name, value, allFormData.lis, '457');
+      const data = {[name]: value};
+      allFormData.lis = {...allFormData.lis, ...data};
+      console.log(data, allFormData.lis);
+      const action = getAllFormDataAction(allFormData);
+      store.dispatch(action);
+      service.shouzhen.saveForm('tab-6', allFormData.lis).then(res => console.log(res, '666'))
+    }
+    // const handleCheck = (keys) => {
+    //   this.setState({ scKeys: keys });
+    //   const allKeys = ['add_FIELD_early_downs_syndrome','add_FIELD_mk_downs_syndrome', 
+    //         'add_FIELD_nipt', 'add_FIELD_outpatient', 'add_FIELD_refuse_outpatient'];
+
+    //   allKeys.forEach(item => {
+    //     let k = item;
+    //     info[k] = false;
+    //   })
+      
+    //   keys.forEach(item => {
+    //     let k = item;
+    //     info[k] = true;
+    //   })
+    //   service.shouzhen.saveForm('sc', info).then(res => {})
+    // }
 
     return (
       <div className="fuzhen-left ant-col-5">
@@ -774,9 +814,10 @@ export default class Patient extends Component {
           </Panel>
           
           <Panel className="panel-cq" header="产前筛查和诊断" key="3">
-              <Tree checkable checkedKeys={scKeys} onCheck={handleCheck}>
+              {/* <Tree checkable checkedKeys={scKeys} onCheck={handleCheck}>
                 {scArr.map(item => <Tree.TreeNode key={item.id} title={item.name}></Tree.TreeNode>)}
-              </Tree>
+              </Tree> */}
+              {allFormData && formRender(allFormData.lis, cqCnfig(), cqChange)}
           </Panel>
 
           <Panel header="诊疗计划" key="4">
