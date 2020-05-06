@@ -382,7 +382,7 @@ export default class FuzhenForm extends Component {
           columns:[
             { name: 'rvisitOsType[下次复诊]', type:'select', placeholder: '门诊类型', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
             { name: 'ckappointmentWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
-            { name: 'ckappointment', type:'date', placeholder: '日期', valid: 'required', span: 4 },
+            { name: 'ckappointment', type:'date', placeholder: '日期', valid: 'required', span: 3 },
             { name: 'ckappointmentArea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
           ]
         }

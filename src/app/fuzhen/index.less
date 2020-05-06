@@ -208,6 +208,12 @@
     }
     .form-item .form-content {
       vertical-align: middle;
+      .ant-checkbox-wrapper {
+        width: 220%;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
       span {
         font-size: 14px;
       }
@@ -279,6 +285,13 @@
   .ant-table-tbody>tr>td {
     padding: 5px 1px;
     word-break: keep-all;
+    span {
+      overflow: hidden; 
+      text-overflow: ellipsis;
+      display: -webkit-box !important; 
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 5; 
+    }
   }
 }
 .fz-print{

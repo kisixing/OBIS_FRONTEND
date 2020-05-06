@@ -580,19 +580,19 @@ export default class Patient extends Component {
           jyEntity.ogttGdm1H = jyEntity.ogtt[0].value.input1;
           jyEntity.ogttGdm2H = jyEntity.ogtt[0].value.input2;
         }
-        if (jyEntity.all_tsh && jyEntity.all_tsh.indexOf("↑") !== -1 || jyEntity.all_tsh.indexOf("↓") !== -1) {
+        if (!!jyEntity.all_tsh && (jyEntity.all_tsh.indexOf("↑") !== -1 || jyEntity.all_tsh.indexOf("↓") !== -1)) {
           let arrow = jyEntity.tshUnusual;
           jyEntity.tsh = jyEntity.all_tsh.slice(0, jyEntity.all_tsh.indexOf(arrow));
         } else {
             jyEntity.tsh = jyEntity.all_tsh;
         }
-        if (jyEntity.all_freeT3 && jyEntity.all_freeT3.indexOf("↑") !== -1 || jyEntity.all_freeT3.indexOf("↓") !== -1) {
+        if (!!jyEntity.all_freeT3 && (jyEntity.all_freeT3.indexOf("↑") !== -1 || jyEntity.all_freeT3.indexOf("↓") !== -1)) {
             let arrow = jyEntity.freeT3Unusual;
             jyEntity.freeT3 = jyEntity.all_freeT3.slice(0, jyEntity.all_freeT3.indexOf(arrow));
         } else {
             jyEntity.freeT3 = jyEntity.all_freeT3;
         }
-        if (jyEntity.all_freeT4 && jyEntity.all_freeT4.indexOf("↑") !== -1 || jyEntity.all_freeT4.indexOf("↓") !== -1) {
+        if (!!jyEntity.all_freeT4 && (jyEntity.all_freeT4.indexOf("↑") !== -1 || jyEntity.all_freeT4.indexOf("↓") !== -1)) {
             let arrow = jyEntity.freeT4Unusual;
             jyEntity.freeT4 = jyEntity.all_freeT4.slice(0, jyEntity.all_freeT4.indexOf(arrow));
         } else {
@@ -771,7 +771,7 @@ export default class Patient extends Component {
           },
           {
             columns:[
-              {name:'add_FIELD_outpatient[产前诊断]', type:'checkinput-1', radio:true, options: szBaseData.cqzdOptions, span: 24},
+              {name:'add_FIELD_outpatient[产前诊断]', type:'checkinput-2', radio:true, options: szBaseData.cqzdOptions, span: 24},
             ]
           },
         ]
@@ -1117,7 +1117,7 @@ export default class Patient extends Component {
     return (
       <div className="fuzhen-table">
         {recentRvisit && initTable(recentRvisit, { width: 1200, size: "small", pagination: false, editable: true, className: "fuzhenTable",
-          onEdit: true, hasRecord: hasRecord, isTwins: isTwins, tableLayout: "fixed", scroll: { x: 1200, y: 220 },
+          onEdit: true, hasRecord: hasRecord, isTwins: isTwins, tableLayout: "fixed", scroll: { x: 1200, y: 300 },
           iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onRowChange: handleSaveChange
         })}
         {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : null}

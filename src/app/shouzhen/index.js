@@ -87,8 +87,10 @@ export default class Patient extends Component {
                 tab.entity = service.praseJSON(allFormData.checkUp);
                 // 初始化BMI数值
                 tab.entity["ckbmi"] = common.getBMI( tab.entity["cktizh"], tab.entity["cksheng"] );
-                tab.entity.ckpressure = typeof tab.entity.ckpressure === "object" 
-                                    ? tab.entity.ckpressure : [ tab.entity.ckshrinkpressure, tab.entity.ckdiastolicpressure ];
+                tab.entity.ckpressure = { 0: tab.entity.ckshrinkpressure, 1: tab.entity.ckdiastolicpressure };
+                tab.entity.secondCkpressure = { 0: tab.entity.secondBpSystolic, 1: tab.entity.secondBpDiastolic };
+                tab.entity.threeCkpressure = { 0: tab.entity.threeBpSystolic, 1: tab.entity.threeBpDiastolic };
+
                 // 体格检查数据初始化
                 tab.entity.add_FIELD_headFeatures = !!tab.entity.add_FIELD_headFeatures ? tab.entity.add_FIELD_headFeatures : [{"label": "正常", "value": ""}];
                 tab.entity.ckrut = !!tab.entity.ckrut ? tab.entity.ckrut : [{"label": "正常", "value": ""}];
@@ -387,6 +389,10 @@ export default class Patient extends Component {
                 if (tab.key === 'tab-4') {
                     tab.entity.ckshrinkpressure = tab.entity.ckpressure[0];
                     tab.entity.ckdiastolicpressure = tab.entity.ckpressure[1];
+                    tab.entity.secondBpSystolic = tab.entity.secondCkpressure[0];
+                    tab.entity.secondBpDiastolic = tab.entity.secondCkpressure[1];
+                    tab.entity.threeBpSystolic = tab.entity.threeCkpressure[0];
+                    tab.entity.threeBpDiastolic = tab.entity.threeCkpressure[1];
                 }
                 if (tab.key === 'tab-6') {
                     if (tab.entity.ogtt && tab.entity.ogtt[0] && tab.entity.ogtt[0].label === "GDM") {
@@ -394,19 +400,19 @@ export default class Patient extends Component {
                         tab.entity.add_FIELD_ogtt_gdm_1h = tab.entity.ogtt[0].value.input1;
                         tab.entity.add_FIELD_ogtt_gdm_2h = tab.entity.ogtt[0].value.input2;
                     }
-                    if (tab.entity.all_add_FIELD_TSH && tab.entity.all_add_FIELD_TSH.indexOf("↑") !== -1 || tab.entity.all_add_FIELD_TSH.indexOf("↓") !== -1) {
+                    if (!!tab.entity.all_add_FIELD_TSH && (tab.entity.all_add_FIELD_TSH.indexOf("↑") !== -1 || tab.entity.all_add_FIELD_TSH.indexOf("↓") !== -1)) {
                         let arrow = tab.entity.add_FIELD_TSH_unusual;
                         tab.entity.add_FIELD_TSH = tab.entity.all_add_FIELD_TSH.slice(0, tab.entity.all_add_FIELD_TSH.indexOf(arrow));
                     } else {
                         tab.entity.add_FIELD_TSH = tab.entity.all_add_FIELD_TSH;
                     }
-                    if (tab.entity.all_add_FIELD_free_t3 && tab.entity.all_add_FIELD_free_t3.indexOf("↑") !== -1 || tab.entity.all_add_FIELD_free_t3.indexOf("↓") !== -1) {
+                    if (!!tab.entity.all_add_FIELD_free_t3 && (tab.entity.all_add_FIELD_free_t3.indexOf("↑") !== -1 || tab.entity.all_add_FIELD_free_t3.indexOf("↓") !== -1)) {
                         let arrow = tab.entity.add_FIELD_free_t3_unusual;
                         tab.entity.add_FIELD_free_t3 = tab.entity.all_add_FIELD_free_t3.slice(0, tab.entity.all_add_FIELD_free_t3.indexOf(arrow));
                     } else {
                         tab.entity.add_FIELD_free_t3 = tab.entity.all_add_FIELD_free_t3;
                     }
-                    if (tab.entity.all_add_FIELD_free_t4 && tab.entity.all_add_FIELD_free_t4.indexOf("↑") !== -1 || tab.entity.all_add_FIELD_free_t4.indexOf("↓") !== -1) {
+                    if (!!tab.entity.all_add_FIELD_free_t4 && (tab.entity.all_add_FIELD_free_t4.indexOf("↑") !== -1 || tab.entity.all_add_FIELD_free_t4.indexOf("↓") !== -1)) {
                         let arrow = tab.entity.add_FIELD_free_t4_unusual;
                         tab.entity.add_FIELD_free_t4 = tab.entity.all_add_FIELD_free_t4.slice(0, tab.entity.all_add_FIELD_free_t4.indexOf(arrow));
                     } else {
