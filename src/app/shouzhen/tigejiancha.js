@@ -43,30 +43,30 @@ export default class extends Component{
         //     {name:'ckbmi(kg/㎡)[孕前BMI]',className:'col-97-sp', type:'input', span:4, valid: 'required|number|rang(18.5,24.9)'},
         //   ]
         // },
-        // {
-        //   columns:[
-        //     { 
-        //       name: 'secondCkpressure(mmHg)[血压二测]', className: 'short-ckpressure', type: ['input(/)','input'], span: 5, valid: (value)=>{
-        //         let message = '';
-        //         if(value){
-        //           message = [0,1].map(i=>valid(`pureNumber|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
-        //         }
-        //         return message;
-        //       }, 
-        //       filter: entity => entity.secondBpSystolic && entity.secondBpDiastolic
-        //     },
-        //     { 
-        //       name: 'threeCkpressure(mmHg)[血压三测]', className: 'short-ckpressure', type: ['input(/)','input'], span: 5, valid: (value)=>{
-        //         let message = '';
-        //         if(value){
-        //           message = [0,1].map(i=>valid(`pureNumber|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
-        //         }
-        //         return message;
-        //       }, 
-        //       filter: entity => entity.threeBpSystolic && entity.threeBpDiastolic
-        //     },
-        //   ]
-        // },
+        {
+          columns:[
+            { 
+              name: 'secondCkpressure(mmHg)[血压二测]', className: 'short-ckpressure', type: ['input(/)','input'], span: 5, valid: (value)=>{
+                let message = '';
+                if(value){
+                  message = [0,1].map(i=>valid(`pureNumber|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
+                }
+                return message;
+              }, 
+              filter: entity => entity.secondBpSystolic && entity.secondBpDiastolic
+            },
+            { 
+              name: 'threeCkpressure(mmHg)[血压三测]', className: 'short-ckpressure', type: ['input(/)','input'], span: 5, valid: (value)=>{
+                let message = '';
+                if(value){
+                  message = [0,1].map(i=>valid(`pureNumber|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
+                }
+                return message;
+              }, 
+              filter: entity => entity.threeBpSystolic && entity.threeBpDiastolic
+            },
+          ]
+        },
         {
           columns:[
             {name:'add_FIELD_headFeatures[头颅五官]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},

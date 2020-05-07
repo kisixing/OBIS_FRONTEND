@@ -17,17 +17,17 @@ export default class extends Component{
       rows: [
         {
           columns:[
-            {name:'husbandCkxuex[男方血型]', icon:'male-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
+            {name:'husbandCkxuex[男方血型]', icon:'male-Gender', type: 'select',span:3, options: baseData.xuexingOptions},
             {name:'husbandRh[]', type: 'select',span:2, options: baseData.xuexing2Options},
-            {span: 2},
+            {span: 1},
             {name:'husbandThalassemia[男方地贫]', className: 'short-dipin', icon:'male-Gender', type:'checkinput-5', unselect: '正常', valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
         {
           columns:[
-            {name:'ckxuex[女方血型]', icon:'female-Gender', type: 'select',span:4, options: baseData.xuexingOptions},
+            {name:'ckxuex[女方血型]', icon:'female-Gender', type: 'select',span:3, options: baseData.xuexingOptions},
             {name:'ckrh[]', type: 'select',span:2, options: baseData.xuexing2Options},
-            {span:2},
+            {span:1},
             {name:'thalassemia[女方地贫]', className: 'short-dipin', icon:'female-Gender', type:'checkinput-5', unselect: '正常', valid: 'required', options: baseData.dpOptions,span:15}
           ]
         },
@@ -65,12 +65,13 @@ export default class extends Component{
         {
           columns:[
             {name:'hcvAb[丙肝抗体]', type:'checkinput-5',valid: 'required', options: baseData.yywOptions,radio:true,span:12},
-            {name:'hcvAbRNA[丙肝RNA]', type:'checkinput-5', valid: 'required', options: baseData.yywOptions,radio:true,span:12}
+            {name:'hcvAbRNA[丙肝RNA]', type:'checkinput-5', options: baseData.yywOptions,radio:true,span:12,
+             filter: entity => entity.hcvAb && entity.hcvAb[0] && entity.hcvAb[0].label === '阳性'}
           ]
         },
         {
           columns:[
-            {name:'rpr[梅毒]', className: 'short-item', type:'checkinput-5',radio:true, valid: 'required', options: baseData.mdOptions,span:24}
+            {name:'rpr[梅毒]', className: 'short-item rpr', type:'checkinput-5',radio:true, valid: 'required', options: baseData.mdOptions,span:24}
           ]
         },
         {
@@ -90,14 +91,14 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'add_FIELD_early_downs_syndrome[早唐]', type:'checkinput-5', radio:true, options: baseData.fxOptions, span: 12},
-            {name:'add_FIELD_mk_downs_syndrome[中唐]', type:'checkinput-5', radio:true, options: baseData.fxOptions, span: 12},
+            {name:'add_FIELD_early_downs_syndrome[早唐]', className: 'short-syndrome', type:'checkinput-2', radio:true, options: baseData.fxOptions, span: 6},
+            {name:'add_FIELD_mk_downs_syndrome[中唐]', type:'checkinput-3', radio:true, options: baseData.fxOptions, span: 8},
           ]
         },
         {
           columns:[
-            {name:'add_FIELD_nipt[NIPT]', type:'checkinput-5', radio:true, options: baseData.fxOptions, span: 12},
-            {name:'add_FIELD_outpatient[产前诊断]', type:'checkinput-5', radio:true, options: baseData.cqzdOptions, span: 12},
+            {name:'add_FIELD_nipt[NIPT]', className: 'short-syndrome', type:'checkinput-2', radio:true, options: baseData.fxOptions, span: 6},
+            {name:'add_FIELD_outpatient[产前诊断]', type:'checkinput-3', radio:true, options: baseData.cqzdOptions, span: 8},
           ]
         },
       ]

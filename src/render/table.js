@@ -80,10 +80,12 @@ class TableItem extends Component {
       });
       if(onEdit && name==="ckweek") {
         service.fuzhen.getGesweekForm().then(res => {
-          const getAction = getYCQAction(res.object);
-          store.dispatch(getAction);
-          const openAction = openYCQAction(true);
-          store.dispatch(openAction);
+          service.fuzhen.autoGesweekForm(res.object).then(res => {
+            const getAction = getYCQAction(res.object);
+            store.dispatch(getAction);
+            const openAction = openYCQAction(true);
+            store.dispatch(openAction);
+          })
         })
       }
       if (isPreghiss && name === "births") {
@@ -221,6 +223,11 @@ class TableItem extends Component {
 
     if(!value && arr.includes(name) && onEdit) {
       this.setState({force: true})
+    } else if (value==="脐下指" && name==="ckgongg") {
+      // 宫高光标定位
+      const ipt = this.refs.tableItem.querySelector('input');
+      ipt.setSelectionRange(2, 2);
+      this.setState({force: true});
     }else {
       this.setState({
         force: !!error,

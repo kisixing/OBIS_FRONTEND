@@ -263,10 +263,7 @@ export default class Patient extends Component {
             const stepNum = parseInt(step.slice(-1));
             isJump = keyNum >= stepNum ? false : true;
         }
-        if (tab.key === 'tab-7' && key === 'tab-7') {
-            this.getEmptyData(allFormData);
-        }
-        console.log('handleSave', key, step, tab.entity);
+        // console.log('handleSave', key, step, tab.entity);
 
         message.destroy();
         const hide = message.loading('正在执行中...', 0);
@@ -567,8 +564,10 @@ export default class Patient extends Component {
                             store.dispatch(action);
                         })
                     })
+                    this.getEmptyData(allFormData);
                 })
             }
+            this.getEmptyData(allFormData);
             this.change = false;
             this.isSaving = false;
             const action = isFormChangeAction(false);
@@ -608,7 +607,7 @@ export default class Patient extends Component {
     getEachData(tab, list) {
         const { requiredData, emptyData } = this.state;
         requiredData[tab].forEach(item => {
-            if (!list[item] || JSON.stringify(list[item]) === '[]' || JSON.stringify(list[item]) === '{}') {
+            if ((!list[item] || JSON.stringify(list[item]) === '[]' || JSON.stringify(list[item]) === '{}') && !emptyData[tab].includes(item)) {
                 emptyData[tab].push(item);
             } else if (list[item] && JSON.stringify(list[item]) !== '[]' && JSON.stringify(list[item]) !== '{}' && emptyData[tab].includes(item)) {
                 emptyData[tab].splice(emptyData[tab].indexOf(item), 1);
@@ -619,25 +618,29 @@ export default class Patient extends Component {
     }
 
     getEmptyData(data) {
+        this.getEachData('tab-0', data.pregnantInfo);
         this.getEachData('tab-1', data.hisInfo);
         this.getEachData('tab-2', {...data.menstruationMarriage, ...data.biography});
         this.getEachData('tab-4', data.checkUp);
         this.getEachData('tab-5', data.specialityCheckUp);
         this.getEachData('tab-6', data.lis);
+        this.getEachData('tab-7', data.diagnosis);
     }
 
     render() {
-        const { tabs, step, userDoc, allFormData } = this.state;
+        const { tabs, step, userDoc, allFormData, emptyData } = this.state;
         const printIvisit = () => {
             service.shouzhen.printPdfByFile().then(res => {
                 common.printPdf(res.object);
             })
         }
         
+        // console.log(emptyData, '111')
         // 首个tab页作下特别处理
         if (!!allFormData && JSON.stringify(tabs[0].entity) === "{}") {
             tabs[0].entity = allFormData.pregnantInfo;
             tabs[0].entity.all_gesmoc = { 0: allFormData.pregnantInfo.gesmoc, 1: allFormData.pregnantInfo.add_FIELD_gesmoc_unknown };
+            this.getEmptyData(allFormData);
         }
         
         return (
@@ -651,7 +654,8 @@ export default class Patient extends Component {
                 <Tabs.TabPane key={key}
                   tab={
                     <span style={error ? { color: "red" } : {}}>
-                      {error ? ( <i className="anticon anticon-exclamation-circle" />) : null}
+                      {error ? ( <i className="anticon anticon-exclamation-circle" />) 
+                            : emptyData[key].length===1 ? ( <i className="anticon anticon-check-circle" />) : null}
                       {title}
                     </span>
                   }>

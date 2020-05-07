@@ -180,7 +180,8 @@ export const tableKey = () => [
 				title: '(cm)',
 				key: 'ckgongg',
 				width: 50,
-				type: 'input',
+				type: 'editableSelect',
+				options: ckgonggOptions
 			},
 		]
 	},
@@ -501,6 +502,10 @@ export const ydsOptions = toOptions(['诺和平', '诺和锐']);
  * 胎动好,无腹痛,无阴道流血
  */
 export const ckzijzhzOptions = toOptions(['无不适', '胎动好', '无不适，胎动好']);
+/**
+ * 宫高选项
+ */
+export const ckgonggOptions = toOptions(['脐下指']);
 
 /**
  * 下次复诊 几周后

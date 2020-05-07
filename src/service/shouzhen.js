@@ -26,6 +26,8 @@ export default {
         var arr2 = JSON.stringify(data).replace(/add_/g, "ADD_");
         data=JSON.parse(arr2) 
         const clinicCode = common.getCookie('clinicCode');
+        const opid = common.getCookie('opid');
+        const regno = common.getCookie('regno');
 
         let doctorName = {};
         if (uri === 'udpateDoc') {
@@ -33,7 +35,10 @@ export default {
         } else  {
             doctorName = { 'ADD_FIELD_ivisit_doctor': common.getCookie('docName') };
         }
-        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, ...doctorName, ...data}));
+        if (uri === 'udpateDoc') {
+            return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, ...doctorName, ...data}));
+        }
+        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, opid, regno, ...doctorName, ...data}));
     },
     /**
      * 保存孕产史
@@ -108,7 +113,9 @@ export default {
     */
     uploadHisDiagnosis: function(relatedtype) {
         const clinicCode = common.getCookie('clinicCode');
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/uploadHis', {userid: r.object.userid, relatedtype, clinicCode }));
+        const opid = common.getCookie('opid');
+        const regno = common.getCookie('regno');
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/uploadHis', {userid: r.object.userid, relatedtype, clinicCode, opid, regno }));
     },
     /**
      * 查询诊断列表
@@ -120,9 +127,10 @@ export default {
      * 批量插入诊断
      */
     batchAdd: function(relatedtype, relatedid, list, uploadFlag, redirectUrl) {
+        const clinicCode = common.getCookie('clinicCode');
         const opid = common.getCookie('opid');
         const regno = common.getCookie('regno');
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/batchAdd', {userid: r.object.userid, relatedtype, relatedid, list, uploadFlag, opid, regno, redirectUrl }));
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/batchAdd', {userid: r.object.userid, relatedtype, relatedid, list, uploadFlag, clinicCode, opid, regno, redirectUrl }));
     },
     /**
      * 查询梅毒数据

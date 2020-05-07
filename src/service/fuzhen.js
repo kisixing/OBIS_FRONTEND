@@ -155,7 +155,9 @@ export default {
      */
     saveRvisitForm: function(params){
         const clinicCode = common.getCookie('clinicCode');
-        return this.userId().then(r => myAxios.put('/outpatientWriteRestful/saveRvisitForm', Object.assign(params, {userid: r.object.userid, clinicCode})));
+        const opid = common.getCookie('opid');
+        const regno = common.getCookie('regno');
+        return this.userId().then(r => myAxios.put('/outpatientWriteRestful/saveRvisitForm', Object.assign(params, {userid: r.object.userid, clinicCode, opid, regno})));
     },
 
     /**

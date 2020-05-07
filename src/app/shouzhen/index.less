@@ -2,6 +2,17 @@
   .ant-tabs-bar {
     margin-bottom: 0;
     border-bottom: none;
+  } 
+  .ant-tabs, .ant-tabs-nav-container, .ant-tabs-nav-wrap, .ant-tabs-nav-scroll {
+    overflow: visible;
+  }
+  .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab-active {
+    height: 41px;
+    transform: translateY(-6px);
+  }
+  .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab-active .ant-tabs-tab-inner {
+    height: 41px;
+    transform: translateY(3px);
   }
   /* 顶部对齐 */
   .form-item {
@@ -314,6 +325,11 @@
       width: 66.6%;;
     }
   }
+  .short-syndrome {
+    .ant-col-12 {
+      width: 44%;
+    }
+  }
   .short-item {
     .ant-col-4 {
       width: 7.45%;
@@ -322,7 +338,12 @@
       width: 70.1%;
     }
     .form-item .form-content .form-label {
-      width: 10em !important;
+      width: auto !important;
+    }
+  }
+  .rpr {
+    .ant-col-20 {
+      width: 51%;
     }
   }
   .short-dipin {
@@ -342,6 +363,12 @@
   .hide-date .form-item .form-content .ant-col-12:first-of-type {
     width: 0;
     opacity: 0;
+  }
+  .ting-j {
+    .form-item .form-label {
+      text-align: left;
+      padding-left: 20px;
+    }
   }
 }
 

@@ -878,7 +878,7 @@ export default class FuzhenForm extends Component {
 
     const initTree = (list) => list && list.map(item => (
       <Tree.TreeNode 
-        className={item.unusual==="1" ? "isRed" : ''} 
+        className={item.unusual==="1" ? "isRed" : 'noRed'} 
         key={item.id} 
         title={unusualArr.includes(item.unusualDesc) ? `${item.title}+${item.unusualDesc}` : item.title}
       >

@@ -391,7 +391,7 @@ export default class Patient extends Component {
    * 诊断列表
    */
   renderZD() {
-    const { diagnosi, fzList, diagnosislist, isShowZhenduan, isMouseIn, relatedObj, allFormData } = this.state;
+    const { diagnosi, fzList, diagnosislist, isShowZhenduan, isMouseIn, relatedObj, allFormData, userDoc } = this.state;
     // const delConfirm = (item) => {
     //   Modal.confirm({
     //     title: '您是否确认要删除这项诊断',
@@ -513,9 +513,9 @@ export default class Patient extends Component {
       <div className="fuzhen-left-zd">
         <div className="first-diag">
           <span className="zd-num font-12">1、</span>
-          G<Input value={allFormData.diagnosis.yunc} />
-          P<Input value={allFormData.diagnosis.chanc} />
-          妊娠<Input className="tuserweek-ipt" value={allFormData.diagnosis.add_FIELD_tuserweek} />周
+          G<Input value={userDoc.g} />
+          P<Input value={userDoc.p} />
+          妊娠<Input className="tuserweek-ipt" value={userDoc.tuserweek} />周
         </div>
         <ol>
           {fzList&&fzList.map((item, i) => (
@@ -778,10 +778,8 @@ export default class Patient extends Component {
       }
     }
     const cqChange = (e, {name, value}) => {
-      console.log(name, value, allFormData.lis, '457');
       const data = {[name]: value};
       allFormData.lis = {...allFormData.lis, ...data};
-      console.log(data, allFormData.lis);
       const action = getAllFormDataAction(allFormData);
       store.dispatch(action);
       service.shouzhen.saveForm('tab-6', allFormData.lis).then(res => console.log(res, '666'))
