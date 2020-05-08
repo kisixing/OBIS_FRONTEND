@@ -23,4 +23,11 @@ export default {
     return this.userId().then(r => myAxios.get(`/outpatientRestful/getPreg?userid=${r.object.userid}`));
   },
 
+  /**
+   * 上传曲线图片
+   */
+  uploadBmiImg: function(pic){
+    return this.userId().then(r => myAxios.post('/common/uploadBmiImg', {id: r.object.userid, file: pic}));
+  },
+
 }

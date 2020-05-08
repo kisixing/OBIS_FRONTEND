@@ -8,7 +8,7 @@ import './index.less';
 import store from '../../store';
 import { showSypAction } from "../../store/actionCreators.js";
 
-export default class RegForm extends Component {
+export default class SYPmodal extends Component {
   constructor(props) {
     super(props);
     this.state = {

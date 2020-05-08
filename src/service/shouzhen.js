@@ -133,6 +133,18 @@ export default {
         return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/batchAdd', {userid: r.object.userid, relatedtype, relatedid, list, uploadFlag, clinicCode, opid, regno, redirectUrl }));
     },
     /**
+     * 查询诊断添加提醒
+     */
+    checkRemind: function() {
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/diagnosis/checkRemind?userid=${r.object.userid}`));
+    },
+    /**
+     * 诊断添加提醒不再提醒
+     */
+    closeRemind: function(mark) {
+        return this.userId().then(r => myAxios.post(`/outpatientRestful/diagnosis/closeRemind`, {userid: r.object.userid, mark}));
+    },
+    /**
      * 查询梅毒数据
      */
     searchSyp: function() {

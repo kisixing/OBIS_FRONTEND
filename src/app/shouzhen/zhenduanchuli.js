@@ -61,17 +61,21 @@ export default class extends Component{
   };
 
   componentDidMount(){
-    const { isMeetPhar, szList, userDoc, trialVisible } = this.state;
+    const { isMeetPhar, userDoc, trialVisible } = this.state;
     if(isMeetPhar) {
       const action = showPharAction(true);
       store.dispatch(action);
     }
 
-    szList && szList.forEach(item => {
-      if((item.data === '瘢痕子宫' || item.data === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32 && !trialVisible) {
-        const action = showTrialAction(true);
-        store.dispatch(action);
-      }
+    service.shouzhen.getList(1).then(res => {
+      res.object && res.object.forEach(item => {
+        if((item.data === '瘢痕子宫' || item.data === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32 && !trialVisible) {
+          const action = showTrialAction(true);
+          store.dispatch(action);
+        }
+      })
+      const action = szListAction(res.object);
+      store.dispatch(action);
     })
 
     service.shouzhen.getAdviceTreeList().then(res => {

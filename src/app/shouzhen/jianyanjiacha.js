@@ -92,13 +92,13 @@ export default class extends Component{
         {
           columns:[
             {name:'add_FIELD_early_downs_syndrome[早唐]', className: 'short-syndrome', type:'checkinput-2', radio:true, options: baseData.fxOptions, span: 6},
-            {name:'add_FIELD_mk_downs_syndrome[中唐]', type:'checkinput-3', radio:true, options: baseData.fxOptions, span: 8},
+            {name:'add_FIELD_mk_downs_syndrome[中唐]', type:'checkinput-2', radio:true, options: baseData.fxOptions, span: 6},
+            {name:'add_FIELD_nipt[NIPT]', className: 'short-syndrome', type:'checkinput-2', radio:true, options: baseData.fxOptions, span: 6},
           ]
         },
         {
           columns:[
-            {name:'add_FIELD_nipt[NIPT]', className: 'short-syndrome', type:'checkinput-2', radio:true, options: baseData.fxOptions, span: 6},
-            {name:'add_FIELD_outpatient[产前诊断]', type:'checkinput-3', radio:true, options: baseData.cqzdOptions, span: 8},
+            {name:'add_FIELD_outpatient[产前诊断]', type:'checkinput-5', radio:true, options: baseData.cqzdOptions, span: 12},
           ]
         },
         {

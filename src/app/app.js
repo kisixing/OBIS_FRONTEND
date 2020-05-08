@@ -13,7 +13,8 @@ import { getUserDocAction, isFormChangeAction, getAlertAction, closeAlertAction,
          checkedKeysAction, trailVisibleAction, showSypAction, szListAction, fzListAction, getAllFormDataAction, 
          templateTree1Action
       } from "./store/actionCreators.js";
-import AppModal from './components/app-modal';
+import SypModal from './components/syp-modal';
+import ReminderModal from './components/reminder-modal';
 import Shouzhen from "bundle-loader?lazy&name=shouzhen!./shouzhen";
 import Fuzhen from "bundle-loader?lazy&name=fuzhen!./fuzhen";
 import Yingxiang from "bundle-loader?lazy&name=yingxiang!./yingxiang";
@@ -270,102 +271,6 @@ export default class App extends Component {
     //   )
     // : null;
     return null;
-  }
-
-  /**
-   * 诊断提醒窗口
-   */
-  renderReminder() {
-    const { allReminderModal, isOpenMedicalAdvice, relatedid, whichPage, szList, fzList } = this.state;
- 
-    const handelClose = (index, item) => {
-      const action = closeReminderAction(index);
-      store.dispatch(action);
-
-      if (item && whichPage === 'sz') {
-        szList.push({ 'data': item.diagnosis, 'highriskmark': ''});
-        const action = szListAction(szList);
-        store.dispatch(action);
-        service.shouzhen.batchAdd(1, relatedid, szList).then(res => {
-          service.getuserDoc().then(res => {
-            const action = getUserDocAction(res.object);
-            store.dispatch(action);
-          })
-          service.shouzhen.uploadHisDiagnosis(1).then(res => { })
-          service.shouzhen.getList(1).then(res => {
-            const action = szListAction(res.object);
-            store.dispatch(action);
-          })
-        })
-        service.fuzhen.checkHighriskAlert(item.diagnosis).then(res => {
-          let data = res.object;
-          if(data.length > 0) {
-            data.map(item => ( item.visible = true ))
-          }
-          const action = getAlertAction(data);
-          store.dispatch(action);
-        })
-      } else if (item && whichPage === 'fz') {
-        fzList.push({ 'data': item.diagnosis, 'highriskmark': ''});
-        const action = fzListAction(fzList);
-        store.dispatch(action);
-        service.shouzhen.batchAdd(2, relatedid, fzList).then(res => {
-          service.getuserDoc().then(res => {
-            const action = getUserDocAction(res.object);
-            store.dispatch(action);
-          })
-          service.shouzhen.uploadHisDiagnosis(2).then(res => { })
-          service.shouzhen.getList(2).then(res => {
-            const action = fzListAction(res.object);
-            store.dispatch(action);
-          })
-        })
-        service.fuzhen.checkHighriskAlert(item.diagnosis).then(res => {
-          let data = res.object;
-          if(data.length > 0) {
-            data.map(item => ( item.visible = true ))
-          }
-          const action = getAlertAction(data);
-          store.dispatch(action);
-        })
-      }
-
-      if (index === 0) {
-        const action2 = showReminderAction(false);
-        store.dispatch(action2);
-      }
-      if (index === 0 && isOpenMedicalAdvice) {
-        common.closeWindow();
-      }
-
-    };
-
-    const goToOpen = () => {
-      common.closeWindow();
-    }
-
-    const footer = (index, item) => {
-      return (
-        <div>
-          {isOpenMedicalAdvice ? <Button onClick={() => goToOpen()}>取消, 开立医嘱</Button> : null}
-          <Button onClick={() => handelClose(index)}>{isOpenMedicalAdvice ? '取消并返回' : '取消'}</Button>
-          <Button type="primary" onClick={() => handelClose(index, item)}>确定</Button>
-        </div>
-      )
-    }
-
-    return allReminderModal && allReminderModal.length > 0  ?
-    allReminderModal.map((item, index) => item.visible ? 
-      (
-        <Modal className="reminder-wrapper" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
-          visible={item.visible} maskClosable={false} footer={footer(index, item)} onCancel={() => handelClose(index)} >
-          <div className="reminder-content"><span className="reminder-word">{item.reminder}</span>,是否添加诊断</div>
-          <div className="reminder-item">{item.diagnosis}</div>
-        </Modal>
-      )
-      : null
-    )
-    : null;
   }
 
   /**
@@ -741,7 +646,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { isFormChange, muneIndex, isShowSypModal } = this.state;
+    const { isFormChange, muneIndex, isShowSypModal, isShowReminderModal } = this.state;
     const alertConfirm = () => {
       if (!isFormChange) {
         return true;
@@ -767,8 +672,8 @@ export default class App extends Component {
         {this.renderHighrisk()}
         {this.renderTrialModal()}
         {this.renderPharModal()}
-        {this.renderReminder()}
-        {isShowSypModal && <AppModal />}
+        {isShowReminderModal && <ReminderModal />}
+        {isShowSypModal && <SypModal />}
         <Prompt message={alertConfirm} when={isFormChange}/>
       </div>
     );

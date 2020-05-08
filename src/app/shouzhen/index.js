@@ -268,14 +268,14 @@ export default class Patient extends Component {
         message.destroy();
         const hide = message.loading('正在执行中...', 0);
 
-        let allReminderModal = [];
-        const getAllReminder = (modalObj) => {
-            let bool = true;
-            szList && szList.map(item => {
-                if(item.data === modalObj.diagnosis) bool = false;
-            })
-            if(bool) allReminderModal.push(modalObj);
-        }
+        // let allReminderModal = [];
+        // const getAllReminder = (modalObj) => {
+        //     let bool = true;
+        //     szList && szList.map(item => {
+        //         if(item.data === modalObj.diagnosis) bool = false;
+        //     })
+        //     if(bool) allReminderModal.push(modalObj);
+        // }
 
         fireForm(form, 'valid').then((valid) => {
             // 数据提交前再对数据进行一些处理，请实现entitySave方法，请参考tab-0：yunfuxinxi.js这个文件
@@ -470,62 +470,78 @@ export default class Patient extends Component {
                 }
             }
             if (tab.key === 'tab-7' && key === 'tab-7') {
-                const Lis = service.praseJSON(allFormData.lis);
-                if (Lis.ogtt && Lis.ogtt[0] && Lis.ogtt[0].label === "GDM") {
-                    let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
-                    getAllReminder(modalObj);
-                }
-                if(Lis.add_FIELD_hbsAg_ALT && Lis.add_FIELD_hbsAg_ALT > 80) {
-                    let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
-                    getAllReminder(modalObj);
-                }
-                if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '小三阳') {
-                    let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
-                    getAllReminder(modalObj);
-                }
-                if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '大三阳') {
-                    let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
-                    getAllReminder(modalObj);
-                }
-                if(Lis.hcvAb && Lis.hcvAb[0] && Lis.hcvAb[0].label === '阳性') {
-                    let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-                    getAllReminder(modalObj);
-                }
-                if(Lis.add_FIELD_hcvAb_RNA && Lis.add_FIELD_hcvAb_RNA[0] && Lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
-                    let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-                    getAllReminder(modalObj);
-                }
-                if(Lis.rpr && Lis.rpr[0] && Lis.rpr[0].label === '阳性') {
-                    let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
-                    getAllReminder(modalObj);
-                }
-                if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === 'α型') {
-                    let modalObj = {'reminder': '女方地贫为α型', 'diagnosis': 'α地中海贫血', 'visible': true};
-                    getAllReminder(modalObj);
-                }
-                if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === 'β型') {
-                    let modalObj = {'reminder': '女方地贫为β型', 'diagnosis': 'β地中海贫血', 'visible': true};
-                    getAllReminder(modalObj);
-                }
+                // const Lis = service.praseJSON(allFormData.lis);
+                // if (Lis.ogtt && Lis.ogtt[0] && Lis.ogtt[0].label === "GDM") {
+                //     let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
+                //     getAllReminder(modalObj);
+                // }
+                // if(Lis.add_FIELD_hbsAg_ALT && Lis.add_FIELD_hbsAg_ALT > 80) {
+                //     let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
+                //     getAllReminder(modalObj);
+                // }
+                // if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '小三阳') {
+                //     let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
+                //     getAllReminder(modalObj);
+                // }
+                // if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '大三阳') {
+                //     let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
+                //     getAllReminder(modalObj);
+                // }
+                // if(Lis.hcvAb && Lis.hcvAb[0] && Lis.hcvAb[0].label === '阳性') {
+                //     let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+                //     getAllReminder(modalObj);
+                // }
+                // if(Lis.add_FIELD_hcvAb_RNA && Lis.add_FIELD_hcvAb_RNA[0] && Lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
+                //     let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+                //     getAllReminder(modalObj);
+                // }
+                // if(Lis.rpr && Lis.rpr[0] && Lis.rpr[0].label === '阳性') {
+                //     let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
+                //     getAllReminder(modalObj);
+                // }
+                // if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === 'α型') {
+                //     let modalObj = {'reminder': '女方地贫为α型', 'diagnosis': 'α地中海贫血', 'visible': true};
+                //     getAllReminder(modalObj);
+                // }
+                // if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === 'β型') {
+                //     let modalObj = {'reminder': '女方地贫为β型', 'diagnosis': 'β地中海贫血', 'visible': true};
+                //     getAllReminder(modalObj);
+                // }
 
-                if(allReminderModal.length > 0) {
-                    const action2 = allReminderAction(allReminderModal);
-                    store.dispatch(action2);
+                // if(allReminderModal.length > 0) {
+                //     const action2 = allReminderAction(allReminderModal);
+                //     store.dispatch(action2);
 
-                    const action3 = showReminderAction(true);
-                    store.dispatch(action3);
-                }
-                if(type === 'open') {
+                //     const action3 = showReminderAction(true);
+                //     store.dispatch(action3);
+                // }
+                // if(type === 'open') {
+                //     if (allReminderModal.length > 0) {
+                //         const action = openMedicalAction(true);
+                //         store.dispatch(action);
+                //     } else if (valid) {
+                //         common.closeWindow();
+                //     }
+                // } else {
+                //     const action = openMedicalAction(false);
+                //     store.dispatch(action);
+                // }
+                service.shouzhen.checkRemind().then(res => {
+                    let allReminderModal = res.object.items;
                     if (allReminderModal.length > 0) {
-                        const action = openMedicalAction(true);
-                        store.dispatch(action);
-                    } else if (valid) {
-                        common.closeWindow();
+                        allReminderModal.forEach(item => {
+                            item.visible = true;
+                        })
+                        const allAction = allReminderAction(allReminderModal);
+                        store.dispatch(allAction);
+        
+                        const showAction = showReminderAction(true);
+                        store.dispatch(showAction);
+        
+                        const openAction = openMedicalAction(false);
+                        store.dispatch(openAction);
                     }
-                } else {
-                    const action = openMedicalAction(false);
-                    store.dispatch(action);
-                }
+                })
 
                 // 校验中间必填项
                 let emptyTab = '';

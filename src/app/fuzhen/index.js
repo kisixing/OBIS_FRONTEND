@@ -101,20 +101,24 @@ export default class Patient extends Component {
   };
 
   componentDidMount() {
-    const { fzList, userDoc, trialVisible, initData } = this.state;
+    const { userDoc, trialVisible, initData } = this.state;
 
-    fzList && fzList.forEach(item => {
-      if((item.data === '瘢痕子宫' || item.data === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32 && !trialVisible) {
-        const action = showTrialAction(true);
-        store.dispatch(action);
-      }
-      if(item.data.indexOf('双胎') !== -1 || item.data.indexOf('多胎') !== -1) {
-        this.setState({ isTwins: true })
-      }
-      if (item.data.indexOf('梅毒') !== -1) {
-        const action = showSypAction(true);
-        store.dispatch(action);
-      }
+    service.shouzhen.getList(2).then(res => {
+      res.object && res.object.forEach(item => {
+        if((item.data === '瘢痕子宫' || item.data === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32 && !trialVisible) {
+          const action = showTrialAction(true);
+          store.dispatch(action);
+        }
+        if(item.data.indexOf('双胎') !== -1 || item.data.indexOf('多胎') !== -1) {
+          this.setState({ isTwins: true })
+        }
+        if (item.data.indexOf('梅毒') !== -1) {
+          const action = showSypAction(true);
+          store.dispatch(action);
+        }
+      })
+      const action = fzListAction(res.object);
+      store.dispatch(action);
     })
 
     Promise.all([
@@ -1214,7 +1218,7 @@ export default class Patient extends Component {
     }
     return new Promise(resolve => {
       service.fuzhen.saveRvisitForm(entity).then((res) => {
-        modal('success', '诊断信息保存成功');
+        message.info('本次产检记录保存成功！', 5);
         const idAction = getIdAction(res.object);
         store.dispatch(idAction);
         const whichAction = getWhichAction('fz');

@@ -11,7 +11,7 @@ import cModal from '../../render/modal';
 import {loadWidget} from '../../utils/common';
 import './form.less';
 import store from '../store';
-import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAction,
+import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAction, showReminderAction
       } from '../store/actionCreators.js';
 import RegForm from '../components/reg-form';
 
@@ -584,69 +584,69 @@ export default class FuzhenForm extends Component {
     const { allFormData, fzList } = this.state;
     let newEntity = initData;
     let ckpressure = initData.ckpressure.split('/');
-    let allReminderModal = [];
-    const getReminder = () => {
-      const lis = service.praseJSON(allFormData.lis);
-      const getAllReminder = (modalObj) => {
-          let bool = true;
-          fzList && fzList.map(item => {
-              if(item.data === modalObj.diagnosis) bool = false;
-          })
-          if(bool) allReminderModal.push(modalObj);
-      }
+    // let allReminderModal = [];
+    // const getReminder = () => {
+    //   const lis = service.praseJSON(allFormData.lis);
+    //   const getAllReminder = (modalObj) => {
+    //       let bool = true;
+    //       fzList && fzList.map(item => {
+    //           if(item.data === modalObj.diagnosis) bool = false;
+    //       })
+    //       if(bool) allReminderModal.push(modalObj);
+    //   }
 
-      if (lis.ogtt && lis.ogtt[0] && lis.ogtt[0].label === "GDM") {
-        let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
-        getAllReminder(modalObj);
-      }
-      if(lis.add_FIELD_hbsAg_ALT && lis.add_FIELD_hbsAg_ALT > 80) {
-        let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
-        getAllReminder(modalObj);
-      }
-      if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '小三阳') {
-          let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
-          getAllReminder(modalObj);
-      }
-      if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '大三阳') {
-          let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
-          getAllReminder(modalObj);
-      }
-      if(lis.hcvAb && lis.hcvAb[0] && lis.hcvAb[0].label === '阳性') {
-          let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-          getAllReminder(modalObj);
-      }
-      if(lis.add_FIELD_hcvAb_RNA && lis.add_FIELD_hcvAb_RNA[0] && lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
-          let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-          getAllReminder(modalObj);
-      }
-      if(lis.rpr && lis.rpr[0] && lis.rpr[0].label === '阳性') {
-          let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
-          getAllReminder(modalObj);
-      }
-      if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === 'α型') {
-          let modalObj = {'reminder': '女方地贫为α型', 'diagnosis': 'α地中海贫血', 'visible': true};
-          getAllReminder(modalObj);
-      }
-      if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === 'β型') {
-          let modalObj = {'reminder': '女方地贫为β型', 'diagnosis': 'β地中海贫血', 'visible': true};
-          getAllReminder(modalObj);
-      }
+    //   if (lis.ogtt && lis.ogtt[0] && lis.ogtt[0].label === "GDM") {
+    //     let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
+    //     getAllReminder(modalObj);
+    //   }
+    //   if(lis.add_FIELD_hbsAg_ALT && lis.add_FIELD_hbsAg_ALT > 80) {
+    //     let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
+    //     getAllReminder(modalObj);
+    //   }
+    //   if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '小三阳') {
+    //       let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
+    //       getAllReminder(modalObj);
+    //   }
+    //   if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '大三阳') {
+    //       let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
+    //       getAllReminder(modalObj);
+    //   }
+    //   if(lis.hcvAb && lis.hcvAb[0] && lis.hcvAb[0].label === '阳性') {
+    //       let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+    //       getAllReminder(modalObj);
+    //   }
+    //   if(lis.add_FIELD_hcvAb_RNA && lis.add_FIELD_hcvAb_RNA[0] && lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
+    //       let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
+    //       getAllReminder(modalObj);
+    //   }
+    //   if(lis.rpr && lis.rpr[0] && lis.rpr[0].label === '阳性') {
+    //       let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
+    //       getAllReminder(modalObj);
+    //   }
+    //   if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === 'α型') {
+    //       let modalObj = {'reminder': '女方地贫为α型', 'diagnosis': 'α地中海贫血', 'visible': true};
+    //       getAllReminder(modalObj);
+    //   }
+    //   if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === 'β型') {
+    //       let modalObj = {'reminder': '女方地贫为β型', 'diagnosis': 'β地中海贫血', 'visible': true};
+    //       getAllReminder(modalObj);
+    //   }
 
-      if(allReminderModal.length > 0) {
-        const action = allReminderAction(allReminderModal);
-        store.dispatch(action);
-      }
+    //   if(allReminderModal.length > 0) {
+    //     const action = allReminderAction(allReminderModal);
+    //     store.dispatch(action);
+    //   }
       
-      if(act) {
-        if (allReminderModal.length > 0) {
-          const action = openMedicalAction(true);
-          store.dispatch(action);
-        }
-      } else {
-        const action = openMedicalAction(false);
-        store.dispatch(action);
-      }
-    }
+    //   if(act) {
+    //     if (allReminderModal.length > 0) {
+    //       const action = openMedicalAction(true);
+    //       store.dispatch(action);
+    //     }
+    //   } else {
+    //     const action = openMedicalAction(false);
+    //     store.dispatch(action);
+    //   }
+    // }
     // //血压
     if(ckpressure[0]) newEntity.ckshrinkpressure = ckpressure[0];
     if(ckpressure[1]) newEntity.ckdiastolicpressure = ckpressure[1];
@@ -665,10 +665,26 @@ export default class FuzhenForm extends Component {
         console.log(newEntity, '可以保存')
         onSave(newEntity).then(() =>{
           this.setState({ error: {} }, () => {
-            getReminder();
-            if (act && allReminderModal.length === 0) {
-              common.closeWindow();
-            }
+            // getReminder();
+            service.shouzhen.checkRemind().then(res => {
+              let allReminderModal = res.object.items;
+              if (allReminderModal.length > 0) {
+                allReminderModal.forEach(item => {
+                  item.visible = true;
+                })
+                const allAction = allReminderAction(allReminderModal);
+                store.dispatch(allAction);
+
+                const showAction = showReminderAction(true);
+                store.dispatch(showAction);
+
+                const openAction = openMedicalAction(false);
+                store.dispatch(openAction);
+              }
+            })
+            // if (act && allReminderModal.length === 0) {
+            //   common.closeWindow();
+            // }
           })
         });
       } else if(!valid) {
@@ -888,11 +904,15 @@ export default class FuzhenForm extends Component {
 
     const treeNodes = initTree(lisImportTree);
 
+    const handleSelect = (value, node, extra) => {
+      node.node.onExpand();
+    }
+
     return (
       <Modal className="lis-modal" title="检验结果导入" closable visible={openListImport} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, true)}>
         <Row>
           <Col span={24}>
-            <Tree checkable defaultExpandedKeys={[lisExpandedKeys]} checkedKeys={lisImportKey} onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
+            <Tree checkable defaultExpandedKeys={[lisExpandedKeys]} onSelect={handleSelect} checkedKeys={lisImportKey} onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
           </Col>
         </Row>
       </Modal>

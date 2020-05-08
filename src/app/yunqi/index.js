@@ -4,7 +4,7 @@ import Page from "../../render/page";
 import "./index.less";
 import service from "../../service";
 
-export default class Patient extends Component {
+export default class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -170,6 +170,18 @@ export default class Patient extends Component {
     this.drawBmiCanvas();
     this.drawFetusCanvas();
   }
+
+  // componentWillUnmount() {
+  //   const bmiCanvas = document.getElementById('bmiCanvas');
+  //   const bmiImage = bmiCanvas.toDataURL("image/png");
+  //   const bmiB64 = bmiImage.substring(22);
+  //   service.yunqi.uploadBmiImg(bmiB64).then(res => console.log(res, '345'))
+
+  //   const fetusCanvas = document.getElementById('fetusCanvas');
+  //   const fetusImage = fetusCanvas.toDataURL("image/png");
+  //   const fetusB64 = fetusImage.substring(22);
+  //   service.yunqi.uploadBmiImg(fetusB64).then(res => console.log(res, '345'))
+  // }
 
   // 判断某个点是否在多边形内部
   judgeAreas(dot, coordinates) {
