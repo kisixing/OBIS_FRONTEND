@@ -119,7 +119,8 @@ export const formEntity = {
 	"txrb": "",
 	"xlrb": "",
 	"arrear": "",
-	"addField": ""
+	"addField": "",
+	"singleflag": "",
 };
 
 /**

@@ -185,7 +185,7 @@ export default class FuzhenForm extends Component {
                 //   ]
                 // },
                 {
-                  name: 'fetalCondition', span: 24, filter:()=>check('twins')||check('multiple'),groups: index => ({
+                  name: 'fetalCondition', span: 24, filter: entity => (check('twins')||check('multiple')) && entity.singleflag !== '1', groups: index => ({
                     rows: [
                       {
                         label: `胎${index+1}`, columns: [
@@ -208,6 +208,22 @@ export default class FuzhenForm extends Component {
                           { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
                             filter: entity => entity.fetalCondition.length === index + 1&&check('multiple'),
                             onClick: (e, text, resolve) => this.handleBtnChange(e, 'fetalCondition')},
+                          { span: 1 },
+                          { 
+                            name: 'singleflag', type: 'button', shape: "circle", icon: "cross", span: 1, size: 'small', 
+                            filter: entity => index === 0,
+                            onClick: (e, text, resolve) => {
+                              Modal.confirm({
+                                title: '您是否确认要转换回单胎表单',
+                                width: '320',
+                                style: {top:'50%', left: '30%', fontSize: '18px' },
+                                onOk: () =>  this.handleChange(e, {
+                                  name: 'singleflag',
+                                  value: '1'
+                                })
+                              });
+                            }
+                          },
                         ]
                       }
                     ]
@@ -218,7 +234,26 @@ export default class FuzhenForm extends Component {
         //   ]
         // },
         {
-          name: 'fetalUltrasound', span: 24, filter:()=>check('twins')||check('multiple'), groups: index => ({
+          columns:[
+            { 
+              name: 'singleflag', className: 'add-form', type: 'button', icon: "plus", text: '胎儿', span: 1, size: 'small', 
+              filter: entity => (check('twins')||check('multiple')) && entity.singleflag === '1',
+              onClick: (e, text, resolve) => {
+                Modal.confirm({
+                  title: '您是否确认要转换回双胎/多胎表单',
+                  width: '350',
+                  style: {top:'30%', right: '30%', fontSize: '18px' },
+                  onOk: () =>  this.handleChange(e, {
+                    name: 'singleflag',
+                    value: ''
+                  })
+                });
+              }
+            },
+          ]
+        },
+        {
+          name: 'fetalUltrasound', span: 24, filter: entity => (check('twins')||check('multiple')) && entity.singleflag !== '1', groups: index => ({
             rows: [
               {
                 label: `胎${index+1}超声`, columns: [

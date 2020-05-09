@@ -28,8 +28,17 @@ export default class extends Component{
     const { printKeys, printData, highriskFactor } = this.props;
     const rows = this.getheades(printKeys);
     const keysArr = [];
+    printKeys.forEach(item => {
+      if (item.title === '早') item.title = '胰岛素-早';
+      if (item.title === '中') item.title = '胰岛素-中';
+      if (item.title === '晚') item.title = '胰岛素-晚';
+      if (item.title === '睡前') item.title = '胰岛素-睡前';
 
-    printKeys.splice(printKeys.length - 4, 3);
+      if (item.title === '定性') item.title = '尿蛋白定性';
+      if (item.title === '定量') item.title = '尿蛋白定量';
+    })
+
+    printKeys.splice(printKeys.length - 5, 4);
     printKeys.forEach(item => {
       !item.className ? keysArr.push(item.key) : null;
     })
@@ -67,6 +76,14 @@ export default class extends Component{
                   <tr style={index === printData.length - 1 ? {visibility: "inherit"} : null}>
                     <td>用药方案</td>
                     <td colSpan={keysArr.length-1} style={{textAlign: "left"}}>{item.allMedicationPlan}</td>
+                  </tr>
+                  : null
+                }
+               {
+                  !!item.examination ?
+                  <tr style={index === printData.length - 1 ? {visibility: "inherit"} : null}>
+                    <td>化验</td>
+                    <td colSpan={keysArr.length-1} style={{textAlign: "left"}}>{item.examination}</td>
                   </tr>
                   : null
                 }

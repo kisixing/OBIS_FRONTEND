@@ -289,12 +289,12 @@ export const wjycOptions = toOptions('未见异常');
 /**
  * 高风险、低风险 
  */
-export const fxOptions = toOptions('低风险,高风险');
+export const fxOptions = toOptions('低风险,高风险{#FF3300}');
 
 /**
  * 产前诊断
  */
-export const cqzdOptions = toOptions('低风险,高风险,拒绝产前诊断和知情同意书');
+export const cqzdOptions = toOptions('低风险,高风险{#FF3300},拒绝产前诊断和知情同意书');
 
 /**
  * 末次月经不详
@@ -619,7 +619,7 @@ export const initYCData = {
  * 首检必填项项
  */
 export const requiredForm = {
-	'tab-0': ['gesmoc', 'gesexpectrv', 'add_FIELD_shouyun'],
+	'tab-0': ['gesexpectrv', 'add_FIELD_shouyun'],
 	'tab-1': ['add_FIELD_gaoxueya', 'add_FIELD_tangniaobing', 'add_FIELD_xinzangbing', 
 						'add_FIELD_has_operation_history', 'bsguomin', 'hobtabp'],
 	'tab-2': ['yjcuch', 'yjzhouq', 'yjchix', 'yjtongj', 'maritalHistory',

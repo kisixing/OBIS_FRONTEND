@@ -180,6 +180,9 @@ export default class Patient extends Component {
             hasRecord: true, 
             initData: service.praseJSON(item)
           })
+          if (item.singleflag === '1') {
+            this.setState({ isTwins: false })
+          }
         }
       })
       if(!bool) {
@@ -198,7 +201,7 @@ export default class Patient extends Component {
   }
 
   adddiagnosis() {
-    const { fzList, diagnosi, userDoc, signList } = this.state;
+    const { fzList, diagnosi, userDoc, signList, initData } = this.state;
     const specialList = ['妊娠', '早孕', '中孕', '晚孕'];
     if (diagnosi && !fzList.filter(i => i.data === diagnosi).length) {
       const changeAction = isFormChangeAction(true);
@@ -227,7 +230,7 @@ export default class Patient extends Component {
         const action = showTrialAction(true);
         store.dispatch(action);
       }
-      if(diagnosi.indexOf('双胎') !== -1 || diagnosi.indexOf('多胎') !== -1) {
+      if((diagnosi.indexOf('双胎') !== -1 || diagnosi.indexOf('多胎') !== -1) && initData.singleflag !== '1') {
         this.setState({ isTwins: true })
       }
       // 传染病标记
@@ -383,6 +386,11 @@ export default class Patient extends Component {
 
   handleChange(e, data) {
     const { initData, recentRvisit } = this.state;
+    if (data.hasOwnProperty('singleflag') && data.singleflag === '1') {
+      this.setState({ isTwins: false });
+    } else if (data.hasOwnProperty('singleflag') && !data.singleflag) {
+      this.setState({ isTwins: true });
+    }
     let newInitData = initData;
     let newRecentRvisit = recentRvisit;
     newInitData = {...newInitData, ...data} 
@@ -1147,7 +1155,7 @@ export default class Patient extends Component {
    * 孕产期
    */
   renderYCQ(){
-    const { openYCQ, initData, recentRvisit, ycqEntity, isChangeYCQ } = this.state;
+    const { openYCQ, initData, recentRvisit, ycqEntity, isChangeYCQ, userDoc } = this.state;
     const ycqConfig = () => {
       return {
         rows: [
@@ -1168,7 +1176,7 @@ export default class Patient extends Component {
     }
     const handleYCQChange = (e, { name, value, target }) => {
       let data = {[name]: value};
-      if(name !== 'ckztingj') this.setState({ isChangeYCQ: true });
+      // if(name !== 'ckztingj') this.setState({ isChangeYCQ: true });
       let newYcqEntity = {...ycqEntity, ...data};
       if (name === 'ckzdate' || name === 'ckzweek') {
         service.fuzhen.autoGesweekForm(newYcqEntity).then(res => {
@@ -1184,7 +1192,7 @@ export default class Patient extends Component {
       const action = openYCQAction(false);
       store.dispatch(action);
       if(isOk){
-        if(isChangeYCQ) {
+        if(userDoc.gesexpectrv !== ycqEntity.gesexpectrv) {
           const dateTip = ycqEntity.ckzdate ? `B超时间:${ycqEntity.ckzdate}；` : '';
           const tingjTip = ycqEntity.ckztingj ? `停经${ycqEntity.ckztingj}周；` : '';
           const weekTip = ycqEntity.ckzweek ? `如孕${ycqEntity.ckzweek}周；` : '';
@@ -1197,7 +1205,12 @@ export default class Patient extends Component {
           recentRvisit.push(initData);
           this.setState({initData, recentRvisit, isChangeYCQ: false});
         }
-        service.fuzhen.saveGesweekForm(ycqEntity).then(res => {});
+        service.fuzhen.saveGesweekForm(ycqEntity).then(res => {
+          service.getuserDoc().then(res => {
+            const action = getUserDocAction(res.object);
+            store.dispatch(action);
+          })
+        });
       }
     }
     return (
