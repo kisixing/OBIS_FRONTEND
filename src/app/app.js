@@ -487,7 +487,7 @@ export default class App extends Component {
           <div><strong>预产期:</strong>{userDoc.gesexpectrv === userDoc.gesexpect ? userDoc.gesexpectrv : `${userDoc.gesexpectrv}(超)`}</div>
           <div><strong>就诊卡:</strong>{userDoc.usermcno}</div>
           <div><strong>产检编号:</strong>{userDoc.chanjno}</div>
-          <div><strong>高危因素:</strong><strong className="high-risk">{userDoc.highriskFactor}</strong></div>
+          {/* <div><strong>高危因素:</strong><strong className="high-risk">{userDoc.highriskFactor}</strong></div> */}
         </div>
         <p className="patient-Info_tab">
           {routers.map((item, i) => ( item.name === '血糖记录' && !isShowXTRouter ? null
@@ -498,19 +498,36 @@ export default class App extends Component {
           ))}
         </p>
         <div className="patient-Info_btnList">
-          <ButtonGroup>
-            <Button className={userDoc.risklevel === 'Ⅴ' ? "danger-btn-5" : 
-                               userDoc.risklevel === 'Ⅳ' ? "danger-btn-4" :
-                               userDoc.risklevel === 'Ⅲ' ? "danger-btn-3" :
-                               userDoc.risklevel === 'Ⅱ' ? "danger-btn-2" : 'level-btn danger-btn-1'  }
+          <div className="btnList-left">
+            <div className="danger-btn-wrapper">
+              <ButtonGroup>
+                <Button className={userDoc.risklevel === 'Ⅴ' ? "level-btn danger-btn-5" : 
+                    userDoc.risklevel === 'Ⅳ' ? "level-btn danger-btn-4" :
+                    userDoc.risklevel === 'Ⅲ' ? "level-btn danger-btn-3" :
+                    userDoc.risklevel === 'Ⅱ' ? "level-btn danger-btn-2" : 'level-btn danger-btn-1'  }
                     onClick={()=>handleDanger()}>
-              {!!userDoc.risklevel ? userDoc.risklevel : 'Ⅰ'}
-            </Button>
-            {userDoc.infectious ? <Button className="danger-btn-infectin" onClick={()=>handleDanger()}>{userDoc.infectious}</Button> : null}
-            {trialVisible || isShowTrialCard ? <Button className="danger-btn-trial" onClick={() => this.handleCardClick('trial')}>疤</Button> : null}
-            {(pharVisible1 && checkedKeys.length > 0) || (pharVisible2 && pharKeys.length > 0) || isShowPharCard ? 
-              <Button className="danger-btn-phar" onClick={() => this.handleCardClick('phar')}>栓</Button> : null}
-          </ButtonGroup>
+                  {!!userDoc.risklevel ? userDoc.risklevel : 'Ⅰ'}
+                </Button>
+                <Button className={userDoc.infectious ? "danger-btn-infectin has-infectin" : "danger-btn-infectin no-infectin"} onClick={()=>handleDanger()} title={userDoc.infectious}>
+                  {userDoc.infectious ? userDoc.infectious : '传染病：无'}
+                </Button>
+              </ButtonGroup>
+            </div>
+            <div className="high-risk-wrapper">
+              <ButtonGroup>
+                <Button className="high-risk-btn">高危因素：</Button>
+                <Button className="high-risk-content" title={userDoc.highriskFactor}>{userDoc.highriskFactor ? userDoc.highriskFactor : '无'}</Button>
+              </ButtonGroup>
+            </div>
+          </div>  
+            <div className="btnList-right">
+              {trialVisible || isShowTrialCard ? <Button className="danger-btn-trial" onClick={() => this.handleCardClick('trial')}>疤</Button> : null}
+              {
+                (pharVisible1 && checkedKeys.length > 0) || (pharVisible2 && pharKeys.length > 0) || isShowPharCard
+                  ? <Button className="danger-btn-phar" onClick={() => this.handleCardClick('phar')}>栓</Button>
+                  : null
+              } 
+            </div>
         </div>
       </div>
     );
