@@ -385,7 +385,7 @@ export default class FuzhenForm extends Component {
             },
             // {
             //   columns: [
-            //     { name: 'examination[化验]', type: 'textarea', span: 12 }
+            //     { name: 'examination[检验检查]', type: 'textarea', span: 12 }
             //   ]
             // }
           ]
@@ -397,14 +397,14 @@ export default class FuzhenForm extends Component {
         // },
         {
           columns:[
-            { name: 'examination[化验]', type: 'textarea', span: 12 },
+            { name: 'examination[检验检查]', type: 'textarea', span: 12 },
             { name: 'treatment[处理措施]', type: 'textarea', span: 12 },
           ]
         },
         {
           columns:[
-            { name: 'examination[化验]', className: "examination-btn", type: 'buttons', span: 12,
-              text: '(green)[结果导入]',
+            { name: 'examination[检验检查]', className: "examination-btn", type: 'buttons', span: 12,
+              text: '(green)[检验结果导入]',
               onClick: this.handleTreatmentClick.bind(this)
             },
             { name:'treatment[模板]', type: 'buttons',span: 12, 
@@ -487,10 +487,10 @@ export default class FuzhenForm extends Component {
       this.setState({isShowRegForm: true})
     } else if (text==='更多') {
       this.getTreatTemp();
-    } else if (text==='结果导入') {
+    } else if (text==='检验结果导入') {
       this.getLisImport();
     }
-    if (text!=='更多' && text!=='结果导入') this.addTreatment(e, text);
+    if (text!=='更多' && text!=='检验结果导入') this.addTreatment(e, text);
   }
 
   checkAddNum(e, select, value) {

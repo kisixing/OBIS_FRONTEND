@@ -165,7 +165,7 @@ export const tableKey = () => [
 		]
 	},
 	{
-		title: '自觉症状',
+		title: '症状及查体',
 		key: 'ckzijzhz',
 		type: 'editableSelect',
 		width: 80,
@@ -320,7 +320,7 @@ export const tableKey = () => [
 		key: 'heartRate',
 	},
 	{
-		title: '化验',
+		title: '检验检查',
 		key: 'examination',
 	},
 	{

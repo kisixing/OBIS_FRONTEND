@@ -82,7 +82,7 @@ export default class extends Component{
                {
                   !!item.examination ?
                   <tr style={index === printData.length - 1 ? {visibility: "inherit"} : null}>
-                    <td>化验</td>
+                    <td>检验检查</td>
                     <td colSpan={keysArr.length-1} style={{textAlign: "left"}}>{item.examination}</td>
                   </tr>
                   : null

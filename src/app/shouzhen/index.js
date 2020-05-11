@@ -146,7 +146,7 @@ export default class Patient extends Component {
                 }
             } else if (tab.key === 'tab-7') {
                 tab.entity = service.praseJSON(allFormData.diagnosis); 
-                tab.entity.add_FIELD_first_clinical_doctor = !!tab.entity.add_FIELD_first_clinical_doctor ? tab.entity.add_FIELD_first_clinical_doctor : common.getCookie('docName');
+                tab.entity.add_FIELD_first_clinical_doctor = (!tab.entity.xiacsfdate && !tab.entity.add_FIELD_first_clinical_doctor) ? common.getCookie('docName') : tab.entity.add_FIELD_first_clinical_doctor;
             } else {
                 tab.entity = service.praseJSON(allFormData);
             }

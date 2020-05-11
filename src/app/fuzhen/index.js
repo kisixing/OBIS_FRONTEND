@@ -1040,7 +1040,7 @@ export default class Patient extends Component {
       // if(hbAlcCount === obj.length) keys.splice(getIndex(keys, 'HbAlc'), 1);
       // if(upStateCount === obj.length && upDosage24hCount === obj.length) keys.splice(getIndex(keys, '尿蛋白'), 1);
       // if(heartRateCount === obj.length) keys.splice(getIndex(keys, '心率'), 1);
-      // if(examinationCount === obj.length) keys.splice(getIndex(keys, '化验'), 1);
+      // if(examinationCount === obj.length) keys.splice(getIndex(keys, '检验检查'), 1);
       // if(!hasUltrasound) keys.splice(getIndex(keys, '胎儿超声'), 1);
       // if(!hasRiMo) keys.splice(getIndex(keys, '胰岛素(U)方案'), 1)
       // if(!hasPlan) keys.splice(getIndex(keys, '用药方案'), 1);
@@ -1051,7 +1051,7 @@ export default class Patient extends Component {
       // if(hbAlcCount === obj.length) keys[getIndex(keys, 'HbAlc')].className = 'isHide';
       // if(upStateCount === obj.length && upDosage24hCount === obj.length) keys[getIndex(keys, '尿蛋白')].className = 'isHide';
       // if(heartRateCount === obj.length) keys[getIndex(keys, '心率')].className = 'isHide';
-      // if(examinationCount === obj.length) keys[getIndex(keys, '化验')].className = 'isHide';
+      // if(examinationCount === obj.length) keys[getIndex(keys, '检验检查')].className = 'isHide';
       // if(!hasUltrasound) {
         // keys[getIndex(keys, '胎儿超声')].className = 'isHide';
         // keys[getIndex(keys, '胎儿超声')].children.forEach(item => {
@@ -1071,7 +1071,7 @@ export default class Patient extends Component {
         keys[getIndex(keys, '定量')].className = 'isHide';
       }
       if(heartRateCount === obj.length) keys[getIndex(keys, '心率')].className = 'isHide';
-      // if(examinationCount === obj.length) keys[getIndex(keys, '化验')].className = 'isHide';
+      // if(examinationCount === obj.length) keys[getIndex(keys, '检验检查')].className = 'isHide';
       if(!hasTz) {
         keys[getIndex(keys, '胎儿体重')].className = 'isHide';
       } 
