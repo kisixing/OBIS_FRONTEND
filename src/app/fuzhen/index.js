@@ -531,25 +531,30 @@ export default class Patient extends Component {
         </div>
         <ol>
           {fzList&&fzList.map((item, i) => (
-            <li key={`diagnos-${item.data}-${i}`}>
+            <li key={`diagnos-${item.data}-${i}`} className={item.highriskmark==1 ? 'highriskmark' : ''}>
               <div className="diag-wrapper">
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
                   <div title={title(item)}>
                     <span className="zd-num font-12">{i + 2}、</span>
-                    <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
+                    <span className='character7'>{item.data}</span>
                   </div>
                 </Popover>
                 <input className="remark-ipt" placeholder="备注" value={item.remark} onChange={e => setRemark(e.target.value, i)} />
               </div>
-              <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => this.deldiagnosis(item.id, item.data)} />
+              <Button className="delBTN colorRed" type="dashed" size="small" shape="circle" icon="cross" onClick={() => this.deldiagnosis(item.id, item.data)} />
             </li>
           ))}
         </ol>
         <div className="fuzhen-left-input font-16">
-          <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
-                 onFocus={() => handleIptFocus()}
-                 onBlur={() => setTimeout(() => this.setState({isShowZhenduan: false}), 200)}
-                 />
+        <div className="ant-search-input-wrapper">
+          <Input.Group>
+            <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)} onFocus={() => handleIptFocus()}
+                   onBlur={() => setTimeout(() => this.setState({isShowZhenduan: false}), 200)}/>
+            <div className="ant-input-group-wrap">
+              <Button className="ant-input-group-btn" size="small" onClick={() => this.adddiagnosis()}>添加</Button>
+            </div>
+          </Input.Group>
+        </div>
           { (isShowZhenduan || isMouseIn) && diagnosislist ?
             <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}>
               <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
@@ -574,7 +579,7 @@ export default class Patient extends Component {
             </div>  : null}
           {renderSetModal()}
         </div>
-        <Button className="fuzhen-left-button margin-TB-mid" type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>
+        {/* <Button className="fuzhen-left-button margin-TB-mid" type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button> */}
       </div>
     )
   }

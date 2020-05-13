@@ -45,6 +45,7 @@
   }
   .level-btn {
     width: 80px;
+    height: 30px;
     border-bottom-left-radius: 0;
   }
   .high-risk-btn {
@@ -52,18 +53,27 @@
     font-weight: 400;
     padding: 4px 5px;
     width: 80px;
+    height: 50px;
     border-top-left-radius: 0;
   }
   .high-risk-content {
+    height: 50px;
     color: #932C3F;
     max-width: 560px;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
     text-align: left;
-    font-size: 20px;
     flex: 1;
     border-top-right-radius: 0;
+    span {
+      width: 100%;
+      font-size: 16px;
+      line-height: 20px;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      display:-webkit-box; 
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:2; 
+      white-space: pre-wrap;
+    }
   }
   .danger-btn-1 {
     color:#fff;
@@ -116,6 +126,8 @@
   }
   .danger-btn-infectin {
     max-width: 560px;
+    height: 30px;
+    padding-top: 2px;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
