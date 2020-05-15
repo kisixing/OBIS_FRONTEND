@@ -162,4 +162,25 @@ export default {
     findCkzdataByUserid: function(time) {
         return this.userId().then(r => myAxios.get(`/outpatientRestful/findCkzdataByUserid?userid=${r.object.userid}&gesmoc=${time}`));
     },
+    /**
+     * 科室模板
+     */
+    treatTemp: function() {
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/list?userid=${r.object.userid}`));
+    },
+    /**
+     * 个人模板
+     */
+    getPersonal: function() {
+        return this.userId().then(r => myAxios.get(`/treatTemp/list?userid=${r.object.userid}`));
+    },
+    addPersonal: function(content, doctorid) {
+        return this.userId().then(r => myAxios.post(`/treatTemp/add`, {content, doctorid}));
+    },
+    renamePersonal: function(item) {
+        return this.userId().then(r => myAxios.put(`/treatTemp/rename`, {item}));
+    },
+    deletePersonal: function(id) {
+        return this.userId().then(r => myAxios.delete(`/treatTemp/delete`, {id}));
+    },
 };

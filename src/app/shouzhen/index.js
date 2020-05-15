@@ -7,17 +7,14 @@ import service from '../../service';
 import * as common from '../../utils/common';
 import * as util from '../fuzhen/util';
 
-import Yfxx from './yunfuxinxi';
-import Zfxx from './zhangfuxinxi';
-import Byqk from './benyunqingkuang';
-import Gqs from './guoqushi';
-import Yjs from './yuejingshi';
-import Jzs from './jiazushi';
-import Ycs from './yuncanshi';
-import Jyjc from './jianyanjiacha';
-import Tgjc from './tigejiancha';
-import Zkjc from './zhuankejiancha';
-import Zdcl from './zhenduanchuli';
+import YCQ from './components/YuChanQi';
+import YBBS from './components/YiBanBingShi';
+import QTBS from './components/QiTaBingShi';
+import YCS from './components/YunChanShi';
+import JYJC from './components/JianYanJianCha';
+import TGJC from './components/TiGeJianCha';
+import ZKJC from './components/ZhuanKeJianCha';
+import ZDCL from './components/ZhenDuanChuLi';
 
 import store from "../store";
 import { getUserDocAction, getAllFormDataAction, isFormChangeAction, allReminderAction, showReminderAction, openMedicalAction,
@@ -28,7 +25,7 @@ import * as baseData from './data';
 import editors from './editors';
 import "./index.less";
 
-const tabConetnts = [Byqk, Gqs, Yjs, Ycs, Tgjc, Zkjc,Jyjc, Zdcl];
+const tabConetnts = [YCQ, YBBS, QTBS, YCS, TGJC, ZKJC,JYJC, ZDCL];
 
 export default class Patient extends Component {
     constructor(props) {

@@ -4,8 +4,8 @@ import Page from '../../render/page';
 import { fireForm } from '../../render/form';
 import service from '../../service';
 
-import Yfxx from './yunfuxinxi';
-import Zfxx from './zhangfuxinxi';
+import Yfxx from './components/YunFuXinXi';
+import Zfxx from './components/ZhangFuXinXi';
 import store from "../store";
 import { getAllFormDataAction, getUserDocAction, isFormChangeAction } from "../store/actionCreators.js";
 
@@ -71,10 +71,12 @@ export default class Patient extends Component {
 
     handleChange(e, { name, value, target }, entity) {
         console.log(name, target, value, entity, '11');
-        entity[name] = value;
-        this.change = true;
-        const action = isFormChangeAction(true);
-        store.dispatch(action);
+        if (!this.isSaving) {
+          entity[name] = value;
+          this.change = true;
+          const action = isFormChangeAction(true);
+          store.dispatch(action);
+        }
 
         // 避免200ms内界面渲染多次
         clearTimeout(this.timeout);
@@ -87,6 +89,7 @@ export default class Patient extends Component {
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step };
         let isJump = false;
+        this.isSaving = true;
         if (key) {
             isJump = key.slice(-1) > step.slice(-1) ? false : true;
         }
@@ -137,6 +140,7 @@ export default class Patient extends Component {
                 valid && this.activeTab(key || next.key);
             }
             this.change = false;
+            this.isSaving = false;
             const action = isFormChangeAction(false);
             store.dispatch(action);
 

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import {valid} from '../../render/common';
-import formRender from '../../render/form';
-import * as baseData from './data';
+import {valid} from '../../../../render/common';
+import formRender from '../../../../render/form';
+import * as baseData from '../../data';
 
 export default class extends Component{
   static Title = '体格检查';

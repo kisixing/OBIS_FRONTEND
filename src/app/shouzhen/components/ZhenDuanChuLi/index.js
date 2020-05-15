@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 import { Select, Button, Popover, Modal, Col, Row, message, Tabs, Icon, Tree, Input, DatePicker } from 'antd';
 
-import umodal from '../../utils/modal'
-import formRender, {fireForm} from '../../render/form';
-import formTable from '../../render/table';
-import * as baseData0 from './../shouzhen/data';
-import * as baseData from './../fuzhen/data';
-import * as util from '../fuzhen/util';
-import store from '../store';
+import umodal from '../../../../utils/modal'
+import formRender, {fireForm} from '../../../../render/form';
+import formTable from '../../../../render/table';
+import * as baseData0 from '../../data';
+import * as baseData from '../../../fuzhen/data';
+import * as util from '../../../fuzhen/util';
+import store from '../../../store';
 import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, getDiagnisisAction, getUserDocAction,
          showSypAction, szListAction, isFormChangeAction
-      } from '../store/actionCreators.js';
-import RegForm from '../components/reg-form';
-import cModal from '../../render/modal';
-import './index.less';
-import service from '../../service';
+      } from '../../../store/actionCreators.js';
+import RegForm from '../../../components/reg-form';
+import TemplateModal from '../../../components/template-modal';
+import cModal from '../../../../render/modal';
+import '../../index.less';
+import service from '../../../../service';
 
 function modal(type, title) {
   message[type](title, 3)
@@ -35,9 +36,9 @@ export default class extends Component{
       openAdvice: false,
       openMenzhen: false,
       menzhenData: new Date(),
-      treatTemp: [],
-      treatKey1: [],
-      treatKey2: [],
+      // treatTemp: [],
+      // treatKey1: [],
+      // treatKey2: [],
       isShowRegForm: false,
       isShowHighModal: false,
       appointmentNum: 0,
@@ -402,12 +403,12 @@ export default class extends Component{
     }
   }
 
-  getTreatTemp() {
-    service.fuzhen.treatTemp().then(res => this.setState({ 
-      treatTemp: res.object,
-      openTemplate: true
-    }));
-  }
+  // getTreatTemp() {
+  //   service.fuzhen.treatTemp().then(res => this.setState({ 
+  //     treatTemp: res.object,
+  //     openTemplate: true
+  //   }));
+  // }
 
   handleTreatmentClick(e, {text,index},resolve){
     if (text==='糖尿病日间门诊') {
@@ -417,7 +418,7 @@ export default class extends Component{
     } else if (text==='入院') {
       this.setState({isShowRegForm: true})
     } else if (text==='更多') {
-      this.getTreatTemp();
+      this.setState({openTemplate: true})
     }
     if (text!=='更多') this.addTreatment(e, text);
   }
@@ -438,6 +439,7 @@ export default class extends Component{
     const content = (item, i) => {
       const handleHighriskmark = () => {
         item.highriskmark = item.highriskmark === 1 ? 0 : 1;
+        item.visible = false;
         const changeAction = isFormChangeAction(true);
         store.dispatch(changeAction);
         const action = szListAction(szList);
@@ -453,7 +455,8 @@ export default class extends Component{
 
       }
 
-      const handleVisibleChange = fx => () => {
+      const handleSortChange = fx => () => {
+        item.visible = false;
         szList[i] = szList[i + fx];
         szList[i + fx] = item;
         const changeAction = isFormChangeAction(true);
@@ -470,11 +473,18 @@ export default class extends Component{
       return (
         <div>
           <p className="pad-small"><a className="font-16" onClick={handleHighriskmark}>{item.highriskmark == 1 ? '高危诊断 √' : '高危诊断'}</a></p>
-          {i ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange(-1)}>上 移</a></p> : null}
-          {i + 1 < szList.length ? <p className="pad-small"><a className="font-16" onClick={handleVisibleChange(1)}>下 移</a></p> : null}
+          {i ? <p className="pad-small"><a className="font-16" onClick={handleSortChange(-1)}>上 移</a></p> : null}
+          {i + 1 < szList.length ? <p className="pad-small"><a className="font-16" onClick={handleSortChange(1)}>下 移</a></p> : null}
         </div>
       );
     }
+
+    const handleVisibleChange = (visible, i) => {
+      szList[i].visible = visible;
+      const action = szListAction(szList);
+      store.dispatch(action);
+    }
+
 
     // 诊断备注输入
     const setRemark = (v, i) => {
@@ -529,7 +539,7 @@ export default class extends Component{
           {szList && szList.map((item, i) => (
             <Row key={`diagnos-${item.data}-${i}`}>
               <Col span={6}>
-                <Popover placement="bottomLeft" trigger="click" content={content(item, i)}>
+                <Popover placement="bottomLeft" trigger="click" content={content(item, i)} visible={item.visible} onVisibleChange={(visible) => handleVisibleChange(visible, i)}>
                   <div title={item.data}>
                     <span className="zd-num">{i + 2}、</span>
                     <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
@@ -680,56 +690,56 @@ export default class extends Component{
   /**
    * 模板
    */
-  renderTreatment() {
-    const { treatTemp, openTemplate, treatKey1, treatKey2 } = this.state;
-    const closeDialog = (e, items = []) => {
-      this.setState({ openTemplate: false, treatKey1: [], treatKey2: [] });
-      items.length > 0 && this.addTreatment(e, items.map(i => i.content).join('； '));
-    }
+  // renderTreatment() {
+  //   const { treatTemp, openTemplate, treatKey1, treatKey2 } = this.state;
+  //   const closeDialog = (e, items = []) => {
+  //     this.setState({ openTemplate: false, treatKey1: [], treatKey2: [] });
+  //     items.length > 0 && this.addTreatment(e, items.map(i => i.content).join('； '));
+  //   }
 
-    const initTree = (pid, level = 0) => treatTemp.filter(i => i.pid === pid).map(node => (
-      <Tree.TreeNode key={node.id} title={node.content}>
-        {level < 10 ? initTree(node.id, level + 1) : null}
-      </Tree.TreeNode>
-    ));
+  //   const initTree = (pid, level = 0) => treatTemp.filter(i => i.pid === pid).map(node => (
+  //     <Tree.TreeNode key={node.id} title={node.content}>
+  //       {level < 10 ? initTree(node.id, level + 1) : null}
+  //     </Tree.TreeNode>
+  //   ));
 
-    const handleCheck1 = (keys) => {
-      this.setState({treatKey1: keys});
-      treatTemp.forEach(tt => {
-        if (keys.indexOf(`${tt.id}`) !== -1 || treatKey2.indexOf(`${tt.id}`) !== -1) {
-          tt.checked = true;
-        } else {
-          tt.checked = false;
-        }
-      })
-    };
+  //   const handleCheck1 = (keys) => {
+  //     this.setState({treatKey1: keys});
+  //     treatTemp.forEach(tt => {
+  //       if (keys.indexOf(`${tt.id}`) !== -1 || treatKey2.indexOf(`${tt.id}`) !== -1) {
+  //         tt.checked = true;
+  //       } else {
+  //         tt.checked = false;
+  //       }
+  //     })
+  //   };
 
-    const handleCheck2 = (keys) => {
-      this.setState({treatKey2: keys});
-      treatTemp.forEach(tt => {
-        if (keys.indexOf(`${tt.id}`) !== -1 || treatKey1.indexOf(`${tt.id}`) !== -1) {
-          tt.checked = true;
-        } else {
-          tt.checked = false;
-        }
-      })
-    };
+  //   const handleCheck2 = (keys) => {
+  //     this.setState({treatKey2: keys});
+  //     treatTemp.forEach(tt => {
+  //       if (keys.indexOf(`${tt.id}`) !== -1 || treatKey1.indexOf(`${tt.id}`) !== -1) {
+  //         tt.checked = true;
+  //       } else {
+  //         tt.checked = false;
+  //       }
+  //     })
+  //   };
 
-    const treeNodes = initTree(0);
+  //   const treeNodes = initTree(0);
 
-    return (
-      <Modal title="处理模板" closable visible={openTemplate} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
-        <Row>
-          <Col span={12}>
-            <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
-          </Col>
-          <Col span={12}>
-            <Tree checkable defaultExpandAll checkedKeys={treatKey2} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes.slice(treeNodes.length/2)}</Tree>
-          </Col>
-        </Row>
-      </Modal>
-    )
-  }
+  //   return (
+  //     <Modal title="处理模板" closable visible={openTemplate} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
+  //       <Row>
+  //         <Col span={12}>
+  //           <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
+  //         </Col>
+  //         <Col span={12}>
+  //           <Tree checkable defaultExpandAll checkedKeys={treatKey2} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes.slice(treeNodes.length/2)}</Tree>
+  //         </Col>
+  //       </Row>
+  //     </Modal>
+  //   )
+  // }
 
     /**
    * 高危门诊弹窗
@@ -871,7 +881,14 @@ export default class extends Component{
   }
 
   closeRegForm = () => {
-    this.setState({isShowRegForm: false})
+    this.setState({ isShowRegForm: false })
+  }
+
+  closeTemplateModal = (e, items) => {
+    if (items.length > 0 ) {
+      this.addTreatment(e, items.map(i => i.content).join('； '));
+    }
+    this.setState({ openTemplate: false });
   }
 
   render(){
@@ -883,10 +900,11 @@ export default class extends Component{
         {this.renderZD()}
         {formRender(entity, this.config(), this.handleChange.bind(this))}
         <Button onClick={() =>this.openLisi()}>首检信息历史修改记录</Button>
-        {openTemplate && this.renderTreatment()}
+        {/* {openTemplate && this.renderTreatment()} */}
         {this.renderMenZhen()}
         {this.renderAdviceModal()}
         {this.renderHighModal()}
+        {openTemplate && <TemplateModal openTemplate={openTemplate} closeTemplateModal={this.closeTemplateModal} />}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>} */}
       </div>
     )

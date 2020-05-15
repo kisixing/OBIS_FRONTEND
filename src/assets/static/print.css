@@ -4,6 +4,7 @@
   width: 21cm;
 } */
 @media print {
+  /* 复诊记录打印 */
   .print-highrisk {
     font-size: 14px;
     text-align: right;
@@ -13,7 +14,6 @@
   .has-print .print-highrisk {
     visibility: hidden;
   }
-
   .print-table {
     table-layout: fixed;
     text-align: center;
@@ -32,6 +32,7 @@
     visibility: hidden;
   }
 
+  /* 血糖记录打印 */
   .xt-table .ant-table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -43,4 +44,16 @@
     border: 1px solid #ccc;
     word-break: keep-all;
   }
+
+  /* 最新诊断打印 */
+  .print-diagnosis {
+    font-size: 14px;
+  }
+  .print-diagnosis ol {
+    padding-left: 42px;
+  }
+  .print-diagnosis .diag-wrapper .diag-remark {
+    text-decoration: underline;
+  }
+
 }

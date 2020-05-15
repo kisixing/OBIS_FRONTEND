@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
 import { Modal } from 'antd';
-import formRender from '../../render/form';
-import * as baseData from './data';
-import * as baseData2 from './../fuzhen/data';
+import formRender from '../../../../render/form';
+import * as baseData from '../../data';
+import * as baseData2 from '../../../fuzhen/data';
 
 export default class extends Component {
   static Title = '专科检查';

@@ -1,19 +1,20 @@
 
 import React, { Component } from "react";
 import { Row, Col, Input, Icon, Select, Button, message, Table, Modal, Spin, Tree, DatePicker } from 'antd';
-import * as util from './util';
-import * as common from '../../utils/common';
-import * as baseData from './data';
-import formRender, {fireForm} from '../../render/form';
-import {valid} from '../../render/common';
-import service from '../../service';
-import cModal from '../../render/modal';
-import {loadWidget} from '../../utils/common';
-import './form.less';
-import store from '../store';
+import * as util from '../../util';
+import * as common from '../../../../utils/common';
+import * as baseData from '../../data';
+import formRender, {fireForm} from '../../../../render/form';
+import {valid} from '../../../../render/common';
+import service from '../../../../service';
+import cModal from '../../../../render/modal';
+import {loadWidget} from '../../../../utils/common';
+import './index.less';
+import store from '../../../store';
 import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAction, showReminderAction
-      } from '../store/actionCreators.js';
-import RegForm from '../components/reg-form';
+      } from '../../../store/actionCreators.js';
+import RegForm from '../../../components/reg-form';
+import TemplateModal from '../../../components/template-modal';
 
 const renderChart = function(){
   var loaded = new Promise(resolve=>setTimeout(()=>loadWidget('echarts').then(resolve), 1000));
@@ -38,15 +39,16 @@ export default class FuzhenForm extends Component {
       addNum: 0,
       totalNum: 0,
       error: {},
-      treatTemp: [],
+      // treatTemp: [],
       openTemplate: false,
-      treatKey1: [],
-      treatKey2: [],
+      // treatKey1: [],
+      // treatKey2: [],
       lisImportTree: null,
       openListImport: false,
       lisExpandedKeys: '',
       lisImportKey: [],
       lisCheckedNodes: [],
+      lisImportTitle: '',
       openMenzhen: false,
       menzhenData: new Date(),
       ...store.getState(),
@@ -404,7 +406,7 @@ export default class FuzhenForm extends Component {
         {
           columns:[
             { name: 'examination[检验检查]', className: "examination-btn", type: 'buttons', span: 12,
-              text: '(green)[检验结果导入]',
+              text: '(green)[检验结果导入],(green)[超声结果导入]',
               onClick: this.handleTreatmentClick.bind(this)
             },
             { name:'treatment[模板]', type: 'buttons',span: 12, 
@@ -461,17 +463,29 @@ export default class FuzhenForm extends Component {
     }
   }
 
-  getTreatTemp() {
-    service.fuzhen.treatTemp().then(res => this.setState({ 
-      treatTemp: res.object,
-      openTemplate: true
-    }));
-  }
+  // getTreatTemp() {
+  //   service.fuzhen.treatTemp().then(res => this.setState({ 
+  //     treatTemp: res.object,
+  //     openTemplate: true
+  //   }));
+  // }
 
   getLisImport() {
     service.fuzhen.getLisImportTree().then(res => {
       if (res.object && res.object[0]) this.setState({ lisExpandedKeys: String(res.object[0].id) });
       this.setState({
+        lisImportTitle: '检验结果导入',
+        lisImportTree: res.object,
+        openListImport: true
+      })
+    })
+  }
+
+  getPacsImportTree() {
+    service.fuzhen.getPacsImportTree().then(res => {
+      if (res.object && res.object[0]) this.setState({ lisExpandedKeys: String(res.object[0].id) });
+      this.setState({
+        lisImportTitle: '超声结果导入',
         lisImportTree: res.object,
         openListImport: true
       })
@@ -486,11 +500,14 @@ export default class FuzhenForm extends Component {
     } else if (text==='入院') {
       this.setState({isShowRegForm: true})
     } else if (text==='更多') {
-      this.getTreatTemp();
+      // this.getTreatTemp();
+      this.setState({openTemplate: true})
     } else if (text==='检验结果导入') {
       this.getLisImport();
+    } else if (text==='超声结果导入') {
+      this.getPacsImportTree();
     }
-    if (text!=='更多' && text!=='检验结果导入') this.addTreatment(e, text);
+    if (text!=='更多' && text!=='检验结果导入' && text!=='超声结果导入') this.addTreatment(e, text);
   }
 
   checkAddNum(e, select, value) {
@@ -619,69 +636,6 @@ export default class FuzhenForm extends Component {
     const { allFormData, fzList } = this.state;
     let newEntity = initData;
     let ckpressure = initData.ckpressure.split('/');
-    // let allReminderModal = [];
-    // const getReminder = () => {
-    //   const lis = service.praseJSON(allFormData.lis);
-    //   const getAllReminder = (modalObj) => {
-    //       let bool = true;
-    //       fzList && fzList.map(item => {
-    //           if(item.data === modalObj.diagnosis) bool = false;
-    //       })
-    //       if(bool) allReminderModal.push(modalObj);
-    //   }
-
-    //   if (lis.ogtt && lis.ogtt[0] && lis.ogtt[0].label === "GDM") {
-    //     let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
-    //     getAllReminder(modalObj);
-    //   }
-    //   if(lis.add_FIELD_hbsAg_ALT && lis.add_FIELD_hbsAg_ALT > 80) {
-    //     let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
-    //     getAllReminder(modalObj);
-    //   }
-    //   if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '小三阳') {
-    //       let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
-    //       getAllReminder(modalObj);
-    //   }
-    //   if(lis.hbsAg && lis.hbsAg[0] && lis.hbsAg[0].label === '大三阳') {
-    //       let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
-    //       getAllReminder(modalObj);
-    //   }
-    //   if(lis.hcvAb && lis.hcvAb[0] && lis.hcvAb[0].label === '阳性') {
-    //       let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-    //       getAllReminder(modalObj);
-    //   }
-    //   if(lis.add_FIELD_hcvAb_RNA && lis.add_FIELD_hcvAb_RNA[0] && lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
-    //       let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-    //       getAllReminder(modalObj);
-    //   }
-    //   if(lis.rpr && lis.rpr[0] && lis.rpr[0].label === '阳性') {
-    //       let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
-    //       getAllReminder(modalObj);
-    //   }
-    //   if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === 'α型') {
-    //       let modalObj = {'reminder': '女方地贫为α型', 'diagnosis': 'α地中海贫血', 'visible': true};
-    //       getAllReminder(modalObj);
-    //   }
-    //   if(lis.thalassemia && lis.thalassemia[0] && lis.thalassemia[0].label === 'β型') {
-    //       let modalObj = {'reminder': '女方地贫为β型', 'diagnosis': 'β地中海贫血', 'visible': true};
-    //       getAllReminder(modalObj);
-    //   }
-
-    //   if(allReminderModal.length > 0) {
-    //     const action = allReminderAction(allReminderModal);
-    //     store.dispatch(action);
-    //   }
-      
-    //   if(act) {
-    //     if (allReminderModal.length > 0) {
-    //       const action = openMedicalAction(true);
-    //       store.dispatch(action);
-    //     }
-    //   } else {
-    //     const action = openMedicalAction(false);
-    //     store.dispatch(action);
-    //   }
-    // }
     // //血压
     if(ckpressure[0]) newEntity.ckshrinkpressure = ckpressure[0];
     if(ckpressure[1]) newEntity.ckdiastolicpressure = ckpressure[1];
@@ -762,10 +716,6 @@ export default class FuzhenForm extends Component {
     );
   }
 
-  closeRegForm = () => {
-    this.setState({isShowRegForm: false})
-  }
-
   /**
    * 高危门诊弹窗
    */
@@ -844,62 +794,62 @@ export default class FuzhenForm extends Component {
   /**
    * 模板
    */
-  renderTreatment() {
-    const { treatTemp, openTemplate, treatKey1, treatKey2 } = this.state;
-    const closeDialog = (e, items = []) => {
-      this.setState({ openTemplate: false, treatKey1: [], treatKey2: [] });
-      items.length > 0 && this.addTreatment(e, items.map(i => i.content).join('； '));
-    }
+  // renderTreatment() {
+  //   const { treatTemp, openTemplate, treatKey1, treatKey2 } = this.state;
+  //   const closeDialog = (e, items = []) => {
+  //     this.setState({ openTemplate: false, treatKey1: [], treatKey2: [] });
+  //     items.length > 0 && this.addTreatment(e, items.map(i => i.content).join('； '));
+  //   }
 
-    const initTree = (pid, level = 0) => treatTemp.filter(i => i.pid === pid).map(node => (
-      <Tree.TreeNode key={node.id} title={node.content}>
-        {level < 10 ? initTree(node.id, level + 1) : null}
-      </Tree.TreeNode>
-    ));
+  //   const initTree = (pid, level = 0) => treatTemp.filter(i => i.pid === pid).map(node => (
+  //     <Tree.TreeNode key={node.id} title={node.content}>
+  //       {level < 10 ? initTree(node.id, level + 1) : null}
+  //     </Tree.TreeNode>
+  //   ));
 
-    const handleCheck1 = (keys) => {
-      this.setState({treatKey1: keys});
-      treatTemp.forEach(tt => {
-        if (keys.indexOf(`${tt.id}`) !== -1 || treatKey2.indexOf(`${tt.id}`) !== -1) {
-          tt.checked = true;
-        } else {
-          tt.checked = false;
-        }
-      })
-    };
+  //   const handleCheck1 = (keys) => {
+  //     this.setState({treatKey1: keys});
+  //     treatTemp.forEach(tt => {
+  //       if (keys.indexOf(`${tt.id}`) !== -1 || treatKey2.indexOf(`${tt.id}`) !== -1) {
+  //         tt.checked = true;
+  //       } else {
+  //         tt.checked = false;
+  //       }
+  //     })
+  //   };
 
-    const handleCheck2 = (keys) => {
-      this.setState({treatKey2: keys});
-      treatTemp.forEach(tt => {
-        if (keys.indexOf(`${tt.id}`) !== -1 || treatKey1.indexOf(`${tt.id}`) !== -1) {
-          tt.checked = true;
-        } else {
-          tt.checked = false;
-        }
-      })
-    };
+  //   const handleCheck2 = (keys) => {
+  //     this.setState({treatKey2: keys});
+  //     treatTemp.forEach(tt => {
+  //       if (keys.indexOf(`${tt.id}`) !== -1 || treatKey1.indexOf(`${tt.id}`) !== -1) {
+  //         tt.checked = true;
+  //       } else {
+  //         tt.checked = false;
+  //       }
+  //     })
+  //   };
 
-    const treeNodes = initTree(0);
+  //   const treeNodes = initTree(0);
 
-    return (
-      <Modal title="处理模板" closable visible={openTemplate} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
-        <Row>
-          <Col span={12}>
-            <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
-          </Col>
-          <Col span={12}>
-            <Tree checkable defaultExpandAll checkedKeys={treatKey2} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes.slice(treeNodes.length/2)}</Tree>
-          </Col>
-        </Row>
-      </Modal>
-    )
-  }
+  //   return (
+  //     <Modal title="处理模板" closable visible={openTemplate} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
+  //       <Row>
+  //         <Col span={12}>
+  //           <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
+  //         </Col>
+  //         <Col span={12}>
+  //           <Tree checkable defaultExpandAll checkedKeys={treatKey2} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes.slice(treeNodes.length/2)}</Tree>
+  //         </Col>
+  //       </Row>
+  //     </Modal>
+  //   )
+  // }
 
   /**
    * 检验结果导入
    */
   renderLisImport() {
-    const { lisImportTree, openListImport, lisImportKey, lisExpandedKeys, lisCheckedNodes } = this.state;
+    const { lisImportTree, openListImport, lisImportKey, lisExpandedKeys, lisCheckedNodes, lisImportTitle } = this.state;
     const unusualArr = ["↑", "↓"];
     const closeDialog = (e, bool) => {
       this.setState({ 
@@ -944,7 +894,7 @@ export default class FuzhenForm extends Component {
     }
 
     return (
-      <Modal className="lis-modal" title="检验结果导入" closable visible={openListImport} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, true)}>
+      <Modal className="lis-modal" title={lisImportTitle} closable visible={openListImport} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, true)}>
         <Row>
           <Col span={24}>
             <Tree checkable defaultExpandedKeys={[lisExpandedKeys]} onSelect={handleSelect} checkedKeys={lisImportKey} onCheck={handleCheck} style={{ maxHeight: '90%' }}>{treeNodes}</Tree>
@@ -953,6 +903,18 @@ export default class FuzhenForm extends Component {
       </Modal>
     )
   }
+  
+  closeRegForm = () => {
+    this.setState({isShowRegForm: false})
+  }
+
+  closeTemplateModal = (e, items) => {
+    if (items.length > 0 ) {
+      this.addTreatment(e, items.map(i => i.content).join('； '));
+    }
+    this.setState({ openTemplate: false });
+  }
+
 
   render() {
     const { isShowRegForm, openTemplate, openListImport } = this.state;
@@ -971,11 +933,12 @@ export default class FuzhenForm extends Component {
             保存并开立医嘱
           </Button> */}
         </div>
-        {openTemplate && this.renderTreatment()}
+        {/* {openTemplate && this.renderTreatment()} */}
         {openListImport && this.renderLisImport()}
         {this.renderMenZhen()}
         {this.renderAdviceModal()}
         {this.renderHighModal()}
+        {openTemplate && <TemplateModal openTemplate={openTemplate} closeTemplateModal={this.closeTemplateModal} />}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />} */}
       </div>
     );

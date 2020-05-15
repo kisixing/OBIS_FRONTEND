@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Row, Col, Input, message, Button, Tree, Modal } from "antd";
 
-import tableRender from "../../render/table";
-import formRender, { fireForm } from "../../render/form";
-import * as baseData from "./data";
-import service from '../../service';
-import * as util from './util';
-import './table.less';
+import tableRender from "../../../../../render/table";
+import formRender, { fireForm } from "../../../../../render/form";
+import * as baseData from "../../../data";
+import service from '../../../../../service';
+import * as util from '../../../util';
+import './index.less';
 
 export default class FuzhenForm extends Component {
   constructor(props) {

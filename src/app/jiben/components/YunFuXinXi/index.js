@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import * as baseData from '../shouzhen/data';
-import formRender from '../../render/form';
-import options from '../../utils/cascader-address-options';
+import * as baseData from '../../../shouzhen/data';
+import formRender from '../../../../render/form';
+import options from '../../../../utils/cascader-address-options';
 
 export default class extends Component {
   static Title = '孕妇信息';

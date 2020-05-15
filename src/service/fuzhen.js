@@ -259,10 +259,17 @@ export default {
     },
 
     /**
-     * 模板检验导入
+     * 检验结果导入
      */
     getLisImportTree: function(){
         return this.userId().then(r => myAxios.get(`/outpatientRestful/getLisImportTree?userid=${r.object.userid}`));
+    },
+
+    /**
+     * 超声结果导入
+     */
+    getPacsImportTree: function(){
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getPacsImportTree?userid=${r.object.userid}`));
     },
 
     /**

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import formRender from '../../render/form';
-import * as baseData from './data';
-import service from '../../service';
-import store from "../store";
+import formRender from '../../../../render/form';
+import * as baseData from '../../data';
+import service from '../../../../service';
+import store from "../../../store";
 
 export default class extends Component {
   static Title = '预产期';

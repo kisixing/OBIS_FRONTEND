@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import formRender from '../../render/form';
-import * as baseData from '../shouzhen/data';
-import { date } from "../../render/common/date";
+import formRender from '../../../../render/form';
+import * as baseData from '../../../shouzhen/data';
+import { date } from "../../../../render/common/date";
 
 export default class extends Component {
   static Title = '丈夫信息';

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import yunCanvas from '../YunCanvas';
+import basicCanvas from '../basic-canvas';
 
 export default class BmiCanvas extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ export default class BmiCanvas extends Component {
   render() {
     return (
       <div>
-        {yunCanvas({
+        {basicCanvas({
           id: "bmiCanvas"
         })}
       </div>

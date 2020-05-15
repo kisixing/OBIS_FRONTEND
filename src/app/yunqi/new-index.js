@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import BmiCanvas from "./BmiCanvas";
-import FetusCanvas from "./FetusCanvas";
+import BmiCanvas from "./components/bmi-canvas";
+import FetusCanvas from "./components/fetus-canvas";
 
 export default class Index extends Component {
   constructor(props) {
