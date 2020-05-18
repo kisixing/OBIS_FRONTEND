@@ -14,7 +14,7 @@ import editors from '../shouzhen/editors';
 import * as util from './util'; 
 import store from '../store';
 import { isFormChangeAction, openYCQAction, getUserDocAction, fzListAction, getIdAction, getWhichAction,
-         getYCQAction, 
+         getYCQAction, isTwinsAction
       } from '../store/actionCreators.js';
 
 import "../index.less";
@@ -39,7 +39,7 @@ export default class FuZhen extends Component {
       initData: { ...baseData.formEntity },
       pureInitDate: null,
       hasRecord: false,
-      isTwins: false,
+      // isTwins: false,
       isChangeYCQ: false,
       printData: null,
       hasPrint: false,
@@ -89,7 +89,9 @@ export default class FuZhen extends Component {
             initData: service.praseJSON(item)
           })
           if (item.singleflag === '1') {
-            this.setState({ isTwins: false })
+            // this.setState({ isTwins: false })
+            const action = isTwinsAction(false);
+            store.dispatch(action);
           }
         }
       })
@@ -115,9 +117,13 @@ export default class FuZhen extends Component {
   handleChange(e, data) {
     const { initData, recentRvisit } = this.state;
     if (data.hasOwnProperty('singleflag') && data.singleflag === '1') {
-      this.setState({ isTwins: false });
+      // this.setState({ isTwins: false });
+      const action = isTwinsAction(false);
+      store.dispatch(action);
     } else if (data.hasOwnProperty('singleflag') && !data.singleflag) {
-      this.setState({ isTwins: true });
+      // this.setState({ isTwins: true });
+      const action = isTwinsAction(true);
+      store.dispatch(action);
     }
     let newInitData = initData;
     let newRecentRvisit = recentRvisit;

@@ -9,7 +9,7 @@ import * as szBaseData from '../../../shouzhen/data';
 import editors from '../../../shouzhen/editors';
 import store from '../../../store';
 import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, isFormChangeAction, 
-         getUserDocAction, showSypAction, fzListAction, getAllFormDataAction, 
+         getUserDocAction, showSypAction, fzListAction, getAllFormDataAction, isTwinsAction
       } from '../../../store/actionCreators.js';
 
 import "../../../index.less";
@@ -37,7 +37,7 @@ export default class Index extends Component {
       isShowPlanModal: false,
       collapseActiveKey: ['1', '2', '3', '4'],
       planData: [],
-      isTwins: false,
+      // isTwins: false,
       reportStr: '',
       jyEntity: {},
       listHistory: null,
@@ -70,7 +70,9 @@ export default class Index extends Component {
           store.dispatch(action);
         }
         if(item.data.indexOf('双胎') !== -1 || item.data.indexOf('多胎') !== -1) {
-          this.setState({ isTwins: true })
+          // this.setState({ isTwins: true })
+          const action = isTwinsAction(true);
+          store.dispatch(action);
         }
         if (item.data.indexOf('梅毒') !== -1) {
           const action = showSypAction(true);
@@ -135,7 +137,9 @@ export default class Index extends Component {
         store.dispatch(action);
       }
       if((diagnosi.indexOf('双胎') !== -1 || diagnosi.indexOf('多胎') !== -1) && initData.singleflag !== '1') {
-        this.setState({ isTwins: true })
+        // this.setState({ isTwins: true })
+        const action = isTwinsAction(true);
+        store.dispatch(action);
       }
       // 传染病标记
       let signDiag = '';
@@ -204,7 +208,11 @@ export default class Index extends Component {
     newList && newList.forEach(item => {
       if (item.data.indexOf('双胎') !== -1 || item.data.indexOf('多胎') !== -1) bool = false;
     })
-    if (bool) this.setState({ isTwins: false });
+    // if (bool) this.setState({ isTwins: false });
+    if (bool) {
+      const action = isTwinsAction(false);
+      store.dispatch(action);
+    }
 
     // 删除传染病标记
     let signDiag = '';

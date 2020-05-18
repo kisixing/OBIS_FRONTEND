@@ -1,7 +1,7 @@
 import { GET_USER_DOC, ALL_FORM_DATA, IS_FORM_CHANGE, CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, 
         SHOW_TRIAL_CARD, SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS, ALL_REMINDER_MODAL, CLOSE_REMINDER_MODAL, 
         SHOW_REMINDER_MODAL, OPEN_MEDICAL_ADVICE, GET_DIAGNOSIS, OPEN_YCQ, TRIAL_VISIBLE, IS_SAVE, SHOW_SYP_MODAL, 
-        GET_SZ_LIST, GET_FZ_LIST, GET_RELATEDID, GET_WHICH, TEMPLATE_TREE1, SET_EMPTY_DATA, GET_YCQ_ENTITY  } from './actionTypes.js'
+        GET_SZ_LIST, GET_FZ_LIST, GET_RELATEDID, GET_WHICH, TEMPLATE_TREE1, SET_EMPTY_DATA, GET_YCQ_ENTITY, IS_TWINS  } from './actionTypes.js'
 const defaultState = {
   userDoc: {},
   allFormData: null,
@@ -37,6 +37,7 @@ const defaultState = {
     "tab-7": ['诊断处理'],
   },
   ycqEntity: null,
+  isTwins: false,
 }
 
 export default (state = defaultState, action) => {
@@ -187,6 +188,12 @@ export default (state = defaultState, action) => {
     if(action.type === GET_YCQ_ENTITY) {
       const newState = JSON.parse(JSON.stringify(state));
       newState.ycqEntity = action.obj;
+      return newState;
+    }
+
+    if(action.type === IS_TWINS) {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.isTwins = action.bool;
       return newState;
     }
 

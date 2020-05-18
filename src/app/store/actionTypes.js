@@ -37,3 +37,5 @@ export const GET_WHICH = 'get_which';
 export const SET_EMPTY_DATA = 'set_empty_data';
 
 export const GET_YCQ_ENTITY = 'get_ycq_entity';
+
+export const IS_TWINS = 'is_twins';
