@@ -860,6 +860,9 @@ export default class extends Component{
         if (value.label === '高危门诊') {
           onChange(e, { name: 'xiacsfdatearea', value: {"0":"上","1":"午","label":"上午","describe":"上","value":'上午'} });
         }
+        if (value.label === '留观') {
+          onChange(e, { name: 'xiacsfdate', value: util.futureDate(0) });
+        }
         this.checkAddNum(e, 1, value);
         break;
       case 'nextRvisitWeek':

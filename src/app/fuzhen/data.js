@@ -482,7 +482,7 @@ export const ckfuzhOptions = [
 ];
 
 /**
- * 浮肿
+ * 用药频率
  */
 export const yyfaOptions = [
 	{ label: '一天一次', value: '一天一次' },
@@ -527,7 +527,7 @@ export const nextRvisitWeekOptions = [
 ];
 
 /**
- * 门诊
+ * 门诊类型
  */
 // export const rvisitOsTypeOptions = toOptions(['', '普通门诊', '高危门诊', '教授门诊'], (v,i)=>({value:i-1,describe:v.slice(0,1)}));
 
@@ -538,6 +538,7 @@ export const rvisitOsTypeOptions = [
 	{ label: '教授门诊', value: 10, describe: '教' },
 	{ label: '特需门诊', value: 50, describe: '特' },
 	{ label: '候床入院', value: 60, describe: '候' },
+	{ label: '留观', value: 70, describe: '留' },
 ];
 
 /**

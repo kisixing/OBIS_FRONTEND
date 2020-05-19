@@ -147,8 +147,13 @@ export default class RegForm extends Component {
   render() {
     const { fzFormEntity } = this.state;
     return (
-      <div className="chanhou-form ant-col-24">
-        {formRender(fzFormEntity, this.fzFormConfig(), this.handleFZChange.bind(this))}
+      <div className="chanhou-form">
+        <div className="ant-col-20">
+          {formRender(fzFormEntity, this.fzFormConfig(), this.handleFZChange.bind(this))}
+        </div>
+        <div className="ant-col-4">
+          出院小结
+        </div>
         <Button className="blue-btn chanhou-btn" type="ghost" onClick={() => setTimeout(() => { this.handleFZSave(document.querySelector(".chanhou-form"))}, 100) }>保存</Button>
       </div>
     )
