@@ -294,7 +294,7 @@ export const fxOptions = toOptions('低风险,高风险{#FF3300}');
 /**
  * 产前诊断
  */
-export const cqzdOptions = toOptions('低风险,高风险{#FF3300},拒绝产前诊断和知情同意书');
+export const cqzdOptions = toOptions('正常,异常{#FF3300},拒绝产前诊断和知情同意书');
 
 /**
  * 末次月经不详

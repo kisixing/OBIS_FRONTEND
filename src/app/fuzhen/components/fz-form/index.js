@@ -445,7 +445,12 @@ export default class FuzhenForm extends Component {
 
   addTreatment(e, value){
     const { initData } = this.props;
-    if (initData.treatment.indexOf(value) === -1) {
+    if (!initData.treatment) {
+      this.handleChange(e, {
+        name: 'treatment',
+        value: value + '； '
+      })
+    } else if (initData.treatment.indexOf(value) === -1) {
       this.handleChange(e, {
         name: 'treatment',
         value: initData.treatment + value + '； '
@@ -455,7 +460,12 @@ export default class FuzhenForm extends Component {
 
   addExamination(e, value){
     const { initData } = this.props;
-    if (initData.examination.indexOf(value) === -1) {
+    if (!initData.examination) {
+      this.handleChange(e, {
+        name: 'examination',
+        value: value + '； '
+      })
+    } else if (initData.examination.indexOf(value) === -1) {
       this.handleChange(e, {
         name: 'examination',
         value: initData.examination + value + '； '
