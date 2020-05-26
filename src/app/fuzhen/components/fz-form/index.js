@@ -286,7 +286,7 @@ export default class FuzhenForm extends Component {
         {
           filter:()=>check('diabetes'), columns:[
             { name: 'fpg(mmol/L)[空腹血糖]', type: 'input', span: 6 },
-            { name: 'pbg2h(mmol/L)[餐后2H]', type: 'input', span:6 },
+            { name: 'pbg2h(mmol/L)[餐后2H血糖]', type: 'input', span:6 },
             { name: 'hbAlc(%)[HbAlc]', type: 'input', span: 6 }
           ]
         },
@@ -311,42 +311,51 @@ export default class FuzhenForm extends Component {
           ]
         },
         {
-          filter:()=>check('hypertension'), columns: [
+          filter:()=>check('hypertension'), rows: [
             {
-              label: '尿蛋白', span: 12, columns: [
-                { name: 'upState[定性]', type: 'input', span: 12 },
-                { name: 'upDosage24h[24H定量]', type: 'input', span: 12 },
+              columns: [
+                {
+                  label: '尿蛋白', span: 12, columns: [
+                    { name: 'upState[定性]', type: 'input', span: 12 },
+                    { name: 'upDosage24h[24H定量]', type: 'input', span: 12 },
+                  ]
+                },
+                { name: 'otherAbnormalSigns[其他异常体征]', type: 'input', className: 'long-label', span: 12 },
               ]
             },
             {
-              label: '用药方案', name: 'medicationPlan', span: 12, groups: index => ({
-                rows: [
-                  {
-                    columns:[
-                      { name: `name[用药${index + 1}]`, span: 21, type: 'input' },
-                      // { name: `frequency[频率]`, span: 7, type: 'select', showSearch: true, options: baseData.yyfaOptions },
-                      // { name: `dosages[剂量]`, span: 7, type: 'input' },
-                      { span: 1 },
+              columns: [
+                {
+                  label: '用药方案', name: 'medicationPlan', span: 12, groups: index => ({
+                    rows: [
                       {
-                        name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
-                        filter: entity => entity.medicationPlan.length !== 1,
-                        onClick: (e, text, resolve) => {
-                          Modal.confirm({
-                            title: '您是否确认要删除该记录',
-                            width: '300',
-                            style: {top:'50%', left: '30%', fontSize: '18px' },
-                            onOk: () => this.handleBtnChange(e, 'medicationPlan', index)
-                          });
-                        }
-                      },
-                      { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
-                        filter: entity => entity.medicationPlan.length === index + 1,
-                        onClick: (e, text, resolve) => this.handleBtnChange(e, 'medicationPlan')},
+                        columns:[
+                          { name: `name[用药${index + 1}]`, span: 21, type: 'input' },
+                          // { name: `frequency[频率]`, span: 7, type: 'select', showSearch: true, options: baseData.yyfaOptions },
+                          // { name: `dosages[剂量]`, span: 7, type: 'input' },
+                          { span: 1 },
+                          {
+                            name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
+                            filter: entity => entity.medicationPlan.length !== 1,
+                            onClick: (e, text, resolve) => {
+                              Modal.confirm({
+                                title: '您是否确认要删除该记录',
+                                width: '300',
+                                style: {top:'50%', left: '30%', fontSize: '18px' },
+                                onOk: () => this.handleBtnChange(e, 'medicationPlan', index)
+                              });
+                            }
+                          },
+                          { name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
+                            filter: entity => entity.medicationPlan.length === index + 1,
+                            onClick: (e, text, resolve) => this.handleBtnChange(e, 'medicationPlan')},
+                        ]
+                      }
                     ]
-                  }
-                ]
-              })
-            },
+                  })
+                }
+              ]
+            }
           ]
         },
         {

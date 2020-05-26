@@ -235,42 +235,41 @@ export default class App extends Component {
       service.addHighrisk(userid, `\n${highrisk}`, level).then(res => {});
     };
 
-    // return highriskAlert && highriskAlert.length > 0 
-    //     ? highriskAlert.map((item, index) =>item.alertMark == 1 && item.visible ? (
-    //       <div className="highrisk-wrapper">
-    //         <div>
-    //           <span className="exc-icon">
-    //             <Icon type="exclamation-circle" style={{ color: "#FCCD68" }}/>{" "}
-    //             请注意！
-    //           </span>
-    //           <span className="close-icon pull-right" onClick={() => { handelClose(index) }}>
-    //             <Icon type="close" />
-    //           </span>
-    //         </div>
-    //         <div className="highrisk-content">
-    //           <div>孕妇诊断有<span className="highrisk-word">{item.content}</span>,请标记高危因素</div>
-    //           <div className="highrisk-item">
-    //             {item.items.map(subItem => (
-    //               <Button className="blue-btn margin-R-1 margin-TB-mid" type="ghost"
-    //                       onClick={() => addHighrisk(subItem.highrisk, subItem.level, index)}>
-    //                 {subItem.name}
-    //               </Button>
-    //             ))}
-    //           </div>
-    //           <div>
-    //             <Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelClose(index, item.content)}>
-    //               关闭，不再提示
-    //             </Button>
-    //             <Button className="blue-btn colorGray" type="ghost" onClick={() => handelClose(index)}>
-    //               关闭
-    //             </Button>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     ) : null
-    //   )
-    // : null;
-    return null;
+    return highriskAlert && highriskAlert.length > 0 
+        ? highriskAlert.map((item, index) =>item.alertMark == 1 && item.visible ? (
+          <div className="highrisk-wrapper">
+            <div>
+              <span className="exc-icon">
+                <Icon type="exclamation-circle" style={{ color: "#FCCD68" }}/>{" "}
+                请注意！
+              </span>
+              <span className="close-icon pull-right" onClick={() => { handelClose(index) }}>
+                <Icon type="close" />
+              </span>
+            </div>
+            <div className="highrisk-content">
+              <div>孕妇诊断有<span className="highrisk-word">{item.content}</span>,请标记高危因素</div>
+              <div className="highrisk-item">
+                {item.items.map(subItem => (
+                  <Button className="blue-btn margin-R-1 margin-TB-mid" type="ghost"
+                          onClick={() => addHighrisk(subItem.highrisk, subItem.level, index)}>
+                    {subItem.name}
+                  </Button>
+                ))}
+              </div>
+              <div>
+                <Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelClose(index, item.content)}>
+                  关闭，不再提示
+                </Button>
+                <Button className="blue-btn colorGray" type="ghost" onClick={() => handelClose(index)}>
+                  关闭
+                </Button>
+              </div>
+            </div>
+          </div>
+        ) : null
+      )
+    : null;
   }
 
   /**
@@ -520,14 +519,14 @@ export default class App extends Component {
               </ButtonGroup>
             </div>
           </div>  
-            <div className="btnList-right">
-              {trialVisible || isShowTrialCard ? <Button className="danger-btn-trial" onClick={() => this.handleCardClick('trial')}>疤</Button> : null}
-              {
-                (pharVisible1 && checkedKeys.length > 0) || (pharVisible2 && pharKeys.length > 0) || isShowPharCard
-                  ? <Button className="danger-btn-phar" onClick={() => this.handleCardClick('phar')}>栓</Button>
-                  : null
-              } 
-            </div>
+          <div className="btnList-right">
+            {trialVisible || isShowTrialCard ? <Button className="danger-btn-trial" onClick={() => this.handleCardClick('trial')}>疤</Button> : null}
+            {
+              (pharVisible1 && checkedKeys.length > 0) || (pharVisible2 && pharKeys.length > 0) || isShowPharCard
+                ? <Button className="danger-btn-phar" onClick={() => this.handleCardClick('phar')}>栓</Button>
+                : null
+            } 
+          </div>
         </div>
       </div>
     );
@@ -686,7 +685,7 @@ export default class App extends Component {
           {router(routers.filter(i => !!i.component))}
         </div>
         <div>{this.renderDanger()}</div>
-        {this.renderHighrisk()}
+        {/* {this.renderHighrisk()} */}
         {this.renderTrialModal()}
         {this.renderPharModal()}
         {isShowReminderModal && <ReminderModal />}

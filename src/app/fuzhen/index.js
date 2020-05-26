@@ -14,7 +14,7 @@ import editors from '../shouzhen/editors';
 import * as util from './util'; 
 import store from '../store';
 import { isFormChangeAction, openYCQAction, getUserDocAction, fzListAction, getIdAction, getWhichAction,
-         getYCQAction, isTwinsAction
+         getYCQAction, isTwinsAction, getAllFormDataAction
       } from '../store/actionCreators.js';
 
 import "../index.less";
@@ -478,6 +478,10 @@ export default class FuZhen extends Component {
         service.fuzhen.saveGesweekForm(ycqEntity).then(res => {
           service.getuserDoc().then(res => {
             const action = getUserDocAction(res.object);
+            store.dispatch(action);
+          })
+          service.shouzhen.getAllForm().then(data => {
+            const action = getAllFormDataAction(service.praseJSON(data.object));
             store.dispatch(action);
           })
         });
