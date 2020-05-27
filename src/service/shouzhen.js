@@ -17,17 +17,18 @@ export default {
      * 保存表单数据 tab对应首诊下面的tab菜单，从tab-0开始
      */
     saveForm : function(tab, entity){
-        let data = {};
+        let data = entity;
         let uri = 'udpateDoc';
         if(tab === 'tab-0' || tab === 'tab-5'|| tab === 'tab-4' || tab === 'tab-6' || tab === 'tab-7'){
             uri='saveivisit'
         }
-        data = entity;
-        var arr2 = JSON.stringify(data).replace(/add_/g, "ADD_");
-        data=JSON.parse(arr2) 
+        let str = JSON.stringify(data).replace(/add_/g, "ADD_");
+        data=JSON.parse(str) 
         const clinicCode = common.getCookie('clinicCode');
         const opid = common.getCookie('opid');
         const regno = common.getCookie('regno');
+        const deptNo = common.getCookie('deptNo');
+        const deptName = common.getCookie('deptName');
 
         let doctorName = {};
         if (uri === 'udpateDoc') {
@@ -36,9 +37,9 @@ export default {
             doctorName = { 'ADD_FIELD_ivisit_doctor': common.getCookie('docName') };
         }
         if (uri === 'udpateDoc') {
-            return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, ...doctorName, ...data}));
+            return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, deptNo, deptName, ...doctorName, ...data}));
         }
-        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, opid, regno, ...doctorName, ...data}));
+        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, deptNo, deptName, opid, regno, ...doctorName, ...data}));
     },
     /**
      * 保存孕产史
@@ -115,7 +116,9 @@ export default {
         const clinicCode = common.getCookie('clinicCode');
         const opid = common.getCookie('opid');
         const regno = common.getCookie('regno');
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/uploadHis', {userid: r.object.userid, relatedtype, clinicCode, opid, regno }));
+        const deptNo = common.getCookie('deptNo');
+        const deptName = common.getCookie('deptName');
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/uploadHis', {userid: r.object.userid, relatedtype, clinicCode, deptNo, deptName, opid, regno }));
     },
     /**
      * 查询诊断列表
@@ -130,7 +133,9 @@ export default {
         const clinicCode = common.getCookie('clinicCode');
         const opid = common.getCookie('opid');
         const regno = common.getCookie('regno');
-        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/batchAdd', {userid: r.object.userid, relatedtype, relatedid, list, uploadFlag, clinicCode, opid, regno, redirectUrl }));
+        const deptNo = common.getCookie('deptNo');
+        const deptName = common.getCookie('deptName');
+        return this.userId().then(r => myAxios.post('/outpatientWriteRestful/diagnosis/batchAdd', {userid: r.object.userid, relatedtype, relatedid, list, uploadFlag, clinicCode, deptNo, deptName, opid, regno, redirectUrl }));
     },
     /**
      * 查询诊断添加提醒

@@ -485,6 +485,16 @@ export default class extends Component{
       store.dispatch(action);
     }
 
+    const title = item => {
+      const data = {
+        "诊断时间": item.createdate,
+        "诊断全称": item.data,
+        "诊断备注": item.remark,
+        "诊断医生": item.doctor,
+      }
+      return JSON.stringify(data, null, 4)
+    }
+
 
     // 诊断备注输入
     const setRemark = (v, i) => {
@@ -538,9 +548,9 @@ export default class extends Component{
         <div className="shouzhen-left-top pad-LR-mid">
           {szList && szList.map((item, i) => (
             <Row key={`diagnos-${item.data}-${i}`}>
-              <Col span={6}>
+              <Col className="single-diag" span={10} title={title(item)}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)} visible={item.visible} onVisibleChange={(visible) => handleVisibleChange(visible, i)}>
-                  <div title={item.data}>
+                  <div>
                     <span className="zd-num">{i + 2}、</span>
                     <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
                   </div>

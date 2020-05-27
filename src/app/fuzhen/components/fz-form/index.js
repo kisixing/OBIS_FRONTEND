@@ -320,11 +320,6 @@ export default class FuzhenForm extends Component {
                     { name: 'upDosage24h[24H定量]', type: 'input', span: 12 },
                   ]
                 },
-                { name: 'otherAbnormalSigns[其他异常体征]', type: 'input', className: 'long-label', span: 12 },
-              ]
-            },
-            {
-              columns: [
                 {
                   label: '用药方案', name: 'medicationPlan', span: 12, groups: index => ({
                     rows: [
@@ -355,7 +350,7 @@ export default class FuzhenForm extends Component {
                   })
                 }
               ]
-            }
+            },
           ]
         },
         {
@@ -363,6 +358,11 @@ export default class FuzhenForm extends Component {
             {
               columns: [
                 { name: 'heartRate(次/分)[心率]', type: 'input', span: 6 },
+                { name: 'otherAbnormalSigns[其他异常体征]', type: 'input', className: 'long-label', span: 12 },
+              ]
+            },
+            {
+              columns: [
                 {
                   label: '用药方案', name: 'medicationPlan', span: 18, filter:()=>!check('hypertension'), groups: index => ({
                     rows: [
@@ -392,7 +392,7 @@ export default class FuzhenForm extends Component {
                     ]
                   })
                 }
-              ]
+              ]  
             },
             // {
             //   columns: [

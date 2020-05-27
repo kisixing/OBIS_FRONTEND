@@ -65,6 +65,8 @@ export default class App extends Component {
     common.setCookie('opid', service.getQueryString('opid'));
     common.setCookie('regno', service.getQueryString('regno'));
     common.setCookie('redirectUrl', service.getQueryString('redirectUrl'));
+    common.setCookie('deptNo', service.getQueryString('deptNo'));
+    common.setCookie('deptName', service.getQueryString('deptName'));
     service.authorize(service.getQueryString('doctorId')).then(res => {
       common.setCookie('docToken', res.object.token);
       common.setCookie('docName', res.object.doctorName);
@@ -651,7 +653,7 @@ export default class App extends Component {
               </Row>
             </Col>
           </Row>
-          <div style={{ height: 200, overflow: "auto", padding: "0 16px" }}>
+          <div style={{ height: 300, overflow: "auto", padding: "0 16px" }}>
             <Tree expandedKeys={expandedKeys} onExpand={handleCheck} onSelect={handleSelect} style={{ maxHeight: "90%" }}>
               {initTree(0)}
             </Tree>

@@ -390,8 +390,8 @@ export default class FuZhen extends Component {
     const allInitTable = (data, props) => tableRender(rvisitAllKeys, data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
-        {recentRvisit && initTable(recentRvisit, { width: 1200, size: "small", pagination: false, editable: true, className: "fuzhenTable",
-          onEdit: true, hasRecord: hasRecord, isTwins: isTwins, tableLayout: "fixed", scroll: { x: 1200, y: 300 },
+        {recentRvisit && initTable(recentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable",
+          onEdit: true, hasRecord: hasRecord, isTwins: isTwins, tableLayout: "fixed", scroll: { x: 1100, y: 300 },
           iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onRowChange: handleSaveChange
         })}
         {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : null}
@@ -541,7 +541,7 @@ export default class FuZhen extends Component {
     return (
       <Page className="fuzhen font-16 ant-col">
         <div className="bgDOM"></div>
-        <div className="fuzhen-right ant-col-19 pad-mid">
+        <div className="fuzhen-right ant-col-18 pad-mid">
           {this.renderTable()}
           <FuzhenForm 
             initData={initData} 
