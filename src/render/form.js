@@ -281,10 +281,10 @@ class FormItem extends Component {
           <div ref="formItemlabel" className="form-label">
             {icon ? <i className={`anticon anticon-${icon}`}>&nbsp;</i> : null}
             {/required/.test(valid) ? (
-              <span className="colorRed">*</span>
-            ) : null}
+              <i className='anticon anticon-require'>&nbsp;</i>
+            ) : <i className='white-space'>&nbsp;</i>}
             <span dangerouslySetInnerHTML={{ __html: label }}></span>
-            <span className="colon">:</span>
+            {/* <span className="colon">:</span> */}
           </div>
         ) : null}
         <div className="form-content">

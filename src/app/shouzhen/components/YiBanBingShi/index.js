@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import formRender from '../../../../render/form';
 import * as baseData from '../../data';
 
@@ -13,59 +12,60 @@ export default class extends Component {
     return {
       step: 1,
       rows: [
-        { label: "疾病史", span: 12, className: "labelclass" },
+        // { label: "疾病史", span: 12, className: "labelclass" },
+        {
+          className: 'section-title', columns: [
+            { name: '[疾病史]', type: '**', span: 8 },
+          ]
+        },
         {
           columns: [
-            { span: 1 },
             {
               name: "add_FIELD_gaoxueya[高血压]",
-              type: "checkinput",
+              type: "checkinput-8",
               valid: "required",
               className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 23
+              span: 22
             },
           ]
         },
         {
           columns: [
-            { span: 1 },
             {
               name: "add_FIELD_tangniaobing[糖尿病]",
-              type: "checkinput",
+              type: "checkinput-8",
               valid: "required",
               className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 23
+              span: 22
             },
           ]
         },
         {
           columns: [
-            { span: 1 },
             {
               name: "add_FIELD_xinzangbing[心脏病]",
-              type: "checkinput",
+              type: "checkinput-8",
               valid: "required",
               className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 23
+              span: 22
             }
           ]
         },
         {
           columns: [
-            { span: 1 },
             {
               name: "add_FIELD_qitabingshi[其@他]",
-              type: "checkinput",
+              type: "checkinput-8",
               className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 23
+              span: 22
             }
           ]
         },
@@ -78,7 +78,7 @@ export default class extends Component {
         //       className: "none_check",
         //       radio: true,
         //       options: baseData.noneOptions,
-        //       span: 23
+        //       span: 22
         //     }
         //   ]
         // },
@@ -98,15 +98,14 @@ export default class extends Component {
         // },
         {
           columns: [
-            { span: 1 },
             {
               name: "add_FIELD_has_operation_history[手术史]",
-              type: "checkinput",
+              type: "checkinput-8",
               valid: "required",
               className: 'long-ipt',
               radio: true,
               options: baseData.wssOptions,
-              span: 23
+              span: 22
             }
           ]
         },
@@ -122,39 +121,36 @@ export default class extends Component {
         //       editable: true,
         //       options: baseData.shoushushiColumns,
         //       className: "table-wrapper",
-        //       span: 23
+        //       span: 22
         //     }
         //   ]
         // },
         {
           columns: [
-            { span: 1 },
             {
               name: "bsguomin[过敏史]",
-              type: "checkinput",
+              type: "checkinput-8",
               valid: "required",
               options: baseData.ywgmOptions,
               unselect: "无",
-              span: 23
+              span: 22
             }
           ]
         },
         {
           columns: [
-            { span: 1 },
             {
               name: "hobtabp[输血史]",
-              type: "checkinput-4",
+              type: "checkinput-8",
               valid: "required",
               radio: true,
               options: baseData.sxsOptions,
-              span: 23
+              span: 22
             }
           ]
         },
         {
           columns: [
-            { span: 1 },
             {
               name: "add_FIELD_symptom[其@他]",
               type: "editableSelect",

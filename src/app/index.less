@@ -12,6 +12,7 @@ body {
 }
 html, body {
 	background-color: #ebf1f6;
+	color: #150F55;
 }
 .font-12 {
   font-size: 0.75rem;
@@ -119,10 +120,11 @@ html, body {
 	padding-top: 1rem;
 }
 .pad-small {
+	color: #383F4A;
 	padding: 5px;
 }
 .pad-mid {
-	padding: 12px;
+	padding: 3px 26px;
 }
 .pad-L-0 {
 	padding-left: 0;
@@ -152,7 +154,7 @@ html, body {
 	color: #9d2932;
 }
 .colorRed {
-	color: #ff3300;
+	color: #FC425F;
 }
 .colorLightRed {
 	color: #ed5736;
@@ -171,10 +173,6 @@ html, body {
 }
 .bgLightBlue{
 	background: #f4f9ff;
-}
-// 设置表单label粗体显示
-.form-item .form-label {
-	font-weight: 600;
 }
 .width_8 {
 	.form-item .form-label, .row-label {
@@ -208,16 +206,6 @@ html, body {
 	.form-content{
 		display: none !important;
 	}
-}
-.anticon-female-Gender {
-	width: 1em;
-	background: url("../assets/static-img/female.png") no-repeat center;
-	background-size:  1em auto;
-}
-.anticon-male-Gender {
-	width: 1em;
-	background: url("../assets/static-img/male.png") no-repeat center;
-	background-size:  1em auto;
 }
 /* bug */
 .blue_table {
@@ -304,7 +292,7 @@ html, body {
 	font-size: 14px;
 }
 
-// 全局提示弹窗
+// 全局提示
 .ant-message {
 	font-size: 18px;
 	top: 40px;
@@ -312,12 +300,169 @@ html, body {
 		font-size: 21px;
 	}
 }
-.ant-tree li {
-	font-size: 16px;
+
+//对话框modal样式
+.ant-modal-content {
+	.ant-modal-body {
+		font-size: 16px;
+	}
+	.ant-modal-title {
+		font-size: 18px;
+		color: #150F55;
+	}
+	.ant-tree li {
+		font-size: 16px;
+		a {
+			color: #150F55;
+		}
+	}
 }
 
 // 系统placeholder颜色
 .ant-select-selection__placeholder, input::-webkit-input-placeholder {
 	font-weight: 600;
 	color: #828C99 !important;
+}
+
+// 全局表单样式
+.ant-input {
+	color: #150F55;
+}
+.ant-input:-webkit-autofill {
+	-webkit-text-fill-color: #150F55 !important;
+}
+.ant-select {
+	color: #150F55;
+}
+.label-right .form-item .form-label {
+	text-align: right;
+}
+.form-item .form-content .form-item .form-content input {
+	color: #FD617F !important;
+	border-bottom: 2px solid #FD617F;
+	&:-webkit-autofill {
+		-webkit-text-fill-color: #FD617F !important;
+	}
+}
+.ant-checkbox-checked .ant-checkbox-inner,
+.ant-tree-checkbox-checked .ant-tree-checkbox-inner {
+	border-color: #3D8BF7;
+	background-color: #3D8BF7;
+}
+.section-title {
+	height: 20px;
+	position: relative;
+	margin: 0 0 20px 0;
+	border-bottom: 2px solid #D7DCE7;
+	.form-item .form-label {
+		font-size: 18px;
+		text-align: center;
+		background-color: #fff;
+		position: relative;
+		top: 4px;
+		left: 50px;
+		.white-space {
+			display: none;
+		}
+	}
+}
+
+.label-3 {
+	.form-item .form-label, .row-label {
+		width: 90px !important;
+	}
+}
+.label-4 {
+	.form-item .form-label, .row-label {
+		width: 100px !important;
+	}
+}
+.label-5 {
+	.form-item .form-label, .row-label {
+		width: 110px !important;
+	}
+}
+.label-6 {
+	.form-item .form-label, .row-label {
+		width: 130px !important;
+	}
+}
+
+// table 样式
+.ant-table {
+	font-size: 16px;
+	border-radius: 0;
+}
+.ant-table-title {
+	font-weight: 600;
+	color: #150F55;
+}
+.ant-table-content {
+	border: 1px solid #D7DCE7;
+	border-right: none;
+	border-bottom: none;
+}
+.ant-table-thead>tr>th {
+	text-align: center;
+	font-weight: 500;
+	color: #150F55;
+	background-color: #F5F6FA;
+	border-right: 1px solid #D7DCE7;
+	border-bottom: 1px solid #D7DCE7;
+}
+.ant-table-tbody {
+	background-color: #fff;
+}
+.ant-table-tbody>tr>td {
+	font-weight: 400;
+	color: #150F55;
+	padding: 12px 8px;
+	border-right: 1px solid #D7DCE7;
+	border-bottom: 1px solid #D7DCE7;
+}
+
+// 背景图标
+.hide-icon .white-space {
+	display: none;
+}
+.white-space {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+}
+.anticon-print-blue {
+	width: 21px;
+	height: 21px;
+	background: url("../assets/static-img/print_blue.png") no-repeat center;
+	background-size: 100% 100%;
+}
+.anticon-print-white {
+	width: 28px;
+	height: 28px;
+	background: url("../assets/static-img/print_white.png") no-repeat center;
+	background-size: 100% 100%;
+}
+.anticon-require {
+	width: 18px;
+	height: 18px;
+	background: url("../assets/static-img/require.png") no-repeat center;
+	background-size: 100% 100%;
+}
+.anticon-record {
+	width: 18px;
+	height: 18px;
+	background: url("../assets/static-img/record.png") no-repeat center;
+	background-size: 100% 100%;
+}
+.anticon-female-Gender {
+	width: 18px;
+	height: 18px;
+	background: url("../assets/static-img/female.png") no-repeat center;
+	background-size: 100% 100%;
+}
+.anticon-male-Gender {
+	width: 18px;
+	height: 18px;
+	background: url("../assets/static-img/male.png") no-repeat center;
+	background-size: 100% 100%;
 }

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-
 import * as baseData from '../../../shouzhen/data';
 import formRender from '../../../../render/form';
-import options from '../../../../utils/cascader-address-options';
 
 export default class extends Component {
   static Title = '孕妇信息';
@@ -40,7 +38,7 @@ export default class extends Component {
             { span: 1 },
             { name: "userroots[籍贯]", type: "select", span: 5, valid: "required", options: baseData.jgOptions },
             { span: 1 },
-            { name: "userpeople[民族]", type: "select", span: 4, valid: "required", options: baseData.mzOptions },
+            { name: "userpeople[民族]", type: "select", span: 5, valid: "required", options: baseData.mzOptions },
             { span: 1 },
             { name: "useroccupation[职业]", type: "select", options: baseData.zyOptions, span: 6, valid: "required" }
           ]
@@ -51,7 +49,7 @@ export default class extends Component {
             { span: 1 },
             { name: "phone[固话]", type: "input", span: 5, valid: "symbol(-)" },
             { span: 1 },
-            { name: "useridtype[证件类型]", type: "select", span: 4, showSearch: false, options: baseData.sfzOptions, valid: "required" },
+            { name: "useridtype[证件类型]", type: "select", span: 5, showSearch: false, options: baseData.sfzOptions, valid: "required" },
             { span: 1 },
             { name: "useridno[证件号码]", type: "input", span: 6, valid: "required" }
           ]
@@ -61,6 +59,7 @@ export default class extends Component {
             { name: "root[户口地址]", className: "h_24", span: 17, valid: "required",
               type: [{ type: "districtSelect", span: 16 }, { type: "input", span: 8, placeholder: "请输入详细地址" }]
             },
+            { span: 1 },
             { name: 'add_FIELD_coming_this_city[来本市时间]', type: 'date', span: 4,
               filter: entity => entity.root && entity.root[0][1] !== '广州市'
             }
@@ -94,7 +93,7 @@ export default class extends Component {
         //   ]
         // },
         {
-          columns: [{ name: "add_FIELD_readdress[产休地址]", type: "input", span: 11, valid: "required" }]
+          columns: [{ name: "add_FIELD_readdress[产休地址]", type: "input", span: 17, valid: "required" }]
         }
       ]
     };
@@ -112,7 +111,7 @@ export default class extends Component {
   render(){
     const { entity } = this.props;
     return (
-      <div className="">
+      <div className="label-5">
         {formRender(entity, this.config(), this.handleChange.bind(this))}
       </div>
     )

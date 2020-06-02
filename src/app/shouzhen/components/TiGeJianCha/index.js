@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import {valid} from '../../../../render/common';
 import formRender from '../../../../render/form';
 import * as baseData from '../../data';
@@ -112,7 +111,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'add_FIELD_checkup_other[其他]', type:'input', span:12},
+            {name:'add_FIELD_checkup_other[其他]', type:'input', span: 21},
           ]
         }
       ]
@@ -122,7 +121,7 @@ export default class extends Component{
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div className="ti-ge-jc">
+      <div className="label-4 ti-ge-jc">
         {formRender(entity, this.config(), onChange)}
       </div>
     )

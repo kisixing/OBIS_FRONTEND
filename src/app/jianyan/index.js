@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button, Table, Collapse, Modal, Input, Select } from "antd";
+import { Table, Collapse, Icon } from "antd";
 import Page from '../../render/page';
 import service from '../../service';
 import "./index.less";
@@ -45,7 +45,7 @@ export default class Patient extends Component {
         <Collapse defaultActiveKey={["0", "1", "2"]}>
           {
             reportList&&reportList.map(item => (
-              <Collapse.Panel header={item.groupTitle} key={item.id}>
+              <Collapse.Panel header={<p><Icon type="calendar" />{item.groupTitle}</p>} key={item.id}>
                 {
                   item.data.map(subItem => (
                     <div className="left-item" onClick={() => {subItem.isAmy ? getDetail(subItem.amyId, true) : getDetail(subItem.sampleno)}}>    
@@ -71,11 +71,11 @@ export default class Patient extends Component {
 
     const renderTable = () => {
       const columns = [
-        { title: '检验项目', dataIndex: 'item', key: 'item' },
-        { title: '结果', dataIndex: 'result', key: 'result' },
-        { title: '单位', dataIndex: 'unit', key: 'unit' },
-        { title: '参考值', dataIndex: 'reference', key: 'reference' },
-        { title: '状态', dataIndex: 'status', key: 'status' },
+        { title: '检验项目', dataIndex: 'item', key: 'item', width: 331 },
+        { title: '结果', dataIndex: 'result', key: 'result', width: 128 },
+        { title: '单位', dataIndex: 'unit', key: 'unit', width: 117 },
+        { title: '参考值', dataIndex: 'reference', key: 'reference', width: 332 },
+        { title: '状态', dataIndex: 'status', key: 'status', width: 200 },
       ];
 
       const setClassName = (record, index) => {
@@ -88,7 +88,7 @@ export default class Patient extends Component {
       return (
         <div className="right-wrapper">
           <div className="right-top">
-            <p className="right-title"><span className="right-words">{detailData.title} </span>检验报告单</p>
+            <p className="right-title"><span className="right-words">{detailData.title} 检验报告单</span></p>
             {/* {
               !isShowModal ?
               <Button className="right-btn" type="primary" size="small" onClick={() => this.setState({isShowModal: true})}>审阅</Button>
@@ -172,7 +172,8 @@ export default class Patient extends Component {
 
   render() {
     return (
-      <Page className='jianyan font-16 ant-col'>
+      <Page className='jianyan'>
+        <div className="bgWhite" style={{ position: "fixed", top: "104px", left: "0", right: "0", bottom: "0"}}></div>  
         {this.renderLeft()}
         {this.renderRight()}
       </Page>

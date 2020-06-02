@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Select, Button, Popover, Modal, Col, Row, message, Tabs, Icon, Tree, Input, DatePicker } from 'antd';
-
 import umodal from '../../../../utils/modal'
 import formRender, {fireForm} from '../../../../render/form';
 import formTable from '../../../../render/table';
@@ -36,9 +35,6 @@ export default class extends Component{
       openAdvice: false,
       openMenzhen: false,
       menzhenData: new Date(),
-      // treatTemp: [],
-      // treatKey1: [],
-      // treatKey2: [],
       isShowRegForm: false,
       isShowHighModal: false,
       appointmentNum: 0,
@@ -99,9 +95,9 @@ export default class extends Component{
         {
           className: 'top-column',
           columns: [
-            { name: 'yunc[1、G]', className: 'short-yunc', type: 'input', span: 3, valid: 'pureNumber' },
-            { name: 'chanc[P]', className: 'short-chanc', type: 'input', span: 3, valid: 'pureNumber' },
-            { name: 'add_FIELD_tuserweek[妊娠](周)', className: 'short-week', type: 'input', span: 3 },
+            { name: 'yunc[1、G]', className: 'hide-icon short-yunc', type: 'input', span: 3, valid: 'pureNumber' },
+            { name: 'chanc[P]', className: 'hide-icon short-chanc', type: 'input', span: 3, valid: 'pureNumber' },
+            { name: 'add_FIELD_tuserweek[妊娠](周)', className: 'hide-icon short-week', type: 'input', span: 3 },
           ]
         },
       ]
@@ -114,9 +110,13 @@ export default class extends Component{
       rows: [
         {
           columns: [
-            { name: "diagnosisHandle[处理措施]", type: "textarea", span: 10, className: "table-wrapper" },
-            { name: "treatment[模板]", type: "buttons", span: 14,
-              text: "(green)[糖尿病日间门诊],(#1890ff)[更多]",
+            { name: "diagnosisHandle[处理措施]", type: "textarea", span: 15, className: "table-wrapper" },
+          ]
+        },
+        {
+          columns: [
+            { 
+              name: "treatment[模板]", type: "buttons", span: 14, text: "(green)[糖尿病日间门诊],(#1890ff)[更多]",
               onClick: this.handleTreatmentClick.bind(this)
             }
           ]
@@ -132,6 +132,7 @@ export default class extends Component{
         {
           columns: [
             { name: 'add_FIELD_first_save_ivisit_time[初诊日期]', type:'date', span: 4 },
+            { span: 1 },
             { name: 'add_FIELD_first_clinical_doctor[初诊医生]', type:'input', span: 4 },
           ]
         }
@@ -217,55 +218,6 @@ export default class extends Component{
       })
       this.setState({ diagnosi: '' });
       service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
-
-      // service.fuzhen.adddiagnosis(diagnosi).then(() => {
-      //   modal('success', '添加诊断信息成功');
-      //   if ((diagnosi === '瘢痕子宫' || diagnosi === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
-      //     const action = showTrialAction(true);
-      //     store.dispatch(action);
-      //   }
-      //   if (diagnosi.indexOf("梅毒") !== -1) {
-      //     if (!userDoc.infectious || (userDoc.infectious && userDoc.infectious.indexOf("梅毒") === -1)) {
-      //       let arr = userDoc.infectious ? userDoc.infectious.split(',') : [];
-      //       arr.push('梅毒');
-      //       userDoc.infectious = arr.join();
-      //       service.savehighriskform(userDoc).then(res => {
-      //         service.getuserDoc().then(res => {
-      //           const action = getUserDocAction(res.object);
-      //           store.dispatch(action);
-      //         })
-      //       });
-      //     }
-      //     const action = showSypAction(true);
-      //     store.dispatch(action);
-      //   }
-      //   service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
-      //     let data = res.object;
-      //     if(data.length > 0) {
-      //       data.map(item => ( item.visible = true ))
-      //     }
-      //     const action = getAlertAction(data);
-      //     store.dispatch(action);
-      //   })
-      //   service.fuzhen.getdiagnosis().then(res => {
-      //     const action = getDiagnisisAction(res.object.list);
-      //     store.dispatch(action);
-      //     this.setState({
-      //       diagnosi: ''
-      //   }, () => {
-      //     if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
-      //       this.updateCheckedKeys();
-      //       const action = showPharAction(true);
-      //       store.dispatch(action);
-      //     }
-      //   })});
-      //   service.getuserDoc().then(res => {
-      //     const action = getUserDocAction(res.object);
-      //     store.dispatch(action);
-      //   })
-      // })
-
-
     } else if (diagnosi) {
       modal('warning', '添加数据重复');
     }
@@ -319,39 +271,6 @@ export default class extends Component{
         })
       });
     }
-
-
-    // service.fuzhen.deldiagnosis(id).then(() => {
-    //   modal('info', '删除诊断信息成功');
-    //   service.fuzhen.getdiagnosis().then(res => {
-    //     const action = getDiagnisisAction(res.object.list);
-    //     store.dispatch(action);
-    //     this.updateCheckedKeys(data);
-
-    //     let hasSyp = false;
-    //     res.object.list && res.object.list.forEach(item => {
-    //       if (item.data.indexOf('梅毒') !== -1) hasSyp = true;
-    //     })
-
-    //     if (!hasSyp && userDoc.infectious && userDoc.infectious.indexOf('梅毒') !== -1) {
-    //       let arr = userDoc.infectious.split(',');
-    //       arr.splice(arr.indexOf('梅毒'), 1);
-    //       userDoc.infectious = arr.join();
-    //       service.savehighriskform(userDoc).then(res => {
-    //         service.getuserDoc().then(res => {
-    //           const action = getUserDocAction(res.object);
-    //           store.dispatch(action);
-    //         })
-    //       });
-    //     } else {
-    //       service.getuserDoc().then(res => {
-    //         const action = getUserDocAction(res.object);
-    //         store.dispatch(action);
-    //       })
-    //     }
-    //   })
-    // })
-
   }
 
   updateCheckedKeys(data) {
@@ -567,8 +486,8 @@ export default class extends Component{
         </div>
         <br/>
         <Row className="shouzhen-left-input font-16">
-          <Col span={1} className="text-right" style={{width:'90px',paddingRight:'5px'}}>
-            <span className="font-18">诊&nbsp;&nbsp;断:</span>
+          <Col span={1} className="text-right" style={{width:'90px',color:'#150F55',paddingRight:'5px'}}>
+            <span className="font-18">诊断:</span>
           </Col>
           <Col span={7} className="shouzhen-pop">
             <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
@@ -600,7 +519,7 @@ export default class extends Component{
             {renderSetModal()}
           </Col>
           <Col span={5}>
-            <Button className="shouzhen-left-button" style={{marginLeft: '0.5em'}} type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>
+            <Button className="shouzhen-left-button" style={{marginLeft: '0.5em', color: '#150F55'}} type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>
           </Col>
         </Row>
       </div>
@@ -696,60 +615,6 @@ export default class extends Component{
       : null
     );
   }
-
-  /**
-   * 模板
-   */
-  // renderTreatment() {
-  //   const { treatTemp, openTemplate, treatKey1, treatKey2 } = this.state;
-  //   const closeDialog = (e, items = []) => {
-  //     this.setState({ openTemplate: false, treatKey1: [], treatKey2: [] });
-  //     items.length > 0 && this.addTreatment(e, items.map(i => i.content).join('； '));
-  //   }
-
-  //   const initTree = (pid, level = 0) => treatTemp.filter(i => i.pid === pid).map(node => (
-  //     <Tree.TreeNode key={node.id} title={node.content}>
-  //       {level < 10 ? initTree(node.id, level + 1) : null}
-  //     </Tree.TreeNode>
-  //   ));
-
-  //   const handleCheck1 = (keys) => {
-  //     this.setState({treatKey1: keys});
-  //     treatTemp.forEach(tt => {
-  //       if (keys.indexOf(`${tt.id}`) !== -1 || treatKey2.indexOf(`${tt.id}`) !== -1) {
-  //         tt.checked = true;
-  //       } else {
-  //         tt.checked = false;
-  //       }
-  //     })
-  //   };
-
-  //   const handleCheck2 = (keys) => {
-  //     this.setState({treatKey2: keys});
-  //     treatTemp.forEach(tt => {
-  //       if (keys.indexOf(`${tt.id}`) !== -1 || treatKey1.indexOf(`${tt.id}`) !== -1) {
-  //         tt.checked = true;
-  //       } else {
-  //         tt.checked = false;
-  //       }
-  //     })
-  //   };
-
-  //   const treeNodes = initTree(0);
-
-  //   return (
-  //     <Modal title="处理模板" closable visible={openTemplate} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
-  //       <Row>
-  //         <Col span={12}>
-  //           <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
-  //         </Col>
-  //         <Col span={12}>
-  //           <Tree checkable defaultExpandAll checkedKeys={treatKey2} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes.slice(treeNodes.length/2)}</Tree>
-  //         </Col>
-  //       </Row>
-  //     </Modal>
-  //   )
-  // }
 
     /**
    * 高危门诊弹窗
@@ -912,8 +777,7 @@ export default class extends Component{
         {formRender(entity, this.topConfig(), this.handleChange.bind(this))}
         {this.renderZD()}
         {formRender(entity, this.config(), this.handleChange.bind(this))}
-        <Button onClick={() =>this.openLisi()}>首检信息历史修改记录</Button>
-        {/* {openTemplate && this.renderTreatment()} */}
+        <Button className="record-btn" icon="record" onClick={() =>this.openLisi()}>首检信息历史修改记录</Button>
         {this.renderMenZhen()}
         {this.renderAdviceModal()}
         {this.renderHighModal()}

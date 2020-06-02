@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button, Table, Modal } from "antd";
+import { Button } from "antd";
 import Page from "../../render/page";
 import "./index.less";
 import service from "../../service";
@@ -292,23 +292,27 @@ export default class Index extends Component {
 
     const canvas = document.getElementById('bmiCanvas');
     const context = canvas.getContext("2d");
-    canvas.width = 700;
-    canvas.height = 520;
-    const baseLeft = 60;
-    const baseTop = 80;
+    canvas.width = 800;
+    canvas.height = 800;
+    context.fillStyle = "#EAEAFD";
+    context.fillRect(0, 0, 800, 800)
+
+    const baseLeft = 130;
+    const baseTop = 230;
     const xStep = 30;
     const yStep = 15;
     const xCount = 14;
     const yCount = 40;
 
+    context.fillStyle = "#000";
     context.font = 'bold 16px KaiTi';
     context.textAlign='center';
-    context.fillText('BMI孕期体重管理曲线', canvas.width / 2, 20);
+    context.fillText('BMI孕期体重管理曲线', canvas.width / 2, baseTop - 60);
     
     context.fillStyle = '#52aaff';
     context.font = 'normal 12px KaiTi';
-    context.fillText(`孕前BMI: ${bmiNum} kg/m2`, canvas.width / 2, 40);
-    context.fillText(bmiIntro, canvas.width / 2, 55);
+    context.fillText(`孕前BMI: ${bmiNum} kg/m2`, canvas.width / 2, baseTop - 40);
+    context.fillText(bmiIntro, canvas.width / 2, baseTop - 20);
 
     context.fillStyle = '#000';
     //x轴线
@@ -326,7 +330,7 @@ export default class Index extends Component {
         context.fillText(i * 2 + (-6), baseLeft - 20, (xCount - 1) * xStep + baseTop - i * xStep);
         context.stroke();
       }
-      context.fillText('体重增长(kg)', baseLeft - 20, 55);
+      context.fillText('体重增长(kg)', baseLeft - 20, baseTop - 20);
     }
 
     //y轴线
@@ -386,18 +390,22 @@ export default class Index extends Component {
   
     const canvas = document.getElementById('fetusCanvas');
     const context = canvas.getContext("2d");
-    canvas.width = 550;
-    canvas.height = 600;
-    const baseLeft = 60;
-    const baseTop = 30;
+    canvas.width = 800;
+    canvas.height = 800;
+    context.fillStyle = "#F4FDEA";
+    context.fillRect(0, 0, 800, 800)
+
+    const baseLeft = 170;
+    const baseTop = 140;
     const xStep = 10;
     const yStep = 15;
     const xCount = 56;
     const yCount = 31;
 
+    context.fillStyle = "#000";
     context.font = 'bold 16px KaiTi';
     context.textAlign='center';
-    context.fillText('胎儿生长曲线', canvas.width / 2, 20);
+    context.fillText('胎儿生长曲线', canvas.width / 2, baseTop - 10);
 
     context.fillStyle = '#000';
 
@@ -506,15 +514,20 @@ export default class Index extends Component {
 
   render() {
     return (
-      <Page className="yunqi font-16 ant-col">
-        <Button type="ghost" className="btn-tz" onClick={() => this.printCanvas('bmiCanvas')}>打印体重曲线</Button>
-        <Button type="ghost" className="btn-sz" onClick={() => this.printCanvas('fetusCanvas')}>打印生长曲线</Button>
-        <canvas id="fetusCanvas" className='fetusCanvas'>
-          您的浏览器不支持canvas，请更换浏览器.
-        </canvas>
-        <canvas id="bmiCanvas" className='bmiCanvas'>
-          您的浏览器不支持canvas，请更换浏览器.
-        </canvas>
+      <Page className="yunqi font-16 ant-col">  
+        <div className="bgWhite" style={{ position: "fixed", top: "104px", left: "0", right: "0", bottom: "0"}}></div>  
+        <div className="fetus-wrapper">
+          <Button icon="print-white" type="ghost" className="print-btn btn-sz" onClick={() => this.printCanvas('fetusCanvas')}>打印生长曲线</Button>
+          <canvas id="fetusCanvas" className='fetusCanvas'>
+            您的浏览器不支持canvas，请更换浏览器.
+          </canvas>
+        </div>
+        <div className="bmi-wrapper">
+          <Button icon="print-white" type="ghost" className="print-btn btn-tz" onClick={() => this.printCanvas('bmiCanvas')}>打印体重曲线</Button>
+          <canvas id="bmiCanvas" className='bmiCanvas'>
+            您的浏览器不支持canvas，请更换浏览器.
+          </canvas>
+        </div>
       </Page>
     );
   }

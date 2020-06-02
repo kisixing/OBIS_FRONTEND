@@ -60,8 +60,13 @@ export default class SYPmodal extends Component {
             { name: 'trust[TRUST滴度]', type: 'input', span: 8 },
           ]
         },
+        // {
+        //   label: '第一疗程', span: 12, className: 'labelclass'
+        // },
         {
-          label: '第一疗程', span: 12, className: 'labelclass'
+          className: 'section-title', columns: [
+            { name: '[第一疗程]', type: '**', span: 8 },
+          ]
         },
         {
           columns:[
@@ -81,8 +86,13 @@ export default class SYPmodal extends Component {
             { name: 'treatment1_transfer3[执行情况]', className: `${sypFormEntity.treatment1_transfer3 === '未执行' ? 'isRed' : ''}`, type: 'input', span: 6 },
           ]
         },
+        // {
+        //   label: '第二疗程', span: 12, className: 'labelclass'
+        // },
         {
-          label: '第二疗程', span: 12, className: 'labelclass'
+          className: 'section-title', columns: [
+            { name: '[第二疗程]', type: '**', span: 8 },
+          ]
         },
         {
           columns:[
@@ -102,8 +112,13 @@ export default class SYPmodal extends Component {
             { name: 'treatment2_transfer3[执行情况]', className: `${sypFormEntity.treatment2_transfer3 === '未执行' ? 'isRed' : ''}`, type: 'input', span: 6 },
           ]
         },
+        // {
+        //   label: 'TRUST随访结果', span: 12, className: 'labelclass'
+        // },
         {
-          label: 'TRUST随访结果', span: 12, className: 'labelclass'
+          className: 'section-title', columns: [
+            { name: '[TRUST随访结果]', className: 'long-label', type: '**', span: 8 },
+          ]
         },
         {
           columns:[

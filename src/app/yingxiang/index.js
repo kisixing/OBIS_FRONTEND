@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button, Table, Modal } from "antd";
+import { Button, Table, Modal } from "antd";
 import Page from '../../render/page';
 import "./index.less";
 import service from "../../service";
@@ -32,12 +32,12 @@ export default class Patient extends Component {
     }
 
     const columns = [
-      { title: '标题', dataIndex: 'title', key: 'title' },
-      { title: '检查日期', dataIndex: 'sendDate', key: 'sendDate',  render: (text, record) => text.substr(0, 10)},
-      { title: '报告医生', dataIndex: 'reportDoctor', key: 'reportDoctor', width: 120 },
-      { title: '诊断', dataIndex: 'diagnosis', key: 'diagnosis', width: 350 },
-      { title: '结论', dataIndex: 'result', key: 'result', width: 400 },
-      { title: '查看报告', key: 'operation', width: 120, render: (text, record) => <Button type="primary" onClick={() => handleBtnClick(text, record)}>查看</Button> },
+      { title: '标题', dataIndex: 'title', key: 'title', width: 331 },
+      { title: '检查日期', dataIndex: 'sendDate', key: 'sendDate', width: 128, render: (text, record) => text && text.substr(0, 10)},
+      { title: '报告医生', dataIndex: 'reportDoctor', key: 'reportDoctor', width: 117 },
+      { title: '诊断', dataIndex: 'diagnosis', key: 'diagnosis', width: 308 },
+      { title: '结论', dataIndex: 'result', key: 'result', width: 531 },
+      { title: '查看报告', key: 'operation', width: 131, render: (text, record) => <Button icon="eye-o" className="eye-btn" onClick={() => handleBtnClick(text, record)}>查看</Button> },
     ];
 
     return (
@@ -63,13 +63,10 @@ export default class Patient extends Component {
 
   render() {
     return (
-      <Page className='yingxiang font-16 ant-col'>
-        <Row>
-          <Col span={18}>
-            {this.renderTable()}
-            {this.renderModal()}
-          </Col>
-        </Row>
+      <Page className='yingxiang'>
+        <div className="bgWhite" style={{ position: "fixed", top: "104px", left: "0", right: "0", bottom: "0"}}></div>
+        {this.renderTable()}
+        {this.renderModal()}
       </Page>
     )
   }

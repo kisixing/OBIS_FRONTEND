@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Tabs, Button, Row, Col,message  } from 'antd';
-
+import { Tabs, Button, Row, Col, message, Icon } from 'antd';
 import Page from '../../render/page';
 import { fireForm } from '../../render/form';
 import service from '../../service';
@@ -661,22 +660,22 @@ export default class Patient extends Component {
         }
         
         return (
-          <Page className="shouzhen pad-T-mid">
-            <Button type="primary" className="top-save-btn" size="small" onClick={() => this.handleSave(step, 'save')}>保存</Button>
-            <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
+          <Page className="shouzhen">
+            <Button icon="save" className="top-save-btn" size="small" onClick={() => this.handleSave(step, 'save')}>保存</Button>
+            <Button icon="print-blue" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
 
-            <div className="bgWhite" style={{ position: "fixed", top: "7.65em", left: "0", right: "0", bottom: "0"}}></div>
+            <div className="bgWhite" style={{ position: "fixed", top: "148px", left: "0", right: "0", bottom: "0"}}></div>
             <Tabs type="card" activeKey={step} onChange={key => setTimeout(() => { this.handleSave(key) }, 100)}> 
               {tabs.map(({ key, title, entity, error, Content }) => (
                 <Tabs.TabPane key={key}
                   tab={
-                    <span style={error ? { color: "red" } : {}}>
+                    <span style={error ? { color: "#FD617F" } : {}}>
                       {error ? ( <i className="anticon anticon-exclamation-circle" />) 
                             : emptyData[key].length===1 ? ( <i className="anticon anticon-check-circle" />) : null}
                       {title}
                     </span>
                   }>
-                  <div className="bgWhite pad-mid " style={{ maxWidth: "1400px" }}>
+                  <div className="bgWhite pad-mid" style={{ maxWidth: "1460px" }}>
                     {step === key ? (<Content info={userDoc} entity={{ ...entity }} onChange={(e, item) => this.handleChange(e, item, entity)}/>) : null}
                   </div>
                 </Tabs.TabPane>
@@ -686,10 +685,10 @@ export default class Patient extends Component {
               <Col span={21} />
               <Col>
                 { step !== tabs[tabs.length - 1].key
-                    ? <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>下一页</Button>
+                    ? <Button className="shouzhen-bbtn" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>下一页<Icon type="arrow-right" /></Button>
                     : <div>
                         {/* <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(step, 'open') }, 100)}>保存并开医嘱</Button> */}
-                        <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>保存</Button>
+                        <Button className="shouzhen-bbtn" type="primary" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>保存<Icon type="save" /></Button>
                       </div>
                 }
               </Col>

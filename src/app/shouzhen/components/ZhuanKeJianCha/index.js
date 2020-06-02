@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import { Modal } from 'antd';
 import formRender from '../../../../render/form';
 import * as baseData from '../../data';
@@ -19,14 +18,14 @@ export default class extends Component {
       step: 1,
       rows: [
         {
-          className: 'zhuanke-group', columns: [
-            { name: 'ckjc[产科检查]', type: '**', span: 8 },
+          className: 'section-title', columns: [
+            { name: '[产科检查]', type: '**', span: 8 },
           ]
         },
         {
           columns:[
             { span: 1 },
-            { name: 'ckgongg[宫高](cm)', type: 'input', span: 4 },
+            { name: 'ckgongg[宫高](cm)', type: 'input', span: 3 },
             { span: 1 },
             // {name:'ckfuw[腹围](cm)', type:'input', span:5}
           ]
@@ -37,9 +36,9 @@ export default class extends Component {
               {
                 columns: [
                   { span: 1, className: 'noContent', name: `[胎${index + 1}]`, type: '**' },
-                  { name: 'tx(bpm)[胎心率]', type: 'input', span: 4, valid: 'required' },
+                  { name: 'tx(bpm)[胎心率]', type: 'input', span: 3, valid: 'required' },
                   { span: 1 },
-                  { name: 'xl[先露]', type: 'select', span: 4, options: baseData2.xlOptions },
+                  { name: 'xl[先露]', type: 'select', span: 3, options: baseData2.xlOptions },
                   { span: 1 },
                   // { name: 'tw[胎位]', type: 'input', span: 5 },
                   // { span: 1 },
@@ -50,7 +49,7 @@ export default class extends Component {
                       Modal.confirm({
                         title: '您是否确认要删除该记录',
                         width: '300',
-                        style: {top:'50%', left: '30%', fontSize: '18px' },
+                        style: {top:'50%', right: '20%', fontSize: '18px' },
                         onOk: () => this.handleChange(e, resolve, index)
                       });
                     }
@@ -66,8 +65,14 @@ export default class extends Component {
           })
         },
         {
-          className: 'zhuanke-group', columns: [
-            { name: 'add_FIELD_gynecological_examination[妇科检查]', type: 'checkinput', radio: true, options: baseData.wjjOptions, span: 8 }
+          className: 'section-title', columns: [
+            { name: '[妇科检查]', type: '**', span: 8 },
+          ]
+        },
+        {
+          columns: [
+            { span: 1 },
+            { name: 'add_FIELD_gynecological_examination', type: 'checkinput', radio: true, options: baseData.wjjOptions, span: 5 }
           ]
         },
         {
@@ -78,18 +83,18 @@ export default class extends Component {
             { name: 'ckyind[阴道]', type: 'editableSelect', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
             { span: 1 },
             { name: 'ckgongj[宫颈]', type: 'editableSelect', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
-            { span: 1 },
-            { name: 'ckgongt[子宫]', type: 'editableSelect', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions }
           ]
         },
         {
           filter: entity => !entity.add_FIELD_gynecological_examination || isShow(entity.add_FIELD_gynecological_examination), columns: [
             { span: 1 },
+            { name: 'ckgongt[子宫]', type: 'editableSelect', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
+            { span: 1 },
             { name: 'ckfuj[附件]', type: 'editableSelect', span: 5, autoInsert: true, showSearch: true, options: baseData.wjycOptions },
           ]
         },
         // {
-        //   className: 'zhuanke-group', columns: [
+        //   className: 'section-title', columns: [
         //     { name: 'gpwcl[骨盆外测量]', type: 'checkinput', radio: true, options: baseData.gwwjjOptions, span: 8 },
         //   ]
         // },
@@ -124,7 +129,7 @@ export default class extends Component {
   render() {
     const { entity, onChange } = this.props;
     return (
-      <div className="width_7 zhuanke">
+      <div className="label-4 zhuanke">
         {/** TODO：这里的数据需要统一结构，最好是直接entity传入表单 */}
         {formRender({ add_FIELD_ckjc: entity.add_FIELD_ckjc || [{}], ...(entity || {}) }, this.config(), onChange)}
       </div>

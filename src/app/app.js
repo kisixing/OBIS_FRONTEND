@@ -481,21 +481,20 @@ export default class App extends Component {
     return (
       <div className="main-header">
         <div className="patient-Info_title font-16">
-          <div><strong>姓名:</strong>{userDoc.username}</div>
-          <div><strong>年龄:</strong>{userDoc.userage}</div>
-          <div><strong>孕周:</strong>{userDoc.tuserweek}</div>
-          <div><strong>孕产:</strong>{userDoc.tuseryunchan}</div>
-          <div><strong>预产期:</strong>{userDoc.gesexpectrv === userDoc.gesexpect ? userDoc.gesexpectrv : `${userDoc.gesexpectrv}(超)`}</div>
-          <div><strong>就诊卡:</strong>{userDoc.usermcno}</div>
-          <div><strong>产检编号:</strong>{userDoc.chanjno}</div>
-          {/* <div><strong>高危因素:</strong><strong className="high-risk">{userDoc.highriskFactor}</strong></div> */}
+          <div>姓名:{userDoc.username}</div>
+          <div>年龄:{userDoc.userage}</div>
+          <div>孕周:{userDoc.tuserweek}</div>
+          <div>孕产:{userDoc.tuseryunchan}</div>
+          <div>预产期:{userDoc.gesexpectrv === userDoc.gesexpect ? userDoc.gesexpectrv : `${userDoc.gesexpectrv}(超)`}</div>
+          <div className="title-small">就诊卡:{userDoc.usermcno}</div>
+          <div className="title-small">产检编号:{userDoc.chanjno}</div>
         </div>
         <p className="patient-Info_tab">
           {routers.map((item, i) => ( item.name === '血糖记录' && !isShowXTRouter ? null
-            : <Button key={"mune" + i} type={this.state.muneIndex != i ? "dashed" : "primary"}
+            : <span key={"mune" + i} className={this.state.muneIndex != i ? "normal-tab" : "active-tab"}
                 onClick={() => { this.setState({ muneIndex: i }); this.onRouterClick(item); }}>
                 {item.name}
-              </Button>
+              </span>
           ))}
         </p>
         <div className="patient-Info_btnList">
@@ -516,7 +515,7 @@ export default class App extends Component {
             </div>
             <div className="high-risk-wrapper">
               <ButtonGroup>
-                <Button className="high-risk-btn">高危因素：</Button>
+                <Button className="high-risk-btn">高危诊断：</Button>
                 <Button className="high-risk-content" title={userDoc.highriskFactor}>{userDoc.highriskFactor ? userDoc.highriskFactor : '无'}</Button>
               </ButtonGroup>
             </div>

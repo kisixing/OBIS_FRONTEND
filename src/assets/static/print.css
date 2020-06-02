@@ -33,6 +33,9 @@
   }
 
   /* 血糖记录打印 */
+  .xt-table .ant-table-title {
+    display: none;
+  }
   .xt-table .ant-table {
     border-collapse: collapse;
     border-spacing: 0;

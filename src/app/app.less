@@ -14,17 +14,35 @@
 }
 .patient-Info_title div {
   display: table-cell;
-  padding-right: 2rem;
+  color: #150F55;
+  font-size: 20px;
+  font-weight: 600;
+  padding-right: 24px;
 }
-.patient-Info_title strong {
-  padding: 0 0.5rem 0 0.6rem;
+.patient-Info_title .title-small {
+  font-size: 14px;
+  font-weight: 400;
+  color: #5A6676;
+  padding-right: 12px;
 }
-.patient-Info_title .high-risk {
-  color: red;
-  font-size: 21px;
-}
-.patient-Info_tab button {
-  margin: 0.5rem 0 0 0.5rem;
+.patient-Info_tab {
+  margin-top: 21px;
+  padding-left: 56px;
+  span {
+    display: inline-block;
+    line-height: 22px;
+    margin-right: 48px;
+    color: #5A6676;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .active-tab {
+    color: #150F55;
+    font-size: 18px;
+    font-weight: 600;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #3D8BF7;
+  }
 }
 .patient-Info_btnList {
   position: absolute;
@@ -46,6 +64,7 @@
   .level-btn {
     width: 80px;
     height: 30px;
+    border-bottom: none;
     border-bottom-left-radius: 0;
   }
   .high-risk-btn {
@@ -55,6 +74,8 @@
     width: 80px;
     height: 50px;
     border-top-left-radius: 0;
+    color: #150F55;
+    background-color: #fff;
   }
   .high-risk-content {
     height: 50px;
@@ -63,6 +84,7 @@
     text-align: left;
     flex: 1;
     border-top-right-radius: 0;
+    background-color: #fff;
     span {
       width: 100%;
       font-size: 16px;
@@ -133,6 +155,7 @@
     white-space: nowrap;
     text-align: left;
     flex: 1;
+    border-bottom: none;
     border-bottom-right-radius: 0;
   }
   .has-infectin {
@@ -144,13 +167,13 @@
   }
   .no-infectin {
     color: #150F55;
-    background-color: #F0F3F5;
+    background-color: #fff;
     &:hover {
-      background-color: #F0F3F5;
+      background-color: #fff;
     }
   }
 }
-.patient-Info_btnList  button {
+.patient-Info_btnList button {
   font-weight: bold;
   letter-spacing: 1px;
   height: 40px;
@@ -213,19 +236,10 @@
   .trial-username {
     font-size: 16px;
   }
-  .ant-modal-title {
-    font-size: 18px;
-  }
-  .ant-tree li {
-    font-size: 16px;
-  }
 }
 
 .phar-modal {
   top: 50px;
-  .ant-modal-title {
-    font-size: 18px;
-  }
   .title {
     width: 100%;
     text-align: center;
@@ -253,9 +267,6 @@
       padding-bottom: 123px;
       margin-bottom: 115px;
     }
-  }
-  .ant-tree li {
-    font-size: 16px;
   }
 }
 

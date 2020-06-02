@@ -42,7 +42,7 @@ export const jiuOptions = toOptions('无,白酒,啤酒,红酒,其他');
 /**
  * 受孕方式
  */
-export const syfsOptions = toOptions('IVF(input){#FF3300}, 自然');
+export const syfsOptions = toOptions('IVF(input){#FC425F}, 自然');
 
 /**
  * 血型O,A,B,AB
@@ -67,12 +67,12 @@ export const xuexing2Options = [
 /**
  * 一般症状
  */
-export const ybzzOptions = toOptions('头晕{#FF3300},头痛{#FF3300},呕吐{#FF3300},胸闷{#FF3300},肚痛{#FF3300},腰酸{#FF3300},流血{#FF3300},白带增多{#FF3300},便秘{#FF3300},抽筋{#FF3300},浮肿{#FF3300},其他{#FF3300}');
+export const ybzzOptions = toOptions('头晕{#FC425F},头痛{#FC425F},呕吐{#FC425F},胸闷{#FC425F},肚痛{#FC425F},腰酸{#FC425F},流血{#FC425F},白带增多{#FC425F},便秘{#FC425F},抽筋{#FC425F},浮肿{#FC425F},其他{#FC425F}');
 
 /**
  * 疾病
  */
-export const jibOptions = toOptions('高血压{#FF3300},心脏病{#FF3300},癫痫{#FF3300},甲亢{#FF3300},甲减{#FF3300},糖尿病{#FF3300},肾脏疾病{#FF3300},风湿{#FF3300},肝脏疾病{#FF3300},肺结核{#FF3300},血栓疾病{#FF3300},地中海贫血{#FF3300},G6PD缺乏症{#FF3300},其他');
+export const jibOptions = toOptions('高血压{#FC425F},心脏病{#FC425F},癫痫{#FC425F},甲亢{#FC425F},甲减{#FC425F},糖尿病{#FC425F},肾脏疾病{#FC425F},风湿{#FC425F},肝脏疾病{#FC425F},肺结核{#FC425F},血栓疾病{#FC425F},地中海贫血{#FC425F},G6PD缺乏症{#FC425F},其他');
 
 /**
  * 宫颈涂片
@@ -82,8 +82,8 @@ export const gjtpOptions = toOptions('正常,异常,未有检查,不清楚');
 /**
  * 血制品
  */
-export const xzpOptions = toOptions([{k:'红细胞{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血小板{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血浆{#FF3300}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'全血{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'白蛋白{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'免疫球蛋白{#FF3300}(shouzhenyy2-时间,医院,原因)',addspan:2},'其他{#FF3300}','不清楚']);
-export const sxsOptions = toOptions(['无', {k:'有{#FF3300}(shouzhenyy-时间,原因)',addspan:2}]);
+export const xzpOptions = toOptions([{k:'红细胞{#FC425F}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血小板{#FC425F}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'血浆{#FC425F}(shouzhenyy-时间,医院,原因)',addspan:2},{k:'全血{#FC425F}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'白蛋白{#FC425F}(shouzhenyy2-时间,医院,原因)',addspan:2},{k:'免疫球蛋白{#FC425F}(shouzhenyy2-时间,医院,原因)',addspan:2},'其他{#FC425F}','不清楚']);
+export const sxsOptions = toOptions(['无', {k:'有{#FC425F}(shouzhenyy-时间,原因)',addspan:2}]);
 
 
 /**
@@ -99,7 +99,7 @@ export const slOptions = toOptions('多,中,少');
 /**
  * 不孕病史 shouzhenyy-x这个是当前模块的编辑组件
  */
-export const bybsOptions = toOptions('输卵管因素{#FF3300},丈夫少精弱精畸精{#FF3300},PCO{#FF3300}（多囊卵巢）,原因不明{#FF3300}'.split(',').map(i=>`${i}(shouzhenyy-发现时间&date,治疗&input)`).concat(['其他{#FF3300}(input)','不清楚{#FF3300}(input)']));
+export const bybsOptions = toOptions('输卵管因素{#FC425F},丈夫少精弱精畸精{#FC425F},PCO{#FC425F}（多囊卵巢）,原因不明{#FC425F}'.split(',').map(i=>`${i}(shouzhenyy-发现时间&date,治疗&input)`).concat(['其他{#FC425F}(input)','不清楚{#FC425F}(input)']));
 
 /**
  * 频率
@@ -119,46 +119,46 @@ export const yesOptions = toOptions('是,否');
 /**
  * 近亲
  */
-export const jinqOptions = toOptions('否,是{#FF3300}');
+export const jinqOptions = toOptions('否,是{#FC425F}');
 
 /**
  *皮肤黏膜
 */
-export const pfOptions = toOptions('正常,苍白{#FF3300},皮下出血{#FF3300}(input),其他{#FF3300}(input)');
+export const pfOptions = toOptions('正常,苍白{#FC425F},皮下出血{#FC425F}(input),其他{#FC425F}(input)');
 
 /**
  *正常、异常
 */
-export const neOptions = toOptions('正常,异常(input){#FF3300}');
+export const neOptions = toOptions('正常,异常(input){#FC425F}');
 
 /**
  *正常、其他
 */
-export const noOptions = toOptions('正常,其他(input){#FF3300}');
+export const noOptions = toOptions('正常,其他(input){#FC425F}');
 
 /**
  *清、其他
 */
-export const coOptions = toOptions('清,其他(input){#FF3300}');
+export const coOptions = toOptions('清,其他(input){#FC425F}');
 
 /**
  *存在、其他
 */
-export const slfsOptions = toOptions('存在,其他(input){#FF3300}');
+export const slfsOptions = toOptions('存在,其他(input){#FC425F}');
 
 /**
  *无、其他
 */
-export const blfsOptions = toOptions('无,其他(input){#FF3300}');
+export const blfsOptions = toOptions('无,其他(input){#FC425F}');
 /**
  *无、其他
 */
-export const eoOptions = toOptions('无,其他(input){#FF3300}');
+export const eoOptions = toOptions('无,其他(input){#FC425F}');
 
 /**
  *正常、畸形
 */
-export const jxOptions = toOptions('正常,畸形{#FF3300}');
+export const jxOptions = toOptions('正常,畸形{#FC425F}');
 
 /**
  *无、有
@@ -167,9 +167,9 @@ export const hnOptions = toOptions('无,有');
 /**
  *有、无
 */
-export const nhOptions = toOptions('无,有(input){#FF3300}');
+export const nhOptions = toOptions('无,有(input){#FC425F}');
 
-export const wssOptions = toOptions(['无', {k:'有{#FF3300}(input)',addspan:2}]);
+export const wssOptions = toOptions(['无', {k:'有{#FC425F}(input)',addspan:2}]);
 
 export const noneOptions = toOptions('以上皆无');
 /**
@@ -184,17 +184,17 @@ export const zsOptions = toOptions('无不适,胎动好,无不适，胎动好');
 /**
  *心率
 */
-export const xinlvOptions = toOptions('齐,不齐{#FF3300}(input)');
+export const xinlvOptions = toOptions('齐,不齐{#FC425F}(input)');
 
 /**
  *触及
 */
-export const cjOptions = toOptions('未触及,可触及{#FF3300}(input)');
+export const cjOptions = toOptions('未触及,可触及{#FC425F}(input)');
 
 /**
  *肾区叩痛
 */
-export const sktOptions = toOptions('无,有（左）{#FF3300},有（右）{#FF3300}');
+export const sktOptions = toOptions('无,有（左）{#FC425F},有（右）{#FC425F}');
 
 /**
  *下肢浮肿
@@ -204,53 +204,53 @@ export const xzfOptions = toOptions('-,+,+-,++,+++');
 /**
  *双膝反射
 */
-export const sxfOptions = toOptions('存在,亢起{#FF3300},消失{#FF3300},引不起{#FF3300}');
+export const sxfOptions = toOptions('存在,亢起{#FC425F},消失{#FC425F},引不起{#FC425F}');
 
 /**
  *乙肝两对半
 */
-// export const ygOptions = toOptions('正常,阳性{#FF3300}(input),小三阳{#FF3300},大三阳{#FF3300},慢活肝{#FF3300},未查{#FF3300}');
-export const ygOptions = toOptions('正常,异常{#FF3300}(input),未查{#FF3300}');
+// export const ygOptions = toOptions('正常,阳性{#FC425F}(input),小三阳{#FC425F},大三阳{#FC425F},慢活肝{#FC425F},未查{#FC425F}');
+export const ygOptions = toOptions('正常,异常{#FC425F}(input),未查{#FC425F}');
 /**
  *阴阳未查
 */
-export const yywOptions = toOptions('阴性,阳性{#FF3300}(input),未查{#FF3300}');
+export const yywOptions = toOptions('阴性,阳性{#FC425F}(input),未查{#FC425F}');
 
 /**
  *阴阳未查、其他
 */
-export const yyw2Options = toOptions('阴性,阳性{#FF3300},未查{#FF3300},其他{#FF3300}(input)');
+export const yyw2Options = toOptions('阴性,阳性{#FC425F},未查{#FC425F},其他{#FC425F}(input)');
 
 /**
  *梅毒
 */
-export const mdOptions = toOptions(['阴性',{k:'阳性{#FF3300}(shouzhenyy-TPPA滴度,TRUST滴度)',addspan:4},'未查{#FF3300}','其他{#FF3300}(input)']);
+export const mdOptions = toOptions(['阴性',{k:'阳性{#FC425F}(shouzhenyy-TPPA滴度,TRUST滴度)',addspan:4},'未查{#FC425F}','其他{#FC425F}(input)']);
 
 /**
  *OGTT
 */
-export const ogttOptions = toOptions(['正常',{k:'GDM{#FF3300}(shouzhenyy-空腹血糖（mmol/L）,餐后1H血糖,餐后2H血糖)',addspan:4},'未查{#FF3300}']);
+export const ogttOptions = toOptions(['正常',{k:'GDM{#FC425F}(shouzhenyy-空腹血糖（mmol/L）,餐后1H血糖,餐后2H血糖)',addspan:4},'未查{#FC425F}']);
 
 /**
  *地贫
 */
-// export const dpOptions = toOptions('正常,甲型{#FF3300}(input),乙型{#FF3300}(input),未查{#FF3300},其他{#FF3300}(input)');
-export const dpOptions = toOptions('α型{#FF3300}(input),β型{#FF3300}(input),未查{#FF3300},其他{#FF3300}(input)');
+// export const dpOptions = toOptions('正常,甲型{#FC425F}(input),乙型{#FC425F}(input),未查{#FC425F},其他{#FC425F}(input)');
+export const dpOptions = toOptions('α型{#FC425F}(input),β型{#FC425F}(input),未查{#FC425F},其他{#FC425F}(input)');
 
 /**
  *尿蛋白
 */
-export const dbnOptions = toOptions('阴性,弱阳性{#FF3300},阳性{#FF3300}(input),未查{#FF3300},其他{#FF3300}(input)');
+export const dbnOptions = toOptions('阴性,弱阳性{#FC425F},阳性{#FC425F}(input),未查{#FC425F},其他{#FC425F}(input)');
 
 /**
  *药物或食物过敏史
 */
-export const ywgmOptions = toOptions('药物{#FF3300}(input),食物{#FF3300}(input),其他{#FF3300}(input)');
+export const ywgmOptions = toOptions('药物{#FC425F}(input),食物{#FC425F}(input),其他{#FC425F}(input)');
 
 /**
  *个人史
 */
-export const grsOptions = toOptions(['吸烟{#FF3300}(input)[支/天]','饮酒{#FF3300}(input)[ml/天]','接触有害物质{#FF3300}(input)','接触放射线{#FF3300}(input)',{k:'服用药物{#FF3300}(input-诊断&用药&剂量&备注)',addspan:2},'其他{#FF3300}(input)']);
+export const grsOptions = toOptions(['吸烟{#FC425F}(input)[支/天]','饮酒{#FC425F}(input)[ml/天]','接触有害物质{#FC425F}(input)','接触放射线{#FC425F}(input)',{k:'服用药物{#FC425F}(input-诊断&用药&剂量&备注)',addspan:2},'其他{#FC425F}(input)']);
 
 /**
  *叶酸
@@ -259,17 +259,17 @@ export const ysOptions = toOptions('孕前服用,孕期服用');
 /**
  *家族史
 */
-export const jzsOptions = toOptions('多胎{#FF3300},死胎/死产{#FF3300},先天畸形{#FF3300},精神病{#FF3300},痴呆{#FF3300},先天智力低下{#FF3300},肿瘤{#FF3300},心脏病{#FF3300},高血压{#FF3300},糖尿病{#FF3300},其他{#FF3300}(input)');
+export const jzsOptions = toOptions('多胎{#FC425F},死胎/死产{#FC425F},先天畸形{#FC425F},精神病{#FC425F},痴呆{#FC425F},先天智力低下{#FC425F},肿瘤{#FC425F},心脏病{#FC425F},高血压{#FC425F},糖尿病{#FC425F},其他{#FC425F}(input)');
 
 /**
  *遗传病
 */
-export const ychOptions = toOptions('先天畸形{#FF3300},先天性聋哑{#FF3300},先天智力低下{#FF3300},先天心脏病{#FF3300},G6PD缺乏症{#FF3300},地中海贫血{#FF3300},血友病{#FF3300},白化病{#FF3300},原发高血压{#FF3300},糖尿病{#FF3300},肿瘤{#FF3300},其他{#FF3300}(input)');
+export const ychOptions = toOptions('先天畸形{#FC425F},先天性聋哑{#FC425F},先天智力低下{#FC425F},先天心脏病{#FC425F},G6PD缺乏症{#FC425F},地中海贫血{#FC425F},血友病{#FC425F},白化病{#FC425F},原发高血压{#FC425F},糖尿病{#FC425F},肿瘤{#FC425F},其他{#FC425F}(input)');
 
 /**
  *尿蛋白
 */
-export const xOptions = toOptions('阴性,弱阳性{#FF3300},阳性{#FF3300},未查{#FF3300},其他{#FF3300}(input)');
+export const xOptions = toOptions('阴性,弱阳性{#FC425F},阳性{#FC425F},未查{#FC425F},其他{#FC425F}(input)');
 
 /**
  * 未做检查,拒绝检查
@@ -289,12 +289,12 @@ export const wjycOptions = toOptions('未见异常');
 /**
  * 高风险、低风险 
  */
-export const fxOptions = toOptions('低风险,高风险{#FF3300}');
+export const fxOptions = toOptions('低风险,高风险{#FC425F}');
 
 /**
  * 产前诊断
  */
-export const cqzdOptions = toOptions('正常,异常{#FF3300},拒绝产前诊断和知情同意书');
+export const cqzdOptions = toOptions('正常,异常{#FC425F},拒绝产前诊断和知情同意书');
 
 /**
  * 末次月经不详
@@ -513,7 +513,7 @@ export const pregnanciesColumns = [
 				title: '出生体重(kg)',
 				key: 'tizh',
 				type: 'input',
-				width: 120,
+				width: 200,
 			}
 		]
 	},

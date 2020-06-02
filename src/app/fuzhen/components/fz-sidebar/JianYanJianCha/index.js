@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import formRender from '../../../../../render/form';
 import * as baseData from '../../../../shouzhen/data';
 
@@ -17,18 +16,18 @@ export default class extends Component{
       rows: [
         {
           columns:[
-            {name:'husbandCkxuex[男方血型]', icon:'male-Gender', type: 'select',span:3, options: baseData.xuexingOptions},
+            {name:'husbandCkxuex[男方血型]', className: 'hide-icon', icon:'male-Gender', type: 'select',span:3, options: baseData.xuexingOptions},
             {name:'husbandRh[]', type: 'select',span:2, options: baseData.xuexing2Options},
             {span: 1},
-            {name:'husbandThalassemia[男方地贫]', className: 'short-dipin', icon:'male-Gender', type:'checkinput-5', unselect: '正常', valid: 'required', options: baseData.dpOptions,span:15}
+            {name:'husbandThalassemia[男方地贫]', className: 'short-dipin', icon:'male-Gender', type:'checkinput-5', unselect: '正常', valid: 'required', options: baseData.dpOptions, span: 18}
           ]
         },
         {
           columns:[
-            {name:'ckxuex[女方血型]', icon:'female-Gender', type: 'select',span:3, options: baseData.xuexingOptions},
+            {name:'ckxuex[女方血型]', className: 'hide-icon', icon:'female-Gender', type: 'select',span:3, options: baseData.xuexingOptions},
             {name:'ckrh[]', type: 'select',span:2, options: baseData.xuexing2Options},
             {span:1},
-            {name:'thalassemia[女方地贫]', className: 'short-dipin', icon:'female-Gender', type:'checkinput-5', unselect: '正常', valid: 'required', options: baseData.dpOptions,span:15}
+            {name:'thalassemia[女方地贫]', className: 'short-dipin', icon:'female-Gender', type:'checkinput-5', unselect: '正常', valid: 'required', options: baseData.dpOptions, span: 18}
           ]
         },
         {
@@ -56,42 +55,42 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'hbsAg[乙肝两对半]', className: 'yi-gan', type:'checkinput-5',valid: 'required', options: baseData.ygOptions,radio:true,span:12},
+            {name:'hbsAg[乙肝两对半]', className: 'add-ipt', type:'checkinput-5',valid: 'required', options: baseData.ygOptions,radio:true,span:12},
             {name:'hbsAgDNA(IU/ml)[HBV DNA]', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
-            {name:'hbsAgALT(U/L)[ALT]', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
-            {name:'hbsAgAST(U/L)[AST]', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'}
+            {name:'hbsAgALT(U/L)[ALT]', className: 'label-right', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
+            {name:'hbsAgAST(U/L)[AST]', className: 'label-right', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'}
           ]
         },
         {
           columns:[
-            {name:'hcvAb[丙肝抗体]', type:'checkinput-5',valid: 'required', options: baseData.yywOptions,radio:true,span:12},
+            {name:'hcvAb[丙肝抗体]', className: 'add-ipt', type:'checkinput-5',valid: 'required', options: baseData.yywOptions,radio:true,span:12},
             {name:'hcvAbRNA[丙肝RNA]', type:'checkinput-5', options: baseData.yywOptions,radio:true,span:12,
              filter: entity => entity.hcvAb && entity.hcvAb[0] && entity.hcvAb[0].label === '阳性'}
           ]
         },
         {
           columns:[
-            {name:'rpr[梅毒]', className: 'short-item rpr', type:'checkinput-5',radio:true, valid: 'required', options: baseData.mdOptions,span:24}
+            {name:'rpr[梅毒]', className: 'short-item2 rpr2', type:'checkinput-5',radio:true, valid: 'required', options: baseData.mdOptions,span:24}
           ]
         },
         {
           columns:[
-            {name:'aids[HIV]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:12}
+            {name:'aids[HIV]', className: 'add-ipt', type:'checkinput-5', radio:true, valid: 'required', options: baseData.yywOptions,span:12}
           ]
         },
         {
           columns:[
-            {name:'gbs[GBS]', type:'checkinput-5',radio:true, valid: 'required', options: baseData.yywOptions,span:12}
+            {name:'gbs[GBS]', className: 'add-ipt', type:'checkinput-5', radio:true, valid: 'required', options: baseData.yywOptions,span:12}
           ]
         },
         {
           columns:[
-            {name:'ogtt[OGTT]', className: 'short-item', type:'checkinput-5',radio:true, valid: 'required', options: baseData.ogttOptions,span:24}
+            {name:'ogtt[OGTT]', className: 'short-item2', type:'checkinput-5',radio:true, valid: 'required', options: baseData.ogttOptions,span:24}
           ]
         },
         {
           columns:[
-            {name:'add_FIELD_early_downs_syndrome[早唐]', className: 'short-syndrome', type:'checkinput-2', radio:true, options: baseData.fxOptions, span: 6},
+            {name:'add_FIELD_early_downs_syndrome[早唐]', className: 'short-syndrome2', type:'checkinput-2', radio:true, options: baseData.fxOptions, span: 6},
             {name:'add_FIELD_mk_downs_syndrome[中唐]', type:'checkinput-2', radio:true, options: baseData.fxOptions, span: 6},
             {name:'add_FIELD_nipt[NIPT]', className: 'short-syndrome', type:'checkinput-2', radio:true, options: baseData.fxOptions, span: 6},
           ]
@@ -108,7 +107,7 @@ export default class extends Component{
   render(){
     const { entity, onChange } = this.props;
     return (
-      <div className="width_7 jian-yan-jc">
+      <div className="jian-yan-jc">
         {formRender(entity, this.config(), onChange)}
       </div>
     )

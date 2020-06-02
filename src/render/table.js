@@ -315,21 +315,19 @@ class MTable extends Component {
     return (
       <div>
         {buttons ? (
-          <Button.Group style={{ marginBottom: "5px" }}>
+          <div className="table-btns">
             {buttons.map((btn, i) => (
               <Button
                 key={`btn-${i}`}
+                icon={btn.title === '添加' ? 'plus-circle-o' : 'delete'}
                 size={buttonSize}
                 onClick={() => btn.fn(selected, rowIndex)}
-                style={{
-                  height: buttonSize === "default" ? "30px" : "initial",
-                  fontSize: '14px'
-                }}
+                className={btn.title === '添加' ? 'btn-add' : 'btn-delete'}
               >
                 {btn.title}
               </Button>
             ))}
-          </Button.Group>
+          </div>
         ) : null}
         <Table
           {...props}
