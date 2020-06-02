@@ -473,6 +473,8 @@ export default class App extends Component {
       service.getuserDoc().then(res => {
         this.setState({ ...res.object, highriskEntity: { ...res.object }})
       })
+    }
+    const handleSyp = () => {
       if (userDoc.infectious && userDoc.infectious.indexOf('梅毒') !== -1) {
         const action = showSypAction(true);
         store.dispatch(action);
@@ -508,7 +510,7 @@ export default class App extends Component {
                     onClick={()=>handleDanger()}>
                   {!!userDoc.risklevel ? userDoc.risklevel : 'Ⅰ'}
                 </Button>
-                <Button className={userDoc.infectious ? "danger-btn-infectin has-infectin" : "danger-btn-infectin no-infectin"} onClick={()=>handleDanger()} title={userDoc.infectious}>
+                <Button className={userDoc.infectious ? "danger-btn-infectin has-infectin" : "danger-btn-infectin no-infectin"} onClick={()=>handleSyp()} title={userDoc.infectious}>
                   {userDoc.infectious ? userDoc.infectious : '传染病：无'}
                 </Button>
               </ButtonGroup>
@@ -686,7 +688,7 @@ export default class App extends Component {
           {router(routers.filter(i => !!i.component))}
         </div>
         <div>{this.renderDanger()}</div>
-        {/* {this.renderHighrisk()} */}
+        {this.renderHighrisk()}
         {this.renderTrialModal()}
         {this.renderPharModal()}
         {isShowReminderModal && <ReminderModal />}

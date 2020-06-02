@@ -59,6 +59,9 @@ export default class Patient extends Component {
             // 如果想要使下面的数据转换放到对应的tab文件里面去，请实现entityParse这个方法，参考tab-0：yunfuxinxi.js这个文件
             const entityParse = tab.entityParse || (i => i);
             tab.entity = entityParse(allFormData);
+            
+            console.log(tab.key, tab.entity);
+            this.setState({ step });
 
             if (tab.key === 'tab-0') {
                 tab.entity = service.praseJSON(allFormData.pregnantInfo);
@@ -146,8 +149,6 @@ export default class Patient extends Component {
             } else {
                 tab.entity = service.praseJSON(allFormData);
             }
-            console.log(tab.key, tab.entity);
-            this.setState({ step });
         }
     }
 
