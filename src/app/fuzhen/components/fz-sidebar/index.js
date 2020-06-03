@@ -26,7 +26,6 @@ export default class Index extends Component {
     super(props);
     this.state = {
       loading: true,
-      info: {},
       diagnosi: '',
       diagnosislist: null,
       relatedObj: {},
@@ -491,7 +490,7 @@ export default class Index extends Component {
   }
 
   renderLeft() {
-    const { reportStr, planData, collapseActiveKey, jyEntity, info, loading, unusualFlag, allFormData } = this.state;
+    const { reportStr, planData, collapseActiveKey, jyEntity, loading, unusualFlag, allFormData } = this.state;
     /**
    * 检验报告结果
    */
@@ -573,7 +572,7 @@ export default class Index extends Component {
      * 诊疗计划管理
      */
     const renderPlanModal = () => {
-      const { isShowPlanModal, info } = this.state;
+      const { isShowPlanModal, userDoc } = this.state;
       const handleClick = () => {
         this.setState({isShowPlanModal: false})
       }
@@ -582,7 +581,7 @@ export default class Index extends Component {
       }
       return (
         <Modal width="80%" footer={null} title="诊疗计划" visible={isShowPlanModal} onCancel={() => handleClick(false)}>
-          <PlanTable info={info} onReturn={(param) => this.setState({isShowPlanModal: param})} changeRecentRvisit={changeRecentRvisit} />
+          <PlanTable info={userDoc} onReturn={(param) => this.setState({isShowPlanModal: param})} changeRecentRvisit={changeRecentRvisit} />
         </Modal>
       )
     }
@@ -739,10 +738,10 @@ export default class Index extends Component {
     return (
       <div className="fuzhen-left ant-col-5">
         <Collapse defaultActiveKey={collapseActiveKey}>
-          <Panel header={<span>诊 断<Button type="ghost" className="header-btn" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
+          <Panel header={<span>诊 断<Button icon="record" type="dashed" className="header-btn" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
             { this.renderZD() }
           </Panel>
-          <Panel className="panel-jy" header={<span>缺少检验报告<Button type="ghost" className={unusualFlag === '1' ? "header-btn isUnusual" : "header-btn"} size="small" onClick={e => handleOtherClick(e) }>必查清单</Button></span>} key="2">
+          <Panel className="panel-jy" header={<span>缺少检验报告<Button icon="list" type="dashed" className={unusualFlag === '1' ? "header-btn isUnusual" : "header-btn"} size="small" onClick={e => handleOtherClick(e) }>必查清单</Button></span>} key="2">
             {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : <p className="pad-small">{reportStr || '无'}</p>}
           </Panel>
           
@@ -750,7 +749,7 @@ export default class Index extends Component {
               {allFormData && formRender(allFormData.lis, cqCnfig(), cqChange)}
           </Panel>
 
-          <Panel header={<span>诊疗计划<Button type="ghost" className="header-btn" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button></span>} key="4">
+          <Panel header={<span>诊疗计划<Button icon="manage" type="dashed" className="header-btn" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button></span>} key="4">
             <Timeline className="pad-small">
               {loading 
                 ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> 

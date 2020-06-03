@@ -100,6 +100,9 @@ html, body {
 	background-color: transparent;
 }
 .margin-TB-mid {
+	display: flex;
+	align-items: center;
+	color: #535881;
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
 }
@@ -334,6 +337,21 @@ html, body {
 .ant-select {
 	color: #150F55;
 }
+.ant-btn-ghost {
+	color: #150F55;
+	&:hover {
+		color: #150F55;
+		border-color: #D7DCE7;;
+	}
+}
+.ant-btn-primary {
+	background-color: #007AFF;
+	border-color: #007AFF;
+	&:hover {
+		background-color: #007AFF;
+		border-color: #007AFF;
+	}
+}
 .label-right .form-item .form-label {
 	text-align: right;
 }
@@ -368,22 +386,22 @@ html, body {
 }
 
 .label-3 {
-	.form-item .form-label, .row-label {
+	.form-item .form-label {
 		width: 90px !important;
 	}
 }
 .label-4 {
-	.form-item .form-label, .row-label {
+	.form-item .form-label {
 		width: 100px !important;
 	}
 }
 .label-5 {
-	.form-item .form-label, .row-label {
+	.form-item .form-label {
 		width: 110px !important;
 	}
 }
 .label-6 {
-	.form-item .form-label, .row-label {
+	.form-item .form-label {
 		width: 130px !important;
 	}
 }
@@ -404,7 +422,7 @@ html, body {
 }
 .ant-table-thead>tr>th {
 	text-align: center;
-	font-weight: 500;
+	font-weight: 600;
 	color: #150F55;
 	background-color: #F5F6FA;
 	border-right: 1px solid #D7DCE7;
@@ -452,6 +470,18 @@ html, body {
 	width: 18px;
 	height: 18px;
 	background: url("../assets/static-img/record.png") no-repeat center;
+	background-size: 100% 100%;
+}
+.anticon-list {
+	width: 18px;
+	height: 18px;
+	background: url("../assets/static-img/list.png") no-repeat center;
+	background-size: 100% 100%;
+}
+.anticon-manage {
+	width: 18px;
+	height: 18px;
+	background: url("../assets/static-img/manage.png") no-repeat center;
 	background-size: 100% 100%;
 }
 .anticon-female-Gender {

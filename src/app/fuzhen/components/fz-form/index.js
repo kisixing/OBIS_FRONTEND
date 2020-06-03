@@ -39,10 +39,7 @@ export default class FuzhenForm extends Component {
       addNum: 0,
       totalNum: 0,
       error: {},
-      // treatTemp: [],
       openTemplate: false,
-      // treatKey1: [],
-      // treatKey2: [],
       lisImportTree: null,
       openListImport: false,
       lisExpandedKeys: '',
@@ -191,9 +188,11 @@ export default class FuzhenForm extends Component {
                     rows: [
                       {
                         label: `胎${index+1}`, columns: [
-                          { name: 'location[位置]', type: 'select', span: 6, showSearch:true, options: baseData.wzOptions },
-                          { name: 'taix(bmp)[胎心率]', type: 'input', span: 6 },
-                          { name: 'xianl[先露]', type: 'select', span: 6, showSearch:true, options: baseData.xlOptions },
+                          { name: 'location[位置]', type: 'select', span: 5, showSearch:true, options: baseData.wzOptions },
+                          { span: 1 },
+                          { name: 'taix(bmp)[胎心率]', type: 'input', span: 5 },
+                          { span: 1 },
+                          { name: 'xianl[先露]', type: 'select', span: 5, showSearch:true, options: baseData.xlOptions },
                           { span: 1 },
                           {
                             name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
@@ -212,13 +211,13 @@ export default class FuzhenForm extends Component {
                             onClick: (e, text, resolve) => this.handleBtnChange(e, 'fetalCondition')},
                           { span: 1 },
                           { 
-                            name: 'singleflag', type: 'button', shape: "circle", icon: "cross", span: 1, size: 'small', 
+                            name: 'singleflag', type: 'button', shape: "circle", icon: "rollback", span: 1, size: 'small', 
                             filter: entity => index === 0,
                             onClick: (e, text, resolve) => {
                               Modal.confirm({
                                 title: '您是否确认要转换回单胎表单',
                                 width: '320',
-                                style: {top:'50%', left: '30%', fontSize: '18px' },
+                                style: {top:'50%', left: '10%', fontSize: '18px' },
                                 onOk: () =>  this.handleChange(e, {
                                   name: 'singleflag',
                                   value: '1'
@@ -259,9 +258,11 @@ export default class FuzhenForm extends Component {
             rows: [
               {
                 label: `胎${index+1}超声`, columns: [
-                  { name: 'tetz(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 6 },
-                  { name: 'teafv(MM)[AVF]', type: 'input', className: 'childLabel', span: 6 },
-                  { name: 'teqxl[脐血流]', type: 'input', className: 'childLabel', span: 6 },
+                  { name: 'tetz(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 5 },
+                  { span: 1 },
+                  { name: 'teafv(MM)[AVF]', type: 'input', className: 'childLabel', span: 5 },
+                  { span: 1 },
+                  { name: 'teqxl[脐血流]', type: 'input', className: 'childLabel', span: 5 },
                   { span: 1 },
                   {
                     name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
@@ -285,26 +286,31 @@ export default class FuzhenForm extends Component {
         },
         {
           filter:()=>check('diabetes'), columns:[
-            { name: 'fpg(mmol/L)[空腹血糖]', type: 'input', span: 6 },
-            { name: 'pbg2h(mmol/L)[餐后2H血糖]', type: 'input', span:6 },
-            { name: 'hbAlc(%)[HbAlc]', type: 'input', span: 6 }
+            { name: 'fpg(mmol/L)[空腹血糖]', type: 'input', span: 5 },
+            { span: 1 },
+            { name: 'pbg2h(mmol/L)[餐后2H血糖]', type: 'input', className: 'long-label', span: 5 },
+            { span: 1 },
+            { name: 'hbAlc(%)[HbAlc]', type: 'input', span: 5 }
           ]
         },
         {
           filter:()=>check('diabetes'), label:'胰岛素方案', columns:[
-            { name: 'riMo(U)[早]', span: 6, 
+            { name: 'riMo(U)[早]', span: 5, 
               type: [{type:'editableSelect', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
                     {type:'input', placeholder:'剂量', span:8}] 
             },
-            { name: 'riNo(U)[中]', span: 6, 
+            { span: 1 },
+            { name: 'riNo(U)[中]', span: 5, 
               type: [{type:'editableSelect', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
                     {type:'input', placeholder:'剂量', span:8}]
             },
-            { name: 'riEv(U)[晚]', span: 6, 
+            { span: 1 },
+            { name: 'riEv(U)[晚]', span: 5, 
               type: [{type:'editableSelect', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
                     {type:'input',placeholder:'剂量', span:8}] 
             },
-            { name: 'riSl(U)[睡前]', span: 6, 
+            { span: 1 },
+            { name: 'riSl(U)[睡前]', span: 5, 
               type: [{type:'editableSelect', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
                     {type:'input',placeholder:'剂量', span:8}] 
             },
@@ -316,8 +322,9 @@ export default class FuzhenForm extends Component {
               columns: [
                 {
                   label: '尿蛋白', span: 12, columns: [
-                    { name: 'upState[定性]', type: 'input', span: 12 },
-                    { name: 'upDosage24h[24H定量]', type: 'input', span: 12 },
+                    { name: 'upState[定性]', type: 'input', span: 10 },
+                    { span: 2 },
+                    { name: 'upDosage24h[24H定量]', type: 'input', span: 10 },
                   ]
                 },
                 {
@@ -357,14 +364,15 @@ export default class FuzhenForm extends Component {
           filter:()=>check('coronary'), rows: [
             {
               columns: [
-                { name: 'heartRate(次/分)[心率]', type: 'input', span: 6 },
+                { name: 'heartRate(次/分)[心率]', type: 'input', span: 5 },
+                { span: 7 },
                 { name: 'otherAbnormalSigns[其他异常体征]', type: 'input', className: 'long-label', span: 12 },
               ]
             },
             {
               columns: [
                 {
-                  label: '用药方案', name: 'medicationPlan', span: 18, filter:()=>!check('hypertension'), groups: index => ({
+                  label: '用药方案', name: 'medicationPlan', span: 12, filter:()=>!check('hypertension'), groups: index => ({
                     rows: [
                       {
                         columns:[
@@ -415,11 +423,11 @@ export default class FuzhenForm extends Component {
         {
           columns:[
             { name: 'examination[检验检查]', className: "examination-btn", type: 'buttons', span: 12,
-              text: '(green)[检验结果导入],(green)[超声结果导入]',
+              text: '(#535881)[检验结果导入],(#535881)[超声结果导入]',
               onClick: this.handleTreatmentClick.bind(this)
             },
             { name:'treatment[模板]', type: 'buttons',span: 12, 
-              text: '(green)[糖尿病日间门诊],(#1890ff)[更多]',
+              text: '(#535881)[糖尿病日间门诊],(#150F55)[更多]',
               onClick: this.handleTreatmentClick.bind(this)
             }
           ]
@@ -427,9 +435,9 @@ export default class FuzhenForm extends Component {
         {
           columns:[
             { name: 'rvisitOsType[下次复诊]', type:'select', placeholder: '门诊类型', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
-            { name: 'ckappointmentWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
+            { name: 'ckappointmentWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 2 },
             { name: 'ckappointment', type:'date', placeholder: '日期', valid: 'required', span: 3 },
-            { name: 'ckappointmentArea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
+            { name: 'ckappointmentArea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 2 },
           ]
         }
       ]
@@ -481,13 +489,6 @@ export default class FuzhenForm extends Component {
       })
     }
   }
-
-  // getTreatTemp() {
-  //   service.fuzhen.treatTemp().then(res => this.setState({ 
-  //     treatTemp: res.object,
-  //     openTemplate: true
-  //   }));
-  // }
 
   getLisImport() {
     service.fuzhen.getLisImportTree().then(res => {
@@ -814,60 +815,6 @@ export default class FuzhenForm extends Component {
   }
 
   /**
-   * 模板
-   */
-  // renderTreatment() {
-  //   const { treatTemp, openTemplate, treatKey1, treatKey2 } = this.state;
-  //   const closeDialog = (e, items = []) => {
-  //     this.setState({ openTemplate: false, treatKey1: [], treatKey2: [] });
-  //     items.length > 0 && this.addTreatment(e, items.map(i => i.content).join('； '));
-  //   }
-
-  //   const initTree = (pid, level = 0) => treatTemp.filter(i => i.pid === pid).map(node => (
-  //     <Tree.TreeNode key={node.id} title={node.content}>
-  //       {level < 10 ? initTree(node.id, level + 1) : null}
-  //     </Tree.TreeNode>
-  //   ));
-
-  //   const handleCheck1 = (keys) => {
-  //     this.setState({treatKey1: keys});
-  //     treatTemp.forEach(tt => {
-  //       if (keys.indexOf(`${tt.id}`) !== -1 || treatKey2.indexOf(`${tt.id}`) !== -1) {
-  //         tt.checked = true;
-  //       } else {
-  //         tt.checked = false;
-  //       }
-  //     })
-  //   };
-
-  //   const handleCheck2 = (keys) => {
-  //     this.setState({treatKey2: keys});
-  //     treatTemp.forEach(tt => {
-  //       if (keys.indexOf(`${tt.id}`) !== -1 || treatKey1.indexOf(`${tt.id}`) !== -1) {
-  //         tt.checked = true;
-  //       } else {
-  //         tt.checked = false;
-  //       }
-  //     })
-  //   };
-
-  //   const treeNodes = initTree(0);
-
-  //   return (
-  //     <Modal title="处理模板" closable visible={openTemplate} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
-  //       <Row>
-  //         <Col span={12}>
-  //           <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
-  //         </Col>
-  //         <Col span={12}>
-  //           <Tree checkable defaultExpandAll checkedKeys={treatKey2} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes.slice(treeNodes.length/2)}</Tree>
-  //         </Col>
-  //       </Row>
-  //     </Modal>
-  //   )
-  // }
-
-  /**
    * 检验结果导入
    */
   renderLisImport() {
@@ -943,9 +890,11 @@ export default class FuzhenForm extends Component {
     const { initData } = this.props;
     return (
       <div className="fuzhen-form">
-        <strong className="fuzhen-form-TIT">本次产检记录</strong>
-        {formRender(initData, this.formConfig(), this.handleChange.bind(this))}
-        <div style={{ minHeight: '32px', textAlign: 'right' }}>
+        <strong>本次产检记录</strong>
+        <div className="label-4 record-form">
+          {formRender(initData, this.formConfig(), this.handleChange.bind(this))}
+        </div>
+        <div style={{ minHeight: '32px', textAlign: 'center' }}>
           <Button className="fz-save-btn" icon="save" type="primary"
             onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form")), 100)}>
             保存
@@ -955,7 +904,6 @@ export default class FuzhenForm extends Component {
             保存并开立医嘱
           </Button> */}
         </div>
-        {/* {openTemplate && this.renderTreatment()} */}
         {openListImport && this.renderLisImport()}
         {this.renderMenZhen()}
         {this.renderAdviceModal()}

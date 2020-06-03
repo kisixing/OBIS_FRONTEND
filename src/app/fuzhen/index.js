@@ -20,10 +20,6 @@ import { isFormChangeAction, openYCQAction, getUserDocAction, fzListAction, getI
 import "../index.less";
 import "./index.less";
 
-function modal(type, title) {
-  message[type](title, 3)
-}
-
 export default class FuZhen extends Component {
   constructor(props) {
     super(props);
@@ -155,27 +151,34 @@ export default class FuZhen extends Component {
       }
     }
 
-    const handleSaveChange = (type, item) => {
+    const handleSaveChange = (type, item, row, key) => {
       if (!isTwins) {
         item.cktaix = item.allTaix;
         item.ckxianl = item.allXianl;
       }
+      if (key === 'checkdate') {
+        item.ckweek = util.getWeek(40, util.countWeek(userDoc.gesexpectrv, item.checkdate));
+      }
+
       this.setState({initData: item});
       const action = isFormChangeAction(true);
       store.dispatch(action);
     }
 
-    const handelTableChange = (type, row) => {
+    const handelTableChange = (type, item, row, key) => {
       //血压
-      let ckpressure = row.ckpressure.split('/');
-      if(ckpressure[0]) row.ckshrinkpressure = ckpressure[0];
-      if(ckpressure[1]) row.ckdiastolicpressure = ckpressure[1];
+      let ckpressure = item.ckpressure.split('/');
+      if(ckpressure[0]) item.ckshrinkpressure = ckpressure[0];
+      if(ckpressure[1]) item.ckdiastolicpressure = ckpressure[1];
       if(!isTwins) {
-        row.cktaix = row.allTaix;
-        row.ckxianl = row.allXianl;
+        item.cktaix = item.allTaix;
+        item.ckxianl = item.allXianl;
+      }
+      if (key === 'checkdate') {
+        item.ckweek = util.getWeek(40, util.countWeek(userDoc.gesexpectrv, item.checkdate));
       }
 
-      service.fuzhen.saveRvisitForm(row).then(res => {
+      service.fuzhen.saveRvisitForm(item).then(res => {
         this.getRecentList();
       })
     }
@@ -409,10 +412,10 @@ export default class FuZhen extends Component {
           </div>
         </Modal>
         <div className="clearfix">
-          <Button size="small" type="dashed" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button>
+          <Button type="dashed" icon="record" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button>
           {
             hasRecord 
-            ? <Button size="small" type="dashed" className="margin-TB-mid margin-R-1 pull-right" onClick={handleAddRecord}>新增产检记录</Button>
+            ? <Button type="dashed" icon="plus-circle-o" className="margin-TB-mid margin-R-1 pull-right" onClick={handleAddRecord}>新增产检记录</Button>
             : null
           }
         </div>
@@ -431,14 +434,14 @@ export default class FuZhen extends Component {
         rows: [
           {
             columns: [
-              { name: "ckzdate[B超时间]", type: "date", span: 7 },
-              { name: "ckztingj[停经]", type: "input", span: 7 },
-              { name: "ckzweek[如孕]", type: "input", span: 7 },
+              { name: "ckzdate[B超时间]", type: "date", span: 8 },
+              { name: "ckztingj[停经]", className: 'label-right', type: "input", span: 7 },
+              { name: "ckzweek[如孕]", className: 'label-right', type: "input", span: 7 },
             ]
           },
           {
             columns: [
-              { name: "gesexpectrv[预产期-超声]", className: "yu-ges", type: "date", span: 21 },
+              { name: "gesexpectrv[预产期-超声]", className: "yu-ges", type: "date", span: 8 },
             ]
           },
         ]
@@ -540,8 +543,9 @@ export default class FuZhen extends Component {
     const { fzList, relatedObj, initData } = this.state;
     return (
       <Page className="fuzhen font-16 ant-col">
-        <div className="bgDOM"></div>
-        <div className="fuzhen-right ant-col-18 pad-mid">
+        <div className="bg-right"></div>
+        <div className="bg-left"></div>
+        <div className="fuzhen-right ant-col-18">
           {this.renderTable()}
           <FuzhenForm 
             initData={initData} 
@@ -551,9 +555,9 @@ export default class FuZhen extends Component {
             onChange={this.handleChange.bind(this)} 
             onChangeInfo={this.onChangeInfo.bind(this)}
           />
-          <p className="pad_ie">
+          {/* <p className="pad_ie">
             &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>
-          </p>
+          </p> */}
         </div>
         <FuzhenSidebar 
           initData={initData} 

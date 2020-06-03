@@ -25,19 +25,17 @@ export default class extends Component {
         },
         {
           columns: [
-            { name: 'maritalHistory[婚姻史]', className:'col-xz-sp hun-yin-shi', type: 'checkinput', span: 11, radio: true, valid: 'required', options: baseData.hysOptions },
+            { name: 'maritalHistory[婚姻史]', className:'hun-yin-shi', type: 'checkinput', span: 11, radio: true, valid: 'required', options: baseData.hysOptions },
             { name: 'userjiehn(岁)[本次结婚年龄]', className: 'input_width_4',  type: 'input', span: 5, valid: 'pureNumber', 
               filter: entity => entity.maritalHistory && entity.maritalHistory[0] && entity.maritalHistory[0].label !== '未婚'
             },
+            { span: 1 },
             { name: 'userjinqjh[近亲结婚]', className:'col-yjs-sp', type: 'checkinput', span: 5, radio: true, options: baseData.jinqOptions, 
               filter: entity => entity.maritalHistory && entity.maritalHistory[0] && entity.maritalHistory[0].label !== '未婚'
             },
           ]
         },
         //kisi 2020/1/2 合并表单
-        // {
-        //   label: '个人史', span: 12, className: 'labelclass'
-        // },
         {
           className: 'section-title', columns: [
             { name: '[个人史]', type: '**', span: 8 },
@@ -73,9 +71,6 @@ export default class extends Component {
         //     { span: 1 },
         //     { name: 'noneChecked2[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
         //   ]
-        // },
-        // {
-        //   label: '家族史', span: 12, columns: [],className:'labelclass'
         // },
         {
           className: 'section-title', columns: [

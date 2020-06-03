@@ -21,6 +21,10 @@
       color: #3D8BF7;
     }
   }
+  .ant-tabs-content {
+    max-height: 750px;
+    overflow-y: auto;
+  }
   /* 顶部对齐 */
   .form-item {
     .form-label {
@@ -36,14 +40,6 @@
     }
     & > div {
       vertical-align: top;
-    }
-  }
-  .long-ipt .form-item .form-content .form-item .form-content > div {
-    width: 850px !important;
-  }
-  .benyunqingkuang{
-    .form-item .form-label{
-      width: 110px;
     }
   }
   .shouzhen-bbtn {
@@ -62,7 +58,7 @@
     right: 200px;
   }
 
-    // 孕产史table样式修改
+  // 孕产史table样式修改
   .table-wrapper {
     .form-item {
       .form-label {
@@ -87,13 +83,6 @@
 .shouzhenyy-yy{
   .form-item .form-label {
     width: auto;
-  }
-}
-
-.zhuanke{
-  .zhuanke-group-addBTN {
-    position: relative;
-    left: -2.233%;
   }
 }
 .top-save-btn, .top-savePDF-btn {
@@ -154,14 +143,23 @@
   width: 97%;
 }
 .col-xz-sp .ant-col-6 {
-  width: 13.99%;
-}
-.col-xz-sp.hun-yin-shi .ant-col-6 {
-  width: 15.99%;
+  width: 15.2%;
 }
 .shouzhen-left-default{
   .ant-input-wrapper input{
     width: 70px;
+  }
+}
+
+.yuModal, .adviceModal {
+  .ant-modal-header, .ant-modal-body, .ant-modal-footer {
+      background: #fffbe6;
+  }
+  .ant-select.ant-select-enabled {
+      margin: 0 10px 0 5px;
+  }
+  .ant-calendar-picker {
+      vertical-align: middle;
   }
 }
 
@@ -193,26 +191,23 @@
       width: 74%;
     }
   }
-}
-
-.yuModal, .adviceModal {
-  .ant-modal-header, .ant-modal-body, .ant-modal-footer {
-      background: #fffbe6;
+  .hun-yin-shi .ant-col-6 {
+    width: 15.99%;
   }
-  .ant-select.ant-select-enabled {
-      margin: 0 10px 0 5px;
-  }
-  .ant-calendar-picker {
-      vertical-align: middle;
+  .long-ipt .form-item .form-content .form-item .form-content > div {
+    width: 850px !important;
   }
 }
 
 .yun-can-shi {
+  // 设置表头加粗
+  .ant-table-tbody > tr:nth-child(-n + 2) > td {
+    font-weight: 600;
+  }
   .ant-table-tbody>tr>td {
     padding: 0;
     word-break: keep-all;
   }
-
   .ant-table-bordered .ant-table-tbody>tr>td:last-child {
     border-right: 1px solid #e9e9e9;
   }
@@ -404,4 +399,14 @@
   .short-cktizh {
     padding-right: 3%;
   } 
+  .long-ipt .form-item .form-content .form-item .form-content > div {
+    width: 180px !important;
+  }
+}
+
+.zhuanke{
+  .zhuanke-group-addBTN {
+    position: relative;
+    left: -2.233%;
+  }
 }

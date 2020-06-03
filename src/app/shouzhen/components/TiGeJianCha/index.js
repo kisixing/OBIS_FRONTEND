@@ -68,45 +68,45 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'add_FIELD_headFeatures[头颅五官]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'ckpifu[皮肤黏膜]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'ckjiazhx[甲状腺]', type:'checkinput-3', valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            // {name:'vascularMurmur[血管杂音]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
+            {name:'add_FIELD_headFeatures[头颅五官]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'ckpifu[皮肤黏膜]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'ckjiazhx[甲状腺]', className: 'long-ipt', type:'checkinput-4', valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            // {name:'vascularMurmur[血管杂音]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            {name:'ckrut[乳房乳腺]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'breathSounds[呼吸音]', type:'checkinput-3',valid: 'required', options: baseData.coOptions,radio:true,span:8},
-            {name:'breathSoundsOther[啰音]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
+            {name:'ckrut[乳房乳腺]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'breathSounds[呼吸音]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.coOptions,radio:true,span:8},
+            {name:'breathSoundsOther[啰音]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
             {name:'cardiac(次/分)[心率]', type:'input',valid: 'required|pureNumber', span:4},
             {span:4},
-            {name:'heart[心律]', type:'checkinput-3',valid: 'required', options: baseData.xinlvOptions,radio:true,span:8},
-            {name:'murmurs[杂音]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
+            {name:'heart[心律]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.xinlvOptions,radio:true,span:8},
+            {name:'murmurs[杂音]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            {name:'ckganz[肝脏]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:8},
-            {name:'ckpiz[脾脏]', type:'checkinput-3',valid: 'required', options: baseData.cjOptions,radio:true,span:8},
-            {name:'ckshenz[肾区叩痛]', type:'checkinput-3',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
+            {name:'ckganz[肝脏]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.cjOptions,radio:true,span:8},
+            {name:'ckpiz[脾脏]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.cjOptions,radio:true,span:8},
+            {name:'ckshenz[肾区叩痛]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.nhOptions,radio:true,span:8},
           ]
         },
         {
           columns:[
-            {name:'ckjizh[脊柱]', type:'checkinput-3',valid: 'required', options: baseData.noOptions,radio:true,span:8},
-            {name:'nervousReflex[生理反射]', type:'checkinput-3', valid: 'required', options: baseData.slfsOptions,radio:true,span:8},
-            {name:'vascularMurmurOther[病理反射]', type:'checkinput-3', valid: 'required', options: baseData.nhOptions,radio:true,span:8},
+            {name:'ckjizh[脊柱]', className: 'long-ipt', type:'checkinput-4',valid: 'required', options: baseData.noOptions,radio:true,span:8},
+            {name:'nervousReflex[生理反射]', className: 'long-ipt', type:'checkinput-4', valid: 'required', options: baseData.slfsOptions,radio:true,span:8},
+            {name:'vascularMurmurOther[病理反射]', className: 'long-ipt', type:'checkinput-4', valid: 'required', options: baseData.nhOptions,radio:true,span:8},
             // {name:'nervousReflex[双膝反射]', type:'checkinput', className:'col-97-sp', valid: 'required', options: baseData.sxfOptions,radio:true,span:9},
           ]
         },
         {
           columns:[
-            {name:'ckfuzh[下肢水肿]', type:'checkinput', className:'col-xz-sp', valid: 'required', options: baseData.xzfOptions,radio:true,span:14},
+            {name:'ckfuzh[下肢水肿]', type:'checkinput', className:'col-xz-sp', valid: 'required', options: baseData.xzfOptions, radio:true, span:12},
           ]
         },
         {

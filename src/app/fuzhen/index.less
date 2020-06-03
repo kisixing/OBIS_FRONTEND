@@ -2,13 +2,22 @@
 @colorGray : #dfe1ee;
 @widthLeft : 400px;
 
-.bgDOM {
+.bg-right {
   position: fixed;
   z-index: 0;
   right: 0;
   top: 0;
   width: @widthLeft;
-  height: 2200px;
+  height: 100%;
+  background-color: #fff;
+}
+.bg-left {
+  position: fixed;
+  z-index: 0;
+  left: 0;
+  top: 400px;
+  width: calc(100% - @widthLeft - 16px);
+  height: 100%;
   background-color: #fff;
 }
 
@@ -30,8 +39,9 @@
       font-size: 1rem;
     }
     .ant-collapse-header {
+      display: flex;
+      align-items: center;
       font-weight: bold;
-      // text-align: center;
       padding-left: 0;
       font-size: 16px;
       background: #fff;
@@ -43,8 +53,10 @@
       }
       .header-btn {
         position: absolute;
-        top: 10px;
-        right: 2px;
+        right: 4px;
+        top: 6px;
+        display: flex;
+        align-items: center;
       }
       .isUnusual {
         color: #fff;
@@ -190,7 +202,7 @@
     .ant-tabs-content {
       width: 208px;
       height: 200px;
-      overflow-y: scroll;
+      overflow-y: auto;
     }
 
     .ant-tabs-content::-webkit-scrollbar {
@@ -237,7 +249,13 @@
 .fuzhen-right {
   position: relative;
   width:calc(100% - @widthLeft);
-
+  padding: 16px 16px 0 0;
+  .fuzhen-table {
+    padding: 16px;
+    padding-bottom: 0;
+    background-color: #fff;
+    margin-bottom: 16px;
+  }
   .form-item .label{
     min-width: 60px;
     text-align: right;
@@ -265,24 +283,6 @@
       font-size: 0.5em;
     }
   }
-  .fuzhen-form {
-    position: relative;
-    background: @colorWhite;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
-    padding: 0.8em 0.5em 0.5em;
-    .fuzhen-form-TIT {
-      position: absolute;
-      color: #5c7aad;
-      top: -0.8rem;
-      text-shadow: 3px 3px 3px #ddd;
-    }
-    .form-item {
-      .form-label {
-        vertical-align: top;
-      }
-    }
-  }
 }
 .table-content {
   text-align: right;
@@ -291,6 +291,10 @@
   }
 }
 .fuzhenTable {
+  // 设置表头加粗
+  .ant-table-tbody > tr:nth-child(-n + 2) > td {
+    font-weight: 600;
+  }
   .ant-table-tbody>tr>td {
     padding: 5px 1px;
     word-break: keep-all;
@@ -358,11 +362,7 @@
   }
   .yu-ges {
     .form-label {
-      width: 108px;
-      margin-left: 20px;
-    }
-    .form-content {
-      width: 200px;
+      width: 120px;
     }
   }
 }
@@ -395,23 +395,6 @@
 }
 
 .hisn-modal {
-  .ant-table-thead>tr>th {
-    text-align: center;
-    font-weight: 400;
-    border-right: 1px solid #e9e9e9;
-    border-bottom: 1px solid #e9e9e9;
-  }
-  .ant-table-tbody {
-    background-color: #fff;
-  }
-  .ant-table {
-    font-size: 1rem;
-    border-top: 1px solid #e9e9e9;
-    border-left: 1px solid #e9e9e9;
-  }
-  .ant-table-tbody>tr>td {
-    border-right: 1px solid #e9e9e9;
-  }
   .add-class {
     color: #02a7f0;
     margin-right: 9px;

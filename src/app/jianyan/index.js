@@ -106,7 +106,7 @@ export default class Patient extends Component {
           </ul>
           <div>
             { !repAmy 
-                ? <Table columns={columns} dataSource={detailData.lisDetails} pagination={false} rowClassName={(record, index) => setClassName(record, index)} /> 
+                ? <Table className="right-table" columns={columns} dataSource={detailData.lisDetails} pagination={false} rowClassName={(record, index) => setClassName(record, index)} /> 
                 : null
             }
           </div>

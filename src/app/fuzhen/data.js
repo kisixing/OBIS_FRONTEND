@@ -246,14 +246,17 @@ export const tableKey = () => [
 	{
 		title: '空腹血糖',
 		key: 'fpg',
+		type: 'input'
 	},
 	{
 		title: '餐后2H',
 		key: 'pbg2h',
+		type: 'input'
 	},
 	{
 		title: 'HbAlc',
 		key: 'hbAlc',
+		type: 'input'
 	},
 	// {
 	// 	title: '胰岛素(U)方案',
@@ -310,18 +313,22 @@ export const tableKey = () => [
 			{
 				title: '定性',
 				key: 'upState',
+				type: 'input'
 			},
 			{
 				title: '定量',
 				key: 'upDosage24h',
+				type: 'input'
 			},
 	{
 		title: '心率',
 		key: 'heartRate',
+		type: 'input'
 	},
 	{
 		title: '检验检查',
 		key: 'examination',
+		type: 'input'
 	},
 	{
 		title: '用药方案',
@@ -331,6 +338,7 @@ export const tableKey = () => [
 		title: '处理措施',
 		key: 'treatment',
 		className: 'treatment',
+		type: 'input'
 	},
 	{
 		title: '下次复诊',
@@ -340,6 +348,7 @@ export const tableKey = () => [
 	{
 		title: '医生',
 		key: 'sign',
+		type: 'input'
 	},
 ];
 

@@ -395,7 +395,7 @@ export default function(
             onChange(e,{item,value,key,row:row-rows.length,column});
             if(item.$type === dateType.MODIFY){
               item.$type = '';
-              onRowChange('modify', item, row-rows.length);
+              onRowChange('modify', item, row-rows.length, key);
             }
           }
         }

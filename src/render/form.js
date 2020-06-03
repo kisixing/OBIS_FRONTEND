@@ -367,7 +367,7 @@ export default function (entity, config, onChange, { children, ...props } = {}) 
       }
       return (
         <Wapper {...props}>
-          {!rest.type && label ? <label className={`${type}-label`}>{label || ''}</label> : null}
+          {!rest.type && label ? <div><label className={`${type}-label`}>{label || ''}</label></div> : null}
           {!rest.type && rest.text ? <div className={`${type}-text`}>{rest.text || ''}</div> : null}
           {render(data, change, rest, key)}
           <div style={{ clear: 'both' }}></div>

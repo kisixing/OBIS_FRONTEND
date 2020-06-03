@@ -42,7 +42,7 @@ export const jiuOptions = toOptions('无,白酒,啤酒,红酒,其他');
 /**
  * 受孕方式
  */
-export const syfsOptions = toOptions('IVF(input){#FC425F}, 自然');
+export const syfsOptions = toOptions('IVF(input){#FC425F},自然,其他(input){#FC425F}');
 
 /**
  * 血型O,A,B,AB

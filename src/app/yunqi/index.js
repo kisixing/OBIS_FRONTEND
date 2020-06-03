@@ -124,7 +124,7 @@ export default class Index extends Component {
     service.yunqi.getbmi().then(res => {
       if(res.object.bmi < 18.5){
         this.setState({
-          bmiIntro: '体重过轻,建议孕期体重增长目标:12.5~18kg',
+          bmiIntro: '体重过轻,建议孕期体重增长目标:12.5-18kg',
           bmiDashLine1: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 12.5 }],
           bmiDashLine2: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 3 }, { 'x': 39, 'y': 18 }],
           bmiDashPoints: [
@@ -134,11 +134,11 @@ export default class Index extends Component {
         })
       }else if(res.object.bmi < 25){
         this.setState({
-          bmiIntro: '体重正常，建议增长体重增长目标11.5~16kg'
+          bmiIntro: '体重正常，建议增长体重增长目标11.5-16kg'
         })
       }else if(res.object.bmi < 30){
         this.setState({
-          bmiIntro: '体重超重，建议增长体重增长目标7~11.5kg',
+          bmiIntro: '体重超重，建议增长体重增长目标7-11.5kg',
           bmiDashLine1: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 7 }],
           bmiDashLine2: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 3 }, { 'x': 39, 'y': 11.5 }],
           bmiDashPoints: [
@@ -148,7 +148,7 @@ export default class Index extends Component {
         })
       }else if(res.object.bmi >= 30){
         this.setState({
-          bmiIntro: '体重肥胖，建议增长体重增长目标5~9kg',
+          bmiIntro: '体重肥胖，建议增长体重增长目标5-9kg',
           bmiDashLine1: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 1.5 }, { 'x': 39, 'y': 5 }],
           bmiDashLine2: [{ 'x': 0, 'y': 0 }, { 'x': 12, 'y': 3 }, { 'x': 39, 'y': 9 }],
           bmiDashPoints: [
@@ -330,6 +330,7 @@ export default class Index extends Component {
         context.fillText(i * 2 + (-6), baseLeft - 20, (xCount - 1) * xStep + baseTop - i * xStep);
         context.stroke();
       }
+      context.font = 'bold 12px KaiTi';
       context.fillText('体重增长(kg)', baseLeft - 20, baseTop - 20);
     }
 
@@ -351,6 +352,7 @@ export default class Index extends Component {
         }
         context.stroke();
       }
+      context.font = 'bold 12px KaiTi';
       context.fillText('孕周(周)', yStep * yCount + baseLeft + 15, (xCount - 1) * xStep + baseTop);
     }
 
@@ -428,7 +430,6 @@ export default class Index extends Component {
         }
         context.stroke();
       }
-      // context.fillText('体重增长(kg)', baseLeft - 20, 30);
     }
 
     //y轴线
@@ -449,7 +450,6 @@ export default class Index extends Component {
         }
         context.stroke();
       }
-      // context.fillText('孕周(周)', yStep * yCount + baseLeft + 15, (xCount - 1) * xStep + baseTop);
     }
     setVertical();
     setHorizontal();
