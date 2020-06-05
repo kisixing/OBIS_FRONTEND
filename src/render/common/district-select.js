@@ -37,20 +37,22 @@ export function districtSelect({ value = [], onChange, onBlur = () => {}, ...pro
       <Cascader
         allowClear={false}
         options={options}
+        title={value.slice(0, 3)}
         value={value.slice(0, 3)}
         expandTrigger="hover"
         onChange={handleChangePCA}
         placeholder="请选择省市区"
-        style={{ fontSize: "16px" }}
+        style={{ fontSize: "16px", marginRight: "36px" }}
       />
       <Cascader
         allowClear={false}
         options={streetOption}
+        title={value.slice(3)}
         value={value.slice(3)}
         expandTrigger="hover"
         onChange={handleChangeSV}
         placeholder="请选择街道社区"
-        style={{ fontSize: "16px" }}
+        style={{ fontSize: "16px", marginRight: "36px" }}
       />
     </div>
   );

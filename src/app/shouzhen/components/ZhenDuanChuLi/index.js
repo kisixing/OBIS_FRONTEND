@@ -30,7 +30,6 @@ export default class extends Component{
       diagnosislist: null,
       isShowZhenduan: false,
       isMouseIn: false,
-      isShowSetModal: false,
       adviceList: [],
       openAdvice: false,
       openMenzhen: false,
@@ -447,21 +446,6 @@ export default class extends Component{
       this.setState({isShowZhenduan: true});
     }
 
-    /**
-     * 诊断设置窗口
-     */
-    const renderSetModal = () => {
-      const { isShowSetModal } = this.state;
-      const handleClick = (item) => {
-        this.setState({isShowSetModal: false})
-      }
-      return (
-        <Modal title="Title" visible={isShowSetModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-          <p>设置页面</p>
-        </Modal>
-      )
-    }
-
     return (
       <div className="shouzhen-left-zd">
         <div className="shouzhen-left-top pad-LR-mid">
@@ -496,7 +480,7 @@ export default class extends Component{
                  />
             { (isShowZhenduan || isMouseIn) && diagnosislist ?
             <div className="shouzhen-list" onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}>
-              <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
+              <Tabs defaultActiveKey="1">
                 <Tabs.TabPane tab="全部" key="1">
                   {diagnosislist['all'].map((item, i) => <p className="shouzhen-left-item" key={i} onClick={() => setIptVal(item.name)}>{item.name}</p>)}
                 </Tabs.TabPane>
@@ -516,7 +500,6 @@ export default class extends Component{
                 </Tabs.TabPane>
               </Tabs>
             </div>  : null}
-            {renderSetModal()}
           </Col>
           <Col span={5}>
             <Button className="shouzhen-left-button" style={{marginLeft: '0.5em', color: '#150F55'}} type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>

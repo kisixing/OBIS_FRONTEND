@@ -63,6 +63,10 @@ export default class Patient extends Component {
             if (tab.key === 'tab-0') {
                 tab.entity = service.praseJSON(allFormData.pregnantInfo);
                 tab.entity.all_gesmoc = { 0: tab.entity.gesmoc, 1: tab.entity.add_FIELD_gesmoc_unknown };
+                // 解决自然选项去掉空格之后没有勾选对应选项的问题
+                if (tab.entity.add_FIELD_shouyun && tab.entity.add_FIELD_shouyun[0] && tab.entity.add_FIELD_shouyun[0].label === ' 自然') {
+                    tab.entity.add_FIELD_shouyun = [{"label": "自然", "value": ""}];
+                }
             } else if (tab.key === 'tab-1'){
                 tab.entity = service.praseJSON(allFormData.hisInfo);
                 // 其他默认选无

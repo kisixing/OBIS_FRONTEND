@@ -31,7 +31,6 @@ export default class Index extends Component {
       relatedObj: {},
       isShowZhenduan: false,
       isMouseIn: false,
-      isShowSetModal: false,
       isShowResultModal: false,
       isShowPlanModal: false,
       collapseActiveKey: ['1', '2', '3', '4'],
@@ -411,21 +410,6 @@ export default class Index extends Component {
       this.setState({isShowZhenduan: true});
     }
 
-    /**
-     * 诊断设置窗口
-     */
-    const renderSetModal = () => {
-      const { isShowSetModal } = this.state;
-      const handleClick = (item) => {
-        this.setState({isShowSetModal: false})
-      }
-      return (
-        <Modal title="Title" visible={isShowSetModal} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-          <p>设置页面</p>
-        </Modal>
-      )
-    }
-
     return (
       <div className="fuzhen-left-zd">
         <div className="first-diag">
@@ -462,7 +446,7 @@ export default class Index extends Component {
           </div>
           { (isShowZhenduan || isMouseIn) && diagnosislist ?
             <div onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}>
-              <Tabs defaultActiveKey="1" tabBarExtraContent={<Icon type="setting" onClick={() => this.setState({isShowSetModal: true})}></Icon>}>
+              <Tabs defaultActiveKey="1">
                 <Tabs.TabPane tab="全部" key="1">
                   {diagnosislist['all'].map((item, i) => <p className="fuzhen-left-item" key={i} onClick={() => setIptVal(item.name)}>{item.name}</p>)}
                 </Tabs.TabPane>
@@ -482,9 +466,7 @@ export default class Index extends Component {
                 </Tabs.TabPane>
               </Tabs>
             </div>  : null}
-          {renderSetModal()}
         </div>
-        {/* <Button className="fuzhen-left-button margin-TB-mid" type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button> */}
       </div>
     )
   }
@@ -769,7 +751,6 @@ export default class Index extends Component {
       </div>
     );
   }
-
 
   render() {
     return (
