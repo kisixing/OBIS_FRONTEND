@@ -73,9 +73,8 @@
     text-align: center;
     padding: 0.8rem 0 0.5rem;
   }
-  .fuzhen-left-zd .font-12 {
-    font-size: 13px;
-    font-weight: 600;
+  .fuzhen-left-zd .zd-ipt {
+    margin-bottom: 10px;
   }
   .fuzhen-left-zd .first-diag {
     margin-bottom: 0.5rem;
@@ -114,9 +113,11 @@
       .diag-wrapper {
         display: flex;
         font-weight: 600;
+        .diag-words {
+          max-width: 240px;
+        }
         .remark-ipt {
           width: 0;
-          height: 100%;
           color: #38354e;
           flex: 1;
           border: 0 none;
@@ -141,13 +142,6 @@
         font-weight: bold;
         border-color: #eeccff;
         background-color: #F1F9FE;
-      }
-      .character7 {
-        max-width: 6em;
-        overflow: hidden;
-        white-space: nowrap;
-        -o-text-overflow: ellipsis; /* for Opera */
-        text-overflow: ellipsis; /* for IE */
       }
     }
     .highriskmark {

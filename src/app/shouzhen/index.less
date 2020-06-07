@@ -17,6 +17,7 @@
     color: #3D8BF7;
     border: 1px solid #3D8BF7;
     border-bottom: 0 none;
+    padding-bottom: 1px;
     .anticon-check-circle {
       color: #3D8BF7;
     }
@@ -218,6 +219,21 @@
 }
 
 .zhen-duan {
+  .zd-wrapper {
+    padding: 14px;
+    border: 1px solid #D7DCE7;
+    max-height: 650px;
+    overflow-y: auto;
+  }
+  .form-wrapper {
+    padding: 16px;
+    border: 1px solid #D7DCE7;
+    max-height: 650px;;
+    overflow-y: auto;
+  }
+  .zhen-duan-ipt {
+    width: 100%;
+  }
   .shouzhen-left-top {
     color: #150F55;
     .ant-row {
@@ -230,13 +246,27 @@
     .single-diag {
       display: flex;
       color: #150F55;
+      .diag-words {
+        max-width: 280px;
+      }
+    }
+    .normal {
+      padding-left: 2px;
+      border-radius: 6px;
+      background-color: #FCE6EA;
+    }
+    .highriskmark {
+      padding-left: 2px;
+      border-radius: 6px;
+      background-color: #fcb9c5;
     }
     .remark-ipt {
       width: 0;
       flex: 1;
       border: 0 none;
       outline: none;
-      border-bottom: 1px #ccc solid;
+      border-bottom: 1px #fca8b7 solid;
+      background-color: transparent;
       &::-ms-input-placeholder {
         text-align: center;
       }
@@ -244,37 +274,14 @@
         text-align: center;
       }
     }
-  }
-  .shouzhen-left-input {
-    .ant-tabs-nav .ant-tabs-tab {
-      padding: 0 5px;
-    }
-    .anticon.anticon-setting {
-      cursor: pointer;
-      padding: 11px 30px;
-    }
-    .shouzhen-pop {
+    .delBTN {
       position: relative;
-      .shouzhen-list {
-        background-color: #f9f9f9;
-        .ant-tree {
-          font-size: 1rem;
-        }
-      }
-      .ant-tabs-tabpane {
-        padding: 5px 8px;
-      }
-      .shouzhen-left-item {
-        cursor: pointer;
-        &:hover {
-          background-color: #bae7ff;
-        }
-      }
+      top: -2px;
+      font-size: 14px;
     }
   }
   .top-column {
     margin-bottom: 5px;
-    padding-left: 16px;
     .form-label {
       text-align: left;
       padding-right: 0;
@@ -295,7 +302,7 @@
       }
     }
     .short-week {
-      width: 8%;
+      width: 21%;
       .form-item .form-label {
         width: 34px;
       }

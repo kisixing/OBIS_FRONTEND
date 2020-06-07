@@ -1,7 +1,8 @@
 import { GET_USER_DOC, ALL_FORM_DATA, IS_FORM_CHANGE, CHECK_HIGHRISK_ALERT, CLOSE_HIGHRISK_ALERT, SHOW_TRIAL_MODAL, 
         SHOW_TRIAL_CARD, SHOW_PHAR_MODAL, SHOW_PHAR_CARD, IS_MEET_PHAR, CHECKED_KEYS, ALL_REMINDER_MODAL, CLOSE_REMINDER_MODAL, 
         SHOW_REMINDER_MODAL, OPEN_MEDICAL_ADVICE, GET_DIAGNOSIS, OPEN_YCQ, TRIAL_VISIBLE, IS_SAVE, SHOW_SYP_MODAL, 
-        GET_SZ_LIST, GET_FZ_LIST, GET_RELATEDID, GET_WHICH, TEMPLATE_TREE1, SET_EMPTY_DATA, GET_YCQ_ENTITY, IS_TWINS  } from './actionTypes.js'
+        GET_SZ_LIST, GET_FZ_LIST, GET_RELATEDID, GET_WHICH, TEMPLATE_TREE1, SET_EMPTY_DATA, GET_YCQ_ENTITY, IS_TWINS,
+        SHOW_DIAG_SEARCH, SET_DIAGNOSIS, GET_DIAG_TEMP,  } from './actionTypes.js'
 
 export const getUserDocAction = (data) => ({
   type: GET_USER_DOC,
@@ -129,4 +130,17 @@ export const getYCQAction = (obj) => ({
 export const isTwinsAction = (bool) => ({
   type: IS_TWINS,
   bool
+})
+
+export const showDiagSearchAction = (bool) => ({
+  type: SHOW_DIAG_SEARCH,
+  bool
+})
+export const setDiagAction = (param) => ({
+  type: SET_DIAGNOSIS,
+  param
+})
+export const setDiagTempAction = (list) => ({
+  type: GET_DIAG_TEMP,
+  list
 })

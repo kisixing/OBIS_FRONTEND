@@ -48,7 +48,7 @@ export default class extends Component{
 
     return (
       <div>
-        <p className="print-highrisk">高危因素：{highriskFactor}</p>
+        <p className="print-highrisk">高危诊断：{highriskFactor}</p>
         <table style={{width: "100%"}} className="print-table">
           <tbody>
             {rows.map((item, index) => (

@@ -39,3 +39,7 @@ export const SET_EMPTY_DATA = 'set_empty_data';
 export const GET_YCQ_ENTITY = 'get_ycq_entity';
 
 export const IS_TWINS = 'is_twins';
+
+export const SHOW_DIAG_SEARCH = 'show_diag_search';
+export const SET_DIAGNOSIS = 'set_diagnosis';
+export const GET_DIAG_TEMP = 'get_diag_temp';

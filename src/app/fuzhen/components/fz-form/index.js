@@ -455,11 +455,6 @@ export default class FuzhenForm extends Component {
     onChange(e, newEntity);
   }
 
-  // handleYz() {
-  //   const { openYCQ } = this.state;
-  //   this.setState({openYCQ: true});
-  // }
-
   addTreatment(e, value){
     const { initData } = this.props;
     if (!initData.treatment) {
@@ -520,7 +515,6 @@ export default class FuzhenForm extends Component {
     } else if (text==='入院') {
       this.setState({isShowRegForm: true})
     } else if (text==='更多') {
-      // this.getTreatTemp();
       this.setState({openTemplate: true})
     } else if (text==='检验结果导入') {
       this.getLisImport();
@@ -884,6 +878,10 @@ export default class FuzhenForm extends Component {
     this.setState({ openTemplate: false });
   }
 
+  handlePrintBtn = () => {
+    const { handlePrint } = this.props;
+    handlePrint();
+  }
 
   render() {
     const { isShowRegForm, openTemplate, openListImport } = this.state;
@@ -895,8 +893,10 @@ export default class FuzhenForm extends Component {
           {formRender(initData, this.formConfig(), this.handleChange.bind(this))}
         </div>
         <div style={{ minHeight: '32px', textAlign: 'center' }}>
-          <Button className="fz-save-btn" icon="save" type="primary"
-            onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form")), 100)}>
+          <Button className="fz-save-btn print-btn" icon="print-white" type="primary" onClick={this.handlePrintBtn}>
+            打印
+          </Button>
+          <Button className="fz-save-btn" icon="save" type="primary" onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form")), 100)}>
             保存
           </Button>
           {/* <Button className="blue-btn" type="ghost"

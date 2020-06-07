@@ -35,7 +35,6 @@ export default class FuZhen extends Component {
       initData: { ...baseData.formEntity },
       pureInitDate: null,
       hasRecord: false,
-      // isTwins: false,
       isChangeYCQ: false,
       printData: null,
       hasPrint: false,
@@ -85,7 +84,6 @@ export default class FuZhen extends Component {
             initData: service.praseJSON(item)
           })
           if (item.singleflag === '1') {
-            // this.setState({ isTwins: false })
             const action = isTwinsAction(false);
             store.dispatch(action);
           }
@@ -113,11 +111,9 @@ export default class FuZhen extends Component {
   handleChange(e, data) {
     const { initData, recentRvisit } = this.state;
     if (data.hasOwnProperty('singleflag') && data.singleflag === '1') {
-      // this.setState({ isTwins: false });
       const action = isTwinsAction(false);
       store.dispatch(action);
     } else if (data.hasOwnProperty('singleflag') && !data.singleflag) {
-      // this.setState({ isTwins: true });
       const action = isTwinsAction(true);
       store.dispatch(action);
     }
@@ -129,17 +125,19 @@ export default class FuZhen extends Component {
     this.setState({initData: newInitData, recentRvisit: newRecentRvisit})
   }
 
+  handleMoreBtn = () => {
+    const { pageCurrent } = this.state;
+    service.fuzhen.getRvisitPage(10, pageCurrent).then(res => this.setState({
+      recentRvisitAll: res.object.list,
+      totalRow: res.object.totalRow
+    })).then(() => {
+      this.setState({ recentRvisitShow: true })
+    });
+  }
+
   renderTable() {
     const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, 
             hasRecord, isTwins, printData, userDoc, hasPrint, loading, initData, pureInitDate } = this.state;
-    const handleMoreBtn = () => {
-      service.fuzhen.getRvisitPage(10, pageCurrent).then(res => this.setState({
-        recentRvisitAll: res.object.list,
-        totalRow: res.object.totalRow
-      })).then(() => {
-        this.setState({ recentRvisitShow: true })
-      });
-    }
 
     const handleAddRecord = () => {
       if (recentRvisit.length < 3) {
@@ -380,12 +378,7 @@ export default class FuZhen extends Component {
     rvisitKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
     rvisitAllKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
     printKeys[0].format=i=>(`${i||''}`).replace(/\d{4}-/,'');
-    // printKeys.splice(printKeys.length - 1, 1);
 
-    // const newKeys = baseData.tableKey();
-    // newKeys.splice(9, 9);
-
-    // console.log(printKeys, '432')
     printData && printData.forEach(item  => {
       if(item.ckpressure === "/") item.ckpressure = '';
     })
@@ -412,7 +405,7 @@ export default class FuZhen extends Component {
           </div>
         </Modal>
         <div className="clearfix">
-          <Button type="dashed" icon="record" className="margin-TB-mid pull-right" onClick={handleMoreBtn}>更多产检记录</Button>
+          <Button type="dashed" icon="record" className="margin-TB-mid pull-right" onClick={this.handleMoreBtn}>更多产检记录</Button>
           {
             hasRecord 
             ? <Button type="dashed" icon="plus-circle-o" className="margin-TB-mid margin-R-1 pull-right" onClick={handleAddRecord}>新增产检记录</Button>
@@ -554,6 +547,7 @@ export default class FuZhen extends Component {
             onSave={data => this.saveForm(data)} 
             onChange={this.handleChange.bind(this)} 
             onChangeInfo={this.onChangeInfo.bind(this)}
+            handlePrint={this.handleMoreBtn}
           />
           {/* <p className="pad_ie">
             &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>

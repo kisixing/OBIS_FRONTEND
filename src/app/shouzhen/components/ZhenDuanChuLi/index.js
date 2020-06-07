@@ -8,10 +8,11 @@ import * as baseData from '../../../fuzhen/data';
 import * as util from '../../../fuzhen/util';
 import store from '../../../store';
 import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, getDiagnisisAction, getUserDocAction,
-         showSypAction, szListAction, isFormChangeAction
+         showSypAction, szListAction, isFormChangeAction, showDiagSearchAction, setDiagAction,
       } from '../../../store/actionCreators.js';
 import RegForm from '../../../components/reg-form';
 import TemplateModal from '../../../components/template-modal';
+import DiagSearch from '../../../components/diagnosis-search';
 import cModal from '../../../../render/modal';
 import '../../index.less';
 import service from '../../../../service';
@@ -26,10 +27,6 @@ export default class extends Component{
     super(props);
     this.state = {
       entity: {},
-      diagnosi: '',
-      diagnosislist: null,
-      isShowZhenduan: false,
-      isMouseIn: false,
       adviceList: [],
       openAdvice: false,
       openMenzhen: false,
@@ -84,8 +81,8 @@ export default class extends Component{
   }
 
   onKeyUp() {
-    const { diagnosi, isShowZhenduan } = this.state;
-    if (!!diagnosi && isShowZhenduan) this.adddiagnosis();
+    const { diagnosis, isShowDiagSearch } = this.state;
+    if (!!diagnosis && isShowDiagSearch) this.adddiagnosis();
   }
 
   topConfig() {
@@ -109,7 +106,7 @@ export default class extends Component{
       rows: [
         {
           columns: [
-            { name: "diagnosisHandle[处理措施]", type: "textarea", span: 15, className: "table-wrapper" },
+            { name: "diagnosisHandle[处理措施]", type: "textarea", span: 24, className: "table-wrapper" },
           ]
         },
         {
@@ -122,17 +119,17 @@ export default class extends Component{
         },
         {
           columns: [
-            { name: 'xiacsftype[下次复诊]', type:'select', placeholder: '门诊类型', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 5 },
-            { name: 'nextRvisitWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
-            { name: 'xiacsfdate', type:'date', placeholder: '日期', valid: 'required', span: 4 },
+            { name: 'xiacsftype[下次复诊]', type:'select', placeholder: '门诊类型', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 8},
+            { name: 'nextRvisitWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 5 },
+            { name: 'xiacsfdate', type:'date', placeholder: '日期', valid: 'required', span: 5 },
             { name: 'xiacsfdatearea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
           ]
         },
         {
           columns: [
-            { name: 'add_FIELD_first_save_ivisit_time[初诊日期]', type:'date', span: 4 },
+            { name: 'add_FIELD_first_save_ivisit_time[初诊日期]', type:'date', span: 9 },
             { span: 1 },
-            { name: 'add_FIELD_first_clinical_doctor[初诊医生]', type:'input', span: 4 },
+            { name: 'add_FIELD_first_clinical_doctor[初诊医生]', type:'input', span: 8 },
           ]
         }
       ]
@@ -140,23 +137,23 @@ export default class extends Component{
   }
 
   adddiagnosis() {
-    const { szList, diagnosi, userDoc, signList } = this.state;
+    const { szList, diagnosis, userDoc, signList } = this.state;
     const specialList = ['妊娠', '早孕', '中孕', '晚孕'];
-    if (diagnosi && !szList.filter(i => i.data === diagnosi).length) {
+    if (diagnosis && !szList.filter(i => i.data === diagnosis).length) {
       const changeAction = isFormChangeAction(true);
       store.dispatch(changeAction);
       // 诊断互斥项
       let specialIndex = -1;
-      let diagData = { 'data': diagnosi, 'highriskmark': ''};
+      let diagData = { 'data': diagnosis, 'highriskmark': ''};
       szList.forEach((item, index) => {
         if (specialList.includes(item.data)) {
           specialIndex = index;
         }
       })
-      if (specialIndex !== -1 && specialList.includes(diagnosi)) {
+      if (specialIndex !== -1 && specialList.includes(diagnosis)) {
         szList.splice(specialIndex, 1);
         szList.unshift(diagData);
-      } else if (specialIndex === -1 && specialList.includes(diagnosi)) {
+      } else if (specialIndex === -1 && specialList.includes(diagnosis)) {
         szList.unshift(diagData);
       } else {
         szList.push(diagData);
@@ -165,7 +162,7 @@ export default class extends Component{
       store.dispatch(action);
       modal('success', '添加诊断信息成功');
 
-      if ((diagnosi === '瘢痕子宫' || diagnosi === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
+      if ((diagnosis === '瘢痕子宫' || diagnosis === '疤痕子宫') && parseInt(userDoc.tuserweek) >= 32) {
         const action = showTrialAction(true);
         store.dispatch(action);
       }
@@ -175,11 +172,11 @@ export default class extends Component{
         let hasWord = false;
         let isSign = true;
         item.word.forEach(wordItem => {
-          if (diagnosi.indexOf(wordItem) !== -1) hasWord = true;
+          if (diagnosis.indexOf(wordItem) !== -1) hasWord = true;
         })
         if (hasWord) {
           item.without.forEach(withItem => {
-            if (diagnosi.indexOf(withItem) !== -1) isSign = false;
+            if (diagnosis.indexOf(withItem) !== -1) isSign = false;
           })
           if (isSign) signDiag = item.diag;
         }
@@ -202,12 +199,12 @@ export default class extends Component{
         }
       }
 
-      if(diagnosi.indexOf("血栓") !== -1 || diagnosi.indexOf("静脉曲张") !== -1 || diagnosi === "妊娠子痫前期" || diagnosi === "多胎妊娠") {
+      if(diagnosis.indexOf("血栓") !== -1 || diagnosis.indexOf("静脉曲张") !== -1 || diagnosis === "妊娠子痫前期" || diagnosis === "多胎妊娠") {
         this.updateCheckedKeys();
         const action = showPharAction(true);
         store.dispatch(action);
       }
-      service.fuzhen.checkHighriskAlert(diagnosi).then(res => {
+      service.fuzhen.checkHighriskAlert(diagnosis).then(res => {
         let data = res.object;
         if(data.length > 0) {
           data.map(item => ( item.visible = true ))
@@ -215,22 +212,25 @@ export default class extends Component{
         const action = getAlertAction(data);
         store.dispatch(action);
       })
-      this.setState({ diagnosi: '' });
-      service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
-    } else if (diagnosi) {
+
+      const DiagAction = setDiagAction('');
+      store.dispatch(DiagAction);
+      const DSAction = showDiagSearchAction(false);
+      store.dispatch(DSAction);
+    } else if (diagnosis) {
       modal('warning', '添加数据重复');
     }
   }
 
-  deldiagnosis(id, diagnosi) {
+  deldiagnosis(id, diagnosis) {
     const { userDoc, szList, signList } = this.state;
-    const newList = szList.filter(i => i.data !== diagnosi);
+    const newList = szList.filter(i => i.data !== diagnosis);
     const changeAction = isFormChangeAction(true);
     store.dispatch(changeAction);
     const action = szListAction(newList);
     store.dispatch(action);
     modal('info', '删除诊断信息成功');
-    this.updateCheckedKeys(diagnosi);
+    this.updateCheckedKeys(diagnosis);
 
     // 删除传染病标记
     let signDiag = '';
@@ -240,11 +240,11 @@ export default class extends Component{
       let hasWord = false;
       let isSign = true;
       item.word.forEach(wordItem => {
-        if (diagnosi.indexOf(wordItem) !== -1) hasWord = true;
+        if (diagnosis.indexOf(wordItem) !== -1) hasWord = true;
       })
       if (hasWord) {
         item.without.forEach(withItem => {
-          if (diagnosi.indexOf(withItem) !== -1) isSign = false;
+          if (diagnosis.indexOf(withItem) !== -1) isSign = false;
         })
         if (isSign) {
           signDiag = item.diag;
@@ -321,13 +321,6 @@ export default class extends Component{
     }
   }
 
-  // getTreatTemp() {
-  //   service.fuzhen.treatTemp().then(res => this.setState({ 
-  //     treatTemp: res.object,
-  //     openTemplate: true
-  //   }));
-  // }
-
   handleTreatmentClick(e, {text,index},resolve){
     if (text==='糖尿病日间门诊') {
       this.setState({openMenzhen: true});
@@ -342,8 +335,8 @@ export default class extends Component{
   }
 
   renderZD(){
-    const { info = {} } = this.props;
-    const { diagnosi, szList, diagnosislist, isMouseIn, isShowZhenduan, } = this.state;
+    const { info = {}, entity } = this.props;
+    const { szList } = this.state;
     // const delConfirm = (item) => {
     //   Modal.confirm({
     //     title: '您是否确认要删除这项诊断',
@@ -362,15 +355,6 @@ export default class extends Component{
         store.dispatch(changeAction);
         const action = szListAction(szList);
         store.dispatch(action);
-
-        // let highriskmark = item.highriskmark == 1 ? 0 : 1;
-        // service.fuzhen.updateHighriskmark(item.id, highriskmark).then(() => {
-        //   service.fuzhen.getdiagnosis().then(res => {
-        //     const action = getDiagnisisAction(res.object.list);
-        //     store.dispatch(action);
-        //   })
-        // })
-
       }
 
       const handleSortChange = fx => () => {
@@ -381,12 +365,6 @@ export default class extends Component{
         store.dispatch(changeAction);
         const action = szListAction(szList);
         store.dispatch(action);
-        // service.fuzhen.updateSort(item.id, fx).then(() => {
-        //   service.fuzhen.getdiagnosis().then(res => {
-        //     const action = getDiagnisisAction(res.object.list);
-        //     store.dispatch(action);
-        //   })
-        // })
       }
       return (
         <div>
@@ -423,88 +401,30 @@ export default class extends Component{
       store.dispatch(action);
     }
 
-    /**
-     * 点击填充input
-     */
-    const setIptVal = (item, param) => {
-      this.setState({
-        isMouseIn: false,
-        diagnosi: item
-      }, () => {
-        if(!param) this.adddiagnosis();
-      })
-      if(param) {
-        if (this.timer) clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
-          service.fuzhen.getDiagnosisInputTemplate(item).then(res => this.setState({diagnosislist: res.object}));
-        }, 400)
-      }
-    }
-
-    const handleIptFocus = () => {
-      service.fuzhen.getDiagnosisInputTemplate().then(res => this.setState({diagnosislist: res.object}));
-      this.setState({isShowZhenduan: true});
-    }
-
     return (
       <div className="shouzhen-left-zd">
-        <div className="shouzhen-left-top pad-LR-mid">
+        <Input className="zhen-duan-ipt" placeholder="请输入诊断信息" disabled={true} onClick={this.handleIptClick} />
+        {formRender(entity, this.topConfig(), this.handleChange.bind(this))}
+        <div className="shouzhen-left-top">
           {szList && szList.map((item, i) => (
-            <Row key={`diagnos-${item.data}-${i}`}>
-              <Col className="single-diag" span={10} title={title(item)}>
+            <Row key={`diagnos-${item.data}-${i}`} title={title(item)} className={item.highriskmark==1 ? 'highriskmark' : 'normal'} >
+              <Col className='single-diag' span={15}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)} visible={item.visible} onVisibleChange={(visible) => handleVisibleChange(visible, i)}>
-                  <div>
+                  <div className="diag-words" >
                     <span className="zd-num">{i + 2}、</span>
-                    <span className={item.highriskmark==1 ? 'colorDarkRed character7 font-18' : 'character7'}>{item.data}</span>
+                    <span>{item.data}</span>
                   </div>
                 </Popover>
                 <input className="remark-ipt" placeholder="备注" value={item.remark} onChange={e => setRemark(e.target.value, i)} />
               </Col>
-              <Col span={2}>{item.createdate}</Col>
-              <Col span={2}>{item.doctor||info.doctor}</Col>
-              <Col span={2}>
-                <Button className="delBTN colorRed" type="dashed" shape="circle" icon="cross" onClick={() => this.deldiagnosis(item.id, item.data)} />
+              <Col span={4}>{item.createdate}</Col>
+              <Col span={4}>{item.doctor||info.doctor}</Col>
+              <Col span={1}>
+                <Button className="delBTN colorRed" size="small" type="dashed" shape="circle" icon="cross" onClick={() => this.deldiagnosis(item.id, item.data)} />
               </Col>
             </Row>
           ))}
         </div>
-        <br/>
-        <Row className="shouzhen-left-input font-16">
-          <Col span={1} className="text-right" style={{width:'90px',color:'#150F55',paddingRight:'5px'}}>
-            <span className="font-18">诊断:</span>
-          </Col>
-          <Col span={7} className="shouzhen-pop">
-            <Input placeholder="请输入诊断信息" value={diagnosi} onChange={e => setIptVal(e.target.value, true)}
-                 onFocus={() => handleIptFocus()}
-                 onBlur={() => setTimeout(() => this.setState({isShowZhenduan: false}), 200)}
-                 />
-            { (isShowZhenduan || isMouseIn) && diagnosislist ?
-            <div className="shouzhen-list" onMouseEnter={() => this.setState({isMouseIn: true})} onMouseLeave={() => this.setState({isMouseIn: false})}>
-              <Tabs defaultActiveKey="1">
-                <Tabs.TabPane tab="全部" key="1">
-                  {diagnosislist['all'].map((item, i) => <p className="shouzhen-left-item" key={i} onClick={() => setIptVal(item.name)}>{item.name}</p>)}
-                </Tabs.TabPane>
-                <Tabs.TabPane tab="科室" key="2">
-                  <Tree showLine onSelect={(K, e) => setIptVal(e.node.props.title)}>
-                    {diagnosislist['department'].map((item, index) => (
-                      <Tree.TreeNode selectable={false} title={item.name} key={`0-${index}`}>
-                        {item.nodes.map((subItem, subIndex) => (
-                          <Tree.TreeNode title={subItem.name} key={`0-0-${subIndex}`}></Tree.TreeNode>
-                        ))}
-                      </Tree.TreeNode>
-                    ))}
-                  </Tree>
-                </Tabs.TabPane>
-                <Tabs.TabPane tab="个人" key="3">
-                  {diagnosislist['personal'].map((item, i) => <p className="shouzhen-left-item" key={i} onClick={() =>  setIptVal(item.name)}>{item.name}</p>)}
-                </Tabs.TabPane>
-              </Tabs>
-            </div>  : null}
-          </Col>
-          <Col span={5}>
-            <Button className="shouzhen-left-button" style={{marginLeft: '0.5em', color: '#150F55'}} type="dashed" onClick={() => this.adddiagnosis()}>+ 添加诊断</Button>
-          </Col>
-        </Row>
       </div>
     )
   }
@@ -752,19 +672,32 @@ export default class extends Component{
     this.setState({ openTemplate: false });
   }
 
+  handleIptClick = () => {
+    const action = showDiagSearchAction(true);
+    store.dispatch(action);
+  }
+
   render(){
-    const { isShowRegForm, openTemplate } = this.state;
+    const { isShowRegForm, openTemplate, isShowDiagSearch } = this.state;
     const { entity } = this.props;
     return (
       <div className="zhen-duan">
-        {formRender(entity, this.topConfig(), this.handleChange.bind(this))}
-        {this.renderZD()}
-        {formRender(entity, this.config(), this.handleChange.bind(this))}
-        <Button className="record-btn" icon="record" onClick={() =>this.openLisi()}>首检信息历史修改记录</Button>
+        <Row>
+          <Col span="10" className="zd-wrapper">
+            {this.renderZD()}
+          </Col>
+          <Col span="1"></Col>
+          <Col span="13" className="form-wrapper">
+            {formRender(entity, this.config(), this.handleChange.bind(this))}
+            <Button className="record-btn" icon="record" onClick={() =>this.openLisi()}>首检信息历史修改记录</Button>
+          </Col>
+        </Row>
+
         {this.renderMenZhen()}
         {this.renderAdviceModal()}
         {this.renderHighModal()}
         {openTemplate && <TemplateModal openTemplate={openTemplate} closeTemplateModal={this.closeTemplateModal} />}
+        {isShowDiagSearch && <DiagSearch addDiag={this.adddiagnosis.bind(this)} />}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>} */}
       </div>
     )
