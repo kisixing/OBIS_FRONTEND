@@ -188,4 +188,16 @@ export default {
     deletePersonal: function(id) {
         return this.userId().then(r => myAxios.delete(`/treatTemp/delete`, {id}));
     },
+    /**
+     * 首诊修改预产期-B超获取提示
+     */
+    postGWeek: function(gesexpectrv) {
+        return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/cascadeAdjustGestationalWeekBySureEdd`, { gesexpectrv, userid: r.object.userid}));
+    },
+    /**
+     * 首诊修改预产期-B超 孕周同步更新
+     */
+    adjustGWeek: function(data) {
+        return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/cascadeAdjustGestationalWeek`, { ...data }));
+    },
 };

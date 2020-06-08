@@ -230,7 +230,7 @@ export default class Index extends Component {
   }
 
   //垂直坐标轴标尺 
-  setHorRules = (ctx, origin, Len, color, lineWidth, step, int) => {
+  setHorRules(ctx, origin, Len, color, lineWidth, step, int) {
     // 创建水平坐标轴路径
     ctx.moveTo(origin[0], origin[1]);
     ctx.lineTo(origin[0], origin[1] - Len);

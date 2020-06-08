@@ -55,8 +55,6 @@
         position: absolute;
         right: 4px;
         top: 6px;
-        display: flex;
-        align-items: center;
       }
       .isUnusual {
         color: #fff;
@@ -80,7 +78,6 @@
     margin-bottom: 0.5rem;
     font-weight: 600;
     color: #3b3671;
-    background-color: #fce6ea;
     padding-left: 2px;
     border-radius: 5px;
     input {
@@ -98,21 +95,17 @@
     }
   }
   .fuzhen-left-zd ol {
-    margin-bottom: 5px;
     li {
       position: relative;
-      padding-top: 2px;
       padding-right: 30px;
-      padding-bottom: 2px;
-      line-height: 1.4em;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
       color: #3b3671;
-      background-color: #fce6ea;
-      padding-left: 2px;
-      border-radius: 5px;
       .diag-wrapper {
         display: flex;
         font-weight: 600;
+        background-color: #fce6ea;
+        border-radius: 6px;
+        padding: 2px 0 2px 3px;
         .diag-words {
           max-width: 240px;
         }
@@ -132,20 +125,16 @@
           }
         }
       }
-      &>div > span {
-        vertical-align: top;
+      .highriskmark {
+        background-color: #fcb9c5;
       }
       .delBTN{
         position: absolute;
-        top: 3px;
-        right: 0;
-        font-weight: bold;
-        border-color: #eeccff;
-        background-color: #F1F9FE;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 2px;
+        cursor: pointer;
       }
-    }
-    .highriskmark {
-      background-color: #fcb9c5;
     }
   }
   .fuzhen-left-input {

@@ -399,8 +399,8 @@ export default class Index extends Component {
         </div>
         <ol>
           {fzList&&fzList.map((item, i) => (
-            <li key={`diagnos-${item.data}-${i}`} className={item.highriskmark==1 ? 'highriskmark' : ''}>
-              <div className="diag-wrapper" title={title(item)}>
+            <li key={`diagnos-${item.data}-${i}`}>
+              <div className={item.highriskmark==1 ? 'highriskmark diag-wrapper' : 'diag-wrapper'} title={title(item)}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)} visible={item.visible} onVisibleChange={(visible) => handleVisibleChange(visible, i)}>
                   <div className="diag-words">
                     <span className="zd-num">{i + 2}、</span>
@@ -409,7 +409,7 @@ export default class Index extends Component {
                 </Popover>
                 <input className="remark-ipt" placeholder="备注" value={item.remark} onChange={e => setRemark(e.target.value, i)} />
               </div>
-              <Button className="delBTN colorRed" type="dashed" size="small" shape="circle" icon="cross" onClick={() => this.deldiagnosis(item.id, item.data)} />
+              <Icon className="delBTN" type="cancel" onClick={() => this.deldiagnosis(item.id, item.data)}></Icon>
             </li>
           ))}
         </ol>
@@ -627,6 +627,13 @@ export default class Index extends Component {
       })
     }
 
+    const handleManageClick = e => {
+      e.stopPropagation();
+      this.setState({
+        isShowPlanModal: true
+      })
+    }
+
     /**
      * 产前筛查和诊断
      */
@@ -678,7 +685,7 @@ export default class Index extends Component {
               {allFormData && formRender(allFormData.lis, cqCnfig(), cqChange)}
           </Panel>
 
-          <Panel header={<span>诊疗计划<Button icon="manage" type="dashed" className="header-btn" size="small" onClick={() => this.setState({isShowPlanModal: true})}>管理</Button></span>} key="4">
+          <Panel header={<span>诊疗计划<Button icon="manage" type="dashed" className="header-btn" size="small" onClick={e => handleManageClick(e)}>管理</Button></span>} key="4">
             <Timeline className="pad-small">
               {loading 
                 ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> 

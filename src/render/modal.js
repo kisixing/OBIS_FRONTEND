@@ -26,7 +26,7 @@ export default function(props){
           visible={visible} 
           onCancel={handelClick(onCancel)} 
           onOk={handelClick(onOk)}
-          title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
+          title={<span><Icon type="exclamation-circle" style={{color: "#FB9824"}} /> 请注意！</span>}
           {...rest}>
             {content()}
         </Modal>

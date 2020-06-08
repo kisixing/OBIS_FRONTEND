@@ -5,7 +5,7 @@ import { fireForm } from '../../render/form';
 import service from '../../service';
 import * as common from '../../utils/common';
 import * as util from '../fuzhen/util';
-
+import cModal from '../../render/modal';
 import YCQ from './components/YuChanQi';
 import YBBS from './components/YiBanBingShi';
 import QTBS from './components/QiTaBingShi';
@@ -39,6 +39,8 @@ export default class Patient extends Component {
             tabs: tabs,
             step: tabs[0].key, // 从0开始
             requiredData: baseData.requiredForm,
+            isShowWeekModal: false,
+            weekMsg: '',
             ...store.getState(),
         }
         store.subscribe(this.handleStoreChange);
@@ -162,8 +164,15 @@ export default class Patient extends Component {
         if (!this.isSaving) {
             entity[name] = value;
             switch (name) {
-                // case 'dopupt':
-                //     entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],value);
+                // case 'gesexpectrv':
+                //     service.shouzhen.postGWeek(value).then(res => {
+                //         if (res.object.respMsg) {
+                //             this.setState({
+                //                 isShowWeekModal: true,
+                //                 weekMsg: res.object
+                //             })
+                //         }
+                //     });
                 //     break;
                 case 'ckzdate':
                     if (!value) {
@@ -273,15 +282,6 @@ export default class Patient extends Component {
 
         message.destroy();
         const hide = message.loading('正在执行中...', 0);
-
-        // let allReminderModal = [];
-        // const getAllReminder = (modalObj) => {
-        //     let bool = true;
-        //     szList && szList.map(item => {
-        //         if(item.data === modalObj.diagnosis) bool = false;
-        //     })
-        //     if(bool) allReminderModal.push(modalObj);
-        // }
 
         fireForm(form, 'valid').then((valid) => {
             // 数据提交前再对数据进行一些处理，请实现entitySave方法，请参考tab-0：yunfuxinxi.js这个文件
@@ -465,73 +465,19 @@ export default class Patient extends Component {
                             const action = getAllFormDataAction(allFormData);
                             store.dispatch(action);
                         }
-                        if (valid) {
+                        
+                        console.log(valid, key, next.key, '546');
+                        if (valid || isJump) {
                             this.activeTab(key || next.key);
                         }
                     });
                 }
             } else {
-                if (valid) {
+                if (valid || isJump) {
                     this.activeTab(key || next.key);
                 }
             }
             if (tab.key === 'tab-7' && key === 'tab-7') {
-                // const Lis = service.praseJSON(allFormData.lis);
-                // if (Lis.ogtt && Lis.ogtt[0] && Lis.ogtt[0].label === "GDM") {
-                //     let modalObj = {'reminder': 'OGTT为GDM', 'diagnosis': '妊娠期糖尿病', 'visible': true};
-                //     getAllReminder(modalObj);
-                // }
-                // if(Lis.add_FIELD_hbsAg_ALT && Lis.add_FIELD_hbsAg_ALT > 80) {
-                //     let modalObj = {'reminder': 'ALT > 正常范围上限的2倍', 'diagnosis': '慢性活动性肝炎', 'visible': true};
-                //     getAllReminder(modalObj);
-                // }
-                // if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '小三阳') {
-                //     let modalObj = {'reminder': '乙肝两对半为小三阳', 'diagnosis': '乙型肝炎小三阳', 'visible': true};
-                //     getAllReminder(modalObj);
-                // }
-                // if(Lis.hbsAg && Lis.hbsAg[0] && Lis.hbsAg[0].label === '大三阳') {
-                //     let modalObj = {'reminder': '乙肝两对半为大三阳', 'diagnosis': '乙型肝炎大三阳', 'visible': true};
-                //     getAllReminder(modalObj);
-                // }
-                // if(Lis.hcvAb && Lis.hcvAb[0] && Lis.hcvAb[0].label === '阳性') {
-                //     let modalObj = {'reminder': '丙肝抗体为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-                //     getAllReminder(modalObj);
-                // }
-                // if(Lis.add_FIELD_hcvAb_RNA && Lis.add_FIELD_hcvAb_RNA[0] && Lis.add_FIELD_hcvAb_RNA[0].label === '阳性') {
-                //     let modalObj = {'reminder': '丙肝RNA为阳性', 'diagnosis': '丙型肝炎病毒', 'visible': true};
-                //     getAllReminder(modalObj);
-                // }
-                // if(Lis.rpr && Lis.rpr[0] && Lis.rpr[0].label === '阳性') {
-                //     let modalObj = {'reminder': '梅毒阳性', 'diagnosis': '梅毒', 'visible': true};
-                //     getAllReminder(modalObj);
-                // }
-                // if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === 'α型') {
-                //     let modalObj = {'reminder': '女方地贫为α型', 'diagnosis': 'α地中海贫血', 'visible': true};
-                //     getAllReminder(modalObj);
-                // }
-                // if(Lis.thalassemia && Lis.thalassemia[0] && Lis.thalassemia[0].label === 'β型') {
-                //     let modalObj = {'reminder': '女方地贫为β型', 'diagnosis': 'β地中海贫血', 'visible': true};
-                //     getAllReminder(modalObj);
-                // }
-
-                // if(allReminderModal.length > 0) {
-                //     const action2 = allReminderAction(allReminderModal);
-                //     store.dispatch(action2);
-
-                //     const action3 = showReminderAction(true);
-                //     store.dispatch(action3);
-                // }
-                // if(type === 'open') {
-                //     if (allReminderModal.length > 0) {
-                //         const action = openMedicalAction(true);
-                //         store.dispatch(action);
-                //     } else if (valid) {
-                //         common.closeWindow();
-                //     }
-                // } else {
-                //     const action = openMedicalAction(false);
-                //     store.dispatch(action);
-                // }
                 service.shouzhen.checkRemind().then(res => {
                     let allReminderModal = res.object.items;
                     if (allReminderModal.length > 0) {
@@ -649,15 +595,39 @@ export default class Patient extends Component {
         this.getEachData('tab-7', data.diagnosis);
     }
 
+    // 更改预产期提示弹窗
+    renderWeekModal = () => {
+        const { isShowWeekModal, weekMsg } = this.state;
+        const content = () => {
+        return (
+            <div>
+                {weekMsg.respMsg}
+            </div>
+        )
+        };
+        const onCancel = () => {
+            this.setState({ isShowWeekModal: false });
+        }
+        const onOk = (e) => {
+            service.shouzhen.adjustGWeek(weekMsg);
+            this.setState({ isShowWeekModal: false });
+        }
+        cModal({
+            visible: isShowWeekModal, 
+            content: content, 
+            onCancel: onCancel,
+            onOk: onOk,
+        })
+    }
+
     render() {
-        const { tabs, step, userDoc, allFormData, emptyData } = this.state;
+        const { tabs, step, userDoc, allFormData, emptyData, isShowWeekModal } = this.state;
         const printIvisit = () => {
             service.shouzhen.printPdfByFile().then(res => {
                 common.printPdf(res.object);
             })
         }
         
-        // console.log(emptyData, '111')
         // 首个tab页作下特别处理
         if (!!allFormData && JSON.stringify(tabs[0].entity) === "{}") {
             tabs[0].entity = allFormData.pregnantInfo;
@@ -699,6 +669,7 @@ export default class Patient extends Component {
                 }
               </Col>
             </Row>
+            {/* { isShowWeekModal && this.renderWeekModal() } */}
           </Page>
         );
     }

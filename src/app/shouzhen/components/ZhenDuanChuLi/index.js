@@ -407,8 +407,8 @@ export default class extends Component{
         {formRender(entity, this.topConfig(), this.handleChange.bind(this))}
         <div className="shouzhen-left-top">
           {szList && szList.map((item, i) => (
-            <Row key={`diagnos-${item.data}-${i}`} title={title(item)} className={item.highriskmark==1 ? 'highriskmark' : 'normal'} >
-              <Col className='single-diag' span={15}>
+            <Row className="diag-row" key={`diagnos-${item.data}-${i}`} title={title(item)}>
+              <Col span={16} className={item.highriskmark==1 ? 'highriskmark single-diag' : 'single-diag'}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)} visible={item.visible} onVisibleChange={(visible) => handleVisibleChange(visible, i)}>
                   <div className="diag-words" >
                     <span className="zd-num">{i + 2}、</span>
@@ -417,10 +417,10 @@ export default class extends Component{
                 </Popover>
                 <input className="remark-ipt" placeholder="备注" value={item.remark} onChange={e => setRemark(e.target.value, i)} />
               </Col>
-              <Col span={4}>{item.createdate}</Col>
-              <Col span={4}>{item.doctor||info.doctor}</Col>
-              <Col span={1}>
-                <Button className="delBTN colorRed" size="small" type="dashed" shape="circle" icon="cross" onClick={() => this.deldiagnosis(item.id, item.data)} />
+              <Col className="diag-date" span={4}>{item.createdate}</Col>
+              <Col className="diag-doc" span={3}>{item.doctor||info.doctor}</Col>
+              <Col span={1} style={{display: 'flex'}}>
+                <Icon className="delBTN" type="cancel" onClick={() => this.deldiagnosis(item.id, item.data)}></Icon>
               </Col>
             </Row>
           ))}

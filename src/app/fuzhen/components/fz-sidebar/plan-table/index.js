@@ -34,8 +34,8 @@ export default class FuzhenForm extends Component {
             { name: "gestation(周)[孕周]", type: "input", span: 6, valid: (value) => {
               if (value && !/^\d+?\+?\d+$/.test(value)) {
                 return '*输入格式不正确';
-              } 
-            } },
+              }} 
+            },
             { name: "item[产检项目]", type: "select", span: 7, options: baseData.cjOptions },
             { name: "event[提醒事件]", type: "input", span: 8 },
             { type: "button", span: 3, text: "添加", color: "#1890ff", size: "small",	onClick: this.addRecentPlan.bind(this) }
@@ -56,7 +56,11 @@ export default class FuzhenForm extends Component {
 				{
           columns: [
             { span: 1 },
-            { name: "gestation(周)[孕周]", type: "input", span: 6, valid: 'symbol(+)' },
+            { name: "gestation(周)[孕周]", type: "input", span: 6, valid: (value) => {
+              if (value && !/^\d+?\+?\d+$/.test(value)) {
+                return '*输入格式不正确';
+              }} 
+            },
             { name: "event[提醒事件]", type: "input", span: 7 },
             { span: 1 },
             { type: "button", span: 3, text: "添加", color: "#1890ff", size: "small",	onClick: this.writePlanGroup.bind(this) }
@@ -121,13 +125,20 @@ export default class FuzhenForm extends Component {
   writePlanGroup() {
     const { allPlanEntity, allPlanDataList } = this.state;
     const { info } = this.props;
-    if (allPlanEntity.gestation && allPlanEntity.event) {
-      allPlanEntity.time = util.getWeek(allPlanEntity.gestation, info.tuserweek);
-      allPlanDataList.diagnosisPlans.push(allPlanEntity);
-    }
+    fireForm(document.querySelector('.add-form'), 'valid').then(valid => {
+      if (valid) {
+        if (allPlanEntity.gestation && allPlanEntity.event) {
+          allPlanEntity.time = util.getWeek(allPlanEntity.gestation, info.tuserweek);
+          allPlanDataList.diagnosisPlans.push(allPlanEntity);
+        }
 
-    allPlanDataList.groupName = allPlanEntity.groupName;
-    this.editGroupPlan(allPlanDataList, allPlanEntity);
+        allPlanDataList.groupName = allPlanEntity.groupName;
+        this.editGroupPlan(allPlanDataList, allPlanEntity);
+      } else {
+        message.error('请输入正确的孕周格式！');
+      }
+    }) 
+
   }
 
 	onReturn(param) {
@@ -200,8 +211,8 @@ export default class FuzhenForm extends Component {
       const { isShowMplanModal, planGroup, allPlanEntity, initPlanDataList } = this.state;
       const handleClick = () => { this.setState({isShowMplanModal: false})}
       const handleDBClick = (row) => {
-        // allPlanEntity.groupName = row.groupName;
-        this.setState({ allPlanDataList: row }, () => {
+        const newData = {...allPlanEntity, groupName: row.groupName};
+        this.setState({ allPlanDataList: row, allPlanEntity: newData }, () => {
           this.onReturn(3);
         });
       }
@@ -256,11 +267,10 @@ export default class FuzhenForm extends Component {
 
       const initTable = data => tableRender(baseData.newPlanKey(), data, 
             { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onChange: handleTableChange});
-      
       return (
 				<Modal width="80%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => this.onReturn(4)}>返回</Button>} 
 					visible={isShowNewplanModal} maskClosable={false} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-					{formRender(allPlanEntity, this.allPlanConfig(), handleChange)}
+          <div className="add-form">{formRender(allPlanEntity, this.allPlanConfig(), handleChange)}</div>
           <div>{allPlanDataList.diagnosisPlans.length > 0 ? initTable(allPlanDataList.diagnosisPlans) : ""}</div>
         </Modal>
       )

@@ -2,6 +2,7 @@
   .ant-tabs-bar {
     border-bottom: 1px solid #3D8BF7;
     margin-top: 24px;
+    margin-bottom: 0;
   }
   .anticon-check-circle {
     color: #96989a;
@@ -25,6 +26,8 @@
   .ant-tabs-content {
     max-height: 750px;
     overflow-y: auto;
+    padding-top: 16px;
+    background-color: #fff;
   }
   /* 顶部对齐 */
   .form-item {
@@ -87,8 +90,6 @@
   }
 }
 .top-save-btn, .top-savePDF-btn {
-  display: flex;
-  align-items: center;
   width: 92px;
   height: 40px;
   border-radius: 4px;
@@ -236,48 +237,50 @@
   }
   .shouzhen-left-top {
     color: #150F55;
-    .ant-row {
-      margin-bottom: 5px;
+    .diag-row {
+      margin-bottom: 16px;
       font-weight: 600;
-    }
-    .zd-num {
-      font-size: 16px;
+      display: flex;
+      align-items: center;
     }
     .single-diag {
       display: flex;
       color: #150F55;
+      padding: 3px 0 3px 6px;
+      border-radius: 6px;
+      background-color: #FCE6EA;
       .diag-words {
         max-width: 280px;
       }
-    }
-    .normal {
-      padding-left: 2px;
-      border-radius: 6px;
-      background-color: #FCE6EA;
+      .zd-num {
+        font-size: 16px;
+      }  
+      .remark-ipt {
+        width: 0;
+        flex: 1;
+        border: 0 none;
+        outline: none;
+        border-bottom: 1px #fca8b7 solid;
+        background-color: transparent;
+        &::-ms-input-placeholder {
+          text-align: center;
+        }
+        &::-webkit-input-placeholder {
+          text-align: center;
+        }
+      }
     }
     .highriskmark {
-      padding-left: 2px;
-      border-radius: 6px;
       background-color: #fcb9c5;
     }
-    .remark-ipt {
-      width: 0;
-      flex: 1;
-      border: 0 none;
-      outline: none;
-      border-bottom: 1px #fca8b7 solid;
-      background-color: transparent;
-      &::-ms-input-placeholder {
-        text-align: center;
-      }
-      &::-webkit-input-placeholder {
-        text-align: center;
-      }
+    .diag-date {
+      margin-left: 6px;
+    }
+    .diag-date {
+      margin-left: 6px;
     }
     .delBTN {
-      position: relative;
-      top: -2px;
-      font-size: 14px;
+      cursor: pointer;
     }
   }
   .top-column {
@@ -309,8 +312,6 @@
     }
   }
   .record-btn {
-    display: flex;
-    align-items: center;
     padding: 8px;
     color: #B4B9C6;
     background-color: #fff;
@@ -384,6 +385,9 @@
 }
 
 .ben-yun-qk {
+  .form-item .form-label {
+		width: 122px !important;
+	}
   .hide-date .form-item .form-content .ant-col-18 {
     width: 0;
     opacity: 0;
