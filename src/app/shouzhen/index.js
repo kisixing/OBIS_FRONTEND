@@ -164,16 +164,16 @@ export default class Patient extends Component {
         if (!this.isSaving) {
             entity[name] = value;
             switch (name) {
-                // case 'gesexpectrv':
-                //     service.shouzhen.postGWeek(value).then(res => {
-                //         if (res.object.respMsg) {
-                //             this.setState({
-                //                 isShowWeekModal: true,
-                //                 weekMsg: res.object
-                //             })
-                //         }
-                //     });
-                //     break;
+                case 'gesexpectrv':
+                    service.shouzhen.postGWeek(value).then(res => {
+                        if (res.object.respMsg) {
+                            this.setState({
+                                isShowWeekModal: true,
+                                weekMsg: res.object
+                            })
+                        }
+                    });
+                    break;
                 case 'ckzdate':
                     if (!value) {
                         entity['ckztingj'] = '';
@@ -290,12 +290,6 @@ export default class Patient extends Component {
             // 异步手动移除
             setTimeout(hide, 300);
             if (this.change) {
-                // if(tab.key === 'tab-1') {
-                //     service.shouzhen.saveOperations(tab.key, entitySave(tab.entity)).then(() => {
-                //         message.success('信息保存成功',3);
-                //         valid && this.activeTab(key || next.key);
-                //     });
-                // }
                 if (tab.key === 'tab-0') {
                     if (tab.entity.all_gesmoc[1] && tab.entity.all_gesmoc[1][0] && tab.entity.all_gesmoc[1][0].label === '不详') {
                         tab.entity.gesmoc = '';
@@ -669,7 +663,7 @@ export default class Patient extends Component {
                 }
               </Col>
             </Row>
-            {/* { isShowWeekModal && this.renderWeekModal() } */}
+            { isShowWeekModal && this.renderWeekModal() }
           </Page>
         );
     }

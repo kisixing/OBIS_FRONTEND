@@ -121,33 +121,12 @@ export default {
     getRvisitPage: function(page, params){
         return this.userId().then(r => myAxios.get(`/outpatientRestful/getRvisitPage?pageSize=${page}&pageCurrent=${params}&id=${r.object.userid}`));
     },
-
-    /**
-     * 模板
-     */
-    treatTemp: function(){
-        return myAxios.get('/outpatientRestful/list' + location.search);
-    },
     
     /**
      * 修改表格数据
      */
     recentRvisit: function(entity){
         return this.userId().then(r => myAxios.post('/outpatient/recentRvisit?id=' + r.object.userid, entity));
-    },
-
-    /**
-     * 获取pacs胎儿生长曲线数据
-     */
-    getPacsGrowth: function(){
-        return this.userId().then(r => myAxios.get('/outpatientRestful/getPacsGrowth?mcno=05781816'));
-    },
-
-    /**
-     * 获取BMI孕期体重管理曲线数据
-     */
-    getbmi: function(){
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/getbmi?id=${r.object.userid}`));
     },
 
     /**
@@ -215,7 +194,7 @@ export default {
      * 查询诊疗计划组所有数据
      */
     findDiagnosisPlanAndGroupVO: function(){
-        return this.userId().then(r => myAxios.get('/diagnosisPlanGroup/findDiagnosisPlanAndGroupVO'));
+        return this.userId().then(r => myAxios.get(`/diagnosisPlanGroup/findDiagnosisPlanAndGroupVO?userid=${r.object.userid}`));
     },
 
     /**

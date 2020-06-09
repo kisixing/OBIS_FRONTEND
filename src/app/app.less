@@ -56,16 +56,19 @@
   right: 12px;
   z-index: 9;
   display: flex;
+  .btnList-left {
+    width: 100%;
+  }
   .btnList-right {
     display: flex;
     flex-direction: column;
     margin-left: 12px;
   }
   .danger-btn-wrapper .ant-btn-group {
-    display: flex;
+    width: 100%;
   }
   .high-risk-wrapper .ant-btn-group {
-    display: flex;
+    width: 100%;
   }
   .level-btn {
     width: 80px;
@@ -84,13 +87,14 @@
     background-color: #fff;
   }
   .high-risk-content {
+    max-width: 450px !important;
+    width: calc(100% - 80px);
     height: 50px;
     color: #932C3F;
-    max-width: 450px;
     text-align: left;
-    flex: 1;
     border-top-right-radius: 0;
     background-color: #fff;
+    overflow: hidden;
     span {
       width: 100%;
       font-size: 16px;
@@ -101,6 +105,32 @@
       -webkit-box-orient:vertical;
       -webkit-line-clamp:2; 
       white-space: pre-wrap;
+    }
+  }
+  .danger-btn-infectin {
+    max-width: 450px !important;
+    width: calc(100% - 80px);
+    height: 30px;
+    padding-top: 2px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    border-bottom: none;
+    border-bottom-right-radius: 0;
+  }
+  .has-infectin {
+    color:#ffffff;
+    background: linear-gradient(275deg,rgba(155,102,255,1) 0%,rgba(98,54,255,1) 100%);
+    &:hover {
+      background-color: #c205e7;
+    }
+  }
+  .no-infectin {
+    color: #150F55;
+    background-color: #fff;
+    &:hover {
+      background-color: #fff;
     }
   }
   .danger-btn-1 {
@@ -152,39 +182,11 @@
       background-color: #4d94ff;
     }
   }
-  .danger-btn-infectin {
-    max-width: 450px;
-    height: 30px;
-    padding-top: 2px;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-    text-align: left;
-    flex: 1;
-    border-bottom: none;
-    border-bottom-right-radius: 0;
-  }
-  .has-infectin {
-    color:#ffffff;
-    background: linear-gradient(275deg,rgba(155,102,255,1) 0%,rgba(98,54,255,1) 100%);
-    &:hover {
-      background-color: #c205e7;
-    }
-  }
-  .no-infectin {
-    color: #150F55;
-    background-color: #fff;
-    &:hover {
-      background-color: #fff;
-    }
-  }
 }
 .patient-Info_btnList button {
-  font-weight: bold;
+  font-weight: 600;
   letter-spacing: 1px;
   height: 40px;
-  // padding-top: 0.5rem;
-  // padding-bottom: 0.5rem;
 }
 
 .highriskPop {

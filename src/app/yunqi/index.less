@@ -4,12 +4,16 @@
   display: flex;
   justify-content: center;
   .fetus-wrapper {
+    width: 50%;
+    background-color: #F4FDEA;
     position: relative;
-    width: 800px;
+    min-width: 800px;
   }
   .bmi-wrapper {
+    width: 50%;
+    background-color: #EAEAFD;
     position: relative;
-    width: 800px;
+    min-width: 800px;
   }
   .print-btn {
     position: absolute;
@@ -21,12 +25,14 @@
   }
   .btn-tz {
     top: 38px;
-    left: 310px;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: #6F6FE9;
   }
   .btn-sz {
     top: 38px;
-    right: 310px;
+    right: 50%;
+    transform: translateX(50%);
     background-color: #7DB440;
   }
 }

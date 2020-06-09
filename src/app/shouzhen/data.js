@@ -370,7 +370,7 @@ export const pregnanciesColumns = [
 	{
 		title: '孕次',
 		key: 'pregnum',
-		width: '60',
+		width: '25',
 		type: 'input'
 		// format: (v, { row }) => row + 1
 	},
@@ -378,7 +378,7 @@ export const pregnanciesColumns = [
 		title: '年-月',
 		key: 'datagridYearMonth',
 		type: 'input',
-		width: '160',
+		width: '60',
 		filterDate: true,
 	},
 	{
@@ -388,18 +388,21 @@ export const pregnanciesColumns = [
 				title: '自然',
 				key: 'zir',
 				type: 'checkbox',
+				width: '35',
 				holdeditor: true
 			},
 			{
 				title: '清宫',
 				key: 'removalUterus',
 				type: 'checkbox',
+				width: '35',
 				holdeditor: true
 			},
 			{
 				title: '人工',
 				key: 'reng',
 				type: 'checkbox',
+				width: '35',
 				holdeditor: true
 			}
 		]
@@ -408,24 +411,28 @@ export const pregnanciesColumns = [
 		title: '引产',
 		key: 'yinch',
 		type: 'checkbox',
+		width: '35',
 		holdeditor: true
 	},
 	{
 		title: '死胎',
 		key: 'sit',
 		type: 'checkbox',
+		width: '35',
 		holdeditor: true
 	},
 	{
 		title: '早产',
 		key: 'zaoch',
 		type: 'checkbox',
+		width: '35',
 		holdeditor: true
 	},
 	{
 		title: '足月产',
 		key: 'zuych',
 		type: 'checkbox',
+		width: '35',
 		holdeditor: true
 	},
 	{
@@ -435,12 +442,14 @@ export const pregnanciesColumns = [
 				title: '顺产',
 				key: 'shunch',
 				type: 'checkbox',
+				width: '35',
 				holdeditor: true
 			},
 			{
 				title: '手术产式',
 				key: 'shouShuChanType',
 				type: 'select',
+				width: '60',
 				showSearch: true,
 				dropdownMatchSelectWidth: false,
 				options: sscsOptions
@@ -454,12 +463,14 @@ export const pregnanciesColumns = [
 				title: '出血',
 				key: 'chuxue',
 				type: 'checkbox',
+				width: '35',
 				holdeditor: true
 			},
 			{
 				title: '产褥热',
 				key: 'chanrure',
 				type: 'checkbox',
+				width: '35',
 				holdeditor: true
 			}
 		]
@@ -468,6 +479,7 @@ export const pregnanciesColumns = [
 		title: '胎数',
 		key: 'births',
 		valid: 'pureNumber',
+		width: '35',
 	},
 	{
 		title: '小孩情况',
@@ -477,6 +489,7 @@ export const pregnanciesColumns = [
 				key: 'xingb',
 				type: 'select',
 				showSearch:true,
+				width: '35',
 				options: [
 					{ label: '男', value: '1' },
 					{ label: '女', value: '2' },
@@ -488,6 +501,7 @@ export const pregnanciesColumns = [
 				key: 'child',
 				type: 'select',
 				showSearch:true,
+				width: '35',
 				options: [
 					{ label: '健在', value: '1' },
 					{ label: '死亡', value: '2' },
@@ -497,23 +511,26 @@ export const pregnanciesColumns = [
 			{
 				title: '死亡时间',
 				key: 'deathTime',
+				width: '60',
 				type: 'input',
 			},
 			{
 				title: '死亡原因',
 				key: 'deathCause',
+				width: '80',
 				type: 'input',
 			},
 			{
 				title: '后遗症',
 				key: 'sequela',
+				width: '80',
 				type: 'input',
 			},
 			{
 				title: '出生体重(kg)',
 				key: 'tizh',
 				type: 'input',
-				width: 200,
+				width: '35',
 			}
 		]
 	},
@@ -525,19 +542,13 @@ export const pregnanciesColumns = [
 		options: fmyyOptions,
 		autoInsert: true,
 		dropdownMatchSelectWidth: false,
-		width: 160
+		width: '80',
 	},
-	// {
-	// 	title: '备注',
-	// 	key: 'unhealth',
-	// 	type: 'input',
-	// 	width: 400
-	// },
 	{
 		title: '特殊情况',
 		key: 'bingfzh',
 		type: 'input',
-		width: 600,
+		width: '180',
 	},
 ]
 

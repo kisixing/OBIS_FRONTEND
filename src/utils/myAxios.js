@@ -86,7 +86,13 @@ myAxios.interceptors.request.use(config => {
         }
     }
     config.headers['User-Token'] = common.getCookie('docToken');
+    config.headers['Cache-Control'] = 'no-store';
     config.url = getUrl(config.url);
+    // get 请求加上时间戳，避免ie11缓存数据
+    if (config.method === 'get') {
+        const time = new Date().getTime();
+        config.url = `${config.url}&time=${time}`;
+    }
     return config;
 }, error => {
     console.log(error);

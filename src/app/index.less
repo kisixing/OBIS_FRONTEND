@@ -320,9 +320,20 @@ html, body {
 }
 
 // 系统placeholder颜色
-.ant-select-selection__placeholder, input::-webkit-input-placeholder {
+.ant-select-search__field__placeholder, .ant-select-selection__placeholder {
+	color: #242741 !important;
+}
+input::-webkit-input-placeholder {
 	font-weight: 600;
-	color: #828C99 !important;
+	color: #242741 !important;
+}
+.input:-ms-input-placeholder {
+	font-weight: 600;
+	color: #242741 !important;
+}
+input:-moz-placeholder, input::-moz-placeholder {
+	font-weight: 600;
+	color: #242741 !important;
 }
 
 // 全局表单样式

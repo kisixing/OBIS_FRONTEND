@@ -359,27 +359,32 @@ export const planKey = () => [
 	{
 		title: '编号',
 		key: 'index',
-		format: (v,{row})=>row+1
+		format: (v,{row}) => row + 1,
+		width: 30,
 	},
 	{
 		title: '时间',
 		key: 'time',
-		format: (v) => v+'周后'
+		format: (v) => v+'周后',
+		width: 60,
 	},
 	{
 		title: '孕周',
 		key: 'gestation',
-		type: 'input'
+		type: 'input',
+		width: 30,
 	},
 	{
 		title: '产检项目',
 		key: 'item',
-		type: 'input'
+		type: 'input',
+		width: 100,
 	},
 	{
 		title: '提醒事项',
 		key: 'event',
-		type: 'input'
+		type: 'input',
+		width: 200,
 	}
 ];
 
@@ -401,6 +406,7 @@ export const managePlanKey = () => [
 	{
 		title: '内容',
 		key: 'content',
+		width: 200
 	}
 ];
 
@@ -423,7 +429,8 @@ export const newPlanKey = () => [
 	{
 		title: '提醒事件',
 		key: 'event',
-		type: 'input'
+		type: 'input',
+		width: 200
 	}
 ];
 
