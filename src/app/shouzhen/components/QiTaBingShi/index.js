@@ -37,33 +37,45 @@ export default class extends Component {
         },
         //kisi 2020/1/2 合并表单
         {
-          className: 'section-title', columns: [
-            { name: '[个人史]', type: '**', span: 8 },
+          columns: [
+            { name: '[个人史]', className: 'section-title', type: '**', span: 11 },
+            { span: 2 },
+            { name: '[家族史]', className: 'section-title', type: '**', span: 11 },
           ]
         },
         {
           columns:[
-            {name:'add_FIELD_grxiyan[吸烟]', className: 'long-ipt', type:'checkinput-5',valid: 'required', options: baseData.nhOptions,radio:true,span:15}
+            { name:'add_FIELD_grxiyan[吸烟]', className: 'long-ipt', type:'checkinput-5',valid: 'required', options: baseData.nhOptions, radio:true, span: 11},
+            { span: 2 },
+            { name:'add_FIELD_jzgaoxueya[高血压]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions, span: 11}
           ]
         },
         {
           columns:[
-            {name:'add_FIELD_gryinjiu[饮酒]', className: 'long-ipt', type:'checkinput-5', valid: 'required', options: baseData.nhOptions,radio:true,span:15}
+            { name:'add_FIELD_gryinjiu[饮酒]', className: 'long-ipt', type:'checkinput-5', valid: 'required', options: baseData.nhOptions, radio:true, span: 11},
+            { span: 2 },
+            { name:'add_FIELD_jztangniaobing[糖尿病]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 11}
           ]
         },
         {
           columns:[
-            {name:'add_FIELD_gryouhai[接触有害物质]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            { name:'add_FIELD_gryouhai[接触有害物质]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions, span: 11},
+            { span: 2 },
+            { name:'add_FIELD_jzjixing[先天畸形]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 11}
           ]
         },
         {
           columns:[
-            {name:'add_FIELD_grfangshe[接触放射线]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
+            { name:'add_FIELD_grfangshe[接触放射线]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions, span: 11},
+            { span: 2 },
+            { name:'add_FIELD_jzyichuanbing[遗传病]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions, span: 11}
           ]
         },
         {
           columns:[
-            {name:'add_FIELD_grqita[其他]', className: 'long-ipt', type:'checkinput-5',radio:true, options: baseData.nhOptions,span: 15}
+            { name:'add_FIELD_grqita[其他]', className: 'long-ipt', type:'checkinput-5',radio:true, options: baseData.nhOptions, span: 11},
+            { span: 2 },
+            { name:'add_FIELD_jzqita[其他]', className: 'long-ipt', type:'checkinput-5',radio:true, options: baseData.nhOptions, span: 11}
           ]
         },
         // {
@@ -72,36 +84,6 @@ export default class extends Component {
         //     { name: 'noneChecked2[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },
         //   ]
         // },
-        {
-          className: 'section-title', columns: [
-            { name: '[家族史]', type: '**', span: 8 },
-          ]
-        },
-        {
-          columns:[
-            {name:'add_FIELD_jzgaoxueya[高血压]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
-          ]
-        },
-        {
-          columns:[
-            {name:'add_FIELD_jztangniaobing[糖尿病]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
-          ]
-        },
-        {
-          columns:[
-            {name:'add_FIELD_jzjixing[先天畸形]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
-          ]
-        },
-        {
-          columns:[
-            {name:'add_FIELD_jzyichuanbing[遗传病]', className: 'long-ipt', type:'checkinput-5',radio:true, valid: 'required', options: baseData.nhOptions,span: 15}
-          ]
-        },
-        {
-          columns:[
-            {name:'add_FIELD_jzqita[其他]', className: 'long-ipt', type:'checkinput-5',radio:true, options: baseData.nhOptions,span: 15}
-          ]
-        },
         // {
         //   columns:[
         //     { name: 'noneChecked3[ ]', type: 'checkinput', className:'none_check', radio: true, options: baseData.noneOptions,span:15 },

@@ -3,7 +3,7 @@ import formRender from '../../../../render/form';
 import * as baseData from '../../data';
 
 export default class extends Component {
-  static Title = '一般病史';
+  static Title = '既往史';
   constructor(props) {
     super(props);
   }

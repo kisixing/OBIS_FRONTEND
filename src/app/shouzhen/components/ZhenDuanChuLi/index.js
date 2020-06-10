@@ -403,7 +403,7 @@ export default class extends Component{
 
     return (
       <div className="shouzhen-left-zd">
-        <Input className="zhen-duan-ipt" placeholder="请输入诊断信息" disabled={true} onClick={this.handleIptClick} />
+        <Button className="zhen-duan-btn" icon="plus-circle-o" onClick={this.handleIptClick}>添加诊断</Button>
         {formRender(entity, this.topConfig(), this.handleChange.bind(this))}
         <div className="shouzhen-left-top">
           {szList && szList.map((item, i) => (

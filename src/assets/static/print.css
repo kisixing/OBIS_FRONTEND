@@ -24,6 +24,7 @@
     border: 1px solid #ccc;
     word-break: break-all;
     font-size: 7px;
+    padding: 3px 0;
   }
   .isHide {
     display: none;

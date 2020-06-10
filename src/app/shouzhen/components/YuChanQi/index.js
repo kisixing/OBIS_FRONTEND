@@ -4,7 +4,7 @@ import * as baseData from '../../data';
 import store from "../../../store";
 
 export default class extends Component {
-  static Title = '预产期';
+  static Title = '现病史';
   constructor(props) {
     super(props);
     this.state = {
@@ -45,17 +45,17 @@ export default class extends Component {
             { name: "ckzweek(周)[如孕]", className: 'label-right', type: "input", span: 4, valid: "symbol(+)" },
           ]
         },
-        // {
-        //   columns: [
-        //     { name: 'ckyi[主诉]', type: 'input', span: 18, valid: 'required' },
-        //   ]
-        // },
         // { name: 'ckyibzhzh[一般症状]', type: 'checkinput-4', valid: 'required',options: baseData.ybzzOptions.map(v=>({...v, label:`${v.label}(input)`})) },
         {
           columns: [
             { name: "add_FIELD_shouyun[受孕方式]",  type: "checkinput-4", span: 14, valid: "required", radio: true, options: baseData.syfsOptions }
           ]
-        }
+        },
+        {
+          columns: [
+            { name: 'ckyi[主诉]', type: 'input', span: 17 },
+          ]
+        },
         // {
         //   columns: [
         //     { name: 'ckyibzhzhtd(周)[胎动开始]', type: 'input', span: 5, valid: 'required,number' },

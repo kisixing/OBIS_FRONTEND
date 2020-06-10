@@ -29,6 +29,7 @@ export default {
         const regno = common.getCookie('regno');
         const deptNo = common.getCookie('deptNo');
         const deptName = common.getCookie('deptName');
+        const redirectUrl = common.getCookie('redirectUrl');
 
         let doctorName = {};
         if (uri === 'udpateDoc') {
@@ -39,7 +40,7 @@ export default {
         if (uri === 'udpateDoc') {
             return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, deptNo, deptName, ...doctorName, ...data}));
         }
-        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, deptNo, deptName, opid, regno, ...doctorName, ...data}));
+        return this.userId().then(r => myAxios.put(`/outpatientWriteRestful/${uri}`, { id:r.object.userid, clinicCode, deptNo, deptName, opid, regno, redirectUrl, ...doctorName, ...data}));
     },
     /**
      * 保存孕产史

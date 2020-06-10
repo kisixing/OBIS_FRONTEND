@@ -390,7 +390,7 @@ export default class Index extends Component {
 
     return (
       <div className="fuzhen-left-zd">
-        <Input className="zd-ipt" placeholder="请输入诊断信息" disabled={true} onClick={handleIptClick} />
+        <Button className="zd-btn" icon="plus-circle-o" onClick={handleIptClick}>添加诊断</Button>
         <div className="first-diag">
           <span className="zd-num">1、</span>
           G<Input value={userDoc.g} />
