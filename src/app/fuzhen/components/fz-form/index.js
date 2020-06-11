@@ -672,7 +672,7 @@ export default class FuzhenForm extends Component {
         onSave(newEntity).then(() =>{
           this.setState({ error: {} }, () => {
             // getReminder();
-            service.shouzhen.checkRemind().then(res => {
+            service.shouzhen.checkRemind('2').then(res => {
               let allReminderModal = res.object.items;
               if (allReminderModal.length > 0) {
                 allReminderModal.forEach(item => {
@@ -896,7 +896,7 @@ export default class FuzhenForm extends Component {
           <Button className="fz-save-btn print-btn" icon="print-white" type="primary" onClick={this.handlePrintBtn}>
             打印
           </Button>
-          <Button className="fz-save-btn" icon="save" type="primary" onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form")), 100)}>
+          <Button className="fz-save-btn" icon="save" type="primary" onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form")), 300)}>
             保存
           </Button>
           {/* <Button className="blue-btn" type="ghost"

@@ -160,7 +160,7 @@ export default class Patient extends Component {
     // 如果想把handleChange的逻辑移动到对应的tab页里面去，请参考tab-0：yunfuxinxi.js这个文件的handleChange
     handleChange(e, { name, value, target }, entity) {
         const { step } = this.state;
-        console.log(name, target, value, entity);
+        console.log(name, target, value, entity, 'change');
         if (!this.isSaving) {
             entity[name] = value;
             switch (name) {
@@ -459,8 +459,6 @@ export default class Patient extends Component {
                             const action = getAllFormDataAction(allFormData);
                             store.dispatch(action);
                         }
-                        
-                        console.log(valid, key, next.key, '546');
                         if (valid || isJump) {
                             this.activeTab(key || next.key);
                         }
@@ -472,7 +470,7 @@ export default class Patient extends Component {
                 }
             }
             if (tab.key === 'tab-7' && key === 'tab-7') {
-                service.shouzhen.checkRemind().then(res => {
+                service.shouzhen.checkRemind('1').then(res => {
                     let allReminderModal = res.object.items;
                     if (allReminderModal.length > 0) {
                         allReminderModal.forEach(item => {
@@ -635,7 +633,7 @@ export default class Patient extends Component {
             <Button icon="print-blue" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
 
             <div className="bgWhite" style={{ position: "fixed", top: "148px", left: "0", right: "0", bottom: "0"}}></div>
-            <Tabs type="card" activeKey={step} onChange={key => setTimeout(() => { this.handleSave(key) }, 100)}> 
+            <Tabs type="card" activeKey={step} onChange={key => setTimeout(() => { this.handleSave(key) }, 300)}> 
               {tabs.map(({ key, title, entity, error, Content }) => (
                 <Tabs.TabPane key={key}
                   tab={
@@ -655,7 +653,7 @@ export default class Patient extends Component {
               <Col span={21} />
               <Col>
                 { step !== tabs[tabs.length - 1].key
-                    ? <Button className="shouzhen-bbtn" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>下一页<Icon type="arrow-right" /></Button>
+                    ? <Button className="shouzhen-bbtn" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 300)}>下一页<Icon type="arrow-right" /></Button>
                     : <div>
                         {/* <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(step, 'open') }, 100)}>保存并开医嘱</Button> */}
                         <Button className="shouzhen-bbtn" type="primary" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>保存<Icon type="save" /></Button>

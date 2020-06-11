@@ -49,7 +49,8 @@ class EditableSelect extends Component {
     const handleChange = e => {
       let filterOPtions = options.filter(i => i.value.indexOf(e.target.value) !== -1);
       this.setState({ 
-        showOPtions: filterOPtions
+        showOPtions: filterOPtions,
+        isShowOptions: filterOPtions.length !== 0
       });
       let data = {"label": e.target.value, "value": e.target.value};
       onChange(e, data).then(() =>  {})  

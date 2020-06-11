@@ -141,8 +141,8 @@ export default {
     /**
      * 查询诊断添加提醒
      */
-    checkRemind: function() {
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/diagnosis/checkRemind?userid=${r.object.userid}`));
+    checkRemind: function(type) {
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/diagnosis/checkRemind?userid=${r.object.userid}&type=${type}`));
     },
     /**
      * 诊断添加提醒不再提醒
