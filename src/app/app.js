@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Prompt } from 'react-router-dom';
 import { Row, Col, Input, Button, Select, Modal, Tree, Icon } from "antd";
-
 import router from "../utils/router";
 import bundle from "../utils/bundle";
 import service from '../service';
@@ -675,11 +674,34 @@ export default class App extends Component {
           const action = isFormChangeAction(false);
           store.dispatch(action);
           return true
-        } 
+        } else {
+          this.setState({muneIndex})
+          return false;
+        }
       }
-        this.setState({muneIndex})
-        return false;
-      }
+    }
+
+    // const alertConfirm = (location) => {
+    //   const { history } = this.props;
+    //   if (!isFormChange) {
+    //     return true;
+    //   } else {
+    //     Modal.confirm({
+    //       title: "有未保存的更新，是否离开？",
+    //       onCancel: () => {
+    //         console.log('111')
+    //       },
+    //       onOk: () => {
+    //         const action = isFormChangeAction(false);
+    //         store.dispatch(action);
+    //         history.push({
+    //           pathname: `..${location.pathname}`,
+    //         });
+    //       }
+    //     });
+    //     return false;
+    //   }
+    // }
     
     return (
       <div className="main-body">

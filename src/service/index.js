@@ -30,7 +30,7 @@ export default {
      * 高危数据
      */
     highrisk: function(){
-        return myAxios.get('/outpatientRestful/findHighriskTree?userid="')
+        return myAxios.get('/outpatientRestful/findHighriskTree?param=123')
     },
     /**
      * 保存高危数据

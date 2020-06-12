@@ -305,7 +305,7 @@ export default class Index extends Component {
     // 诊断小弹窗操作
     const content = (item, i) => {
       const handleHighriskmark = () => {
-        item.highriskmark = item.highriskmark === 1 ? 0 : 1;
+        item.highriskmark = item.highriskmark == 1 ? 0 : 1;
         item.visible = false;
         const changeAction = isFormChangeAction(true);
         store.dispatch(changeAction);

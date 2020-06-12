@@ -67,19 +67,19 @@ export default class SYPmodal extends Component {
         },
         {
           columns:[
-            { name: `treatment1_time1[第一针]((${sypFormEntity.treatment1_yunz1}孕周))`, className: 'no-wrap', type: 'date', span: 6 },
+            { name: `treatment1_time1[第一针]((${sypFormEntity.treatment1_yunz1}孕周))`, className: 'no-wrap', type: 'date', span: 8 },
             { name: 'treatment1_transfer1[执行情况]', className: `${sypFormEntity.treatment1_transfer1 === '未执行' ? 'isRed' : ''}`, type: 'input', span: 6 },
           ]
         },
         {
           columns:[
-            { name: `treatment1_time2[第二针]((${sypFormEntity.treatment1_yunz2}孕周))`, className: 'no-wrap', type: 'date', span: 6 },
+            { name: `treatment1_time2[第二针]((${sypFormEntity.treatment1_yunz2}孕周))`, className: 'no-wrap', type: 'date', span: 8 },
             { name: 'treatment1_transfer2[执行情况]', className: `${sypFormEntity.treatment1_transfer2 === '未执行' ? 'isRed' : ''}`, type: 'input', span: 6 },
           ]
         },
         {
           columns:[
-            { name: `treatment1_time3[第三针]((${sypFormEntity.treatment1_yunz3}孕周))`, className: 'no-wrap', type: 'date', span: 6 },
+            { name: `treatment1_time3[第三针]((${sypFormEntity.treatment1_yunz3}孕周))`, className: 'no-wrap', type: 'date', span: 8 },
             { name: 'treatment1_transfer3[执行情况]', className: `${sypFormEntity.treatment1_transfer3 === '未执行' ? 'isRed' : ''}`, type: 'input', span: 6 },
           ]
         },
@@ -90,19 +90,19 @@ export default class SYPmodal extends Component {
         },
         {
           columns:[
-            { name: `treatment2_time1[第一针]((${sypFormEntity.treatment2_yunz1}孕周))`, className: 'no-wrap', type: 'date', span: 6 },
+            { name: `treatment2_time1[第一针]((${sypFormEntity.treatment2_yunz1}孕周))`, className: 'no-wrap', type: 'date', span: 8 },
             { name: 'treatment2_transfer1[执行情况]', className: `${sypFormEntity.treatment2_transfer1 === '未执行' ? 'isRed' : ''}`, type: 'input', span: 6 },
           ]
         },
         {
           columns:[
-            { name: `treatment2_time2[第二针]((${sypFormEntity.treatment2_yunz2}孕周))`, className: 'no-wrap', type: 'date', span: 6 },
+            { name: `treatment2_time2[第二针]((${sypFormEntity.treatment2_yunz2}孕周))`, className: 'no-wrap', type: 'date', span: 8 },
             { name: 'treatment2_transfer2[执行情况]', className: `${sypFormEntity.treatment2_transfer2 === '未执行' ? 'isRed' : ''}`, type: 'input', span: 6 },
           ]
         },
         {
           columns:[
-            { name: `treatment2_time3[第三针]((${sypFormEntity.treatment2_yunz3}孕周))`, className: 'no-wrap', type: 'date', span: 6 },
+            { name: `treatment2_time3[第三针]((${sypFormEntity.treatment2_yunz3}孕周))`, className: 'no-wrap', type: 'date', span: 8 },
             { name: 'treatment2_transfer3[执行情况]', className: `${sypFormEntity.treatment2_transfer3 === '未执行' ? 'isRed' : ''}`, type: 'input', span: 6 },
           ]
         },

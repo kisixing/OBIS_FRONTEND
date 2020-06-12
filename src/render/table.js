@@ -95,69 +95,7 @@ class TableItem extends Component {
   }
 
   onChange = (e, value) => {
-    const { entity, name, isPreghiss } = this.props;
     if (typeof value === 'object') value = value.label;
-    // let bool = false;
-    // if(isPreghiss) {
-    //   let threeCount = 0;
-    //   let fourCount = 0;
-    //   if (!!entity.zir) threeCount++;
-    //   if (!!entity.reng) threeCount++;
-    //   if (!!entity.yinch) threeCount++;
-
-    //   if (!!entity.zaoch) fourCount++;
-    //   if (entity.zuych === 'true') fourCount++;
-    //   if (entity.shunch === 'true') fourCount++;
-    //   if (!!entity.shouShuChanType) fourCount++;
-
-    //   if( (name === 'zir' && value && fourCount > 0) || 
-    //       (name === 'reng' && value && fourCount > 0) ||
-    //       (name === 'yinch' && value && fourCount > 0) ) {
-    //       message.error('早产、足月产、顺产、手术产式中已有数据！', 4);
-    //       bool = true;
-    //   }
-
-    //   if( (name === 'zaoch' && value  && threeCount > 0) || 
-    //       (name === 'zuych' && value === 'true' && threeCount > 0) ||
-    //       (name === 'shunch' && value === 'true' && threeCount > 0) ||
-    //       (name === 'shouShuChanType' && value && threeCount > 0) ) {
-    //       message.error('自然流产、人工流产、引产中已有数据！', 4);
-    //       bool = true;
-    //   }
-
-    //   if (name === 'zir' && value && (entity.reng || entity.yinch)) {
-    //     message.error('人工流产、引产中已有数据！', 4);
-    //     bool = true;
-    //   } 
-    //   if (name === 'reng' && value && (entity.zir || entity.yinch)) {
-    //     message.error('自然流产、引产中已有数据！', 4);
-    //     bool = true;
-    //   }
-    //   if (name === 'yinch' && value && (entity.zir || entity.reng)) {
-    //     message.error('自然流产、人工流产中已有数据！', 4);
-    //     bool = true;
-    //   }
-
-    //   if (name === 'zaoch' && value && entity.zuych === 'true') {
-    //     message.error('足月产已有数据！', 4);
-    //     bool = true;
-    //   }
-    //   if (name === 'zuych' && value === 'true' && entity.zaoch)  {
-    //     message.error('早产已有数据！', 4);
-    //     bool = true;
-    //   }
-
-    //   if (name === 'shunch' && value === 'true' && entity.shouShuChanType) {
-    //     message.error('手术产式已有数据！', 4);
-    //     bool = true;
-    //   }
-    //   if (name === 'shouShuChanType' && value && entity.shunch === 'true') {
-    //     message.error('顺产已有数据！', 4);
-    //     bool = true;
-    //   }
-    // }
-    // if (bool) return new Promise(resolve => resolve);
-
     return new Promise(resolve => {
       this.setState({
         value: value
@@ -400,9 +338,9 @@ export default function(
           }
         }
         if(isPreghiss && dataSource.length >  1 && row > 1 && row <= dataSource.length && item.pregnum) {
-          const numArr = [14, 15, 16, 17, 18, 19];
-          if ((row === 2 && item.pregnum === dataSource[row - 1].pregnum && !numArr.includes(column)) ||
-          (row > 2 && item.pregnum === dataSource[row - 1].pregnum && item.pregnum !== dataSource[row - 3].pregnum && !numArr.includes(column))) {
+          const ignoreKeys = ['xingb', 'child', 'deathTime', 'deathCause', 'sequela', 'tizh'];
+          if ((row === 2 && item.pregnum === dataSource[row - 1].pregnum && !ignoreKeys.includes(key)) ||
+          (row > 2 && item.pregnum === dataSource[row - 1].pregnum && item.pregnum !== dataSource[row - 3].pregnum && !ignoreKeys.includes(key))) {
             let countNum = 0;
             dataSource.map(subItem => (
               subItem.pregnum == item.pregnum ? countNum++ : null
@@ -424,8 +362,8 @@ export default function(
                 rowSpan: countNum
               }
             }
-          } else if ((row !== 2 && item.pregnum === dataSource[row - 3].pregnum && !numArr.includes(column)) || 
-                    (row !== 2 && item.pregnum === dataSource[row - 3].pregnum && item.pregnum === dataSource[row - 1].pregnum && !numArr.includes(column))) {
+          } else if ((row !== 2 && item.pregnum === dataSource[row - 3].pregnum && !ignoreKeys.includes(key)) || 
+                    (row !== 2 && item.pregnum === dataSource[row - 3].pregnum && item.pregnum === dataSource[row - 1].pregnum && !ignoreKeys.includes(key))) {
             return {
               children: <TableItem
                 {...props}
