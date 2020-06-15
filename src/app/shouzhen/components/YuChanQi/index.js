@@ -51,11 +51,11 @@ export default class extends Component {
             { name: "add_FIELD_shouyun[受孕方式]",  type: "checkinput-4", span: 14, valid: "required", radio: true, options: baseData.syfsOptions }
           ]
         },
-        // {
-        //   columns: [
-        //     { name: 'add_FIELD_chiefComplaint[主诉]', type: 'input', span: 17 },
-        //   ]
-        // },
+        {
+          columns: [
+            { name: 'add_FIELD_chiefComplaint[主诉]', type: 'input', span: 17 },
+          ]
+        },
         // {
         //   columns: [
         //     { name: 'ckyibzhzhtd(周)[胎动开始]', type: 'input', span: 5, valid: 'required,number' },

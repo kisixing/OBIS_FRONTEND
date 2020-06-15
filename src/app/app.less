@@ -1,5 +1,5 @@
 .main-body {
-  padding-top: 5.5rem;
+  padding-top: 88px;
 }
 .main-body .main-header {
   position: fixed;
@@ -7,9 +7,10 @@
   right: 0;
   top: 0;
   z-index: 999;
-  height: 5.5rem;
+  height: 88px;
   background: #fff;
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
+  overflow: hidden;
 }
 .main-body .main-content{
   position: relative;
@@ -210,19 +211,41 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: 580px;
-  background: #fffbe6;
-  padding: 10px;
+  background: #fff;
   z-index: 1000;
-  border: 1px solid #ffeaa5;
+  box-shadow:0px 2px 45px -8px #ccc;
   border-radius: 5px;
+  .highrisk-header {
+    padding: 10px;
+    border-bottom: 1px solid #D7DCE7;
+    .close-icon {
+      cursor: pointer;
+    }
+  }
   .highrisk-content  {
-    padding: 0 20px;
-  }
-  .highrisk-word {
-    color: #ff6600;
-  }
-  .highrisk-item {
-    margin: 10px 0;
+    padding: 10px 20px;
+    .highrisk-word {
+      color: #FD617F;
+      font-size: 21px;
+    }
+    .highrisk-item {
+      margin: 10px 0 30px;
+    }
+    .btns-wrapper {
+      text-align: center;
+      .close-btn {
+        font-size: 20px;
+        border: none;
+        color: #fff;
+        background-color: #AFB4BE;
+        margin-right: 24px;
+      }
+      .nerver-btn {
+        font-size: 20px;
+        color: #fff;
+        background-color: #007AFF;
+      }
+    }
   }
 }
 

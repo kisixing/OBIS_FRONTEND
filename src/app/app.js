@@ -239,7 +239,7 @@ export default class App extends Component {
     return highriskAlert && highriskAlert.length > 0 
         ? highriskAlert.map((item, index) =>item.alertMark == 1 && item.visible ? (
           <div className="highrisk-wrapper">
-            <div>
+            <div className="highrisk-header">
               <span className="exc-icon">
                 <Icon type="exclamation-circle" style={{ color: "#FCCD68" }}/>{" "}
                 请注意！
@@ -258,12 +258,12 @@ export default class App extends Component {
                   </Button>
                 ))}
               </div>
-              <div>
-                <Button className="blue-btn colorGray margin-R-1" type="ghost" onClick={() => handelClose(index, item.content)}>
-                  关闭，不再提示
-                </Button>
-                <Button className="blue-btn colorGray" type="ghost" onClick={() => handelClose(index)}>
+              <div className="btns-wrapper">
+                <Button className="close-btn" onClick={() => handelClose(index)}>
                   关闭
+                </Button>
+                <Button className="nerver-btn" onClick={() => handelClose(index, item.content)}>
+                  关闭，不再提示
                 </Button>
               </div>
             </div>
