@@ -42,9 +42,6 @@ export default class extends Component{
     printKeys.forEach(item => {
       !item.className ? keysArr.push(item.key) : null;
     })
-    // console.log(printKeys, printData, '124')
-    // console.log(rows, '222')
-    // console.log(keysArr, '3221')
 
     return (
       <div>

@@ -48,7 +48,6 @@ export function getWeek(param1, param2) {
 
 // 获取本周五、下周五、下下周五时间
 export function getOrderTime(key) {
-  console.log(key)
   let time;
   if (key === "本周五") {
     let day = new Date().getDay();

@@ -591,11 +591,11 @@ export default class Patient extends Component {
     renderWeekModal = () => {
         const { isShowWeekModal, weekMsg } = this.state;
         const content = () => {
-        return (
-            <div>
-                {weekMsg.respMsg}
-            </div>
-        )
+            return (
+                <div>
+                    {weekMsg.respMsg}
+                </div>
+            )
         };
         const onCancel = () => {
             this.setState({ isShowWeekModal: false });

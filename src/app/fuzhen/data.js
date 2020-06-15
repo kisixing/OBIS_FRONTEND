@@ -165,10 +165,10 @@ export const tableKey = () => [
 		]
 	},
 	{
-		title: '症状及查体',
+		title: '症状',
 		key: 'ckzijzhz',
 		type: 'editableSelect',
-		width: 80,
+		width: 100,
 		showSearch: true,
 		autoInsert: true,
 		options: ckzijzhzOptions
@@ -210,8 +210,13 @@ export const tableKey = () => [
 		title: '下肢水肿',
 		key: 'ckfuzh',
 		type:'select',
-		width: 50,
+		width: 20,
 		options: ckfuzhOptions
+	},
+	{
+		title: '其他',
+		key: 'ckzijzhzqt',
+		type: 'input',
 	},
 	// {
 	// 	title: '胎儿超声',
@@ -348,7 +353,8 @@ export const tableKey = () => [
 	{
 		title: '医生',
 		key: 'sign',
-		type: 'input'
+		type: 'input',
+		width: 30,
 	},
 ];
 

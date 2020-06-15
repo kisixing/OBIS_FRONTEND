@@ -15,6 +15,7 @@ import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAct
       } from '../../../store/actionCreators.js';
 import RegForm from '../../../components/reg-form';
 import TemplateModal from '../../../components/template-modal';
+import DiabetesAppointment from '../../../components/diabetes-appointment';
 
 const renderChart = function(){
   var loaded = new Promise(resolve=>setTimeout(()=>loadWidget('echarts').then(resolve), 1000));
@@ -47,7 +48,6 @@ export default class FuzhenForm extends Component {
       lisCheckedNodes: [],
       lisImportTitle: '',
       openMenzhen: false,
-      menzhenData: new Date(),
       ...store.getState(),
     }
     store.subscribe(this.handleStoreChange);
@@ -700,40 +700,6 @@ export default class FuzhenForm extends Component {
   }
 
   /**
-   *预约窗口
-   */
-  renderMenZhen() {
-    const { openMenzhen, menzhenData } = this.state;
-    const handelShow = (isShow) => {
-      this.setState({openMenzhen: false});
-      if(isShow) {
-        service.shouzhen.makeAppointment(20, menzhenData).then(res => console.log(res))
-      };
-    }
-    const panelChange = (date, dateString) => {
-      this.setState({menzhenData: dateString})
-    }
-    const timeSelect = v => {
-      this.setState({
-        menzhenData: util.getOrderTime(v)
-      })
-    }
-
-    return (
-      <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
-              visible={openMenzhen} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
-        <span>糖尿病门诊预约</span>
-        <Select onSelect={(value) => timeSelect(value)} defaultValue={"本周五"} style={{ width: 120 }}>
-          <Select.Option value={"本周五"}>本周五</Select.Option>
-          <Select.Option value={"下周五"}>下周五</Select.Option>
-          <Select.Option value={"下下周五"}>下下周五</Select.Option>
-        </Select>
-        <DatePicker value={menzhenData} onChange={(date, dateString) => panelChange(date, dateString)}/>
-      </Modal>
-    );
-  }
-
-  /**
    * 高危门诊弹窗
    */
   renderHighModal = () => {
@@ -878,13 +844,17 @@ export default class FuzhenForm extends Component {
     this.setState({ openTemplate: false });
   }
 
+  closeMenzhen = () => {
+    this.setState({ openMenzhen: false });
+  }
+
   handlePrintBtn = () => {
     const { handlePrint } = this.props;
     handlePrint();
   }
 
   render() {
-    const { isShowRegForm, openTemplate, openListImport } = this.state;
+    const { isShowRegForm, openTemplate, openListImport, openMenzhen } = this.state;
     const { initData } = this.props;
     return (
       <div className="fuzhen-form">
@@ -905,10 +875,10 @@ export default class FuzhenForm extends Component {
           </Button> */}
         </div>
         {openListImport && this.renderLisImport()}
-        {this.renderMenZhen()}
-        {this.renderAdviceModal()}
+        {/* {this.renderAdviceModal()} */}
         {this.renderHighModal()}
         {openTemplate && <TemplateModal openTemplate={openTemplate} closeTemplateModal={this.closeTemplateModal} />}
+        {openMenzhen && <DiabetesAppointment openMenzhen={openMenzhen} closeMenzhen={this.closeMenzhen} />}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />} */}
       </div>
     );

@@ -13,6 +13,7 @@ import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, get
 import RegForm from '../../../components/reg-form';
 import TemplateModal from '../../../components/template-modal';
 import DiagSearch from '../../../components/diagnosis-search';
+import DiabetesAppointment from '../../../components/diabetes-appointment';
 import cModal from '../../../../render/modal';
 import '../../index.less';
 import service from '../../../../service';
@@ -30,7 +31,6 @@ export default class extends Component{
       adviceList: [],
       openAdvice: false,
       openMenzhen: false,
-      menzhenData: new Date(),
       isShowRegForm: false,
       isShowHighModal: false,
       appointmentNum: 0,
@@ -346,6 +346,11 @@ export default class extends Component{
     //   });
     // };
 
+    const handleIptClick = () => {
+      const action = showDiagSearchAction(true);
+      store.dispatch(action);
+    }
+
     // 诊断小弹窗操作
     const content = (item, i) => {
       const handleHighriskmark = () => {
@@ -403,7 +408,7 @@ export default class extends Component{
 
     return (
       <div className="shouzhen-left-zd">
-        <Button className="zhen-duan-btn" icon="plus-circle-o" onClick={this.handleIptClick}>添加诊断</Button>
+        <Button className="zhen-duan-btn" icon="plus-circle-o" onClick={handleIptClick}>添加诊断</Button>
         {formRender(entity, this.topConfig(), this.handleChange.bind(this))}
         <div className="shouzhen-left-top">
           {szList && szList.map((item, i) => (
@@ -445,40 +450,6 @@ export default class extends Component{
         width: '80%'
       })
     })
-  }
-
-    /**
-   *预约窗口
-   */
-  renderMenZhen() {
-    const { openMenzhen, menzhenData } = this.state;
-    const handelShow = (isShow) => {
-      this.setState({openMenzhen: false});
-      if(isShow) {
-        service.shouzhen.makeAppointment(20, menzhenData).then(res => console.log(res))
-      };
-    }
-    const panelChange = (date, dateString) => {
-      this.setState({menzhenData: dateString})
-    }
-    const timeSelect = v => {
-      this.setState({
-        menzhenData: util.getOrderTime(v)
-      })
-    }
-
-    return (
-      <Modal className="yuModal" title={<span><Icon type="exclamation-circle" style={{color: "#FCCD68"}} /> 请注意！</span>}
-              visible={openMenzhen} onOk={() => handelShow(true)} onCancel={() => handelShow(false)} >
-        <span>糖尿病门诊预约</span>
-        <Select onSelect={(value) => timeSelect(value)} defaultValue={"本周五"} style={{ width: 120 }}>
-          <Select.Option value={"本周五"}>本周五</Select.Option>
-          <Select.Option value={"下周五"}>下周五</Select.Option>
-          <Select.Option value={"下下周五"}>下下周五</Select.Option>
-        </Select>
-        <DatePicker value={menzhenData} onChange={(date, dateString) => panelChange(date, dateString)}/>
-      </Modal>
-    );
   }
 
   /**
@@ -672,13 +643,12 @@ export default class extends Component{
     this.setState({ openTemplate: false });
   }
 
-  handleIptClick = () => {
-    const action = showDiagSearchAction(true);
-    store.dispatch(action);
+  closeMenzhen = () => {
+    this.setState({ openMenzhen: false });
   }
 
   render(){
-    const { isShowRegForm, openTemplate, isShowDiagSearch } = this.state;
+    const { isShowRegForm, openTemplate, isShowDiagSearch, openMenzhen } = this.state;
     const { entity } = this.props;
     return (
       <div className="zhen-duan">
@@ -693,11 +663,11 @@ export default class extends Component{
           </Col>
         </Row>
 
-        {this.renderMenZhen()}
-        {this.renderAdviceModal()}
+        {/* {this.renderAdviceModal()} */}
         {this.renderHighModal()}
         {openTemplate && <TemplateModal openTemplate={openTemplate} closeTemplateModal={this.closeTemplateModal} />}
         {isShowDiagSearch && <DiagSearch addDiag={this.adddiagnosis.bind(this)} />}
+        {openMenzhen && <DiabetesAppointment openMenzhen={openMenzhen} closeMenzhen={this.closeMenzhen} />}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>} */}
       </div>
     )

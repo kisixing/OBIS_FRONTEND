@@ -9,9 +9,7 @@ export default function(props){
     modal = document.createElement('div');
     document.body.appendChild(modal);
   }
-
   
-
   const handelClick = (fn = ()=>{}) => (...args) => {
     try{fn(...args);}catch(e){}
     render(<i/>, modal);

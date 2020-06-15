@@ -201,4 +201,12 @@ export default {
     adjustGWeek: function(data) {
         return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/cascadeAdjustGestationalWeek`, { ...data }));
     },
+    // 查找糖尿病日间门诊记录
+    findOutpatientAppointment: function() {
+        return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/findOutpatientAppointment`, { userid: r.object.userid, appointmentType: 'diabetes' }));
+    },
+    // 新增糖尿病日间门诊加号
+    makeOutpatientAppointment: function(time) {
+        return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/makeOutpatientAppointment`, { userid: r.object.userid, appointmentType: 'diabetes', appointmentDate: time }));
+    },
 };
