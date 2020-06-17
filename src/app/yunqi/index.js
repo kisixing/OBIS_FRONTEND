@@ -378,15 +378,16 @@ export default class Index extends Component {
         var acObj = {};
         bpdObj.x = parseInt(fetusList[i].yunzh) - 10;
         bpdObj.y = parseInt(fetusList[i].bpd);
-        bpdArr.push(bpdObj);
+        if(fetusList[i].yunzh && fetusList[i].bpd) bpdArr.push(bpdObj);
+        
     
         flObj.x = parseInt(fetusList[i].yunzh) - 10;
         flObj.y = parseInt(fetusList[i].fl);
-        flArr.push(flObj);
+        if(fetusList[i].yunzh && fetusList[i].fl) flArr.push(flObj);
     
         acObj.x = parseInt(fetusList[i].yunzh) - 10;
         acObj.y = parseInt(fetusList[i].ac);
-        acArr.push(acObj);
+        if(fetusList[i].yunzh && fetusList[i].ac) acArr.push(acObj);
       }
     }
   

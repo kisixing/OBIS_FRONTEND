@@ -227,7 +227,7 @@ export const tableKey = () => [
 	// 			key: 'allTetz',
 	// 		},
 	// 		{
-	// 			title: 'AVF',
+	// 			title: 'AFV',
 	// 			key: 'allTeafv',
 	// 		},
 	// 		{
@@ -241,7 +241,7 @@ export const tableKey = () => [
 				key: 'allTetz',
 			},
 			{
-				title: 'AVF',
+				title: 'AFV',
 				key: 'allTeafv',
 			},
 			{

@@ -602,12 +602,12 @@ export default class App extends Component {
       ));
 
     return highriskEntity ? (
-      <Modal className="highriskPop" title="高危因素" visible={highriskShow} width={1000} maskClosable={true}
+      <Modal className="highrisk-pop" title="高危因素" visible={highriskShow} width={1000} maskClosable={true}
              onCancel={() => this.setState({ highriskShow: false })} onOk={() => handleOk()}>
         <div>
           <Row>
-            <Col span={2}></Col>
-            <Col span={20}>
+            <Col span={1}></Col>
+            <Col span={22} className="highrisk-col">
               <Row>
                 <Col span={3}>高危等级：</Col>
                 <Col span={7}>
@@ -628,22 +628,28 @@ export default class App extends Component {
                   </Select>
                 </Col>
               </Row>
-              <br />
               <Row>
                 <Col span={3}>高危因素：</Col>
                 <Col span={16}>
-                  <Input type="textarea" rows={5} value={highriskEntity.highrisk} onChange={e => handleChange("highrisk", e.target.value)}/>
+                  {/* <Input type="textarea" rows={5} value={highriskEntity.highrisk} onChange={e => handleChange("highrisk", e.target.value)}/> */}
+                  <Select 
+                    className="highrisk-factor" 
+                    multiple 
+                    tags={true}
+                    value={!!highriskEntity.highrisk ? highriskEntity.highrisk.split("\n").filter(i => !!i) : []} 
+                    onChange={e => handleChange("highrisk", e.join("\n"))}
+                  />
                 </Col>
                 <Col span={1}></Col>
                 <Col span={2}>
                   <Button size="small" onClick={() => handleClear()}>重置</Button>
                 </Col>
               </Row>
-              <br />
               <Row>
                 <Col span={16}>
                   <Input value={highriskEntity.search} onChange={e => handleChange("search", e.target.value)} placeholder="输入模糊查找"/>
                 </Col>
+                <Col span={1}></Col>
                 <Col span={3}>
                   <Button size="small" onClick={() => this.setState({expandedKeys: []})}>全部收齐</Button>
                 </Col>
@@ -651,13 +657,13 @@ export default class App extends Component {
                   <Button size="small" onClick={() => this.setState({expandedKeys: allExpandedKeys})}>全部展开</Button>
                 </Col>
               </Row>
+              <Row className="highrisk-options">
+                <Tree expandedKeys={expandedKeys} onExpand={handleCheck} onSelect={handleSelect}>
+                  {initTree(0)}
+                </Tree>
+              </Row>
             </Col>
           </Row>
-          <div style={{ height: 300, overflow: "auto", padding: "0 16px" }}>
-            <Tree expandedKeys={expandedKeys} onExpand={handleCheck} onSelect={handleSelect} style={{ maxHeight: "90%" }}>
-              {initTree(0)}
-            </Tree>
-          </div>
         </div>
       </Modal>
     ) : null;

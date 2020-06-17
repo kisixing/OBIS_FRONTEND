@@ -80,7 +80,7 @@ export default class Index extends Component{
                   value={item}
                   disabled={ orderData && orderData.appointmentDate === util.getOrderTime(item) ? true : false } 
                 >
-                  {item}
+                  {orderData && orderData.appointmentDate === util.getOrderTime(item) ? `${item}(已预约)` : item}
                 </Select.Option>
               ))
             }

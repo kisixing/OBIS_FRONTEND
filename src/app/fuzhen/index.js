@@ -222,7 +222,7 @@ export default class FuZhen extends Component {
       let heartRateCount = 0;
       let examinationCount = 0;
       let hasTz = false;
-      let hasAvf = false;
+      let hasAfv = false;
       let hasQxl = false;
       let hasPlan = false;
       let hasRiMo = false;
@@ -276,7 +276,7 @@ export default class FuZhen extends Component {
               item.allTetz += subItem.tetz + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
             } 
             if(subItem.teafv) {
-              hasAvf = true;
+              hasAfv = true;
               item.allTeafv += subItem.teafv + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
             } 
             if(subItem.teqxl) {
@@ -340,8 +340,8 @@ export default class FuZhen extends Component {
       if(!hasTz) {
         keys[getIndex(keys, '胎儿体重')].className = 'isHide';
       } 
-      if(!hasAvf) {
-        keys[getIndex(keys, 'AVF')].className = 'isHide';
+      if(!hasAfv) {
+        keys[getIndex(keys, 'AFV')].className = 'isHide';
       } 
       if(!hasQxl) {
         keys[getIndex(keys, '脐血流')].className = 'isHide';

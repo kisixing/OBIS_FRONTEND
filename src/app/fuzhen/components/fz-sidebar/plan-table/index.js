@@ -236,7 +236,14 @@ export default class FuzhenForm extends Component {
       return (
 				<Modal width="80%" footer={null} title={<Button className="blue-btn" type="ghost" onClick={() => this.onReturn(2)}>返回</Button>} 
 					visible={isShowMplanModal} maskClosable={false} onOk={() => handleClick(true)} onCancel={() => handleClick(false)}>
-          <div>{planGroup.length > 0 ? initTable(planGroup) : ""}</div>
+          {
+            planGroup.length > 0 ? 
+              <div>
+                {initTable(planGroup)}
+                <p className="text-right">(双击上方表格编辑对应的诊疗计划组)</p>
+              </div>
+            : ""
+          }
 					<Button className="blue-btn margin-TB-mid" type="ghost" onClick={() => addNewPlan()}>新增诊疗计划组</Button>
         </Modal>
       )

@@ -41,6 +41,7 @@ export default class Patient extends Component {
             requiredData: baseData.requiredForm,
             isShowWeekModal: false,
             weekMsg: '',
+            adjustInfo: null,
             ...store.getState(),
         }
         store.subscribe(this.handleStoreChange);
@@ -53,6 +54,13 @@ export default class Patient extends Component {
     handleStoreChange = () => {
         this.setState(store.getState());
     };
+
+    componentDidMount() {
+        const { allFormData } = this.state;
+        if (allFormData) {
+            this.adjustGesexpectrv(allFormData.pregnantInfo);
+        }
+    }
 
     activeTab(step) {
         const { tabs, allFormData } = this.state;
@@ -181,6 +189,8 @@ export default class Patient extends Component {
                         entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],value);
                     }
                     break;
+                case 'ckzweek':
+                    this.adjustGesexpectrv(entity);
                 case 'all_gesmoc':
                     if (!!value[0]) {
                         entity['gesexpect'] = common.GetExpected(value[0]);
@@ -612,8 +622,49 @@ export default class Patient extends Component {
         })
     }
 
+    adjustGesexpectrv(pregnantInfo) {
+        const { gesexpect, gesexpectrv, ckztingj, ckzweek } = pregnantInfo;
+        if (gesexpect && ckztingj && ckzweek && ckztingj !== ckzweek) {
+            service.shouzhen.calculateGesexpectrv(gesexpect, ckztingj, ckzweek).then(res => {
+                if (gesexpectrv !== res.object.gesexpectrv) {
+                    this.setState({
+                        adjustInfo: res.object
+                    })
+                }
+            })
+        }
+    }
+
+    // 提示是否更改预产期-B超
+    renderAdjustModal = () => {
+        const { adjustInfo, tabs } = this.state;
+        const content = () => {
+            return (
+                <div>
+                    根据B超，是否调整孕产期-B超为 {adjustInfo.gesexpectrv}
+                </div>
+            )
+        };
+        const onCancel = () => {
+            const visible = { "remindFlag": false };
+            this.setState({ adjustInfo: {...adjustInfo, ...visible} });
+            service.shouzhen.closeRemindMark();
+        }
+        const onOk = (e) => {
+            const visible = { "remindFlag": false };
+            this.setState({ adjustInfo: {...adjustInfo, ...visible} });
+            this.handleChange(e, { name: 'gesexpectrv', value: adjustInfo.gesexpectrv }, tabs[0].entity);
+        }
+        cModal({
+            visible: adjustInfo.remindFlag, 
+            content: content, 
+            onCancel: onCancel,
+            onOk: onOk,
+        })
+    }
+
     render() {
-        const { tabs, step, userDoc, allFormData, emptyData, isShowWeekModal } = this.state;
+        const { tabs, step, userDoc, allFormData, emptyData, isShowWeekModal, adjustInfo } = this.state;
         const printIvisit = () => {
             service.shouzhen.printPdfByFile().then(res => {
                 common.printPdf(res.object);
@@ -625,6 +676,7 @@ export default class Patient extends Component {
             tabs[0].entity = allFormData.pregnantInfo;
             tabs[0].entity.all_gesmoc = { 0: allFormData.pregnantInfo.gesmoc, 1: allFormData.pregnantInfo.add_FIELD_gesmoc_unknown };
             this.getEmptyData(allFormData);
+            this.adjustGesexpectrv(allFormData.pregnantInfo);
         }
         
         return (
@@ -662,6 +714,7 @@ export default class Patient extends Component {
               </Col>
             </Row>
             { isShowWeekModal && this.renderWeekModal() }
+            { adjustInfo && adjustInfo.remindFlag && this.renderAdjustModal() }
           </Page>
         );
     }

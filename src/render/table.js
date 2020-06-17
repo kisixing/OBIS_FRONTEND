@@ -60,10 +60,17 @@ class TableItem extends Component {
     }
   }
 
-  onDbClick = () => {
-    const { iseditable = ()=> true, type, entity, row, name, value, onEdit, isTwins, onDBClick, isPreghiss } = this.props;
+  onItemDbClick = () => {
+    const { entity, onDBClick} = this.props;
     if(onDBClick) {
       return onDBClick(entity);
+    }
+  }
+
+  onItemClick = () => {
+    const { iseditable = ()=> true, type, entity, row, name, value, onEdit, isTwins, isPreghiss } = this.props;
+    if (isPreghiss && name === "datagridYearMonth" && value === "本孕") {
+      return;
     }
     if(iseditable({entity, row, name, value})){
       if(isTwins && (name === "allTaix" || name === "allXianl")) {
@@ -200,7 +207,8 @@ class TableItem extends Component {
       <span
         ref="tableItem"
         title={value}
-        onClick={this.onDbClick.bind(this)}
+        onClick={this.onItemClick.bind(this)}
+        onDoubleClick={this.onItemDbClick.bind(this)}
         className={`table-item table-item-${type} ${(force && "table-force") ||
           (error && "table-error") ||
           ""}`}

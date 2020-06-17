@@ -260,7 +260,7 @@ export default class FuzhenForm extends Component {
                 label: `胎${index+1}超声`, columns: [
                   { name: 'tetz(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 5 },
                   { span: 1 },
-                  { name: 'teafv(MM)[AVF]', type: 'input', className: 'childLabel', span: 5 },
+                  { name: 'teafv(MM)[AFV]', type: 'input', className: 'childLabel', span: 5 },
                   { span: 1 },
                   { name: 'teqxl[脐血流]', type: 'input', className: 'childLabel', span: 5 },
                   { span: 1 },

@@ -209,4 +209,12 @@ export default {
     makeOutpatientAppointment: function(time) {
         return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/makeOutpatientAppointment`, { userid: r.object.userid, appointmentType: 'diabetes', appointmentDate: time }));
     },
+    // 首诊调整预产期-B超
+    calculateGesexpectrv: function(gesexpect, ckztingj, ckzweek) {
+        return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/calculateGesexpectrv`, { userid: r.object.userid, gesexpect, ckztingj, ckzweek }));
+    },
+    // 不再提示调整预产期-B超
+    closeRemindMark: function() {
+        return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/closeRemindMark`, { userid: r.object.userid, type: '3', mark: '' }));
+    },
 };
