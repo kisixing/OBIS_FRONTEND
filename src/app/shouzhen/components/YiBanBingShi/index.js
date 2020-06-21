@@ -57,18 +57,18 @@ export default class extends Component {
             }
           ]
         },
-        {
-          columns: [
-            {
-              name: "add_FIELD_qitabingshi[其@他]",
-              type: "checkinput-8",
-              className: 'long-ipt',
-              radio: true,
-              options: baseData.wssOptions,
-              span: 22
-            }
-          ]
-        },
+        // {
+        //   columns: [
+        //     {
+        //       name: "add_FIELD_qitabingshi[其@他]",
+        //       type: "checkinput-8",
+        //       className: 'long-ipt',
+        //       radio: true,
+        //       options: baseData.wssOptions,
+        //       span: 22
+        //     }
+        //   ]
+        // },
         // {
         //   columns: [
         //     { span: 1 },
@@ -153,11 +153,13 @@ export default class extends Component {
           columns: [
             {
               name: "add_FIELD_symptom[其@他]",
-              type: "editableSelect",
-              options: baseData.zsOptions,
-              autoInsert: true,
-              showSearch: true,
-              span: 22
+              type: "textarea",
+              className: "colorRed",
+              // type: "editableSelect",
+              // options: baseData.zsOptions,
+              // autoInsert: true,
+              // showSearch: true,
+              // span: 22
             }
           ]
         },

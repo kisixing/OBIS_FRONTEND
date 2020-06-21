@@ -11,6 +11,12 @@
     padding: 0;
     margin: 0;
   }
+  .print-info {
+    text-align: right;
+  }
+  .print-info .info-item {
+    margin-right: 21px;
+  }
   .has-print .print-highrisk {
     visibility: hidden;
   }

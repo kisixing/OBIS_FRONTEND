@@ -79,8 +79,12 @@ export default class Patient extends Component {
                 }
             } else if (tab.key === 'tab-1'){
                 tab.entity = service.praseJSON(allFormData.hisInfo);
-                // 其他默认选无
-                tab.entity.add_FIELD_qitabingshi = !!tab.entity.add_FIELD_qitabingshi ? tab.entity.add_FIELD_qitabingshi : [{"label": "无", "value": ""}];
+                // 其他病史默认选无
+                // tab.entity.add_FIELD_qitabingshi = !!tab.entity.add_FIELD_qitabingshi ? tab.entity.add_FIELD_qitabingshi : [{"label": "无", "value": ""}];
+                // 其他由 select 改成 textarea, 对之前的数据进项转换
+                if (Object.prototype.toString.call(tab.entity.add_FIELD_symptom) === '[object Object]' && tab.entity.add_FIELD_symptom.value) {
+                    tab.entity.add_FIELD_symptom = tab.entity.add_FIELD_symptom.value;
+                }
             } else if (tab.key === 'tab-2') {
                 tab.entity = service.praseJSON({...allFormData.menstruationMarriage, ...allFormData.biography});
                 // 其他默认选无
@@ -193,9 +197,13 @@ export default class Patient extends Component {
                     this.adjustGesexpectrv(entity);
                 case 'all_gesmoc':
                     if (!!value[0]) {
-                        entity['gesexpect'] = common.GetExpected(value[0]);
-                        entity['gesexpectrv'] = common.GetExpected(value[0]);
+                        // entity['gesexpect'] = common.GetExpected(value[0]);
+                        // entity['gesexpectrv'] = common.GetExpected(value[0]);
                         // entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],entity['dopupt']);
+                        service.shouzhen.calcEddByLmp(value[0]).then(res => {
+                            this.handleChange(e, { name: 'gesexpect', value: res.object, target }, entity);
+                            this.handleChange(e, { name: 'gesexpectrv', value: res.object, target }, entity);
+                        })
                         service.shouzhen.findCkzdataByUserid(value[0]).then(res => {
                             if (!!res.object.ckzdate) {
                                 this.handleChange(e, { name: 'ckzdate', value: res.object.ckzdate, target }, entity);
@@ -714,7 +722,7 @@ export default class Patient extends Component {
               </Col>
             </Row>
             { isShowWeekModal && this.renderWeekModal() }
-            { adjustInfo && adjustInfo.remindFlag && this.renderAdjustModal() }
+            {/* { adjustInfo && adjustInfo.remindFlag && this.renderAdjustModal() } */}
           </Page>
         );
     }

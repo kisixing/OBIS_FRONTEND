@@ -217,4 +217,8 @@ export default {
     closeRemindMark: function() {
         return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/closeRemindMark`, { userid: r.object.userid, type: '3', mark: '' }));
     },
+    // 根据末次月经计算孕产期
+    calcEddByLmp: function(date) {
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/calcEddByLmp?lmp=${date}`));
+    },
 };

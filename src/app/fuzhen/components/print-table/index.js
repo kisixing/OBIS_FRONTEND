@@ -25,7 +25,7 @@ export default class extends Component{
 
 
   render(){
-    const { printKeys, printData, highriskFactor } = this.props;
+    const { printKeys, printData, userDoc } = this.props;
     const rows = this.getheades(printKeys);
     const keysArr = [];
     printKeys.forEach(item => {
@@ -45,7 +45,13 @@ export default class extends Component{
 
     return (
       <div>
-        <p className="print-highrisk">高危诊断：{highriskFactor}</p>
+        <p className="print-info">
+          <sapn className="info-item">姓名：{userDoc.username}</sapn>
+          <sapn className="info-item">年龄：{userDoc.userage}</sapn>
+          <sapn className="info-item">门诊号：{userDoc.usermcno}</sapn>
+          <sapn>建档号：{userDoc.chanjno}</sapn>
+        </p>
+        {userDoc.highriskFactor && <p className="print-highrisk">高危诊断：{userDoc.highriskFactor}</p>}
         <table style={{width: "100%"}} className="print-table">
           <tbody>
             {rows.map((item, index) => (

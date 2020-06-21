@@ -400,7 +400,7 @@ export default class FuZhen extends Component {
             <Button type="primary" className="bottom-savePDF-btn margin-R-1" size="small" onClick={() => printFZ()}>逐次打印</Button>
             <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => printFZ(true)}>全部打印</Button>
             <div className={hasPrint ? "fz-print has-print" : "fz-print"}>
-              {printData && <PrintTable printKeys={printKeys} printData={printData} highriskFactor={userDoc.highriskFactor}></PrintTable>}
+              {printData && <PrintTable printKeys={printKeys} printData={printData} userDoc={userDoc}></PrintTable>}
             </div>
           </div>
         </Modal>
