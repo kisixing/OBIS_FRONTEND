@@ -58,7 +58,7 @@ export default class Patient extends Component {
     componentDidMount() {
         const { allFormData } = this.state;
         if (allFormData) {
-            // this.adjustGesexpectrv(allFormData.pregnantInfo);
+            this.adjustGesexpectrv(allFormData.pregnantInfo);
         }
     }
 
@@ -193,9 +193,9 @@ export default class Patient extends Component {
                         entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],value);
                     }
                     break;
-                // case 'ckzweek':
-                    // this.adjustGesexpectrv(entity);
-                    // break;
+                case 'ckzweek':
+                    this.adjustGesexpectrv(entity);
+                    break;
                 case 'all_gesmoc':
                     if (!!value[0]) {
                         // entity['gesexpect'] = common.GetExpected(value[0]);
@@ -669,6 +669,7 @@ export default class Patient extends Component {
             content: content, 
             onCancel: onCancel,
             onOk: onOk,
+            closable: false,
         })
     }
 
@@ -723,7 +724,7 @@ export default class Patient extends Component {
               </Col>
             </Row>
             { isShowWeekModal && this.renderWeekModal() }
-            {/* { adjustInfo && adjustInfo.remindFlag && this.renderAdjustModal() } */}
+            { adjustInfo && adjustInfo.remindFlag && this.renderAdjustModal() }
           </Page>
         );
     }

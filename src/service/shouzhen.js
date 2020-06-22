@@ -189,6 +189,15 @@ export default {
     deletePersonal: function(id) {
         return this.userId().then(r => myAxios.delete(`/treatTemp/delete`, {id}));
     },
+    // 获取模板数据
+    findTree: function(type, id) {
+        return this.userId().then(r => myAxios.get(`/template/findTree?type=${type}&id=${id}`));
+    },
+    // 删除模板数据
+    remove: function(id) {
+        return this.userId().then(r => myAxios.post(`/template/remove?id=${id}`));
+    },
+
     /**
      * 首诊修改预产期-B超获取提示
      */

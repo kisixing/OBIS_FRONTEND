@@ -17,6 +17,7 @@ import DiabetesAppointment from '../../../components/diabetes-appointment';
 import cModal from '../../../../render/modal';
 import '../../index.less';
 import service from '../../../../service';
+import * as common from '../../../../utils/common';
 
 function modal(type, title) {
   message[type](title, 3)
@@ -100,6 +101,18 @@ export default class extends Component{
     }
   }
 
+  showAdd = (entity) => {
+    const docArr = ['黄林环','彭田玉','周祎','刘斌','蒋伟莹','蔡坚','黄顺英','黄轩','梁润彩','杨建波','张颖','方群','王冬昱','罗艳敏','王子莲'];
+    if (
+        (entity.xiacsftype && entity.xiacsftype.label && entity.xiacsftype.label === '教授门诊') &&
+        (entity.xiacsfdate && entity.xiacsfdatearea && entity.xiacsfdatearea.value) &&
+        docArr.includes(common.getCookie('docName'))
+      ) {
+        return true;
+    }
+    return false;
+  }
+
   config(){
     return {
       step: 1,
@@ -123,6 +136,10 @@ export default class extends Component{
             { name: 'nextRvisitWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 5 },
             { name: 'xiacsfdate', type:'date', placeholder: '日期', valid: 'required', span: 5 },
             { name: 'xiacsfdatearea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
+            // { 
+            //   name: 'addnum_iv_professor_outpatient', type: 'checkinput', span: 3, options: baseData.jhOptions,
+            //   filter: entity => this.showAdd(entity) 
+            // }
           ]
         },
         {

@@ -125,6 +125,18 @@ export default class FuzhenForm extends Component {
     return refreshFrom(type);
   }
 
+  showAdd = (entity) => {
+    const docArr = ['黄林环','彭田玉','周祎','刘斌','蒋伟莹','蔡坚','黄顺英','黄轩','梁润彩','杨建波','张颖','方群','王冬昱','罗艳敏','王子莲'];
+    if (
+        (entity.rvisitOsType && entity.rvisitOsType.label && entity.rvisitOsType.label === '教授门诊') &&
+        (entity.ckappointment && entity.ckappointmentArea && entity.ckappointmentArea.value) &&
+        docArr.includes(common.getCookie('docName'))
+      ) {
+        return true;
+    }
+    return false;
+  }
+
   //本次产检记录表单
   formConfig() {
     const check = t => this.checkDiagnosisHighrisk(t);
@@ -438,6 +450,10 @@ export default class FuzhenForm extends Component {
             { name: 'ckappointmentWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 2 },
             { name: 'ckappointment', type:'date', placeholder: '日期', valid: 'required', span: 3 },
             { name: 'ckappointmentArea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 2 },
+            // { 
+            //   name: 'addnum_rv_professor_outpatient', type: 'checkinput', span: 3, options: baseData.jhOptions,
+            //   filter: entity => this.showAdd(entity) 
+            // }
           ]
         }
       ]

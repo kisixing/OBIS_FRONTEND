@@ -24,6 +24,7 @@ export default class FuZhen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      szData: {},
       loading: true,
       info: {},
       recentRvisit: null,
@@ -52,6 +53,9 @@ export default class FuZhen extends Component {
   componentDidMount() {
     const { initData } = this.state;
 
+    // 同步显示首诊记录的部分数据
+    this.setInitialData();
+
     Promise.all([
       service.getuserDoc().then(res => {
         let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
@@ -68,12 +72,45 @@ export default class FuZhen extends Component {
     ]).then(() => this.setState({ loading: false }));
   }
 
+  setInitialData() {
+    const { allFormData, szData } = this.state;
+
+    szData.checkdate = '(初)' + allFormData.diagnosis.add_FIELD_first_save_ivisit_time;
+    szData.ckweek = allFormData.diagnosis.add_FIELD_tuserweek;
+    szData.cktizh = allFormData.checkUp.ckcurtizh;
+    szData.ckpressure = allFormData.checkUp.ckshrinkpressure + '/' + allFormData.checkUp.ckdiastolicpressure;
+    szData.ckzijzhz = allFormData.pregnantInfo.add_FIELD_chiefComplaint;
+    szData.ckgongg = allFormData.specialityCheckUp.ckgongg;
+    szData.ckfuzh = (allFormData.checkUp.ckfuzh && allFormData.checkUp.ckfuzh[0]) ? allFormData.checkUp.ckfuzh[0].label : '';
+    szData.treatment = allFormData.diagnosis.diagnosisHandle;
+    szData.rvisitOsType = allFormData.diagnosis.xiacsftype;
+    szData.ckappointment = allFormData.diagnosis.xiacsfdate;
+    szData.ckappointmentArea = allFormData.diagnosis.xiacsfdatearea;
+    szData.sign = allFormData.diagnosis.add_FIELD_ivisit_doctor;
+
+    if (allFormData.specialityCheckUp.add_FIELD_ckjc.length === 1) {
+      szData.cktaix = allFormData.specialityCheckUp.add_FIELD_ckjc[0].tx || '';
+      szData.ckxianl = (allFormData.specialityCheckUp.add_FIELD_ckjc[0].xl && allFormData.specialityCheckUp.add_FIELD_ckjc[0].xl.label) 
+                      ? allFormData.specialityCheckUp.add_FIELD_ckjc[0].xl.label : '';
+    } else if (allFormData.specialityCheckUp.add_FIELD_ckjc.length > 1) {
+      szData.fetalCondition = allFormData.specialityCheckUp.add_FIELD_ckjc;
+      szData.fetalCondition.forEach(item => {
+        if(item.tx) item.taix = item.tx;
+        if(item.xl) item.xianl = item.xl;
+      })
+    }
+
+    this.setState({
+      szData: {...baseData.formEntity, ...szData}
+    });
+  }
+
   getRecentList() {
-    const { initData } = this.state;
+    const { initData, szData } = this.state;
     service.fuzhen.getRecentRvisit().then(res => {
-      res.object = res.object || [];
+      let resList = res.object || [];
       let bool = false;
-      res.object && res.object.map(item => {
+      resList && resList.map(item => {
         if(item.checkdate === util.futureDate(0)) {
           bool = true;
           if (!item.medicationPlan) item.medicationPlan = [{}];
@@ -97,10 +134,13 @@ export default class FuZhen extends Component {
           initData.ckappointmentArea = {"0":"上","1":"午","label":"上午","describe":"上","value":'上午'};
         }
         this.setState({ initData }, () => {
-          res.object.push(initData);
+          resList.push(initData);
+          if (resList.length === 1) {
+            resList.unshift(szData);
+          }
         })
       } 
-      this.setState({recentRvisit: res.object})
+      this.setState({recentRvisit: resList})
     })
   }
 

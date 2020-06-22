@@ -34,10 +34,8 @@ export default class extends Component{
     const { treatTemp, treatKey1, treatKey2 } = this.state;
     const { openTemplate, closeTemplateModal } = this.props;
     const closeDialog = (e, items = []) => {
-      console.log(items, '234')
       this.setState({ openTemplate: false, treatKey1: [], treatKey2: [] });
       closeTemplateModal(e, items);
-      // items.length > 0 && this.addTreatment(e, items.map(i => i.content).join('； '));
     }
 
     const initTree = (pid, level = 0) => treatTemp.filter(i => i.pid === pid).map(node => (
@@ -77,10 +75,14 @@ export default class extends Component{
                 {/* <Tabs.TabPane tab="科室模板" key="1"> */}
                   <Row>
                     <Col span={12}>
-                      <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>{treeNodes.slice(0,treeNodes.length/2)}</Tree>
+                      <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} style={{ maxHeight: '90%' }}>
+                        {treeNodes.slice(0,treeNodes.length/2)}
+                      </Tree>
                     </Col>
                     <Col span={12}>
-                      <Tree checkable defaultExpandAll checkedKeys={treatKey2} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>{treeNodes.slice(treeNodes.length/2)}</Tree>
+                      <Tree checkable defaultExpandAll checkedKeys={treatKey2} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>
+                        {treeNodes.slice(treeNodes.length/2)}
+                      </Tree>
                     </Col>
                   </Row>
                 {/* </Tabs.TabPane> */}

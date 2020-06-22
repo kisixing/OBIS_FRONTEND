@@ -572,6 +572,14 @@ export const ckappointmentAreaOptions = toOptions(['上午', '下午'], (v,i)=>(
 // 	{ label: '上午', describe:'上', value: '1' },
 // 	{ label: '下午', describe:'下', value: '2' },
 // ];
+
+/**
+ * 教授门诊 加号
+ */
+export const jhOptions = [
+	{ label: '加号', value: '加号' }
+];
+
 /**
  * 产检项目
  */
