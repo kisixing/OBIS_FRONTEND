@@ -635,7 +635,7 @@ export default class App extends Component {
                   <Select 
                     className="highrisk-factor" 
                     multiple 
-                    tags={true}
+                    tags
                     value={!!highriskEntity.highrisk ? highriskEntity.highrisk.split("\n").filter(i => !!i) : []} 
                     onChange={e => handleChange("highrisk", e.join("\n"))}
                   />
