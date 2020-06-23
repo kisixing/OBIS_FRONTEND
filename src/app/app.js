@@ -636,7 +636,7 @@ export default class App extends Component {
                     className="highrisk-factor" 
                     multiple 
                     tags
-                    value={!!highriskEntity.highrisk ? highriskEntity.highrisk.split("\n").filter(i => !!i) : []} 
+                    value={!!highriskEntity.highrisk ? highriskEntity.highrisk.replace(/\r\n/g, "\n").split("\n").filter(i => !!i) : []} 
                     onChange={e => handleChange("highrisk", e.join("\n"))}
                   />
                 </Col>

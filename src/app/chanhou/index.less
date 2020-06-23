@@ -1,13 +1,46 @@
-.chanhou-form {
-  .chanhou-title {
-    font-size: 24px;
-  }
-  .chanhou-btn {
+@widthSidebar : 400px;
+@headerHeight : 104px;
+
+.chanhou-fz {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  .bg-right {
     position: fixed;
-    bottom: 50px;
-    right: 100px;
+    z-index: 0;
+    right: 0;
+    top: @headerHeight;
+    width: @widthSidebar;
+    height: 100%;
+    background-color: #fff;
   }
-  .form-item .form-label {
-    vertical-align: top;
+  .bg-left {
+    position: fixed;
+    z-index: 0;
+    left: 0;
+    top: 300px;
+    width: calc(100% - @widthSidebar - 16px);
+    height: 100%;
+    background-color: #fff;
+  }
+  .ch-form {
+    padding: 26px;
+    width: calc(100% - @widthSidebar - 16px);
+    background-color: #fff;
+    .btn-wrapper {
+      text-align: center;
+      .chanhou-btn {
+        margin: 30px auto 0;
+        padding: 0 50px;
+        height: 58px;
+        font-size: 20px;
+        color: #fff;
+        background-color: #007AFF;
+      }
+    }
+  }
+  .ch-sidebar {
+    width: 400px;
+    z-index: 1;
   }
 }

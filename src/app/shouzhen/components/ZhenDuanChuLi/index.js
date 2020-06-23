@@ -136,10 +136,10 @@ export default class extends Component{
             { name: 'nextRvisitWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 5 },
             { name: 'xiacsfdate', type:'date', placeholder: '日期', valid: 'required', span: 5 },
             { name: 'xiacsfdatearea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
-            // { 
-            //   name: 'addnum_iv_professor_outpatient', type: 'checkinput', span: 3, options: baseData.jhOptions,
-            //   filter: entity => this.showAdd(entity) 
-            // }
+            { 
+              name: 'addnumIvProfessorOutpatient', type: 'checkinput', span: 3, options: baseData.jhOptions,
+              filter: entity => this.showAdd(entity) 
+            }
           ]
         },
         {

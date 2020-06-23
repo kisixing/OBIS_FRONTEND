@@ -88,11 +88,11 @@ export default class FuZhen extends Component {
     szData.ckappointmentArea = allFormData.diagnosis.xiacsfdatearea;
     szData.sign = allFormData.diagnosis.add_FIELD_ivisit_doctor;
 
-    if (allFormData.specialityCheckUp.add_FIELD_ckjc.length === 1) {
+    if (!!allFormData.specialityCheckUp.add_FIELD_ckjc && allFormData.specialityCheckUp.add_FIELD_ckjc.length === 1) {
       szData.cktaix = allFormData.specialityCheckUp.add_FIELD_ckjc[0].tx || '';
       szData.ckxianl = (allFormData.specialityCheckUp.add_FIELD_ckjc[0].xl && allFormData.specialityCheckUp.add_FIELD_ckjc[0].xl.label) 
                       ? allFormData.specialityCheckUp.add_FIELD_ckjc[0].xl.label : '';
-    } else if (allFormData.specialityCheckUp.add_FIELD_ckjc.length > 1) {
+    } else if (!!allFormData.specialityCheckUp.add_FIELD_ckjc && allFormData.specialityCheckUp.add_FIELD_ckjc.length > 1) {
       szData.fetalCondition = allFormData.specialityCheckUp.add_FIELD_ckjc;
       szData.fetalCondition.forEach(item => {
         if(item.tx) item.taix = item.tx;
@@ -167,7 +167,7 @@ export default class FuZhen extends Component {
 
   handleMoreBtn = () => {
     const { pageCurrent } = this.state;
-    service.fuzhen.getRvisitPage(10, pageCurrent).then(res => this.setState({
+    service.fuzhen.getRvisitPage(100, pageCurrent).then(res => this.setState({
       recentRvisitAll: res.object.list,
       totalRow: res.object.totalRow
     })).then(() => {
@@ -434,11 +434,13 @@ export default class FuZhen extends Component {
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
             {recentRvisitAll && allInitTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true,
-              onRowChange: handelTableChange, tableLayout: "fixed",
-              pagination: { pageSize: 12, total: totalRow + 2, onChange: handlePageChange, showQuickJumper: true }
+              onRowChange: handelTableChange, tableLayout: "fixed", pagination: false, hasRowSelection: false
+              // pagination: { pageSize: 12, total: totalRow + 2, onChange: handlePageChange, showQuickJumper: true }
             })}
-            <Button type="primary" className="bottom-savePDF-btn margin-R-1" size="small" onClick={() => printFZ()}>逐次打印</Button>
-            <Button type="primary" className="bottom-savePDF-btn" size="small" onClick={() => printFZ(true)}>全部打印</Button>
+            <div className="btns-wrapper">
+              <Button type="primary" className="margin-R-1" size="small" onClick={() => printFZ()}>逐次打印</Button>
+              <Button type="primary" size="small" onClick={() => printFZ(true)}>全部打印</Button>
+            </div>
             <div className={hasPrint ? "fz-print has-print" : "fz-print"}>
               {printData && <PrintTable printKeys={printKeys} printData={printData} userDoc={userDoc}></PrintTable>}
             </div>

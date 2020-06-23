@@ -76,6 +76,10 @@ export const elOptions = toOptions('干净,未净');
  */
 export const sfycOptions = toOptions('未见异常,异常');
 /**
+ * 盆底肌
+ */
+export const pdjOptions = toOptions('IC级,Ⅰ级,Ⅱ级,Ⅲ级,Ⅳ级,Ⅴ级');
+/**
  * 盆底恢复
  */
 export const pdhfOptions = toOptions('未见异常,压力性尿失禁,其它类型尿失禁,脱垂,尿频,粪失禁,盆腔疼痛');

@@ -17,7 +17,8 @@
   .print-info .info-item {
     margin-right: 21px;
   }
-  .has-print .print-highrisk {
+  .has-print .print-highrisk,
+  .has-print .print-info {
     visibility: hidden;
   }
   .print-table {

@@ -528,7 +528,7 @@ export const ckzijzhzOptions = toOptions(['无不适', '胎动好', '无不适�
 /**
  * 宫高选项
  */
-export const ckgonggOptions = toOptions(['脐下指']);
+export const ckgonggOptions = toOptions(['脐下指','耻联上指']);
 
 /**
  * 下次复诊 几周后

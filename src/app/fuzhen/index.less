@@ -1,12 +1,13 @@
 @colorWhite: #fff;
 @colorGray : #dfe1ee;
 @widthLeft : 400px;
+@headerHeight : 104px;
 
 .bg-right {
   position: fixed;
   z-index: 0;
   right: 0;
-  top: 0;
+  top: @headerHeight;
   width: @widthLeft;
   height: 100%;
   background-color: #fff;
@@ -24,6 +25,7 @@
 .fuzhen-left {
   width: @widthLeft;
   background-color: #fff;
+  margin-top: 16px;
   .ant-collapse {
     background: transparent;
     border-color: transparent;
@@ -270,9 +272,16 @@
   }
 }
 .table-content {
-  text-align: right;
   .ant-select {
     width: 100%;
+  }
+  .btns-wrapper {
+    text-align: right;
+    margin-top: 10px;
+  }
+
+  .ant-table-tbody tr:nth-of-type(-n + 2) .ant-table-selection-column {
+    display: none;
   }
 }
 .fuzhenTable {

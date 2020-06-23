@@ -724,7 +724,7 @@ export default class Patient extends Component {
               </Col>
             </Row>
             { isShowWeekModal && this.renderWeekModal() }
-            { adjustInfo && adjustInfo.remindFlag && this.renderAdjustModal() }
+            {/* { adjustInfo && adjustInfo.remindFlag && this.renderAdjustModal() } */}
           </Page>
         );
     }

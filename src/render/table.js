@@ -168,10 +168,14 @@ class TableItem extends Component {
 
     if(!value && arr.includes(name) && onEdit) {
       this.setState({force: true})
-    } else if (value==="脐下指" && name==="ckgongg") {
+    } else if ((value==="脐下指" || value==="耻联上指") && name==="ckgongg") {
       // 宫高光标定位
       const ipt = this.refs.tableItem.querySelector('input');
-      ipt.setSelectionRange(2, 2);
+      if (value==="脐下指") {
+        ipt.setSelectionRange(2, 2);
+      } else {
+        ipt.setSelectionRange(3, 3);
+      }
       this.setState({force: true});
     }else {
       this.setState({
@@ -232,7 +236,8 @@ class MTable extends Component {
     super(props);
     this.state = {
       selected: null,
-      rowIndex: null
+      rowIndex: null,
+      selectedRowKeys: [],
     }
   }
 
@@ -255,9 +260,19 @@ class MTable extends Component {
     }
   }
 
+  onSelectChange(selectedRowKeys, selectedRows) {
+    const { dataSource } = this.props;
+    console.log('selectedRowKeys changed: ', selectedRowKeys, selectedRows, dataSource);
+    this.setState({ selectedRowKeys });
+  }
+
   render() {
-    const { selected, rowIndex } = this.state;
-    const { buttons, buttonSize = "default", ...props } = this.props;
+    const { selected, rowIndex, selectedRowKeys } = this.state;
+    const { buttons, buttonSize = "default", hasRowSelection, ...props } = this.props;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange.bind(this),
+    };
     return (
       <div>
         {buttons ? (
@@ -279,6 +294,7 @@ class MTable extends Component {
           {...props}
           onRowClick={(row, index) => this.onRowClick(row, index)}
           rowClassName={row => this.rowClassName(row)}
+          rowSelection={hasRowSelection ? rowSelection : null}
         />
       </div>
     );
