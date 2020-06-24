@@ -261,9 +261,9 @@ class MTable extends Component {
   }
 
   onSelectChange(selectedRowKeys, selectedRows) {
-    const { dataSource } = this.props;
-    console.log('selectedRowKeys changed: ', selectedRowKeys, selectedRows, dataSource);
+    const { getSelectedRows } = this.props;
     this.setState({ selectedRowKeys });
+    if (getSelectedRows) return getSelectedRows(selectedRowKeys, selectedRows);
   }
 
   render() {

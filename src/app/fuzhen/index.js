@@ -38,6 +38,8 @@ export default class FuZhen extends Component {
       hasRecord: false,
       isChangeYCQ: false,
       printData: null,
+      selectRowKeys: null,
+      selectRows: null,
       hasPrint: false,
       relatedObj: {},
       ...store.getState(),
@@ -177,7 +179,7 @@ export default class FuZhen extends Component {
 
   renderTable() {
     const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, 
-            hasRecord, isTwins, printData, userDoc, hasPrint, loading, initData, pureInitDate } = this.state;
+            hasRecord, isTwins, printData, userDoc, hasPrint, loading, initData, pureInitDate, selectRows, selectRowKeys } = this.state;
 
     const handleAddRecord = () => {
       if (recentRvisit.length < 3) {
@@ -226,19 +228,27 @@ export default class FuZhen extends Component {
         this.setState({recentRvisitAll: res.object.list})})
     }
 
-    const printFZ = (bool) => {
-      service.fuzhen.getRvisitPage(100, pageCurrent).then(res => {
-        this.setState({ printData: res.object.list});
-        if (bool) {
-          this.setState({ hasPrint: false}, () => {
-            $(".fz-print").jqprint();
-          })
-        } else {
-          this.setState({ hasPrint: true}, () => {
-            $(".fz-print").jqprint();
-          })
-        }
+    const getSelectedData = (keys, rows) => {
+      this.setState({
+        selectRowKeys: keys,
+        selectRows: rows
       })
+    }
+
+    const printFZ = (type) => {
+      if (type === 1) {
+        this.setState({ printData: recentRvisitAll, hasPrint: true }, () => {
+          $(".fz-print").jqprint();
+        })
+      } else if (type === 2) {
+        this.setState({ printData: selectRows, hasPrint: false }, () => {
+          $(".fz-print").jqprint();
+        })
+      } else if (type === 3) {
+        this.setState({ printData: recentRvisitAll, hasPrint: false }, () => {
+          $(".fz-print").jqprint();
+        })
+      }
     }
 
     let rvisitKeys = JSON.parse(JSON.stringify(baseData.tableKey()));
@@ -434,15 +444,16 @@ export default class FuZhen extends Component {
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
             {recentRvisitAll && allInitTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true,
-              onRowChange: handelTableChange, tableLayout: "fixed", pagination: false, hasRowSelection: false
+              onRowChange: handelTableChange, tableLayout: "fixed", pagination: false, hasRowSelection: true, getSelectedRows: getSelectedData
               // pagination: { pageSize: 12, total: totalRow + 2, onChange: handlePageChange, showQuickJumper: true }
             })}
             <div className="btns-wrapper">
-              <Button type="primary" className="margin-R-1" size="small" onClick={() => printFZ()}>逐次打印</Button>
-              <Button type="primary" size="small" onClick={() => printFZ(true)}>全部打印</Button>
+              <Button type="primary" className="margin-R-1" size="small" onClick={() => printFZ(1)}>续打</Button>
+              <Button type="primary" className="margin-R-1" size="small" onClick={() => printFZ(2)}>打印</Button>
+              <Button type="primary" size="small" onClick={() => printFZ(3)}>全部打印</Button>
             </div>
             <div className={hasPrint ? "fz-print has-print" : "fz-print"}>
-              {printData && <PrintTable printKeys={printKeys} printData={printData} userDoc={userDoc}></PrintTable>}
+              {printData && <PrintTable printKeys={printKeys} printData={printData} selectRowKeys={selectRowKeys} hasPrint={hasPrint} userDoc={userDoc}></PrintTable>}
             </div>
           </div>
         </Modal>

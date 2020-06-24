@@ -72,7 +72,6 @@ export default class Patient extends Component {
 
             if (tab.key === 'tab-0') {
                 tab.entity = service.praseJSON(allFormData.pregnantInfo);
-                tab.entity.all_gesmoc = { 0: tab.entity.gesmoc, 1: tab.entity.add_FIELD_gesmoc_unknown };
                 // 解决自然选项去掉空格之后没有勾选对应选项的问题
                 if (tab.entity.add_FIELD_shouyun && tab.entity.add_FIELD_shouyun[0] && tab.entity.add_FIELD_shouyun[0].label === ' 自然') {
                     tab.entity.add_FIELD_shouyun = [{"label": "自然", "value": ""}];
@@ -196,16 +195,13 @@ export default class Patient extends Component {
                 case 'ckzweek':
                     this.adjustGesexpectrv(entity);
                     break;
-                case 'all_gesmoc':
-                    if (!!value[0]) {
-                        // entity['gesexpect'] = common.GetExpected(value[0]);
-                        // entity['gesexpectrv'] = common.GetExpected(value[0]);
-                        // entity['pupttm'] = common.GetWeek(entity['gesexpectrv'],entity['dopupt']);
-                        service.shouzhen.calcEddByLmp(value[0]).then(res => {
+                case 'gesmoc':
+                    if (!!value) {
+                        service.shouzhen.calcEddByLmp(value).then(res => {
                             this.handleChange(e, { name: 'gesexpect', value: res.object, target }, entity);
                             this.handleChange(e, { name: 'gesexpectrv', value: res.object, target }, entity);
                         })
-                        service.shouzhen.findCkzdataByUserid(value[0]).then(res => {
+                        service.shouzhen.findCkzdataByUserid(value).then(res => {
                             if (!!res.object.ckzdate) {
                                 this.handleChange(e, { name: 'ckzdate', value: res.object.ckzdate, target }, entity);
                             } 
@@ -226,10 +222,13 @@ export default class Patient extends Component {
                                 }
                             }
                         })
-                    } 
-                    if (!value[0] || (value[1] && value[1][0] && value[1][0].label === '不详')) {
+                    }
+                    break;
+                case 'add_FIELD_gesmoc_unknown':
+                    if (value && value[0] && value[0].label === '不详') {
+                        entity['gesmoc'] = '';
                         entity['gesexpect'] = '';
-                    } 
+                    }
                     break;
                 // 脉搏同步心率
                 case 'add_FIELD_pulse':
@@ -309,16 +308,8 @@ export default class Patient extends Component {
             // 异步手动移除
             setTimeout(hide, 300);
             if (this.change) {
-                if (tab.key === 'tab-0') {
-                    if (tab.entity.all_gesmoc[1] && tab.entity.all_gesmoc[1][0] && tab.entity.all_gesmoc[1][0].label === '不详') {
-                        tab.entity.gesmoc = '';
-                        tab.entity.add_FIELD_gesmoc_unknown = tab.entity.all_gesmoc[1];
-                    } else {
-                        tab.entity.gesmoc = tab.entity.all_gesmoc[0];
-                        tab.entity.add_FIELD_gesmoc_unknown = [];
-                    }
-                }
                 if (tab.key === 'tab-2') {
+                    // 方便移动端作的数据处理
                     let arr = [];
                     if (tab.entity.add_FIELD_jzgaoxueya && tab.entity.add_FIELD_jzgaoxueya[0] && tab.entity.add_FIELD_jzgaoxueya[0].label === '有') {
                         arr.push('高血压');
@@ -684,7 +675,6 @@ export default class Patient extends Component {
         // 首个tab页作下特别处理
         if (!!allFormData && JSON.stringify(tabs[0].entity) === "{}") {
             tabs[0].entity = allFormData.pregnantInfo;
-            tabs[0].entity.all_gesmoc = { 0: allFormData.pregnantInfo.gesmoc, 1: allFormData.pregnantInfo.add_FIELD_gesmoc_unknown };
             this.getEmptyData(allFormData);
             this.adjustGesexpectrv(allFormData.pregnantInfo);
         }
@@ -724,7 +714,7 @@ export default class Patient extends Component {
               </Col>
             </Row>
             { isShowWeekModal && this.renderWeekModal() }
-            {/* { adjustInfo && adjustInfo.remindFlag && this.renderAdjustModal() } */}
+            { adjustInfo && adjustInfo.remindFlag && this.renderAdjustModal() }
           </Page>
         );
     }

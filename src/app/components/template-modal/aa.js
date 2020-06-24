@@ -150,27 +150,26 @@ export default class extends Component{
 
     return (
       <Modal title="处理模板" closable visible={openTemplate} width={900} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, treatTemp.filter(i => i.checked && i.pid!==0))}>
+        <Tabs defaultActiveKey="1">
+          <Tabs.TabPane tab="科室模板" key="1">
+            <Row>
+              <Col span={12}>
+                <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} onRightClick={onRightClick} style={{ maxHeight: '90%' }}>
+                  {treeNodes.slice(0,treeNodes.length/2)}
+                </Tree>
+                {this.state.nodeTreeItem != null ? this.getNodeTreeMenu() : ""}
+              </Col>
+              <Col span={12}>
+                <Tree checkable defaultExpandAll checkedKeys={treatKey2} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>
+                  {treeNodes.slice(treeNodes.length/2)}
+                </Tree>
+              </Col>
+            </Row>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="个人模板" key="2">
 
-              {/* <Tabs defaultActiveKey="1"> */}
-                {/* <Tabs.TabPane tab="科室模板" key="1"> */}
-                  <Row>
-                    <Col span={12}>
-                      <Tree checkable defaultExpandAll checkedKeys={treatKey1} onCheck={handleCheck1} onRightClick={onRightClick} style={{ maxHeight: '90%' }}>
-                        {treeNodes.slice(0,treeNodes.length/2)}
-                      </Tree>
-                      {this.state.nodeTreeItem != null ? this.getNodeTreeMenu() : ""}
-                    </Col>
-                    <Col span={12}>
-                      <Tree checkable defaultExpandAll checkedKeys={treatKey2} onCheck={handleCheck2} style={{ maxHeight: '90%' }}>
-                        {treeNodes.slice(treeNodes.length/2)}
-                      </Tree>
-                    </Col>
-                  </Row>
-                {/* </Tabs.TabPane> */}
-                {/* <Tabs.TabPane tab="个人模板" key="2"> */}
-
-                {/* </Tabs.TabPane> */}
-              {/* </Tabs> */}
+          </Tabs.TabPane>
+        </Tabs>
       </Modal>
     )
   }

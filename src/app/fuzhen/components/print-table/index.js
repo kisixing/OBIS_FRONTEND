@@ -25,7 +25,7 @@ export default class extends Component{
 
 
   render(){
-    const { printKeys, printData, userDoc } = this.props;
+    const { printKeys, printData, userDoc, selectRowKeys, hasPrint } = this.props;
     const rows = this.getheades(printKeys);
     const keysArr = [];
     printKeys.forEach(item => {
@@ -37,25 +37,26 @@ export default class extends Component{
       if (item.title === '定性') item.title = '尿蛋白定性';
       if (item.title === '定量') item.title = '尿蛋白定量';
     })
-
     printKeys.splice(printKeys.length - 5, 4);
     printKeys.forEach(item => {
       !item.className ? keysArr.push(item.key) : null;
     })
 
     return (
-      <div>
-        <p className="print-info">
-          <sapn className="info-item">姓名：{userDoc.username}</sapn>
-          <sapn className="info-item">年龄：{userDoc.userage}</sapn>
-          <sapn className="info-item">门诊号：{userDoc.usermcno}</sapn>
-          <sapn>建档号：{userDoc.chanjno}</sapn>
-        </p>
-        {userDoc.highriskFactor && <p className="print-highrisk">高危诊断：{userDoc.highriskFactor}</p>}
+      <div key={printData}>
+        <div style={hasPrint ? {visibility: "hidden"} : null}>
+          <p className="print-info">
+            <span className="info-item">姓名：{userDoc.username}</span>
+            <span className="info-item">年龄：{userDoc.userage}</span>
+            <span className="info-item">门诊号：{userDoc.usermcno}</span>
+            <span>建档号：{userDoc.chanjno}</span>
+          </p>
+          {userDoc.highriskFactor && <p className="print-highrisk">高危诊断：{userDoc.highriskFactor}</p>}
+        </div>
         <table style={{width: "100%"}} className="print-table">
           <tbody>
             {rows.map((item, index) => (
-              <tr>
+              <tr style={hasPrint ? {visibility: "hidden"} : null}>
                 {item.map(subItem => (    
                   <td className={subItem.className}
                       rowSpan={subItem.level !== index ? 0 : (subItem.children ? 1 : rows.length-index) } 
@@ -69,14 +70,14 @@ export default class extends Component{
 
             {printData.map((item, index) => (
               <div>
-                <tr style={index === printData.length - 1 ? {visibility: "inherit"} : null}>
+                <tr style={(hasPrint && !selectRowKeys.includes(index+2)) ? {visibility: "hidden"} : null}>
                   {keysArr.map(subItem => (
                     <td>{!!item[subItem] && subItem === "checkdate" ? item[subItem].substring(5) : item[subItem]}</td>
                   ))}
                 </tr>
                 {
                   !!item.allMedicationPlan ?
-                  <tr style={index === printData.length - 1 ? {visibility: "inherit"} : null}>
+                  <tr style={(hasPrint && !selectRowKeys.includes(index+2)) ? {visibility: "hidden"} : null}>
                     <td>用药方案</td>
                     <td colSpan={keysArr.length-1} style={{textAlign: "left"}}>{item.allMedicationPlan}</td>
                   </tr>
@@ -84,7 +85,7 @@ export default class extends Component{
                 }
                {
                   !!item.examination ?
-                  <tr style={index === printData.length - 1 ? {visibility: "inherit"} : null}>
+                  <tr style={(hasPrint && !selectRowKeys.includes(index+2)) ? {visibility: "hidden"} : null}>
                     <td>检验检查</td>
                     <td colSpan={keysArr.length-1} style={{textAlign: "left"}}>{item.examination}</td>
                   </tr>
@@ -92,7 +93,7 @@ export default class extends Component{
                 }
                 {
                   !!item.treatment ?
-                  <tr style={index === printData.length - 1 ? {visibility: "inherit"} : null}>
+                  <tr style={(hasPrint && !selectRowKeys.includes(index+2)) ? {visibility: "hidden"} : null}>
                     <td>处理</td>
                     <td colSpan={keysArr.length-1} style={{textAlign: "left"}}>{item.treatment}</td>
                   </tr>

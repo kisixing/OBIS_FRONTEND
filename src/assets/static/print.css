@@ -1,8 +1,7 @@
 @import './antd/antd-1.x.min.css';
-/* @page :pseudo-class {
-  size: A5 landscape;
-  width: 21cm;
-} */
+@page {
+  margin-right: 3cm;
+}
 @media print {
   /* 复诊记录打印 */
   .print-highrisk {
@@ -16,10 +15,6 @@
   }
   .print-info .info-item {
     margin-right: 21px;
-  }
-  .has-print .print-highrisk,
-  .has-print .print-info {
-    visibility: hidden;
   }
   .print-table {
     table-layout: fixed;
@@ -35,9 +30,6 @@
   }
   .isHide {
     display: none;
-  }
-  .has-print .print-table tbody tr {
-    visibility: hidden;
   }
 
   /* 血糖记录打印 */

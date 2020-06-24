@@ -22,13 +22,11 @@ export default class extends Component {
       rows: [
         {
           columns: [
-            // { name: "gesmoc[末次月经]", type: "date", span: 6, valid: "required" },
-            { name: "all_gesmoc[末次月经]", className: entity.all_gesmoc && entity.all_gesmoc[1] && entity.all_gesmoc[1][0] && entity.all_gesmoc[1][0].label === '不详' ? 'hide-date' : '', span: 6, valid: "required", 
-              type: [
-                { type: 'date', span: 18 },
-                { type: 'checkinput', span: 6, options: baseData.bxOptions }
-              ] 
-            },
+            { name: "gesmoc[末次月经]", type: "date", icon:'require',
+              span: entity.add_FIELD_gesmoc_unknown && entity.add_FIELD_gesmoc_unknown[0] && entity.add_FIELD_gesmoc_unknown[0].label === '不详' ? 2 : 5,
+              className: entity.add_FIELD_gesmoc_unknown && entity.add_FIELD_gesmoc_unknown[0] && entity.add_FIELD_gesmoc_unknown[0].label === '不详' ? 'hide-icon hide-date' : 'hide-icon' },
+            { name: "add_FIELD_gesmoc_unknown", type: 'checkinput', options: baseData.bxOptions,
+              span: entity.add_FIELD_gesmoc_unknown && entity.add_FIELD_gesmoc_unknown[0] && entity.add_FIELD_gesmoc_unknown[0].label === '不详' ? 4 : 1,},
             { name: "gesexpect[预产期-日期]", type: "date", span: 5 },
             { span: 1 },
             { name: "gesexpectrv[预产期-B超]", type: "date", span: 5, valid: "required" }
