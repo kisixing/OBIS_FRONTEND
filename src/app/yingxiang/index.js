@@ -52,7 +52,7 @@ export default class Patient extends Component {
     }
     return (
       <Modal width="60%" footer={null} visible={isShowModal} title="影像检查报告" onCancel={() => handleClick()}>
-        <embed src={pdfPath} width="100%" height="1200" />
+        <object data={pdfPath} type="application/pdf" width="100%" height="1200" />
         {/* <embed src={'../../assets/static-img/yx.pdf'} width="100%" height="1200" /> */}
       </Modal>
     )
