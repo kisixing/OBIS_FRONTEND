@@ -691,7 +691,7 @@ export default class Index extends Component {
                 ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> 
                 : planData&&planData.length>0 ? planData.map((item, index) => (
                   <Timeline.Item key={`planData-${item.id || index}-${Date.now()}`}>
-                    <p className="font-16">{item.time}周后 - {item.gestation}孕周</p>
+                    <p className="font-16">{item.gestation}孕周</p>
                     <p className="font-16">{item.event}</p>
                   </Timeline.Item>
                 )) : <div>无</div>

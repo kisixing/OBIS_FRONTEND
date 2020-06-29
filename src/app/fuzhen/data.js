@@ -368,24 +368,24 @@ export const planKey = () => [
 		format: (v,{row}) => row + 1,
 		width: 30,
 	},
-	{
-		title: '时间',
-		key: 'time',
-		format: (v) => v+'周后',
-		width: 60,
-	},
+	// {
+	// 	title: '时间',
+	// 	key: 'time',
+	// 	format: (v) => v+'周后',
+	// 	width: 60,
+	// },
 	{
 		title: '孕周',
 		key: 'gestation',
 		type: 'input',
 		width: 30,
 	},
-	{
-		title: '产检项目',
-		key: 'item',
-		type: 'input',
-		width: 100,
-	},
+	// {
+	// 	title: '产检项目',
+	// 	key: 'item',
+	// 	type: 'input',
+	// 	width: 100,
+	// },
 	{
 		title: '提醒事项',
 		key: 'event',

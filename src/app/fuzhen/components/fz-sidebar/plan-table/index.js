@@ -36,7 +36,7 @@ export default class FuzhenForm extends Component {
                 return '*输入格式不正确';
               }} 
             },
-            { name: "item[产检项目]", type: "select", span: 7, options: baseData.cjOptions },
+            // { name: "item[产检项目]", type: "select", span: 7, options: baseData.cjOptions },
             { name: "event[提醒事件]", type: "input", span: 8 },
             { type: "button", span: 3, text: "添加", color: "#1890ff", size: "small",	onClick: this.addRecentPlan.bind(this) }
           ]

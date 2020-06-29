@@ -72,8 +72,9 @@ export default class RegForm extends Component {
           columns:[
             { name: 'healthCondition[健康状况]', type: 'editableSelect', span: 11, showSearch: true, options: baseData.jkzkOptions },
             { span: 1 },
-            { name: 'psychologicalCondition[心里状况]', type: 'editableSelect', span: 7, showSearch: true, options: baseData.xlzkOptions },
-            { name: 'epds[心理评分]', type: 'input', span: 4 },
+            { name: 'psychologicalCondition[心里状况]', type: 'editableSelect', span: 5, showSearch: true, options: baseData.xlzkOptions },
+            { span: 1 },
+            { name: 'epds[心理评分]', className: fzFormEntity.epds >= 13 ? 'isRed' : '', type: 'input', span: 5 },
           ]
         },
         {

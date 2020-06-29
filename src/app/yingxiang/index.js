@@ -24,8 +24,7 @@ export default class Patient extends Component {
     const {tableData} = this.state;
     const title = () => '影像检查报告';
     const handleBtnClick = (text, record) => {
-      const pdfPath = service.getUrl(record.pdfPath);
-      this.setState({pdfPath}, () => {
+      this.setState({pdfPath: record.pdfPath}, () => {
         this.setState({isShowModal: true})
       })
     }
@@ -48,14 +47,12 @@ export default class Patient extends Component {
     const { isShowModal, pdfPath } = this.state;
     const handleClick = () => { 
       this.setState({
-        isShowModal: false,
-        pdfPath: ''
+        isShowModal: false
       })
     }
     return (
-      <Modal width="60%" footer={null} visible={isShowModal} title="影像检查报告"
-             onOk={() => handleClick(true)} onCancel={() => handleClick()}>
-        <embed src={pdfPath} type="application/pdf" width="100%" height="1200" />
+      <Modal width="60%" footer={null} visible={isShowModal} title="影像检查报告" onCancel={() => handleClick()}>
+        <embed src={pdfPath} width="100%" height="1200" />
         {/* <embed src={'../../assets/static-img/yx.pdf'} width="100%" height="1200" /> */}
       </Modal>
     )

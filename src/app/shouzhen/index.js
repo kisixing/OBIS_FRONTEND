@@ -171,7 +171,7 @@ export default class Patient extends Component {
     // 如果想把handleChange的逻辑移动到对应的tab页里面去，请参考tab-0：yunfuxinxi.js这个文件的handleChange
     handleChange(e, { name, value, target }, entity) {
         const { step } = this.state;
-        console.log(name, target, value, entity, 'change');
+        console.log(name, value, entity, 'change');
         if (!this.isSaving) {
             entity[name] = value;
             switch (name) {
