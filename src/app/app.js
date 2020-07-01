@@ -29,12 +29,11 @@ const ButtonGroup = Button.Group;
 const routers = [
   { name: "首检信息", path: "/sz", component: bundle(Shouzhen) },
   { name: "复诊记录", path: "/fz", component: bundle(Fuzhen) },
-  // { name: "产后复诊记录", path: "/ch", component: bundle(Chanhou) },
+  { name: "产后复诊记录", path: "/ch", component: bundle(Chanhou) },
   { name: "孕期曲线", path: "/yq", component: bundle(Yunqi) },
   { name: "血糖记录", path: "/xt", component: bundle(Xuetang) },
   { name: "影像报告", path: "/yx", component: bundle(Yingxiang) },
   { name: "检验报告", path: "/jy", component: bundle(Jianyan) },
-  // { name: "胎监记录", path: "/tj", component: null },
   { name: "基本信息", path: "/jb", component: bundle(Jiben) },
 ];
 
@@ -57,6 +56,7 @@ export default class App extends Component {
       pharKeys: [],
       expandedKeys: [],
       isShowXTRouter: false,
+      isShowCHRouter: false,
     };
     store.subscribe(this.handleStoreChange);
 
@@ -114,6 +114,12 @@ export default class App extends Component {
         })
         const action = fzListAction(res.object);
         store.dispatch(action);
+      })
+
+      service.chanhou.checkPostpartumRvisit().then(res => {
+        if (res.object == 1) {
+          this.setState({ isShowCHRouter: true })
+        }
       })
 
     })
@@ -457,7 +463,7 @@ export default class App extends Component {
   }
 
   renderHeader() {
-    const { userDoc, isShowTrialCard, isShowPharCard, isShowXTRouter, trialVisible, pharVisible1, pharVisible2, 
+    const { userDoc, isShowTrialCard, isShowPharCard, isShowXTRouter, isShowCHRouter, trialVisible, pharVisible1, pharVisible2, 
             checkedKeys, pharKeys } =this.state;
     const handleDanger = () => {
       service.highrisk().then(res => {
@@ -491,7 +497,9 @@ export default class App extends Component {
           <div className="title-small">产检编号:{userDoc.chanjno}</div>
         </div>
         <p className="patient-Info_tab">
-          {routers.map((item, i) => ( item.name === '血糖记录' && !isShowXTRouter ? null
+          {routers.map((item, i) => ( 
+            ((item.name === '血糖记录' && !isShowXTRouter) || (item.name === '产后复诊记录' && !isShowCHRouter)) 
+            ? null
             : <span key={"mune" + i} className={this.state.muneIndex != i ? "normal-tab" : "active-tab"}
                 onClick={() => { this.setState({ muneIndex: i }); this.onRouterClick(item); }}>
                 {item.name}
