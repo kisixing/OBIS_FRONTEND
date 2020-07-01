@@ -207,7 +207,7 @@ export const tableKey = () => [
 		options: xlOptions
 	},
 	{
-		title: '下肢水肿',
+		title: '下肢\n水肿',
 		key: 'ckfuzh',
 		type:'select',
 		width: 20,

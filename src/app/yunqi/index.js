@@ -185,31 +185,31 @@ export default class Index extends Component {
 
   // 判断某个点是否在多边形内部
   judgeAreas(dot, coordinates) {
-    var x = dot.x,y=dot.y;
-    var crossNum = 0;
-    for(var i=0;i<coordinates.length-1;i++){
-      var start = coordinates[i];
-      var end = coordinates[i+1];
+    let x = dot.x, y=dot.y;
+    let crossNum = 0;
+    for(let i = 0; i < coordinates.length-1; i++){
+      let start = coordinates[i];
+      let end = coordinates[i + 1];
       // 起点、终点斜率不存在的情况
-      if(start.x===end.x) {
-          // 因为射线向右水平，此处说明不相交
-          if(x>start.x) continue;
-          if((end.y>start.y&&y>=start.y && y<=end.y) || (end.y<start.y&&y>=end.y && y<=start.y)){
-            crossNum++;
-          }
-          continue;
+      if(start.x === end.x) {
+        // 因为射线向右水平，此处说明不相交
+        if(x > start.x) continue;
+        if((end.y > start.y && y >= start.y && y <= end.y) || (end.y < start.y && y >= end.y && y <= start.y)) {
+          crossNum++;
+        }
+        continue;
       }
       // 斜率存在的情况，计算斜率
-      var k=(end.y-start.y)/(end.x-start.x);
+      let k=(end.y - start.y) / (end.x - start.x);
       // 交点的x坐标
-      var x0 = (y-start.y)/k+start.x;
+      let x0 = (y - start.y) / k + start.x;
       // 因为射线向右水平，此处说明不相交
-      if(x>x0) continue;
-      if((end.x>start.x&&x0>=start.x && x0<=end.x) || (end.x<start.x&&x0>=end.x && x0<=start.x)){
-          crossNum++;
+      if(x > x0) continue;
+      if((end.x > start.x && x0 >= start.x && x0 <= end.x) || (end.x < start.x && x0 >= end.x && x0 <= start.x)) {
+        crossNum++;
       }
     }
-    return crossNum%2===1;
+    return crossNum % 2 === 1;
   };
 
   //水平坐标轴标尺 
@@ -276,7 +276,7 @@ export default class Index extends Component {
     newBmiList && newBmiList.map((item, index) => {
       item.tizhong = item.tizhong - bmiTz;
       if(item.week.indexOf('+') !== -1) {
-        let arr = item.week.split('+');
+        const arr = item.week.split('+');
         item.week = parseInt(arr[0]) + parseInt(arr[1]) / 7;
       }
       item.week = item.week - 1;
@@ -318,7 +318,7 @@ export default class Index extends Component {
     //x轴线
     const setVertical = () => {
       context.strokeStyle = 'gray'; 
-      for (var i = 0; i < xCount; i++) {
+      for (let i = 0; i < xCount; i++) {
         context.beginPath();
         context.lineWidth = 0.5;
         context.moveTo(baseLeft, baseTop + xStep * i);
@@ -337,7 +337,7 @@ export default class Index extends Component {
     //y轴线
     const setHorizontal = () => {
       let count = 0;
-      for (var i = 0; i < yCount; i++) {
+      for (let i = 0; i < yCount; i++) {
         count++;
         context.beginPath();
         context.lineWidth = 0.5;
@@ -372,20 +372,26 @@ export default class Index extends Component {
             fetusList, acPoints, flPoints, bdpPoints } = this.state;
     let bpdArr = [], flArr = [], acArr = [];
     if(!!fetusList) {
-      for (var i = 0; i < fetusList.length; i++) {
-        var bpdObj = {};
-        var flObj = {};
-        var acObj = {};
-        bpdObj.x = parseInt(fetusList[i].yunzh) - 10;
+      for (let i = 0; i < fetusList.length; i++) {
+        let bpdObj = {};
+        let flObj = {};
+        let acObj = {};
+        let yunWeek = fetusList[i].yunzh;
+        if(yunWeek.indexOf('+') !== -1) {
+          const arr = yunWeek.split('+');
+          yunWeek = parseInt(arr[0]) + parseInt(arr[1]) / 7;
+        }
+
+        bpdObj.x = yunWeek - 10;
         bpdObj.y = parseInt(fetusList[i].bpd);
         if(fetusList[i].yunzh && fetusList[i].bpd) bpdArr.push(bpdObj);
         
     
-        flObj.x = parseInt(fetusList[i].yunzh) - 10;
+        flObj.x = yunWeek - 10;
         flObj.y = parseInt(fetusList[i].fl);
         if(fetusList[i].yunzh && fetusList[i].fl) flArr.push(flObj);
     
-        acObj.x = parseInt(fetusList[i].yunzh) - 10;
+        acObj.x = yunWeek - 10;
         acObj.y = parseInt(fetusList[i].ac);
         if(fetusList[i].yunzh && fetusList[i].ac) acArr.push(acObj);
       }
@@ -415,7 +421,7 @@ export default class Index extends Component {
     //x轴线
     const setVertical = () => {
       context.strokeStyle = 'gray';
-      for (var i = 0; i < xCount; i++) {
+      for (let i = 0; i < xCount; i++) {
         context.beginPath();
         context.lineWidth = 0.5;
         context.moveTo(baseLeft, baseTop + xStep * i);
@@ -435,7 +441,7 @@ export default class Index extends Component {
 
     //y轴线
     const setHorizontal = () => {
-      for (var i = 0; i < yCount; i++) {
+      for (let i = 0; i < yCount; i++) {
         context.beginPath();
         context.lineWidth = 0.5;
         context.moveTo(yStep * i + baseLeft, baseTop);

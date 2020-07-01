@@ -27,7 +27,7 @@ export default class extends Component {
               className: entity.add_FIELD_gesmoc_unknown && entity.add_FIELD_gesmoc_unknown[0] && entity.add_FIELD_gesmoc_unknown[0].label === '不详' ? 'hide-icon hide-date' : 'hide-icon' },
             { name: "add_FIELD_gesmoc_unknown", type: 'checkinput', options: baseData.bxOptions,
               span: entity.add_FIELD_gesmoc_unknown && entity.add_FIELD_gesmoc_unknown[0] && entity.add_FIELD_gesmoc_unknown[0].label === '不详' ? 4 : 1,},
-            { name: "gesexpect[预产期-日期]", type: "date", span: 5 },
+            { name: "gesexpect[预产期-月经]", type: "date", span: 5 },
             { span: 1 },
             { name: "gesexpectrv[预产期-B超]", type: "date", span: 5, valid: "required" }
           ]
