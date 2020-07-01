@@ -641,7 +641,7 @@ export default class Patient extends Component {
         const content = () => {
             return (
                 <div>
-                    根据B超，是否调整孕产期-B超为 {adjustInfo.gesexpectrv}
+                    根据B超，是否调整预产期-B超为 {adjustInfo.gesexpectrv}
                 </div>
             )
         };
