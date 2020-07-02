@@ -25,8 +25,8 @@ export default class Index extends Component {
     });
   }
 
- /**
-   * 梅毒管理页面
+  /**
+   * 诊断搜索页
    */
   renderDiagSearch() {
     const { isShowDiagSearch, diagTempList, diagnosis } = this.state;

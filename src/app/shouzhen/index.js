@@ -185,11 +185,18 @@ export default class Patient extends Component {
                         }
                     });
                     break;
+                case 'gesexpect':
+                    if (!value) {
+                        entity['ckztingj'] = '';
+                    } else {
+                        entity['ckztingj'] = util.getWeek(40, util.countWeek(value, entity['ckzdate']));
+                    }
+                    break;
                 case 'ckzdate':
                     if (!value) {
                         entity['ckztingj'] = '';
                     } else {
-                        entity['ckztingj'] = util.countWeek(value, entity['gesmoc']);
+                        entity['ckztingj'] = util.getWeek(40, util.countWeek(entity['gesexpect'], value));
                     }
                     break;
                 case 'ckzweek':
@@ -218,7 +225,7 @@ export default class Patient extends Component {
                                 this.handleChange(e, { name: 'ckztingj', value: res.object.ckztingj, target }, entity);
                             } else {
                                 if (entity['ckzdate']) {
-                                    this.handleChange(e, { name: 'ckztingj', value: util.countWeek(entity['ckzdate'], entity['gesmoc']), target }, entity);
+                                    this.handleChange(e, { name: 'ckztingj', value: util.getWeek(40, util.countWeek(entity['gesexpect'], entity['ckzdate'])), target }, entity);
                                 }
                             }
                         })
