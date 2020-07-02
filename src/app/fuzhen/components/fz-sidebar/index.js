@@ -81,7 +81,8 @@ export default class Index extends Component {
       service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object })),
 
       service.fuzhen.getLackLis().then(res => {
-        this.setState({reportStr: String(res.object)})
+        this.setState({ reportStr: String(res.object) });
+        if (!res.object) this.setState({ collapseActiveKey: ['1', '3', '4'] });
       })
     ]).then(() => this.setState({ loading: false }));
 
@@ -677,7 +678,7 @@ export default class Index extends Component {
           <Panel header={<span>诊 断<Button icon="record" type="dashed" className="header-btn" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
             { this.renderZD() }
           </Panel>
-          <Panel className="panel-jy" header={<span>缺少检验报告<Button icon="list" type="dashed" className={unusualFlag === '1' ? "header-btn isUnusual" : "header-btn"} size="small" onClick={e => handleOtherClick(e) }>必查清单</Button></span>} key="2">
+          <Panel className="panel-jy" header={<span>{reportStr ? '缺少检验报告' : '检验报告'}<Button icon="list" type="dashed" className={unusualFlag === '1' ? "header-btn isUnusual" : "header-btn"} size="small" onClick={e => handleOtherClick(e) }>必查清单</Button></span>} key="2">
             {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : <p className="pad-small">{reportStr || '无'}</p>}
           </Panel>
           

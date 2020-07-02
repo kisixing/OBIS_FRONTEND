@@ -189,7 +189,7 @@ export default class Patient extends Component {
                     if (!value) {
                         entity['ckztingj'] = '';
                     } else {
-                        entity['ckztingj'] = common.GetWeek(entity['gesexpectrv'],value);
+                        entity['ckztingj'] = util.countWeek(value, entity['gesmoc']);
                     }
                     break;
                 case 'ckzweek':
@@ -218,7 +218,7 @@ export default class Patient extends Component {
                                 this.handleChange(e, { name: 'ckztingj', value: res.object.ckztingj, target }, entity);
                             } else {
                                 if (entity['ckzdate']) {
-                                    this.handleChange(e, { name: 'ckztingj', value: common.GetWeek(entity['gesexpectrv'],entity['ckzdate']), target }, entity);
+                                    this.handleChange(e, { name: 'ckztingj', value: util.countWeek(entity['ckzdate'], entity['gesmoc']), target }, entity);
                                 }
                             }
                         })

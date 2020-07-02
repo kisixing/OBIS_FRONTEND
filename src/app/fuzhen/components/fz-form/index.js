@@ -8,7 +8,6 @@ import formRender, {fireForm} from '../../../../render/form';
 import {valid} from '../../../../render/common';
 import service from '../../../../service';
 import cModal from '../../../../render/modal';
-import {loadWidget} from '../../../../utils/common';
 import './index.less';
 import store from '../../../store';
 import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAction, showReminderAction
@@ -16,16 +15,6 @@ import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAct
 import RegForm from '../../../components/reg-form';
 import TemplateModal from '../../../components/template-modal';
 import DiabetesAppointment from '../../../components/diabetes-appointment';
-
-const renderChart = function(){
-  var loaded = new Promise(resolve=>setTimeout(()=>loadWidget('echarts').then(resolve), 1000));
-  return (id, option) => {
-    loaded.then(() => {
-      var myChart = echarts.init(document.getElementById(id));
-      myChart.setOption(option);
-    });
-  }
-};
 
 export default class FuzhenForm extends Component {
   constructor(props) {
@@ -51,7 +40,6 @@ export default class FuzhenForm extends Component {
       ...store.getState(),
     }
     store.subscribe(this.handleStoreChange);
-    this.renderChart = renderChart();
   }
 
   handleStoreChange = () => {
@@ -76,50 +64,66 @@ export default class FuzhenForm extends Component {
     /*关联表单操作*/
     const searchParam = {
       'diabetes': {
-        'diagKeyword': ['糖尿病'],    //  诊断关键词
-        'digWord': [],                //  诊断
-        'signWord': ['内分泌疾病']    //  诊断标记
+        'diagKeyword': ['糖尿病'],     //   诊断关键词
+        'digWord': [],                //   诊断
+        'signWord': ['内分泌疾病'],    //   诊断标记词
+        'withoutWord': [],            //   不包含的词
       },
       'hypertension': {
         'diagKeyword': ['高血压', '子痫', '肾炎', '肾脏', '肾病', '红斑狼疮'],
         'digWord': ['红斑狼疮', '风湿性关节炎', '类风湿性关节炎', '硬皮病'],
-        'signWord': ['高血压', '肾病', '免疫系统疾病']
+        'signWord': ['高血压', '肾病', '免疫系统疾病'],
+        'withoutWord': [], 
       },
       'coronary': {
         'diagKeyword': ['心脏', '心肌', '心包', '心血管', '冠心病', '心力衰竭'],
-        'digWord': ['妊娠合并心力衰竭', '风湿性心脏病', '妊娠合并风湿性心脏病', '先天性心脏病', '心肌病'],
-        'signWord': ['心血管疾病', '血液系统疾病']
+        'digWord': [],
+        'signWord': ['心血管疾病', '血液系统疾病'],
+        'withoutWord': ['胎'], 
       },
       'twins': {
         'diagKeyword': ['双胎'],
         'digWord': [],
-        'signWord': []
+        'signWord': [],
+        'withoutWord': [], 
       },
       'multiple': {
         'diagKeyword': ['多胎'],
         'digWord': [],
-        'signWord': []
+        'signWord': [],
+        'withoutWord': [], 
       },
     }
 
     function refreshFrom(type) {
       let searchObj = searchParam[type];
-      let bool = false;
+      let count = 0;
 
-      diagItem.length>0 && diagItem.map(item => {
+      diagItem.length > 0 && diagItem.map(item => {
         searchObj['diagKeyword'].map(subItem => {
-          if (item.indexOf(subItem) != -1) bool = true;
+          if (item.indexOf(subItem) != -1) count++;
         })
       })
 
-      diagItem.length>0 && diagItem.map(item => {
-        if (searchObj['digWord'].includes(item)) bool = true;
+      diagItem.length > 0 && diagItem.map(item => {
+        if (searchObj['digWord'].includes(item)) count++;
       })
 
-      signItem.length>0 && signItem.map(item => {
-        if (searchObj['signWord'].includes(item)) bool = true;
+      signItem.length > 0 && signItem.map(item => {
+        if (searchObj['signWord'].includes(item)) count++;
       })
-      return bool;
+
+      diagItem.length > 0 && diagItem.map(item => {
+        searchObj['withoutWord'].map(subItem => {
+          if (item.indexOf(subItem) != -1) count--;
+        })
+      })
+      
+      if (count === 0) {
+        return false;
+      } else {
+        return true;
+      }
     }
 
     return refreshFrom(type);
