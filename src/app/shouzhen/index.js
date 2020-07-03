@@ -169,24 +169,23 @@ export default class Patient extends Component {
     }
 
     // 如果想把handleChange的逻辑移动到对应的tab页里面去，请参考tab-0：yunfuxinxi.js这个文件的handleChange
-    handleChange(e, { name, value, target }, entity) {
+    async handleChange(e, { name, value, target }, entity) {
         const { step } = this.state;
         console.log(name, value, entity, 'change');
         if (!this.isSaving) {
             entity[name] = value;
             switch (name) {
                 case 'gesexpectrv':
-                    service.shouzhen.postGWeek(value).then(res => {
-                        if (res.object.respMsg) {
-                            this.setState({
-                                isShowWeekModal: true,
-                                weekMsg: res.object
-                            })
-                        }
-                    });
+                    const res = await service.shouzhen.postGWeek(value);
+                    if (res.object.respMsg) {
+                        this.setState({
+                            isShowWeekModal: true,
+                            weekMsg: res.object
+                        })
+                    }
                     break;
                 case 'gesexpect':
-                    if (!value) {
+                    if (!value || !entity['ckzdate']) {
                         entity['ckztingj'] = '';
                     } else {
                         entity['ckztingj'] = util.getWeek(40, util.countWeek(value, entity['ckzdate']));
@@ -223,10 +222,6 @@ export default class Patient extends Component {
                             }
                             if (!!res.object.ckztingj) {
                                 this.handleChange(e, { name: 'ckztingj', value: res.object.ckztingj, target }, entity);
-                            } else {
-                                if (entity['ckzdate']) {
-                                    this.handleChange(e, { name: 'ckztingj', value: util.getWeek(40, util.countWeek(entity['gesexpect'], entity['ckzdate'])), target }, entity);
-                                }
                             }
                         })
                     }
@@ -632,13 +627,16 @@ export default class Patient extends Component {
     adjustGesexpectrv(pregnantInfo) {
         const { gesexpect, gesexpectrv, ckztingj, ckzweek } = pregnantInfo;
         if (gesexpect && ckztingj && ckzweek && ckztingj !== ckzweek) {
-            service.shouzhen.calculateGesexpectrv(gesexpect, ckztingj, ckzweek).then(res => {
-                if (gesexpectrv !== res.object.gesexpectrv) {
-                    this.setState({
-                        adjustInfo: res.object
-                    })
-                }
-            })
+            const days = util.getDays(util.getWeek(ckztingj, ckzweek));
+            if (days >= 7) {
+                service.shouzhen.calculateGesexpectrv(gesexpect, ckztingj, ckzweek).then(res => {
+                    if (gesexpectrv !== res.object.gesexpectrv) {
+                        this.setState({
+                            adjustInfo: res.object
+                        })
+                    }
+                })
+            }
         }
     }
 

@@ -46,6 +46,17 @@ export function getWeek(param1, param2) {
   return `${Math.floor(days / 7)}+${days % 7}`;
 }
 
+export function getDays(param) {
+  let days;
+  if (typeof param === 'string' && param.indexOf('+') !== -1) {
+    days = param.split('+');
+    days = parseInt(days[0] * 7) + parseInt(days[1]);
+  } else {
+    days = parseInt(param) * 7;
+  }
+  return Math.abs(days);
+}
+
 // 获取本周五、下周五、下下周五时间
 export function getOrderTime(key) {
   let time;
