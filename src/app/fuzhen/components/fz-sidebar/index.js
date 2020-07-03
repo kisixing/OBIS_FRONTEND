@@ -672,14 +672,19 @@ export default class Index extends Component {
       store.dispatch(action);
       service.shouzhen.saveForm('tab-6', allFormData.lis).then(res => console.log(res, '666'))
     }
+
+    const collapseChange = (keys) => {
+      this.setState({ collapseActiveKey: keys })
+    }
+
     return (
       <div className="fuzhen-left ant-col-5">
-        <Collapse defaultActiveKey={collapseActiveKey}>
+        <Collapse activeKey={collapseActiveKey} onChange={collapseChange}>
           <Panel header={<span>诊 断<Button icon="record" type="dashed" className="header-btn" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
             { this.renderZD() }
           </Panel>
           <Panel className="panel-jy" header={<span>{reportStr ? '缺少检验报告' : '检验报告'}<Button icon="list" type="dashed" className={unusualFlag === '1' ? "header-btn isUnusual" : "header-btn"} size="small" onClick={e => handleOtherClick(e) }>必查清单</Button></span>} key="2">
-            {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : <p className="pad-small">{reportStr || '无'}</p>}
+            {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : <p className="pad-small">{reportStr || '无缺少'}</p>}
           </Panel>
           
           <Panel className="panel-cq" header="产前筛查和诊断" key="3">
