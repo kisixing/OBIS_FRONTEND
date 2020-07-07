@@ -310,7 +310,7 @@ export default class FuzhenForm extends Component {
 						<Tree.TreeNode title={item.name} key={item.key}></Tree.TreeNode>
 					))}
 				</Tree>
-				<Button className="pull-left blue-btn" type="ghost" onClick={addPlanGroup}>添加</Button>
+				<Button className="pull-left blue-btn" type="ghost" onClick={addPlanGroup}>导入诊疗计划组</Button>
 				{renderMplanModal()}
 				{renderNewplanModal()}
 			</div>

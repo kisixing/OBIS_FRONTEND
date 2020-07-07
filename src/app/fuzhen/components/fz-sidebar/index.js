@@ -82,7 +82,7 @@ export default class Index extends Component {
 
       service.fuzhen.getLackLis().then(res => {
         this.setState({ reportStr: String(res.object) });
-        if (!res.object) this.setState({ collapseActiveKey: ['1', '3', '4'] });
+        if (!res.object || res.object.length === 0) this.setState({ collapseActiveKey: ['1', '3', '4'] });
       })
     ]).then(() => this.setState({ loading: false }));
 

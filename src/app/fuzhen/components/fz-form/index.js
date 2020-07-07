@@ -119,7 +119,7 @@ export default class FuzhenForm extends Component {
         })
       })
       
-      if (count === 0) {
+      if (count <= 0) {
         return false;
       } else {
         return true;

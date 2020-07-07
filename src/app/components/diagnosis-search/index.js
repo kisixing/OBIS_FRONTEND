@@ -70,7 +70,7 @@ export default class Index extends Component {
               <Tabs.TabPane tab={<Button className="list-btn" icon="bars">全部</Button>} key="1">
                 {diagTempList['all'].map((item, i) => <p className="list-item" key={i} onClick={() => setDiagnosis(item.name)}>{item.name}</p>)}
               </Tabs.TabPane>
-              <Tabs.TabPane tab={<Button className="list-btn" icon="depart">科室</Button>} key="2">
+              <Tabs.TabPane tab={<Button className="list-btn" icon="appstore-o">科室</Button>} key="2">
                 <Tree showLine onSelect={(K, e) => setDiagnosis(e.node.props.title)}>
                   {diagTempList['department'].map((item, index) => (
                     <Tree.TreeNode selectable={false} title={item.name} key={`0-${index}`}>

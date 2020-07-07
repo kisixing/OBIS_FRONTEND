@@ -171,31 +171,20 @@ export default {
     /**
      * 科室模板
      */
-    treatTemp: function() {
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/list?userid=${r.object.userid}`));
+    treatTemp: function(type, doctorId) {
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/list?userid=${r.object.userid}&type=${type}&doctorid=${doctorId}`));
     },
-    /**
-     * 个人模板
-     */
-    getPersonal: function() {
-        return this.userId().then(r => myAxios.get(`/treatTemp/list?userid=${r.object.userid}`));
+    // 保存模板
+    saveTemp: function(data) {
+        return this.userId().then(r => myAxios.post(`/template/save`, data));
     },
-    addPersonal: function(content, doctorid) {
-        return this.userId().then(r => myAxios.post(`/treatTemp/add`, {content, doctorid}));
+    // 删除模板
+    removeTemp: function(id) {
+        return this.userId().then(r => myAxios.post(`/template/remove`, { id }));
     },
-    renamePersonal: function(item) {
-        return this.userId().then(r => myAxios.put(`/treatTemp/rename`, {item}));
-    },
-    deletePersonal: function(id) {
-        return this.userId().then(r => myAxios.delete(`/treatTemp/delete`, {id}));
-    },
-    // 获取模板数据
-    findTree: function(type, id) {
-        return this.userId().then(r => myAxios.get(`/template/findTree?type=${type}&id=${id}`));
-    },
-    // 删除模板数据
-    remove: function(id) {
-        return this.userId().then(r => myAxios.post(`/template/remove?id=${id}`));
+    // 模板排序
+    sortTemp: function(data, sort) {
+        return this.userId().then(r => myAxios.post(`/template/sort`, {template: data, sortOperation: sort}));
     },
 
     /**

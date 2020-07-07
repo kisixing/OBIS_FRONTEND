@@ -605,7 +605,7 @@ export default class App extends Component {
     const initTree = (pid, level = 0) =>
       searchList.filter(i => i.pId === pid).map(node => (
         <Tree.TreeNode key={node.id} title={node.name} onClick={() => handleCheck(node)} isLeaf={!searchList.filter(i => i.pId === node.id).length}>
-          {level < 10 ? initTree(node.id, level + 1) : null}
+          {pid === 0 ? initTree(node.id, level + 1) : null}
         </Tree.TreeNode>
       ));
 

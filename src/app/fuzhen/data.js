@@ -131,14 +131,13 @@ export const tableKey = () => [
 		title: '日期',
 		key: 'checkdate',
 		type: 'date',
-		width: 50,
+		width: '4%',
 		format:i=>(`${i||''}`).replace(/\d{4}-/,'')
 	},
 	{
 		title: '孕周',
 		key: 'ckweek',
-		// type: 'input',
-		width: 50,
+		width: '3%',
 	},
 	{
 		title: '体重',
@@ -148,7 +147,7 @@ export const tableKey = () => [
 				title: '(kg)',
 				key: 'cktizh',
 				type: 'input',
-				width: 50,
+				width: '3%',
 			},
 		]
 	},
@@ -160,7 +159,7 @@ export const tableKey = () => [
 				title: '(mmHg)',
 				key: 'ckpressure',
 				type: 'input',
-				width: 60,
+				width: '5%',
 			},
 		]
 	},
@@ -168,7 +167,6 @@ export const tableKey = () => [
 		title: '症状',
 		key: 'ckzijzhz',
 		type: 'editableSelect',
-		width: 100,
 		showSearch: true,
 		autoInsert: true,
 		options: ckzijzhzOptions
@@ -180,7 +178,7 @@ export const tableKey = () => [
 			{
 				title: '(cm)',
 				key: 'ckgongg',
-				width: 50,
+				width: '3%',
 				type: 'editableSelect',
 				options: ckgonggOptions
 			},
@@ -193,7 +191,7 @@ export const tableKey = () => [
 			{
 				title: '(bpm)',
 				key: 'allTaix',
-				width: 60,
+				width: '3%',
 				type: 'input'
 			},
 		]
@@ -202,7 +200,7 @@ export const tableKey = () => [
 		title: '先露',
 		key: 'allXianl',
 		type:'select',
-		width: 30,
+		width: '3%',
 		showSearch: true,
 		options: xlOptions
 	},
@@ -210,7 +208,7 @@ export const tableKey = () => [
 		title: '下肢\n水肿',
 		key: 'ckfuzh',
 		type:'select',
-		width: 20,
+		width: '2%',
 		options: ckfuzhOptions
 	},
 	{
@@ -328,7 +326,8 @@ export const tableKey = () => [
 	{
 		title: '心率',
 		key: 'heartRate',
-		type: 'input'
+		type: 'input',
+		width: '3%',
 	},
 	{
 		title: '检验检查',
@@ -348,13 +347,13 @@ export const tableKey = () => [
 	{
 		title: '下次复诊',
 		key: 'nextRvisitText',
-		width: 80,
+		width: '4%',
 	},
 	{
 		title: '医生',
 		key: 'sign',
 		type: 'input',
-		width: 30,
+		width: '2%',
 	},
 ];
 
