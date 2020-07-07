@@ -7,7 +7,6 @@ export default class extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      doctorId: service.getQueryString('doctorId'),
       activeTabKey: "1",
       treatTemp: null,
       treatKey1: [],
@@ -26,13 +25,12 @@ export default class extends Component{
   }
 
   componentDidMount() {
-    const { doctorId } = this.state;
     this.getTempData(1);
-    this.getTempData(2, doctorId);
+    this.getTempData(2);
   }
 
-  getTempData = async (type, doctorId) => {
-    const res = await service.shouzhen.treatTemp(type, doctorId);
+  getTempData = async (type) => {
+    const res = await service.shouzhen.treatTemp(type);
     type == 1 ? this.setState({ treatTemp: res.object }) : this.setState({ personalTemp: res.object });
     this.setState({ 
       nodeTreeItem: null,
@@ -43,11 +41,11 @@ export default class extends Component{
   }
 
   updateData = () => {
-    const { activeTabKey, doctorId } = this.state;
+    const { activeTabKey } = this.state;
     if (activeTabKey === "1") {
       this.getTempData(1);
     } else {
-      this.getTempData(2, doctorId);
+      this.getTempData(2);
     }
   }
 
@@ -114,19 +112,19 @@ export default class extends Component{
   }
 
   renderHandleModal() {
-    const { activeTabKey, operateVisible, nodeTreeItem, addTitle, operation, newTitle, doctorId } = this.state;
+    const { activeTabKey, operateVisible, nodeTreeItem, addTitle, operation, newTitle } = this.state;
     const title = operation === 'new' ? '新增模板' : operation === 'add' ? '新增子模板' : operation === 'edit' ? '编辑模板' : '请注意!';
 
     const closeHandle = async (bool) => {
       if (bool) {
         if (operation === 'new') {
-          const addItem = { "pid": 0, "content": addTitle, type: activeTabKey, doctorid: doctorId };
+          const addItem = { "pid": 0, "content": addTitle, type: activeTabKey };
           await service.shouzhen.saveTemp(addItem);
           this.updateData();
         }
 
         if (operation === 'add') {
-          const addItem = { "pid": Number(nodeTreeItem.id), "content": addTitle, type: activeTabKey, doctorid: doctorId };
+          const addItem = { "pid": Number(nodeTreeItem.id), "content": addTitle, type: activeTabKey };
           await service.shouzhen.saveTemp(addItem);
           this.updateData();
         }

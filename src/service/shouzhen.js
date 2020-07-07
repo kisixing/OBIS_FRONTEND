@@ -171,8 +171,8 @@ export default {
     /**
      * 科室模板
      */
-    treatTemp: function(type, doctorId) {
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/list?userid=${r.object.userid}&type=${type}&doctorid=${doctorId}`));
+    treatTemp: function(type) {
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/list?userid=${r.object.userid}&type=${type}`));
     },
     // 保存模板
     saveTemp: function(data) {

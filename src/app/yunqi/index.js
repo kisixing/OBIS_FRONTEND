@@ -290,6 +290,21 @@ judgeAreas(dot,coordinates,noneZeroMode) {
         ctx.arc(oringin[0] + steps[0] * data[i].x, oringin[1] - steps[1] * data[i].y, 3, 0, 2*Math.PI);
         ctx.fillStyle = point[1];
         ctx.fill();
+
+        // const X = oringin[0] + steps[0] * data[i].x;
+        // const Y = oringin[1] - steps[1] * data[i].y;
+        // const obj = {x: X, y: Y, r: 3};
+        // console.log(canvas, '666')
+        // canvas && canvas.addEventListener('click', function(e) {
+        //   var x = e.pageX - canvas.getBoundingClientRect().left
+        //   var y = e.pageY - canvas.getBoundingClientRect().top
+        //   console.log(x, y, obj, '545')
+        //     if (x > (obj.x - obj.r) && x < (obj.x + obj.r) && y > (obj.y - obj.r) && y < (obj.y + obj.r)) {
+        //       alert("我是第");
+        //   }
+        // }, false)
+        // console.log(data[i].x, data[i].y, '4343');
+
       }
     }
   }
