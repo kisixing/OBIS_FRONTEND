@@ -14,10 +14,9 @@ export default class Patient extends Component {
     }
   }
 
-  componentDidMount() {
-    service.yingxiang.getPacsData().then(res => {
-      this.setState({tableData: res.object})
-    })
+  async componentDidMount() {
+    const res = await service.yingxiang.getPacsData();
+    this.setState({tableData: res.object});
   }
 
   renderTable() {

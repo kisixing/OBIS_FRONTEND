@@ -816,11 +816,9 @@ export default class FuzhenForm extends Component {
     }
 
     const handleCheck = (keys, {checkedNodes}) => {
-      console.log(keys, checkedNodes, '3444')
       let checkItems = [];
       checkedNodes.forEach(node => {
         if (node.props.children.length === 0) checkItems.push(node.props.title);
-        else console.log(node, '34323')
       })
       this.setState({
         lisImportKey: keys,

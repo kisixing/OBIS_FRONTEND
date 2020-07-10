@@ -22,9 +22,6 @@ export default class RegForm extends Component {
   };
 
   async componentDidMount() {
-    service.chanhou.checkPostpartumRvisit().then(res => {
-      console.log(res, '444')
-    })
     const res = await service.chanhou.getPartumRvisit();
     const resData = res.object;
     if (!resData.deliveryHostital) resData.deliveryHostital = '本院';

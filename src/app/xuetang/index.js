@@ -12,10 +12,9 @@ export default class Patient extends Component {
     }
   }
 
-  componentDidMount() {
-    service.xuetang.getUserBloodGlucose().then(res => {
-      this.setState({tableData: res.object})
-    })
+  async componentDidMount() {
+    const res = await service.xuetang.getUserBloodGlucose();
+    this.setState({tableData: res.object});
   }
 
   renderTable() {
