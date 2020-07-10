@@ -185,6 +185,8 @@ class TableItem extends Component {
     }
     if (!error) {
       onChange(e, value)
+    } else {
+      message.error("请输入正确的格式！");
     }
   }
 
@@ -213,9 +215,7 @@ class TableItem extends Component {
         title={value}
         onClick={this.onItemClick.bind(this)}
         onDoubleClick={this.onItemDbClick.bind(this)}
-        className={`table-item table-item-${type} ${(force && "table-force") ||
-          (error && "table-error") ||
-          ""}`}
+        className={`table-item table-item-${type} ${(force && "table-force") || ""} ${(error && "table-error") || ""}`}
       >
         {editable && typeof editor === "function" && (force || isEditor)
           ? editor({

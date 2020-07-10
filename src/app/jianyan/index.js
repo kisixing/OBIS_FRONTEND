@@ -8,31 +8,55 @@ export default class Patient extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isShowModal: false,
+      // isShowModal: false,
       reportList: [],
       detailData: {}, 
-      repResult: '2',
-      repRemarks: '',
-      repSign: '',
+      // repResult: '2',
+      // repRemarks: '',
+      // repSign: '',
       repId: '',
       repAmy: true,
     }
   }
 
-  componentDidMount() {
-    service.jianyan.getLisReport().then(res => this.setState({ reportList: res.object }));
+  async componentDidMount() {
+    const res = await service.jianyan.getLisReport();
+    this.setState({ reportList: res.object });
   }
 
   renderLeft() {
     const {reportList} = this.state;
 
-    const getDetail = (id, bool) => {
-      service.jianyan.getLisDetail(id, bool).then(res => this.setState({ detailData: res.object }));
+    const getDetail = async (item, bool) => {
+      let id;
+      if (bool) {
+        id = item.amyId;
+      } else {
+        id = item.sampleno;
+      }
+      
+      // 获取报告中 额外报告的数据
+      let addList = [];
+      if (!bool) {
+        let addItem = item.supplyList || [];
+        if (addItem.length > 0) {
+          for (let item of addItem) {
+            const res = await service.jianyan.getLisDetail(item.sampleno, false);
+            const resDetails = res.object.lisDetails || [];
+            addList = addList.concat(resDetails);
+          }
+        }
+      }
 
-      service.jianyan.checkReport("已看", "", "", id, bool).then(res => {
-        service.jianyan.getLisReport().then(res => this.setState({ reportList: res.object }));
-      });
+      const detail = await service.jianyan.getLisDetail(id, bool);
+      const detailList = detail.object;
+      detailList.lisDetails = detailList.lisDetails.concat(addList);
+      this.setState({ detailData: detailList });
 
+      await service.jianyan.checkReport("已看", "", "", id, bool);
+      const report = await service.jianyan.getLisReport();
+      this.setState({ reportList: report.object });
+      
       if(bool) {
         this.setState({ repAmy: true, repId: id })
       } else {
@@ -48,7 +72,7 @@ export default class Patient extends Component {
               <Collapse.Panel header={<p><Icon type="calendar" />{item.groupTitle}</p>} key={item.id}>
                 {
                   item.data.map(subItem => (
-                    <div className="left-item" onClick={() => {subItem.isAmy ? getDetail(subItem.amyId, true) : getDetail(subItem.sampleno)}}>    
+                    <div className="left-item" onClick={() => {subItem.isAmy ? getDetail(subItem, true) : getDetail(subItem)}}>    
                       {!subItem.state ? <span className="left-state">新</span> : null}       
                       <p className="left-title">{subItem.title}</p>
                       {/* <Button className={subItem.state==="2" ? "left-btn normal" : "left-btn"} size="small">

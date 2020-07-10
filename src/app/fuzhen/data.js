@@ -169,7 +169,7 @@ export const tableKey = () => [
 		type: 'editableSelect',
 		showSearch: true,
 		autoInsert: true,
-		options: ckzijzhzOptions
+		options: ckzijzhzOptions,
 	},
 	{
 		title: '宫高',
@@ -178,9 +178,9 @@ export const tableKey = () => [
 			{
 				title: '(cm)',
 				key: 'ckgongg',
-				width: '3%',
 				type: 'editableSelect',
-				options: ckgonggOptions
+				options: ckgonggOptions,
+				width: '4%',
 			},
 		]
 	},
@@ -191,8 +191,8 @@ export const tableKey = () => [
 			{
 				title: '(bpm)',
 				key: 'allTaix',
+				type: 'input',
 				width: '3%',
-				type: 'input'
 			},
 		]
 	},
@@ -200,16 +200,16 @@ export const tableKey = () => [
 		title: '先露',
 		key: 'allXianl',
 		type:'select',
-		width: '3%',
 		showSearch: true,
-		options: xlOptions
+		options: xlOptions,
+		width: '3%',
 	},
 	{
 		title: '下肢\n水肿',
 		key: 'ckfuzh',
 		type:'select',
+		options: ckfuzhOptions,
 		width: '2%',
-		options: ckfuzhOptions
 	},
 	{
 		title: '其他',
@@ -332,7 +332,7 @@ export const tableKey = () => [
 	{
 		title: '检验检查',
 		key: 'examination',
-		type: 'input'
+		type: 'input',
 	},
 	{
 		title: '用药方案',
@@ -342,12 +342,11 @@ export const tableKey = () => [
 		title: '处理措施',
 		key: 'treatment',
 		className: 'treatment',
-		type: 'input'
+		type: 'input',
 	},
 	{
 		title: '下次复诊',
 		key: 'nextRvisitText',
-		width: '4%',
 	},
 	{
 		title: '医生',
