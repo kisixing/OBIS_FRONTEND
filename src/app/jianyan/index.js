@@ -28,29 +28,28 @@ export default class Patient extends Component {
     const {reportList} = this.state;
 
     const getDetail = async (item, bool) => {
+      let idArr = [];
       let id;
       if (bool) {
         id = item.amyId;
+        idArr.push(item.amyId);
       } else {
         id = item.sampleno;
+        idArr.push(item.sampleno);
       }
       
       // 获取报告中 额外报告的数据
-      let addList = [];
       if (!bool) {
         let addItem = item.supplyList || [];
         if (addItem.length > 0) {
           for (let item of addItem) {
-            const res = await service.jianyan.getLisDetail(item.sampleno, false);
-            const resDetails = res.object.lisDetails || [];
-            addList = addList.concat(resDetails);
+            idArr.push(item.sampleno);
           }
         }
       }
 
-      const detail = await service.jianyan.getLisDetail(id, bool);
+      const detail = await service.jianyan.getLisDetail(idArr, bool);
       const detailList = detail.object;
-      detailList.lisDetails = detailList.lisDetails.concat(addList);
       this.setState({ detailData: detailList });
 
       await service.jianyan.checkReport("已看", "", "", id, bool);

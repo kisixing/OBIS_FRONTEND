@@ -12,11 +12,13 @@ export default {
     /**
      * 报告详情接口
      */
-    getLisDetail: function(id, isAmy){
+    getLisDetail: function(idArr, isAmy){
+      let str = '';
+      idArr.forEach(id => { str += `&sampleno=${id}` });
       if(isAmy) {
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/getLisDetail?userid=${r.object.userid}&isAmy=1&amyId=${id}`));
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getLisDetail?userid=${r.object.userid}&isAmy=1&amyId=${idArr[0]}`));
       } else {
-        return this.userId().then(r => myAxios.get(`/outpatientRestful/getLisDetail?userid=${r.object.userid}&sampleno=${id}`));
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/getLisDetail?userid=${r.object.userid}${str}`));
       }
     },
 
