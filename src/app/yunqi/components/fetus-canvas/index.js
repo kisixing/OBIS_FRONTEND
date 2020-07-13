@@ -5,6 +5,7 @@ import { futureDate } from '../../../fuzhen/util';
 import service from "../../../../service";
 import tableRender from "../../../../render/table";
 import * as baseData from "./data";
+import * as util from '../../../fuzhen/util';
 import "./index.less";
 
 export default class Index extends Component {
@@ -340,6 +341,7 @@ export default class Index extends Component {
 
   tableModal() {
     const { isShowTableModal, allFetusData } = this.state;
+    const { userDoc } = this.props;
 
     const handleCancel = () => {
       this.setState({ isShowTableModal: false })
@@ -349,12 +351,13 @@ export default class Index extends Component {
       this.setState({ isShowTableModal: false })
     }
 
-    const handleTableChange = async (e, value) => {
-      const row = value.item;
-      if (row.fetusNo.length > 1) {
-        row.fetusNo = row.fetusNo.substr(1);
+    const handleTableChange = async (type, item, row, key) => {
+      if (key === "date" && !!item.date && userDoc.gesexpectrv) {
+        item.gesweek = util.getWeek(40, util.countWeek(userDoc.gesexpectrv, item.date));
+      } else if (key === "fetusNo" && item.fetusNo.length > 1) {
+        item.fetusNo = item.fetusNo.substr(1);
       }
-      await service.yunqi.saveCurve(row);
+      await service.yunqi.saveCurve(item);
       this.getFetuData();
     }
 
@@ -383,7 +386,7 @@ export default class Index extends Component {
         pagination: false,
         buttons: [{ title: "添加", fn: handleAdd }, { title: "删除", fn: handleDelete }],
         editable: true,
-        onChange: handleTableChange,
+        onRowChange: handleTableChange,
       });
 
     return (
