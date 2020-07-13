@@ -67,63 +67,54 @@ export default class FuzhenForm extends Component {
         'diagKeyword': ['糖尿病'],     //   诊断关键词
         'digWord': [],                //   诊断
         'signWord': ['内分泌疾病'],    //   诊断标记词
-        'withoutWord': [],            //   不包含的词
       },
       'hypertension': {
         'diagKeyword': ['高血压', '子痫', '肾炎', '肾脏', '肾病', '红斑狼疮'],
         'digWord': ['红斑狼疮', '风湿性关节炎', '类风湿性关节炎', '硬皮病'],
         'signWord': ['高血压', '肾病', '免疫系统疾病'],
-        'withoutWord': [], 
       },
       'coronary': {
         'diagKeyword': ['心脏', '心肌', '心包', '心血管', '冠心病', '心力衰竭'],
         'digWord': [],
         'signWord': ['心血管疾病', '血液系统疾病'],
-        'withoutWord': ['胎'], 
       },
       'twins': {
         'diagKeyword': ['双胎'],
         'digWord': [],
         'signWord': [],
-        'withoutWord': [], 
       },
       'multiple': {
         'diagKeyword': ['多胎'],
         'digWord': [],
         'signWord': [],
-        'withoutWord': [], 
       },
     }
 
     function refreshFrom(type) {
       let searchObj = searchParam[type];
-      let count = 0;
+      let bool = false;
 
       diagItem.length > 0 && diagItem.map(item => {
         searchObj['diagKeyword'].map(subItem => {
-          if (item.indexOf(subItem) != -1) count++;
+          if (item.indexOf(subItem) != -1) {
+            if (type === 'coronary' && item.indexOf('胎') === -1) {
+              bool = true;
+            } else if (type !== 'coronary') {
+              bool = true;
+            }
+          } 
         })
       })
 
       diagItem.length > 0 && diagItem.map(item => {
-        if (searchObj['digWord'].includes(item)) count++;
+        if (searchObj['digWord'].includes(item)) bool = true;
       })
 
       signItem.length > 0 && signItem.map(item => {
-        if (searchObj['signWord'].includes(item)) count++;
+        if (searchObj['signWord'].includes(item)) bool = true;
       })
 
-      diagItem.length > 0 && diagItem.map(item => {
-        searchObj['withoutWord'].map(subItem => {
-          if (item.indexOf(subItem) != -1) count--;
-        })
-      })
-      
-      if (count <= 0) {
-        return false;
-      } else {
-        return true;
-      }
+      return bool;
     }
 
     return refreshFrom(type);
