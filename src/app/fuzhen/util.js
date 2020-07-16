@@ -8,11 +8,6 @@ export function countWeek(date1, date2){
   return `${Math.floor(days / 7)}+${days % 7}`;
 }
 
-export function formateDate() {
-  let date = new Date();
-  return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-}
-
 export function futureDate(param) {
   let date = new Date();
   date.setDate(date.getDate() + Number(param));
@@ -22,27 +17,12 @@ export function futureDate(param) {
 }
 
 export function getWeek(param1, param2) {
-  let day1;
-  let day2;
-  let days;
-  if (typeof param1 === 'string' && param1.indexOf('+') !== -1) {
-    day1 = param1.split('+');
-    day1 = Number(day1[0] * 7) + Number(day1[1]);
-  } else {
-    day1 = Number(param1) * 7;
-  }
+  const day1 = getDays(param1);
+  const day2 = getDays(param2);
+  const days = day1 - day2;
 
-  if (typeof param2 === 'string' && param2.indexOf('+') !== -1) {
-    day2 = param2.split('+');
-    day2 = Number(day2[0] * 7) + Number(day2[1]);
-  } else {
-    day2 = Number(param2) * 7;
-  }
-  days = day1 - day2;
   if (days % 7 === 0) return Math.floor(days / 7);
-  if (days < 0) {
-    return `${Math.ceil(days / 7)}+${days % 7}`;
-  }
+  if (days < 0) return `${Math.ceil(days / 7)}+${days % 7}`;
   return `${Math.floor(days / 7)}+${days % 7}`;
 }
 
@@ -50,7 +30,7 @@ export function getDays(param) {
   let days;
   if (typeof param === 'string' && param.indexOf('+') !== -1) {
     days = param.split('+');
-    days = Number(days[0] * 7) + Number(days[1]);
+    days = Number(days[0]) * 7 + Number(days[1]);
   } else {
     days = Number(param) * 7;
   }
@@ -58,35 +38,21 @@ export function getDays(param) {
 }
 
 // 获取本周五、下周五、下下周五时间
-export function getOrderTime(key) {
+export function getOrderTime(orderDate) {
   let time;
-  if (key === "本周五") {
-    let day = new Date().getDay();
-    let minus = 5 - day;
-    let thisWeek = new Date();
-    thisWeek.setDate(thisWeek.getDate() + minus);
-    let year = thisWeek.getFullYear();
-    let month = thisWeek.getMonth() + 1 <= 9 ? '0' + (thisWeek.getMonth() + 1) : thisWeek.getMonth() + 1;
-    let strDate = thisWeek.getDate() <= 9 ? '0' + thisWeek.getDate() : thisWeek.getDate();
-    time = year + '-' + month + '-' + strDate;
-  } else if (key === "下周五") {
-    let day = new Date().getDay();
-    let minus = 5 - day;
-    let nextWeek = new Date();
-    nextWeek.setDate(nextWeek.getDate() + minus + 7);
-    let year = nextWeek.getFullYear();
-    let month = nextWeek.getMonth() + 1 <= 9 ? '0' + (nextWeek.getMonth() + 1) : nextWeek.getMonth() + 1;
-    let strDate = nextWeek.getDate() <= 9 ? '0' + nextWeek.getDate() : nextWeek.getDate();
-    time = year + '-' + month + '-' + strDate;
-  } else if (key === "下下周五") {
-    let day = new Date().getDay();
-    let minus = 5 - day;
-    let nextWeek = new Date();
-    nextWeek.setDate(nextWeek.getDate() + minus + 14);
-    let year = nextWeek.getFullYear();
-    let month = nextWeek.getMonth() + 1 <= 9 ? '0' + (nextWeek.getMonth() + 1) : nextWeek.getMonth() + 1;
-    let strDate = nextWeek.getDate() <= 9 ? '0' + nextWeek.getDate() : nextWeek.getDate();
-    time = year + '-' + month + '-' + strDate;
+  let day = new Date().getDay();
+  let countDay = 5 - day;
+  let thisWeek = new Date();
+  if (orderDate === "本周五") {
+    thisWeek.setDate(thisWeek.getDate() + countDay);
+  } else if (orderDate === "下周五") {
+    thisWeek.setDate(thisWeek.getDate() + countDay + 7);
+  } else if (orderDate === "下下周五") {
+    thisWeek.setDate(thisWeek.getDate() + countDay + 14);
   }
+  let year = thisWeek.getFullYear();
+  let month = thisWeek.getMonth() + 1 <= 9 ? '0' + (thisWeek.getMonth() + 1) : thisWeek.getMonth() + 1;
+  let strDate = thisWeek.getDate() <= 9 ? '0' + thisWeek.getDate() : thisWeek.getDate();
+  time = year + '-' + month + '-' + strDate;
   return time;
 }
