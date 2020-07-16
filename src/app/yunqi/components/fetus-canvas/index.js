@@ -173,13 +173,13 @@ export default class Index extends Component {
             let yunWeek = item[i].gesweek;
             if(yunWeek.indexOf('+') !== -1) {
               const arr = yunWeek.split('+');
-              yunWeek = parseInt(arr[0]) + parseInt(arr[1]) / 7;
+              yunWeek = Number(arr[0]) + Number(arr[1]) / 7;
             }
 
             const setData = (obj, param, arr) => {
               obj.x = yunWeek - 10;
-              obj.y = parseInt(item[i][param]);
-              obj.gesweek = yunWeek;
+              obj.y = Number(item[i][param]);
+              obj.gesweek = item[i].gesweek;
               obj.sort = key;
               if(yunWeek && item[i][param] && yunWeek >= 10 && yunWeek <= 40 && item[i][param] <= 110) {
                 arr.push(obj);

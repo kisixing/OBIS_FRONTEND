@@ -101,7 +101,7 @@ export default class Index extends Component {
       item.tizhong = item.tizhong - bmiTz;
       if(item.week.indexOf('+') !== -1) {
         const arr = item.week.split('+');
-        item.week = parseInt(arr[0]) + parseInt(arr[1]) / 7;
+        item.week = Number(arr[0]) + Number(arr[1]) / 7;
       }
       item.week = item.week - 1;
     })

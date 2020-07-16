@@ -683,7 +683,7 @@ export default class Index extends Component {
           <Panel header={<span>诊 断<Button icon="record" type="dashed" className="header-btn" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
             { this.renderZD() }
           </Panel>
-          <Panel className="panel-jy" header={<span>{reportStr ? '缺少检验报告' : '检验报告'}<Button icon="list" type="dashed" className={unusualFlag === '1' ? "header-btn isUnusual" : "header-btn"} size="small" onClick={e => handleOtherClick(e) }>必查清单</Button></span>} key="2">
+          <Panel className="panel-jy" header={<span>{reportStr ? '缺少检验报告' : '检验报告(全)'}<Button icon="list" type="dashed" className={unusualFlag === '1' ? "header-btn isUnusual" : "header-btn"} size="small" onClick={e => handleOtherClick(e) }>必查清单</Button></span>} key="2">
             {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : <p className="pad-small">{reportStr || '无缺少'}</p>}
           </Panel>
           

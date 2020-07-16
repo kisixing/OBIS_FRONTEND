@@ -15,7 +15,7 @@ export function formateDate() {
 
 export function futureDate(param) {
   let date = new Date();
-  date.setDate(date.getDate() + parseInt(param));
+  date.setDate(date.getDate() + Number(param));
   let getMonth = (date.getMonth()+1 > 10) ? date.getMonth()+1 : "0" + (date.getMonth()+1);
   let getDate = (date.getDate()+1 > 10) ? date.getDate() : "0" + date.getDate();
   return date.getFullYear() +"-"+ getMonth +"-"+ getDate;
@@ -27,16 +27,16 @@ export function getWeek(param1, param2) {
   let days;
   if (typeof param1 === 'string' && param1.indexOf('+') !== -1) {
     day1 = param1.split('+');
-    day1 = parseInt(day1[0] * 7) + parseInt(day1[1]);
+    day1 = Number(day1[0] * 7) + Number(day1[1]);
   } else {
-    day1 = parseInt(param1) * 7;
+    day1 = Number(param1) * 7;
   }
 
   if (typeof param2 === 'string' && param2.indexOf('+') !== -1) {
     day2 = param2.split('+');
-    day2 = parseInt(day2[0] * 7) + parseInt(day2[1]);
+    day2 = Number(day2[0] * 7) + Number(day2[1]);
   } else {
-    day2 = parseInt(param2) * 7;
+    day2 = Number(param2) * 7;
   }
   days = day1 - day2;
   if (days % 7 === 0) return Math.floor(days / 7);
@@ -50,9 +50,9 @@ export function getDays(param) {
   let days;
   if (typeof param === 'string' && param.indexOf('+') !== -1) {
     days = param.split('+');
-    days = parseInt(days[0] * 7) + parseInt(days[1]);
+    days = Number(days[0] * 7) + Number(days[1]);
   } else {
-    days = parseInt(param) * 7;
+    days = Number(param) * 7;
   }
   return Math.abs(days);
 }

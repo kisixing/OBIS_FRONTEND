@@ -31,7 +31,8 @@ export default class extends Component{
 
   getTempData = async (type) => {
     const res = await service.shouzhen.treatTemp(type);
-    type == 1 ? this.setState({ treatTemp: res.object }) : this.setState({ personalTemp: res.object });
+    const resTemp = res.object || [];
+    type == 1 ? this.setState({ treatTemp: resTemp }) : this.setState({ personalTemp: resTemp });
     this.setState({ 
       nodeTreeItem: null,
       operation: null,
@@ -78,7 +79,7 @@ export default class extends Component{
     const menu = (
       <div style={tmpStyle}>
         {
-          pid === 0 && activeTabKey !== "2"
+          pid === 0
           ? <div className="handle-icon" onClick={() => handleItem("add")}>
               <Tooltip placement="bottom" title="添加子模板">
                 <Icon type='plus-circle-o' />
@@ -203,15 +204,15 @@ export default class extends Component{
         if (activeTabKey === "1") {
           items = treatTemp.filter(i => i.checked && i.pid !== 0);
         } else {
-          items = personalTemp.filter(i => i.checked);
+          items = personalTemp.filter(i => i.checked && i.pid !== 0);
         }
       }
       closeTemplateModal(e, items);
     }
 
-    const initTree = (pid, list, param) => list && list.filter(i => i.pid === pid).map(node => (
+    const initTree = (pid, list) => list && list.filter(i => i.pid === pid).map(node => (
       <Tree.TreeNode pid={node.pid} sort={node.sort} key={node.id} title={node.content}>
-        {(pid === 0 && !param) ? initTree(node.id, list) : null}
+        {(pid === 0) ? initTree(node.id, list) : null}
       </Tree.TreeNode>
     ));
 
@@ -280,18 +281,14 @@ export default class extends Component{
     }
 
     const handleBtnClick = () => {
-      if (activeTabKey === "2" && personalTemp.length === 30) {
-        message.warn("个人模板最多30条数据！");
-      } else {
-        this.setState({ 
-          operation: "new",
-          operateVisible: true
-        })
-      }
+      this.setState({ 
+        operation: "new",
+        operateVisible: true
+      })
     }
 
     const treeNodes = initTree(0, treatTemp);
-    const personalNodes = initTree(0, personalTemp, "personal");
+    const personalNodes = initTree(0, personalTemp);
     const operationBtn = <Button size="small" onClick={handleBtnClick}>添加模板</Button>;
 
     return (
@@ -301,13 +298,13 @@ export default class extends Component{
             <Row>
               <Col span={12}>
                 <Tree checkable defaultExpandAll checkedKeys={treatKey1.length === 0 ? [] : treatKey1} onCheck={handleCheck1} onRightClick={(e) => onRightClick(e, 'department1')} style={{ maxHeight: '90%' }}>
-                  {treeNodes.slice(0, treeNodes.length/2)}
+                  {treeNodes.slice(0, Math.ceil(treeNodes.length/2))}
                 </Tree>
                 {(this.state.nodeTreeItem != null && currentArea === "department1") ? this.getNodeTreeMenu() : null}
               </Col>
               <Col span={12}>
                 <Tree checkable defaultExpandAll checkedKeys={treatKey2.length === 0 ? [] : treatKey2} onCheck={handleCheck2} onRightClick={(e) => onRightClick(e, 'department2')} style={{ maxHeight: '90%' }}>
-                  {treeNodes.slice(treeNodes.length/2)}
+                  {treeNodes.slice(Math.ceil(treeNodes.length/2))}
                 </Tree>
                 {(this.state.nodeTreeItem != null && currentArea === "department2")? this.getNodeTreeMenu() : null}
               </Col>
@@ -316,13 +313,13 @@ export default class extends Component{
           <Tabs.TabPane tab={<Button className="list-btn" icon="user">个人模板</Button>} key="2">
             <Col span={12}>
               <Tree checkable defaultExpandAll checkedKeys={personalKey1.length === 0 ? [] : personalKey1} onCheck={handlePersonalCheck1} onRightClick={(e) => onRightClick(e, 'personal1')} style={{ maxHeight: '90%' }}>
-                {personalNodes.slice(0, 15)}
+                {personalNodes.slice(0, Math.ceil(personalNodes.length/2))}
               </Tree>
               {(this.state.nodeTreeItem != null && currentArea === "personal1") ? this.getNodeTreeMenu() : null}
             </Col>
             <Col span={12}>
               <Tree checkable defaultExpandAll checkedKeys={personalKey2.length === 0 ? [] : personalKey2} onCheck={handlePersonalCheck2} onRightClick={(e) => onRightClick(e, 'personal2')} style={{ maxHeight: '90%' }}>
-                {personalNodes.slice(15)}
+                {personalNodes.slice(Math.ceil(personalNodes.length/2))}
               </Tree>
               {(this.state.nodeTreeItem != null && currentArea === "personal2") ? this.getNodeTreeMenu() : null}
             </Col>
@@ -332,7 +329,7 @@ export default class extends Component{
     )
   }
 
-  render(){
+  render() {
     const { treatTemp, personalTemp } = this.state;
     return (
       <div>
