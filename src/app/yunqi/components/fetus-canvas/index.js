@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { Button, Modal } from "antd";
 import { judgeAreas, setHorRules, setVerRules, printCanvas } from "../common";
-import { futureDate } from '../../../fuzhen/util';
+import { futureDate, getWeek, countWeek } from '../../../fuzhen/util';
 import service from "../../../../service";
 import tableRender from "../../../../render/table";
 import * as baseData from "./data";
-import * as util from '../../../fuzhen/util';
 import "./index.less";
 
 export default class Index extends Component {
@@ -353,7 +352,7 @@ export default class Index extends Component {
 
     const handleTableChange = async (type, item, row, key) => {
       if (key === "date" && !!item.date && userDoc.gesexpectrv) {
-        item.gesweek = util.getWeek(40, util.countWeek(userDoc.gesexpectrv, item.date));
+        item.gesweek = getWeek(40, countWeek(userDoc.gesexpectrv, item.date));
       } else if (key === "fetusNo" && item.fetusNo.length > 1) {
         item.fetusNo = item.fetusNo.substr(1);
       }
