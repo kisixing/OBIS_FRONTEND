@@ -18,6 +18,7 @@ import cModal from '../../../../render/modal';
 import '../../index.less';
 import service from '../../../../service';
 import * as common from '../../../../utils/common';
+import PlanTable from '@/app/fuzhen/components/fz-sidebar/plan-table'
 
 function modal(type, title) {
   message[type](title, 3)
@@ -46,6 +47,7 @@ export default class extends Component{
         { 'word': ['HIV', '艾滋'], 'without': [], 'diag': 'HIV' },
         { 'word': ['乙肝', '乙型肝炎'], 'without': ['大三阳', '小三阳'], 'diag': '乙肝表面抗原携带者' },
       ],
+      isShowPlanModal: false,
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -649,6 +651,21 @@ export default class extends Component{
     }
   }
 
+  /**
+   * 诊疗计划管理
+   */
+  renderPlanModal = () => {
+    const { isShowPlanModal, userDoc } = this.state;
+    const handleClick = () => {
+      this.setState({isShowPlanModal: false})
+    }
+    return (
+      <Modal width="80%" footer={null} title="诊疗计划" visible={isShowPlanModal} onCancel={() => handleClick(false)}>
+        <PlanTable info={userDoc} setVisible={(param) => this.setState({isShowPlanModal: param})} />
+      </Modal>
+    )
+  }
+
   closeRegForm = () => {
     this.setState({ isShowRegForm: false })
   }
@@ -676,7 +693,8 @@ export default class extends Component{
           <Col span="1"></Col>
           <Col span="13" className="form-wrapper">
             {formRender(entity, this.config(), this.handleChange.bind(this))}
-            <Button className="record-btn" icon="record" onClick={() =>this.openLisi()}>首检信息历史修改记录</Button>
+            <Button className="record-btn" icon="manage" onClick={() => this.setState({ isShowPlanModal: true })}>诊疗计划管理</Button>
+            <Button className="record-btn" icon="record" onClick={() => this.openLisi()}>首检信息历史修改记录</Button>
           </Col>
         </Row>
 
@@ -686,6 +704,7 @@ export default class extends Component{
         {isShowDiagSearch && <DiagSearch addDiag={this.adddiagnosis.bind(this)} />}
         {openMenzhen && <DiabetesAppointment openMenzhen={openMenzhen} closeMenzhen={this.closeMenzhen} />}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>} */}
+        { this.renderPlanModal() }
       </div>
     )
   }

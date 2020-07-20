@@ -504,14 +504,12 @@ export default class Index extends Component {
     const renderPlanModal = () => {
       const { isShowPlanModal, userDoc } = this.state;
       const handleClick = () => {
-        this.setState({isShowPlanModal: false})
-      }
-      const changeRecentRvisit = () => {
+        this.setState({isShowPlanModal: false});
         service.fuzhen.getDiagnosisPlanData().then(res => this.setState({ planData: res.object }));
       }
       return (
         <Modal width="80%" footer={null} title="诊疗计划" visible={isShowPlanModal} onCancel={() => handleClick(false)}>
-          <PlanTable info={userDoc} onReturn={(param) => this.setState({isShowPlanModal: param})} changeRecentRvisit={changeRecentRvisit} />
+          <PlanTable info={userDoc} setVisible={(param) => this.setState({isShowPlanModal: param})} />
         </Modal>
       )
     }

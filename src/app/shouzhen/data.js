@@ -558,23 +558,23 @@ export const lisiColumns = [
 		title: '编号',
 		key: "index",
 		format: (v, {row}) => row + 1,
-		width: 15
+		width: '5%'
 	},
 	{
 		title: '修改时间',
 		key: 'operateTime',
 		format: (text, record) => text && text.substr(0, 10),
-		width: 30
+		width: '15%'
 	},
 	{
 		title: '修改人',
 		key: 'operator',
-		width: 25
+		width: '10%'
 	},
 	{
 		title: '修改字段',
 		key: 'operateField',
-		width: 120
+		width: '70%'
 	}
 ]
 

@@ -175,7 +175,9 @@ const commonConfig = {
       : () => {}
   ],
   resolve: {
-    alias: {},
+    alias: {
+      '@': path.resolve('src')
+    },
     root: path.resolve("src"),
     modulesDirectories: ["node_modules"],
     extensions: ["", ".js", ".jsx", ".json"]

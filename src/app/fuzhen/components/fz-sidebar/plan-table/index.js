@@ -32,7 +32,7 @@ export default class FuzhenForm extends Component {
         {
           columns: [
             { name: "gestation(周)[孕周]", type: "input", span: 6, valid: (value) => {
-              if (value && !/^\d+?\+?\d+$/.test(value)) {
+              if (value && !/^(\d+)?\+?\d+$/.test(value)) {
                 return '*输入格式不正确';
               }} 
             },
@@ -57,7 +57,7 @@ export default class FuzhenForm extends Component {
           columns: [
             { span: 1 },
             { name: "gestation(周)[孕周]", type: "input", span: 6, valid: (value) => {
-              if (value && !/^\d+?\+?\d+$/.test(value)) {
+              if (value && !/^(\d+)?\+?\d+$/.test(value)) {
                 return '*输入格式不正确';
               }} 
             },
@@ -113,7 +113,6 @@ export default class FuzhenForm extends Component {
         this.setState({planEntity}, () => {
           service.fuzhen.addRecentRvisit(planEntity).then(res => {
             service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object, planEntity: initPlanEntity }));  
-            this.props.changeRecentRvisit();
           })
         })
       } else {
@@ -142,12 +141,13 @@ export default class FuzhenForm extends Component {
   }
 
 	onReturn(param) {
+    const { setVisible } = this.props;
 		if (param === 1) {
 			this.setState({isShowMplanModal: true});
-			this.props.onReturn(false);
+			setVisible(false);
 		} else if (param === 2) {
 			this.setState({isShowMplanModal: false});
-			this.props.onReturn(true);
+			setVisible(true);
 		} else if (param === 3) {
 			this.setState({isShowMplanModal: false, isShowNewplanModal: true});
 		} else if (param === 4) {
@@ -177,31 +177,17 @@ export default class FuzhenForm extends Component {
       value.item.time = util.getWeek(value.item.gestation, info.tuserweek);
       service.fuzhen.editRecentRvisit(value.item).then(res => {
         service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));  
-        this.props.changeRecentRvisit();
       })
     }
 
     const handleDelete = (select) => {
       service.fuzhen.delRecentRvisit(select).then(res => {
         service.fuzhen.getRecentRvisitList().then(res => this.setState({ planDataList: res.object }));  
-        this.props.changeRecentRvisit();
       })
     }
 
-    function compare(property){
-      return function(a,b){
-          var value1 = a[property];
-          var value2 = b[property];
-          return value1 - value2;
-      }
-    }
-   
-   let newPlanDataList = planDataList;
-   if (newPlanDataList.length>0) newPlanDataList.sort(compare('gestation'));
-
-    const initTable = data => tableRender(baseData.planKey(), data, 
-          { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onChange: handleTableChange});
-    return <div>{newPlanDataList.length > 0 ? initTable(newPlanDataList) : ""}</div>;
+    const initTable = data => tableRender(baseData.planKey(), data, { pagination: false, buttons: [{title: '删除', fn: handleDelete}], editable: true, onChange: handleTableChange});
+    return <div>{planDataList.length > 0 ? initTable(planDataList) : ""}</div>;
   }
 
   renderRightTree() {
