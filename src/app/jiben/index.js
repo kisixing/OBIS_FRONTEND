@@ -3,6 +3,7 @@ import { Tabs, Button, Row, Col, message, Icon } from 'antd';
 import Page from '../../render/page';
 import { fireForm } from '../../render/form';
 import service from '../../service';
+import * as common from '@/utils/common';
 
 import Yfxx from './components/YunFuXinXi';
 import Zfxx from './components/ZhangFuXinXi';
@@ -158,7 +159,7 @@ export default class Patient extends Component {
     render() {
         const { tabs, step } = this.state;
         const printIvisit = () => {
-            service.shouzhen.printPdfByFile().then(res => {
+            service.shouzhen.printPdfByFile('tmc').then(res => {
                 common.printPdf(res.object);
             })
         }
@@ -166,7 +167,7 @@ export default class Patient extends Component {
         return (
           <Page className="shouzhen">
             <Button icon="save" className="top-save-btn" size="small" onClick={() => this.handleSave(step, 'save')}>保存</Button>
-            {/* <Button type="primary" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button> */}
+            <Button icon="print-blue" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
 
             <div className="bgWhite" style={{ position: "fixed", top: "148px", left: "0", right: "0", bottom: "0"}}></div>
             <Tabs type="card" activeKey={step} onChange={key => setTimeout(() => { this.handleSave(key) }, 100)}>

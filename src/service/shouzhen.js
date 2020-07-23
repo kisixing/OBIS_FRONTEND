@@ -85,9 +85,9 @@ export default {
     /**
      * 首诊页面打印
      */
-    printPdfByFile: function(){
+    printPdfByFile: function(type){
         // 参数：ivisit(A4) ivisitA5(A5)
-        return this.userId().then(r => myAxios.get(`/print/printPdfByFileRestful?userid=${r.object.userid}&modelType=ivisitA5`));
+        return this.userId().then(r => myAxios.get(`/print/printPdfByFileRestful?userid=${r.object.userid}&modelType=${type}`));
     },
     /**
      * 获取医嘱接口

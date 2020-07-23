@@ -672,7 +672,7 @@ export default class Patient extends Component {
     render() {
         const { tabs, step, userDoc, allFormData, emptyData, isShowWeekModal, adjustInfo } = this.state;
         const printIvisit = () => {
-            service.shouzhen.printPdfByFile().then(res => {
+            service.shouzhen.printPdfByFile('ivisitA5').then(res => {
                 common.printPdf(res.object);
             })
         }

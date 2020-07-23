@@ -25,7 +25,7 @@ export default class extends Component{
               }
               return message;
             }},
-            {name:'add_FIELD_pulse(次/分)[脉搏]', className: 'short-pluse', type:'input', span:3, valid: 'required|pureNumber|rang(0,100)'},
+            {name:'add_FIELD_pulse(次/分)[脉搏]', className: 'short-pluse', type:'input', span:3, valid: 'required|pureNumber|rang(60,100)'},
             {name:'cksheng(cm)[身高]', type:'input', className: 'short-cksheng', span:4, valid: 'required|number|rang(150,250)'},
             {name:'cktizh(kg)[孕前体重]', className: 'short-cktizh', type:'input', span:4, valid: 'required|number|rang(10,100)'},
             {name:'ckcurtizh(kg)[现体重]', type:'input', span:3, valid: 'required|number|rang(0,500)'},
