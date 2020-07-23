@@ -131,13 +131,13 @@ export const tableKey = () => [
 		title: '日期',
 		key: 'checkdate',
 		type: 'date',
-		width: '4%',
+		width: '3%',
 		format:i=>(`${i||''}`).replace(/\d{4}-/,'')
 	},
 	{
 		title: '孕周',
 		key: 'ckweek',
-		width: '3%',
+		width: '2%',
 	},
 	{
 		title: '体重',
@@ -147,7 +147,7 @@ export const tableKey = () => [
 				title: '(kg)',
 				key: 'cktizh',
 				type: 'input',
-				width: '3%',
+				width: '2%',
 			},
 		]
 	},
@@ -202,7 +202,7 @@ export const tableKey = () => [
 		type:'select',
 		showSearch: true,
 		options: xlOptions,
-		width: '3%',
+		width: '2%',
 	},
 	{
 		title: '下肢\n水肿',
@@ -347,6 +347,7 @@ export const tableKey = () => [
 	{
 		title: '下次复诊',
 		key: 'nextRvisitText',
+		width: '4%',
 	},
 	{
 		title: '医生',

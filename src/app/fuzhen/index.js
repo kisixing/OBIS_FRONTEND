@@ -436,15 +436,15 @@ export default class FuZhen extends Component {
     const allInitTable = (data, props) => tableRender(rvisitAllKeys, data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
-        {recentRvisit && initTable(recentRvisit, { width: 1100, size: "small", pagination: false, editable: true, className: "fuzhenTable",
-          onEdit: true, hasRecord: hasRecord, isTwins: isTwins, tableLayout: "fixed", scroll: { x: 1100, y: 300 },
+        {recentRvisit && initTable(recentRvisit, { size: "small", pagination: false, editable: true, className: "fuzhenTable",
+          onEdit: true, hasRecord: hasRecord, isTwins: isTwins, scroll: { y: 300 },
           iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onRowChange: handleSaveChange
         })}
         {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
           <div className="table-content">
-            {recentRvisitAll && allInitTable(recentRvisitAll, { className: "fuzhenTable", scroll: { x: 1100 }, editable: true,
-              onRowChange: handelTableChange, tableLayout: "fixed", pagination: false, hasRowSelection: true, getSelectedRows: getSelectedData
+            {recentRvisitAll && allInitTable(recentRvisitAll, { className: "fuzhenTable", editable: true,
+              onRowChange: handelTableChange, pagination: false, hasRowSelection: true, getSelectedRows: getSelectedData
               // pagination: { pageSize: 12, total: totalRow + 2, onChange: handlePageChange, showQuickJumper: true }
             })}
             <div className="btns-wrapper">
@@ -457,7 +457,7 @@ export default class FuZhen extends Component {
             </div>
           </div>
         </Modal>
-        <div className="clearfix">
+        <div className="table-btns clearfix">
           <Button type="dashed" icon="record" className="margin-TB-mid pull-right" onClick={this.handleMoreBtn}>更多产检记录</Button>
           {
             hasRecord 
@@ -591,7 +591,11 @@ export default class FuZhen extends Component {
       <Page className="fuzhen font-16 ant-col">
         <div className="bg-right"></div>
         <div className="bg-left"></div>
-        <div className="fuzhen-right ant-col-18">
+        <FuzhenSidebar 
+          initData={initData} 
+          getRelatedObj={this.setRelatedObj.bind(this)} 
+        />
+        <div className="fuzhen-right ant-col-19">
           {this.renderTable()}
           <FuzhenForm 
             initData={initData} 
@@ -606,10 +610,6 @@ export default class FuZhen extends Component {
             &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>
           </p> */}
         </div>
-        <FuzhenSidebar 
-          initData={initData} 
-          getRelatedObj={this.setRelatedObj.bind(this)} 
-        />
       </Page>
     );
   }
