@@ -175,7 +175,7 @@ export default class extends Component{
           operation === 'new'
           ? <div>新增模板名称：<Input value={newTitle} onChange={e => handleIptChange(e, "new")} style={{ width: '50%' }} /></div>
           : operation === 'add'
-          ? <div>新增子模板名称：<Input value={addTitle} onChange={e => handleIptChange(e, "add")} style={{ width: '50%' }} /></div>
+          ? <div>新增子模板：<Input value={addTitle} onChange={e => handleIptChange(e, "add")} style={{ width: '50%' }} /></div>
           : operation === 'edit'
           ? <div>编辑模板名称：<Input value={nodeTreeItem.title} onChange={e => handleIptChange(e, "edit")} style={{ width: '50%' }} /></div>
           : operation === 'del'
