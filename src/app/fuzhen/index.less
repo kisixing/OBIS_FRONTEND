@@ -1,7 +1,7 @@
 @colorWhite: #fff;
-@colorGray : #dfe1ee;
-@widthLeft : 300px;
-@headerHeight : 104px;
+@colorGray: #dfe1ee;
+@widthLeft: 300px;
+@headerHeight: 104px;
 
 .bg-right {
   position: fixed;
@@ -36,7 +36,7 @@
       background: transparent;
       padding: 0 0.4rem;
     }
-    .ant-collapse-header .arrow ,
+    .ant-collapse-header .arrow,
     .ant-collapse-content-box {
       font-size: 1rem;
     }
@@ -48,7 +48,7 @@
       font-size: 1rem;
       background: #fff;
       color: #3b3671;
-      border: 1px solid #EDEEF6; 
+      border: 1px solid #edeef6;
       padding-left: 34px;
       .arrow {
         font-size: 1rem !important;
@@ -95,7 +95,7 @@
       background-color: transparent;
     }
     .tuserweek-ipt {
-      width: 48px
+      width: 48px;
     }
   }
   .fuzhen-left-zd ol {
@@ -132,7 +132,7 @@
       .highriskmark {
         background-color: #fcb9c5;
       }
-      .delBTN{
+      .delBTN {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -201,11 +201,12 @@
     margin-left: 6px;
     margin-top: -3px;
   }
-  .fuzhen-left-button{
+  .fuzhen-left-button {
     width: 100%;
     border-width: 2px;
   }
-  .fuzhen-left-report, .fuzhen-left-plan {
+  .fuzhen-left-report,
+  .fuzhen-left-plan {
     border-top: 2px solid #4090ff;
     min-height: 5rem;
   }
@@ -232,16 +233,22 @@
   }
 }
 
-
 .fuzhen-right {
   position: relative;
-  width:calc(100% - @widthLeft);
+  width: calc(100% - @widthLeft);
   padding: 16px 0 0 16px;
   .fuzhen-table {
     padding: 12px;
     background-color: #fff;
     margin-bottom: 16px;
     position: relative;
+    .examination,
+    .treatment {
+      width: 24%;
+    }
+    .nextRvisitText {
+      width: 8%;
+    }
     .table-btns {
       position: absolute;
       bottom: -90px;
@@ -249,14 +256,16 @@
       z-index: 2;
     }
   }
-  .form-item .label{
+  .form-item .label {
     min-width: 60px;
     text-align: right;
     margin-bottom: 6px;
   }
 
   .is-not-empty {
-    select, input, .ant-select-selection {
+    select,
+    input,
+    .ant-select-selection {
       font-size: 1rem;
       border-radius: 0;
       border: none;
@@ -266,13 +275,13 @@
     }
   }
 
-  .valid-error{
+  .valid-error {
     input {
       color: red;
       border: 1px solid orange;
     }
     .message {
-      color:red;
+      color: red;
       font-size: 0.5em;
     }
   }
@@ -286,11 +295,19 @@
     margin-top: 10px;
   }
 
+  // 表头 checkbox 隐藏
   .ant-table-tbody tr:nth-of-type(-n + 2) .ant-table-selection-column span {
     visibility: hidden;
   }
 }
 .fuzhenTable {
+  .examination,
+  .treatment {
+    width: 24%;
+  }
+  .nextRvisitText {
+    width: 8%;
+  }
   .ant-table-body {
     overflow-y: auto !important;
   }
@@ -298,19 +315,19 @@
   .ant-table-tbody > tr:nth-child(-n + 2) > td {
     font-weight: 600;
   }
-  .ant-table-tbody>tr>td {
+  .ant-table-tbody > tr > td {
     padding: 5px 1px;
     word-break: keep-all;
     span {
-      overflow: hidden; 
+      overflow: hidden;
       text-overflow: ellipsis;
-      display: -webkit-box !important; 
+      display: -webkit-box !important;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 5; 
+      -webkit-line-clamp: 5;
     }
   }
 }
-.fz-print{
+.fz-print {
   display: none;
 }
 
@@ -387,6 +404,3 @@
     display: none;
   }
 }
-
-
-

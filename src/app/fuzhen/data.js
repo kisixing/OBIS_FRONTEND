@@ -131,7 +131,7 @@ export const tableKey = () => [
 		title: '日期',
 		key: 'checkdate',
 		type: 'date',
-		width: '3%',
+		width: '4%',
 		format:i=>(`${i||''}`).replace(/\d{4}-/,'')
 	},
 	{
@@ -170,6 +170,7 @@ export const tableKey = () => [
 		showSearch: true,
 		autoInsert: true,
 		options: ckzijzhzOptions,
+		width: '10%',
 	},
 	{
 		title: '宫高',
@@ -215,6 +216,7 @@ export const tableKey = () => [
 		title: '其他',
 		key: 'ckzijzhzqt',
 		type: 'input',
+		width: '10%',
 	},
 	// {
 	// 	title: '胎儿超声',
@@ -332,7 +334,9 @@ export const tableKey = () => [
 	{
 		title: '检验检查',
 		key: 'examination',
+		className: "examination",
 		type: 'input',
+		width: '30%',
 	},
 	{
 		title: '用药方案',
@@ -343,17 +347,19 @@ export const tableKey = () => [
 		key: 'treatment',
 		className: 'treatment',
 		type: 'input',
+		width: '30%',
 	},
 	{
 		title: '下次复诊',
 		key: 'nextRvisitText',
+		className: 'nextRvisitText',
 		width: '4%',
 	},
 	{
 		title: '医生',
 		key: 'sign',
 		type: 'input',
-		width: '2%',
+		width: '3%',
 	},
 ];
 

@@ -119,8 +119,8 @@ export default class extends Component{
     const closeHandle = async (bool) => {
       if (bool) {
         if (operation === 'new') {
-          const addItem = { "pid": 0, "content": addTitle, type: activeTabKey };
-          await service.shouzhen.saveTemp(addItem);
+          const newItem = { "pid": 0, "content": addTitle, type: activeTabKey };
+          await service.shouzhen.saveTemp(newItem);
           this.updateData();
         }
 
@@ -196,7 +196,6 @@ export default class extends Component{
     const closeDialog = (e, bool) => {
       let items = [];
       this.setState({ 
-        openTemplate: false, 
         treatKey1: [], 
         treatKey2: [] 
       });

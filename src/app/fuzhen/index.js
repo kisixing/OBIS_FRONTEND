@@ -436,7 +436,7 @@ export default class FuZhen extends Component {
     const allInitTable = (data, props) => tableRender(rvisitAllKeys, data, { buttons: null, ...props });
     return (
       <div className="fuzhen-table">
-        {recentRvisit && initTable(recentRvisit, { size: "small", pagination: false, editable: true, className: "fuzhenTable",
+        {recentRvisit && initTable(recentRvisit, { pagination: false, editable: true, className: "fuzhenTable",
           onEdit: true, hasRecord: hasRecord, isTwins: isTwins, scroll: { y: 300 },
           iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onRowChange: handleSaveChange
         })}

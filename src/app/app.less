@@ -12,7 +12,7 @@
   padding: 8px 16px;
   overflow: hidden;
 }
-.main-body .main-content{
+.main-body .main-content {
   position: relative;
   min-height: 10px;
   // background-image: url("../assets/static-img/borderBG.png");
@@ -21,7 +21,7 @@
 }
 .patient-Info_title div {
   display: table-cell;
-  color: #150F55;
+  color: #150f55;
   font-size: 18px;
   font-weight: 600;
   padding-right: 24px;
@@ -29,7 +29,7 @@
 .patient-Info_title .title-small {
   font-size: 14px;
   font-weight: 400;
-  color: #5A6676;
+  color: #5a6676;
   padding-right: 12px;
 }
 .patient-Info_tab {
@@ -38,16 +38,16 @@
     display: inline-block;
     line-height: 22px;
     margin-right: 48px;
-    color: #5A6676;
+    color: #000;
     font-size: 15px;
     cursor: pointer;
   }
   .active-tab {
-    color: #150F55;
+    color: #150f55;
     font-size: 16px;
     font-weight: 600;
     padding-bottom: 4px;
-    border-bottom: 2px solid #3D8BF7;
+    border-bottom: 2px solid #3d8bf7;
   }
 }
 .patient-Info_btnList {
@@ -83,14 +83,14 @@
     width: 80px;
     height: 50px;
     border-top-left-radius: 0;
-    color: #150F55;
+    color: #150f55;
     background-color: #fff;
   }
   .high-risk-content {
     width: calc(100% - 79px);
     max-width: 450px !important;
     height: 50px;
-    color: #932C3F;
+    color: #932c3f;
     text-align: left;
     border-top-right-radius: 0;
     background-color: #fff;
@@ -100,10 +100,10 @@
       font-size: 1rem;
       line-height: 20px;
       overflow: hidden;
-      text-overflow:ellipsis;
-      display:-webkit-box; 
-      -webkit-box-orient:vertical;
-      -webkit-line-clamp:2; 
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       white-space: pre-wrap;
     }
   }
@@ -113,70 +113,74 @@
     height: 30px;
     padding-top: 2px;
     overflow: hidden;
-    text-overflow:ellipsis;
+    text-overflow: ellipsis;
     white-space: nowrap;
     text-align: left;
     border-bottom: none;
     border-bottom-right-radius: 0;
   }
   .has-infectin {
-    color:#ffffff;
-    background: linear-gradient(275deg,rgba(155,102,255,1) 0%,rgba(98,54,255,1) 100%);
+    color: #ffffff;
+    background: linear-gradient(
+      275deg,
+      rgba(155, 102, 255, 1) 0%,
+      rgba(98, 54, 255, 1) 100%
+    );
     &:hover {
       background-color: #c205e7;
     }
   }
   .no-infectin {
-    color: #150F55;
+    color: #150f55;
     background-color: #fff;
     &:hover {
       background-color: #fff;
     }
   }
   .danger-btn-1 {
-    color:#fff;
-    background-color: #49C458;
+    color: #fff;
+    background-color: #49c458;
     &:hover {
-      background-color: #49C458;
+      background-color: #49c458;
     }
   }
   .danger-btn-2 {
-    color:#150F55;
-    background-color: #FFD363;
+    color: #150f55;
+    background-color: #ffd363;
     &:hover {
-      background-color:	#FFD363;
+      background-color: #ffd363;
     }
   }
   .danger-btn-3 {
-    color:#150F55;
-    background-color:	#FB9824;
+    color: #150f55;
+    background-color: #fb9824;
     &:hover {
-      background-color:	#FB9824;
+      background-color: #fb9824;
     }
   }
   .danger-btn-4 {
-    color:#150F55;
-    background-color: #FFA8A8;
+    color: #150f55;
+    background-color: #ffa8a8;
     &:hover {
-      background-color: #FFA8A8;
+      background-color: #ffa8a8;
     }
   }
   .danger-btn-5 {
-    color:#fff;
-    background-color: #C43333;
+    color: #fff;
+    background-color: #c43333;
     &:hover {
-      background-color: #C43333;
+      background-color: #c43333;
     }
   }
   .danger-btn-trial {
-    color:#ffffff;
+    color: #ffffff;
     background-color: #4e1303;
     &:hover {
       background-color: #4e1303;
     }
   }
   .danger-btn-phar {
-    color:#ffffff;
+    color: #ffffff;
     background-color: #4d94ff;
     &:hover {
       background-color: #4d94ff;
@@ -196,7 +200,8 @@
   .ant-modal-title {
     font-size: 18px;
   }
-  .ant-input, div {
+  .ant-input,
+  div {
     font-size: 1rem;
   }
   .highrisk-infec {
@@ -219,20 +224,20 @@
   width: 580px;
   background: #fff;
   z-index: 1000;
-  border: 1px solid #D7DCE7;
-  box-shadow:0px 2px 45px -8px #ccc;
+  border: 1px solid #d7dce7;
+  box-shadow: 0px 2px 45px -8px #ccc;
   border-radius: 5px;
   .highrisk-header {
     padding: 10px;
-    border-bottom: 1px solid #D7DCE7;
+    border-bottom: 1px solid #d7dce7;
     .close-icon {
       cursor: pointer;
     }
   }
-  .highrisk-content  {
+  .highrisk-content {
     padding: 10px 20px;
     .highrisk-word {
-      color: #FD617F;
+      color: #fd617f;
       font-size: 21px;
     }
     .highrisk-item {
@@ -244,13 +249,13 @@
         font-size: 20px;
         border: none;
         color: #fff;
-        background-color: #AFB4BE;
+        background-color: #afb4be;
         margin-right: 24px;
       }
       .nerver-btn {
         font-size: 20px;
         color: #fff;
-        background-color: #007AFF;
+        background-color: #007aff;
       }
     }
   }
@@ -258,11 +263,11 @@
 
 .trial-modal {
   top: 50px;
-  .modal-title>.ant-tree-switcher.ant-tree-noline_open,
-  .modal-title>.ant-tree-checkbox {
+  .modal-title > .ant-tree-switcher.ant-tree-noline_open,
+  .modal-title > .ant-tree-checkbox {
     display: none;
   }
-  .modal-title>.ant-tree-node-content-wrapper {
+  .modal-title > .ant-tree-node-content-wrapper {
     width: 100%;
     text-align: center;
     height: 30px;
@@ -290,13 +295,15 @@
   }
   .phar-left li {
     white-space: pre-wrap;
-    &:first-child, &:nth-child(5) {
+    &:first-child,
+    &:nth-child(5) {
       padding-bottom: 8px;
       border-bottom: 1px dashed #6699ff;
     }
   }
   .phar-right li {
-    &:first-child, &:nth-child(2) {
+    &:first-child,
+    &:nth-child(2) {
       margin-bottom: 62px;
       padding-bottom: 8px;
       border-bottom: 1px dashed #6699ff;
@@ -307,6 +314,3 @@
     }
   }
 }
-
-
-
