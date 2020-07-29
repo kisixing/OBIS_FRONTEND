@@ -67,7 +67,7 @@ export function input({onChange, onBlur, value, filterDate, ...props}){
         return;
       }
       
-      if ((finalYear < 1900 || finalYear > nowYear) || (finalMonth !== '' && finalMonth < 1 || finalMonth > 12)) {
+      if ((!!finalYear && finalYear < 1900 || finalYear > nowYear) || !!finalMonth && (finalMonth < 1 || finalMonth > 12)) {
         message.error(`输入日期为${finalDate}, 输入日期错误！`, 5);
         return;
       }
