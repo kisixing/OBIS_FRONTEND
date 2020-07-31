@@ -694,7 +694,7 @@ export default class Patient extends Component {
               {tabs.map(({ key, title, entity, error, Content }) => (
                 <Tabs.TabPane key={key}
                   tab={
-                    <span style={error ? { color: "#FD617F" } : {}}>
+                    <span style={error ? { color: "#ff0000" } : {}}>
                       {error ? ( <i className="anticon anticon-exclamation-circle" />) 
                             : emptyData[key].length===1 ? ( <i className="anticon anticon-check-circle" />) : null}
                       {title}
