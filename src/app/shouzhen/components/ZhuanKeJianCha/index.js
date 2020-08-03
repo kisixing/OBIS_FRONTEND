@@ -27,42 +27,42 @@ export default class extends Component {
             { span: 1 },
             { name: 'ckgongg[宫高](cm)', type: 'input', span: 3 },
             { span: 1 },
-            // {name:'ckfuw[腹围](cm)', type:'input', span:5}
-          ]
-        },
-        {
-          name: 'add_FIELD_ckjc', groups: index => ({
-            rows: [
-              {
-                columns: [
-                  { span: 1, className: 'noContent', name: `[胎${index + 1}]`, type: '**' },
-                  { name: 'tx(bpm)[胎心率]', type: 'input', span: 3, valid: 'required' },
-                  { span: 1 },
-                  { name: 'xl[先露]', type: 'select', span: 3, options: baseData2.xlOptions },
-                  { span: 1 },
-                  // { name: 'tw[胎位]', type: 'input', span: 5 },
-                  // { span: 1 },
+            // {name:'ckfuw[腹围](cm)', type:'input', span:5},
+            {
+              name: 'add_FIELD_ckjc', span: 19, groups: index => ({
+                rows: [
                   {
-                    name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 1, size: 'small',
-                    filter: entity => entity.add_FIELD_ckjc.length !== 1 && !!entity.add_FIELD_ckjc,
-                    onClick: (e, text, resolve) => {
-                      Modal.confirm({
-                        title: '您是否确认要删除该记录',
-                        width: '300',
-                        style: {top:'50%', right: '20%', fontSize: '18px' },
-                        onOk: () => this.handleChange(e, resolve, index)
-                      });
-                    }
+                    columns: [
+                      { span: 1, className: 'noContent', name: `[胎${index + 1}]`, type: '**' },
+                      { name: 'tx(bpm)[胎心率]', type: 'input', span: 4, valid: 'required' },
+                      { span: 1 },
+                      { name: 'xl[先露]', type: 'select', span: 4, options: baseData2.xlOptions },
+                      { span: 1 },
+                      // { name: 'tw[胎位]', type: 'input', span: 5 },
+                      // { span: 1 },
+                      {
+                        name: 'ckjcbtn1', type: 'button', shape: "circle", icon: "minus", span: 2, size: 'small',
+                        filter: entity => entity.add_FIELD_ckjc.length !== 1 && !!entity.add_FIELD_ckjc,
+                        onClick: (e, text, resolve) => {
+                          Modal.confirm({
+                            title: '您是否确认要删除该记录',
+                            width: '300',
+                            style: {top:'50%', right: '20%', fontSize: '18px' },
+                            onOk: () => this.handleChange(e, resolve, index)
+                          });
+                        }
+                      },
+                      {
+                        name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 2, size: 'small',
+                        filter: entity => entity.add_FIELD_ckjc.length === index + 1 || !entity.add_FIELD_ckjc,
+                        onClick: (e, text, resolve) => this.handleChange(e, resolve)
+                    },
+                    ]
                   },
-                  {
-                    name: 'ckjcbtn', type: 'button', className: 'zhuanke-group-addBTN', shape: "circle", icon: "plus", span: 1, size: 'small',
-                    filter: entity => entity.add_FIELD_ckjc.length === index + 1 || !entity.add_FIELD_ckjc,
-                    onClick: (e, text, resolve) => this.handleChange(e, resolve)
-                },
                 ]
-              },
-            ]
-          })
+              })
+            },
+          ]
         },
         {
           className: 'section-title', columns: [

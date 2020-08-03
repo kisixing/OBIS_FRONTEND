@@ -293,9 +293,9 @@ export default class FuzhenForm extends Component {
         },
         {
           filter:()=>check('diabetes'), columns:[
-            { name: 'fpg(mmol/L)[空腹血糖]', type: 'input', span: 5 },
+            { name: 'fpg(mmol/L)[FBG]', type: 'input', span: 5 },
             { span: 1 },
-            { name: 'pbg2h(mmol/L)[餐后2H血糖]', type: 'input', className: 'long-label', span: 5 },
+            { name: 'pbg2h(mmol/L)[P2BG]', type: 'input', className: 'long-label', span: 5 },
             { span: 1 },
             { name: 'hbAlc(%)[HbAlc]', type: 'input', span: 5 }
           ]
@@ -606,8 +606,6 @@ export default class FuzhenForm extends Component {
   }
 
   handleChange(e, { name, value, valid }) {
-    console.log(name, '11')
-    console.log(value, '22')
     const { error } = this.state;
     const { onChange } = this.props;
     let data = { [name]: value };

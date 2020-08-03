@@ -501,7 +501,7 @@ export default class Patient extends Component {
 
                 // 校验中间必填项
                 let emptyTab = '';
-                for (let i = 0; i < 7; i++) {
+                for (let i = 0; i <= 7; i++) {
                     if (emptyData[`tab-${i}`].length > 1) {
                         emptyTab += emptyData[`tab-${i}`][0] + '；';
                     }

@@ -1,23 +1,25 @@
 .form-row {
-  margin: 10px 0;
+  margin-bottom: 10px;
 }
 
-.form-row, .form-column {
+.form-row,
+.form-column {
   position: relative;
-  .row-label, .column-label {  
+  .row-label,
+  .column-label {
     display: inline-block;
     padding: 0 15px;
     font-size: 14px;
     font-weight: 600;
-    color: #57A8E5;
+    color: #57a8e5;
     background-color: #fff;
-    border: 1px solid #D7DCE7;
+    border: 1px solid #d7dce7;
     border-radius: 4px;
   }
 }
 
 .form-item {
-  color: #150F55;
+  color: #150f55;
   font-size: 1rem;
   .form-label {
     position: relative;
@@ -49,13 +51,12 @@
       // 因为不需要显示error message，所以隐藏
       display: none;
       position: absolute;
-      left:0;
+      left: 0;
       top: 20px;
       font-size: 0.5em;
       font-weight: bold;
     }
   }
-
 }
 
 .is-not-empty {
@@ -64,12 +65,12 @@
   .ant-select-selection {
     font-size: 1rem;
     border-radius: 0;
-    border: none ;
+    border: none;
     border-bottom: 1px solid #cccccc;
-    background: none ;
+    background: none;
   }
-  .inputxxx{
-    border: none ;
+  .inputxxx {
+    border: none;
   }
   .ant-checkbox-wrapper {
     // color: #d3d3d3;
@@ -110,7 +111,7 @@
   position: relative;
   background: #f8fbfe;
 }
-.form-row.parentLabel > div:first-child ,
+.form-row.parentLabel > div:first-child,
 .form-column.parentLabel > div:first-child > div:first-child {
   position: absolute;
   top: -2px;
@@ -120,7 +121,12 @@
   text-align: left;
 }
 // 隐藏“：”的样式
-.form-column.parentLabel > div:first-child > div:first-child >span >span:first-child +span {
+.form-column.parentLabel
+  > div:first-child
+  > div:first-child
+  > span
+  > span:first-child
+  + span {
   color: transparent;
 }
 // 子级字体放不下，缩小子级
@@ -128,20 +134,21 @@
   font-size: 75%;
 }
 // 子级字体放不下，继续处理，把父级宽度写死
-.Two_characters.form-row.parentLabel > div:first-child ,
+.Two_characters.form-row.parentLabel > div:first-child,
 .Two_characters.form-column.parentLabel > div:first-child > div:first-child {
   width: 2.6em;
 }
 /* -- end --- 二级多行目录，指定父级样式名称：parentLabel  */
 
-
 .inputxxx {
   background: #ffffff;
   border: 1px solid #ccc;
   border-radius: 5px;
-  >*{
+  > * {
     display: inline-block;
-    select, input, .ant-select-selection {
+    select,
+    input,
+    .ant-select-selection {
       border-radius: 0;
       border: none;
       border-bottom: 1px solid #cccccc;
@@ -158,7 +165,7 @@
   border-radius: 3px;
 
   > * {
-    white-space: nowrap
+    white-space: nowrap;
   }
   .ant-checkbox-wrapper {
     margin-right: 12px;
@@ -195,4 +202,3 @@
     background-color: #f7f7f7;
   }
 }
-

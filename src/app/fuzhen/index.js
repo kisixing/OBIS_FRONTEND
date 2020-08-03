@@ -300,13 +300,13 @@ export default class FuZhen extends Component {
           item.allTaix = "";
           item.allXianl = "";
           if(item.fetalCondition) {
-            item.fetalCondition.map(subItem => {
+            item.fetalCondition.map((subItem, subIndex) => {
               let locLabel = subItem.location ? `${subItem.location.label}:` : '';
               if(subItem.taix) {
-                item.allTaix += `${locLabel}${subItem.taix}；`;
+                item.allTaix += `${locLabel}${subItem.taix}` + ((subIndex === item.fetalCondition.length - 1) ? '' : '/');
               }
               if(subItem.xianl) {
-                item.allXianl += `${locLabel}${subItem.xianl.label}；`;
+                item.allXianl += `${locLabel}${subItem.xianl.label}` + ((subIndex === item.fetalCondition.length - 1) ? '' : '/');
               }
             })
           } 
@@ -320,18 +320,18 @@ export default class FuZhen extends Component {
           item.allTetz = "";
           item.allTeafv = "";
           item.allTeqxl = "";
-          item.fetalUltrasound.map((subItem, index) => {
+          item.fetalUltrasound.map((subItem, subIndex) => {
             if(subItem.tetz) {
               hasTz = true;
-              item.allTetz += subItem.tetz + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
+              item.allTetz += subItem.tetz + ((subIndex === item.fetalUltrasound.length - 1) ? '' : '/');
             } 
             if(subItem.teafv) {
               hasAfv = true;
-              item.allTeafv += subItem.teafv + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
+              item.allTeafv += subItem.teafv + ((subIndex === item.fetalUltrasound.length - 1) ? '' : '/');
             } 
             if(subItem.teqxl) {
               hasQxl = true;
-              item.allTeqxl += subItem.teqxl + ((index === item.fetalUltrasound.length - 1) ? '' : '/');
+              item.allTeqxl += subItem.teqxl + ((subIndex === item.fetalUltrasound.length - 1) ? '' : '/');
             } 
           })
         }

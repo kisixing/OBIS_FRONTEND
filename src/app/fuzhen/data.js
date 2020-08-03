@@ -249,12 +249,12 @@ export const tableKey = () => [
 				key: 'allTeqxl',
 			},
 	{
-		title: '空腹血糖',
+		title: 'FBG',
 		key: 'fpg',
 		type: 'input'
 	},
 	{
-		title: '餐后2H',
+		title: 'P2BG',
 		key: 'pbg2h',
 		type: 'input'
 	},
