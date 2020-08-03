@@ -255,10 +255,10 @@ export default class FuZhen extends Component {
     let rvisitAllKeys = JSON.parse(JSON.stringify(baseData.tableKey()));
     let printKeys = JSON.parse(JSON.stringify(baseData.tableKey()));
 
-    const getIndex = (keys, title) => {
+    const getIndex = (keys, key) => {
       let index = 99;
       keys.forEach((item, i) => {
-        if(item.title === title) index = i;
+        if(item.key === key) index = i;
       })
       return index;
     }
@@ -378,37 +378,36 @@ export default class FuZhen extends Component {
         if(!item.examination) examinationCount++;
       })
 
-      if(fpgCount === obj.length) keys[getIndex(keys, '空腹血糖')].className = 'isHide';
-      if(pbg2hCount === obj.length) keys[getIndex(keys, '餐后2H')].className = 'isHide';
-      if(hbAlcCount === obj.length) keys[getIndex(keys, 'HbAlc')].className = 'isHide';
+      if(fpgCount === obj.length) keys[getIndex(keys, 'fpg')].className = 'isHide';
+      if(pbg2hCount === obj.length) keys[getIndex(keys, 'pbg2h')].className = 'isHide';
+      if(hbAlcCount === obj.length) keys[getIndex(keys, 'hbAlc')].className = 'isHide';
       if(upStateCount === obj.length && upDosage24hCount === obj.length) {
-        keys[getIndex(keys, '定性')].className = 'isHide';
-        keys[getIndex(keys, '定量')].className = 'isHide';
+        keys[getIndex(keys, 'upState')].className = 'isHide';
+        keys[getIndex(keys, 'upDosage24h')].className = 'isHide';
       }
-      if(heartRateCount === obj.length) keys[getIndex(keys, '心率')].className = 'isHide';
-      // if(examinationCount === obj.length) keys[getIndex(keys, '检验检查')].className = 'isHide';
+      if(heartRateCount === obj.length) keys[getIndex(keys, 'heartRate')].className = 'isHide';
       if(!hasTz) {
-        keys[getIndex(keys, '胎儿体重')].className = 'isHide';
+        keys[getIndex(keys, 'allTetz')].className = 'isHide';
       } 
       if(!hasAfv) {
-        keys[getIndex(keys, 'AFV')].className = 'isHide';
+        keys[getIndex(keys, 'allTeafv')].className = 'isHide';
       } 
       if(!hasQxl) {
-        keys[getIndex(keys, '脐血流')].className = 'isHide';
+        keys[getIndex(keys, 'allTeqxl')].className = 'isHide';
       } 
       if(!hasRiMo) {
-        keys[getIndex(keys, '早')].className = 'isHide';
+        keys[getIndex(keys, 'allRiMo')].className = 'isHide';
       } 
       if(!hasRiNo) {
-        keys[getIndex(keys, '中')].className = 'isHide';
+        keys[getIndex(keys, 'allRiNo')].className = 'isHide';
       } 
       if(!hasRiEv) {
-        keys[getIndex(keys, '晚')].className = 'isHide';
+        keys[getIndex(keys, 'allRiEv')].className = 'isHide';
       } 
       if(!hasRiSl) {
-        keys[getIndex(keys, '睡前')].className = 'isHide';
+        keys[getIndex(keys, 'allRiSl')].className = 'isHide';
       } 
-      if(!hasPlan) keys[getIndex(keys, '用药方案')].className = 'isHide';
+      if(!hasPlan) keys[getIndex(keys, 'allMedicationPlan')].className = 'isHide';
 
     }
 
