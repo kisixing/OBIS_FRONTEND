@@ -20,7 +20,7 @@ export default class Patient extends Component {
   }
 
   renderTable() {
-    const {tableData} = this.state;
+    const { tableData } = this.state;
     const title = () => '影像检查报告';
     const handleBtnClick = (text, record) => {
       this.setState({pdfPath: record.pdfPath}, () => {

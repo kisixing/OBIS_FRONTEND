@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Prompt } from 'react-router-dom';
-import { Row, Col, Input, Button, Select, Modal, Tree, Icon } from "antd";
+import { Row, Col, Input, Button, Select, Modal, Tree, Icon, notification } from "antd";
 import router from "../utils/router";
 import bundle from "../utils/bundle";
 import service from '../service';
@@ -22,6 +22,7 @@ import Yunqi from "bundle-loader?lazy&name=yunqi!./yunqi";
 import Xuetang from "bundle-loader?lazy&name=xuetang!./xuetang";
 import Jiben from "bundle-loader?lazy&name=jiben!./jiben";
 import Chanhou from "bundle-loader?lazy&name=chanhou!./chanhou";
+import Yunce from "bundle-loader?lazy&name=yunce!./yunce";
 import "./app.less";
 
 const ButtonGroup = Button.Group;
@@ -35,6 +36,7 @@ const routers = [
   { name: "影像报告", path: "/yx", component: bundle(Yingxiang) },
   { name: "检验报告", path: "/jy", component: bundle(Jianyan) },
   { name: "基本信息", path: "/jb", component: bundle(Jiben) },
+  { name: "其他孕册", path: "/yc", component: bundle(Yunce) },
 ];
 
 export default class App extends Component {
@@ -57,8 +59,97 @@ export default class App extends Component {
       expandedKeys: [],
       isShowXTRouter: false,
       isShowCHRouter: false,
+      isShowYCRouter: false,
     };
     store.subscribe(this.handleStoreChange);
+
+    // common.setCookie('clinicCode', service.getQueryString('clinicCode'));
+    // common.setCookie('opid', service.getQueryString('opid'));
+    // common.setCookie('regno', service.getQueryString('regno'));
+    // common.setCookie('redirectUrl', service.getQueryString('redirectUrl'));
+    // common.setCookie('deptNo', service.getQueryString('deptNo'));
+    // common.setCookie('deptName', service.getQueryString('deptName'));
+
+    // service.authorize(service.getQueryString('doctorId')).then(res => {
+    //   common.setCookie('docToken', res.object.token);
+    //   common.setCookie('docName', res.object.doctorName);
+    //   service.getuserDoc().then(res => {
+    //     this.setState({ ...res.object, loading: false, highriskEntity: { ...res.object }}, () => { 
+    //       const action = getUserDocAction(res.object);
+    //       store.dispatch(action);
+    //       service.checkHighriskAlert(res.object.userid).then(res => {
+    //         let data = res.object;
+    //         if (data && data.length > 0) {
+    //           data.map(item => (item.visible = true));
+    //         }
+    //         const action = getAlertAction(data);
+    //         store.dispatch(action);
+    //       });
+    //     })
+
+    //     service.shouzhen.getAllForm().then(data => {
+    //       const action = getAllFormDataAction(service.praseJSON(data.object));
+    //       store.dispatch(action);
+    //       this.getPharData(data.object);
+    //       if (data.object.diagnosis.add_FIELD_first_save_ivisit_time && data.object.diagnosis.add_FIELD_first_save_ivisit_time !== util.futureDate(0)) {
+    //         this.setState({ muneIndex: 1 });
+    //         this.onRouterClick(routers[1]);
+    //       }
+    //     })
+    //   });
+
+    //   this.getTrialData();
+
+    //   service.shouzhen.getList(1).then(res => {
+    //     res.object && res.object.map(item => {
+    //       if (item.data.indexOf('糖尿病') !== -1) {
+    //         this.setState({isShowXTRouter: true})
+    //       }
+    //     })
+    //     const action = szListAction(res.object);
+    //     store.dispatch(action);
+    //   })
+
+    //   service.shouzhen.getList(2).then(res => {
+    //     res.object && res.object.map(item => {
+    //       if (item.data.indexOf('糖尿病') !== -1) {
+    //         this.setState({isShowXTRouter: true})
+    //       }
+    //     })
+    //     const action = fzListAction(res.object);
+    //     store.dispatch(action);
+    //   })
+
+    //   service.chanhou.checkPostpartumRvisit().then(res => {
+    //     if (res.object == 1) {
+    //       this.setState({ isShowCHRouter: true })
+    //     }
+    //   })
+
+    //   service.shouzhen.checkRvisitArrear().then(res => {
+    //     if (res.object.flag == '1') {
+    //       notification['info']({
+    //         message: '该孕妇未缴产检费！',
+    //         duration: null
+    //       });
+    //     }
+    //   })
+    // })
+  }
+
+  handleStoreChange = () => {
+    this.setState(store.getState());
+  };
+
+  async componentDidMount() {
+    const { location = {} } = this.props;
+    const { muneIndex } = this.state;
+    if (location.pathname !== routers[muneIndex].path) {
+      this.props.history.push(routers[muneIndex].path);
+    }
+    this.componentWillUnmount = service.watchInfo(info =>
+      this.setState(info.object)
+    );
 
     common.setCookie('clinicCode', service.getQueryString('clinicCode'));
     common.setCookie('opid', service.getQueryString('opid'));
@@ -66,79 +157,67 @@ export default class App extends Component {
     common.setCookie('redirectUrl', service.getQueryString('redirectUrl'));
     common.setCookie('deptNo', service.getQueryString('deptNo'));
     common.setCookie('deptName', service.getQueryString('deptName'));
-    service.authorize(service.getQueryString('doctorId')).then(res => {
-      common.setCookie('docToken', res.object.token);
-      common.setCookie('docName', res.object.doctorName);
-      service.getuserDoc().then(res => {
-        this.setState({ ...res.object, loading: false, highriskEntity: { ...res.object }}, () => { 
-          const action = getUserDocAction(res.object);
-          store.dispatch(action);
-          service.checkHighriskAlert(res.object.userid).then(res => {
-            let data = res.object;
-            if (data && data.length > 0) {
-              data.map(item => (item.visible = true));
-            }
-            const action = getAlertAction(data);
-            store.dispatch(action);
-          });
-        })
 
-        service.shouzhen.getAllForm().then(data => {
-          const action = getAllFormDataAction(service.praseJSON(data.object));
-          store.dispatch(action);
-          this.getPharData(data.object);
-          if (data.object.diagnosis.add_FIELD_first_save_ivisit_time && data.object.diagnosis.add_FIELD_first_save_ivisit_time !== util.futureDate(0)) {
-            this.setState({ muneIndex: 1 });
-            this.onRouterClick(routers[1]);
-          }
-        })
-      });
+    const resAuthorize = await service.authorize(service.getQueryString('doctorId'));
+    common.setCookie('docToken', resAuthorize.object.token);
+    common.setCookie('docName', resAuthorize.object.doctorName);
 
-      this.getTrialData();
-
-      service.shouzhen.getList(1).then(res => {
-        res.object && res.object.map(item => {
-          if (item.data.indexOf('糖尿病') !== -1) {
-            this.setState({isShowXTRouter: true})
-          }
-        })
-        const action = szListAction(res.object);
-        store.dispatch(action);
-      })
-
-      service.shouzhen.getList(2).then(res => {
-        res.object && res.object.map(item => {
-          if (item.data.indexOf('糖尿病') !== -1) {
-            this.setState({isShowXTRouter: true})
-          }
-        })
-        const action = fzListAction(res.object);
-        store.dispatch(action);
-      })
-
-      service.chanhou.checkPostpartumRvisit().then(res => {
-        if (res.object == 1) {
-          this.setState({ isShowCHRouter: true })
-        }
-      })
-
+    const resDoc = await service.getuserDoc();
+    this.setState({ ...resDoc.object, loading: false, highriskEntity: { ...resDoc.object }}, async () => { 
+      const docAction = getUserDocAction(resDoc.object);
+      store.dispatch(docAction);
+      const resAlert = await service.checkHighriskAlert(resDoc.object.userid);
+      let data = resAlert.object;
+      if (data && data.length > 0) {
+        data.map(item => (item.visible = true));
+      }
+      const alertAction = getAlertAction(data);
+      store.dispatch(alertAction);
     })
-  }
 
-  handleStoreChange = () => {
-    this.setState(store.getState());
-  };
-
-  componentDidMount() {
-    const { location = {} } = this.props;
-    const { muneIndex } = this.state;
-
-    if (location.pathname !== routers[muneIndex].path) {
-      this.props.history.push(routers[muneIndex].path);
+    const resForm = await service.shouzhen.getAllForm();
+    const formAction = getAllFormDataAction(service.praseJSON(resForm.object));
+    store.dispatch(formAction);
+    this.getPharData(resForm.object);
+    if (resForm.object.diagnosis.add_FIELD_first_save_ivisit_time && resForm.object.diagnosis.add_FIELD_first_save_ivisit_time !== util.futureDate(0)) {
+      this.setState({ muneIndex: 1 });
+      this.onRouterClick(routers[1]);
     }
-    this.componentWillUnmount = service.watchInfo(info =>
-      this.setState(info.object)
-    );
+
+    this.getTrialData();
+
+    const resList1 = await service.shouzhen.getList(1);
+    resList1.object && resList1.object.map(item => {
+      if (item.data.indexOf('糖尿病') !== -1) {
+        this.setState({isShowXTRouter: true})
+      }
+    })
+    const szAction = szListAction(resList1.object);
+    store.dispatch(szAction);
+
+    const resList2 = await service.shouzhen.getList(2);
+    resList2.object && resList2.object.map(item => {
+      if (item.data.indexOf('糖尿病') !== -1) {
+        this.setState({isShowXTRouter: true})
+      }
+    })
+    const fzAction = fzListAction(resList2.object);
+    store.dispatch(fzAction);
+
+    const resRvisit = await service.chanhou.checkPostpartumRvisit();
+    if (resRvisit.object == 1) this.setState({ isShowCHRouter: true });
+
+    const resArrear = await service.shouzhen.checkRvisitArrear();
+    if (resArrear.object.flag == '1') {
+      notification['info']({
+        message: '该孕妇未缴产检费！',
+        duration: null
+      });
+    }
+
+    const resPreg = await service.shouzhen.findPregnancyDoc(resForm.object.gravidaInfo.useridno);
+    if (resPreg.object.docs.length > 1) this.setState({ isShowYCRouter: true });
+
   }
 
   getPharData(data) {
@@ -463,8 +542,8 @@ export default class App extends Component {
   }
 
   renderHeader() {
-    const { userDoc, isShowTrialCard, isShowPharCard, isShowXTRouter, isShowCHRouter, trialVisible, pharVisible1, pharVisible2, 
-            checkedKeys, pharKeys } =this.state;
+    const { userDoc, isShowTrialCard, isShowPharCard, trialVisible, pharVisible1, pharVisible2, 
+            checkedKeys, pharKeys, isShowXTRouter, isShowCHRouter, isShowYCRouter } = this.state;
     const handleDanger = () => {
       service.highrisk().then(res => {
         let list = res.object;
@@ -496,7 +575,7 @@ export default class App extends Component {
         </div>
         <p className="patient-Info_tab">
           {routers.map((item, i) => ( 
-            ((item.name === '血糖记录' && !isShowXTRouter) || (item.name === '产后复诊记录' && !isShowCHRouter)) 
+            ((item.name === '血糖记录' && !isShowXTRouter) || (item.name === '产后复诊记录' && !isShowCHRouter) || (item.name === '其他孕册' && !isShowYCRouter)) 
             ? null
             : <span key={"mune" + i} className={this.state.muneIndex != i ? "normal-tab" : "active-tab"}
                 onClick={() => { this.setState({ muneIndex: i }); this.onRouterClick(item); }}>
@@ -681,7 +760,7 @@ export default class App extends Component {
       if (!isFormChange) {
         return true;
       } else {
-        let leave = window.confirm("有未保存的更新，是否离开？")
+        let leave = window.confirm("有未保存的更新，是否不保存直接离开？")
         if(leave) {
           const action = isFormChangeAction(false);
           store.dispatch(action);

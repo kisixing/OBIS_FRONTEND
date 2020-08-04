@@ -25,7 +25,7 @@ export default class Patient extends Component {
   }
 
   renderLeft() {
-    const {reportList} = this.state;
+    const { reportList } = this.state;
 
     const getDetail = async (item, bool) => {
       let idArr = [];
@@ -65,26 +65,29 @@ export default class Patient extends Component {
 
     return (
       <div className="jianyan-left ant-col-5">
-        <Collapse defaultActiveKey={["0", "1", "2"]}>
-          {
-            reportList&&reportList.map(item => (
-              <Collapse.Panel header={<p><Icon type="calendar" />{item.groupTitle}</p>} key={item.id}>
-                {
-                  item.data.map(subItem => (
-                    <div className="left-item" onClick={() => {subItem.isAmy ? getDetail(subItem, true) : getDetail(subItem)}}>    
-                      {!subItem.state ? <span className="left-state">新</span> : null}       
-                      <p className="left-title">{subItem.title}</p>
-                      {/* <Button className={subItem.state==="2" ? "left-btn normal" : "left-btn"} size="small">
-                        {subItem.state===null ? '待审阅' : (subItem.state==='1' ? '已看' : (subItem.state==='2' ? '正常' : '异常'))}
-                      </Button> */}
-                      {subItem.isAmy ? <span className="left-lable">外院</span> : null}
-                    </div>
-                  ))
-                }
-              </Collapse.Panel>
-            ))
-          }
-        </Collapse>
+        { reportList && reportList.length > 0
+          ?  <Collapse defaultActiveKey={["0", "1", "2"]}>
+              {
+                reportList.map(item => (
+                  <Collapse.Panel header={<p><Icon type="calendar" />{item.groupTitle}</p>} key={item.id}>
+                    {
+                      item.data.map(subItem => (
+                        <div className="left-item" onClick={() => {subItem.isAmy ? getDetail(subItem, true) : getDetail(subItem)}}>    
+                          {!subItem.state ? <span className="left-state">新</span> : null}       
+                          <p className="left-title">{subItem.title}</p>
+                          {/* <Button className={subItem.state==="2" ? "left-btn normal" : "left-btn"} size="small">
+                            {subItem.state===null ? '待审阅' : (subItem.state==='1' ? '已看' : (subItem.state==='2' ? '正常' : '异常'))}
+                          </Button> */}
+                          {subItem.isAmy ? <span className="left-lable">外院</span> : null}
+                        </div>
+                      ))
+                    }
+                  </Collapse.Panel>
+                ))
+              }
+            </Collapse>
+          : '暂无数据'
+        }
       </div>
     )
   }

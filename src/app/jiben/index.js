@@ -4,12 +4,10 @@ import Page from '../../render/page';
 import { fireForm } from '../../render/form';
 import service from '../../service';
 import * as common from '@/utils/common';
-
 import Yfxx from './components/YunFuXinXi';
 import Zfxx from './components/ZhangFuXinXi';
 import store from "../store";
 import { getAllFormDataAction, getUserDocAction, isFormChangeAction } from "../store/actionCreators.js";
-
 import editors from './editors';
 import "./index.less";
 
@@ -37,6 +35,7 @@ export default class Patient extends Component {
     handleStoreChange = () => {
         this.setState(store.getState());
     };
+
     activeTab(step) {
         const { tabs, allFormData } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
@@ -158,10 +157,9 @@ export default class Patient extends Component {
 
     render() {
         const { tabs, step } = this.state;
-        const printIvisit = () => {
-            service.shouzhen.printPdfByFile('tmc').then(res => {
-                common.printPdf(res.object);
-            })
+        const printIvisit = async () => {
+            const res = await service.shouzhen.printPdfByFile('tmc');
+            common.printPdf(res.object);
         }
 
         return (

@@ -219,4 +219,12 @@ export default {
     calcEddByLmp: function(date) {
         return this.userId().then(r => myAxios.get(`/outpatientRestful/calcEddByLmp?lmp=${date}`));
     },
+    // 检查当天复诊是否已缴费
+    checkRvisitArrear: function() {
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/checkRvisitArrear?userid=${r.object.userid}`));
+    },
+    // 查找孕册列表
+    findPregnancyDoc: function(id) {
+        return this.userId().then(r => myAxios.get(`/outpatientRestful/findPregnancyDoc?useridno=${id}`));
+    },
 };
