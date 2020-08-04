@@ -384,14 +384,14 @@ export default class Index extends Component {
       store.dispatch(action);
     }
 
-    const handleIptClick = () => {
-      const action = showDiagSearchAction(true);
-      store.dispatch(action);
-    }
+    // const handleIptClick = () => {
+    //   const action = showDiagSearchAction(true);
+    //   store.dispatch(action);
+    // }
 
     return (
       <div className="fuzhen-left-zd">
-        <Button className="zd-btn" icon="plus-circle-o" onClick={handleIptClick}>添加诊断</Button>
+        {/* <Button className="zd-btn" icon="plus-circle-o" onClick={handleIptClick}>添加诊断</Button> */}
         <div className="first-diag">
           <span className="zd-num">1、</span>
           G<Input value={userDoc.g} />
@@ -452,14 +452,17 @@ export default class Index extends Component {
         }
         if(bool) {
           const form = document.querySelector('.jy-modal');
-          fireForm(form, 'valid').then((valid) => {
+          fireForm(form, 'valid').then( async (valid) => {
             if(valid) {
-              service.fuzhen.saveLisResult(jyEntity).then(res => {
-                this.setState({isShowResultModal: false});
-                const action = isFormChangeAction(false);
-                store.dispatch(action);
-              })
-            }else {
+              await service.fuzhen.saveLisResult(jyEntity)
+              this.setState({ isShowResultModal: false });
+              const action = isFormChangeAction(false);
+              store.dispatch(action);
+       
+              const resLis = await service.fuzhen.getLackLis();
+              this.setState({ reportStr: String(resLis.object) });
+              if (!resLis.object || resLis.object.length === 0) this.setState({ collapseActiveKey: ['1', '3', '4'] });
+            } else {
               message.error("必填项不能为空！");
             }
           })
@@ -675,10 +678,16 @@ export default class Index extends Component {
       this.setState({ collapseActiveKey: keys })
     }
 
+    const handleIptClick = (e) => {
+      e.stopPropagation();
+      const action = showDiagSearchAction(true);
+      store.dispatch(action);
+    }
+
     return (
       <div className="fuzhen-left ant-col-5">
         <Collapse activeKey={collapseActiveKey} onChange={collapseChange}>
-          <Panel header={<span>诊 断<Button icon="record" type="dashed" className="header-btn" size="small" onClick={e => handleHisClick(e) }>历史</Button></span>} key="1">
+          <Panel header={<span>诊 断 <Button className="add-btn" onClick={e => handleIptClick(e)} icon="plus-circle-o" /><Button icon="record" type="dashed" className="header-btn" size="small" onClick={e => handleHisClick(e)}>历史</Button></span>} key="1">
             { this.renderZD() }
           </Panel>
           <Panel className="panel-jy" header={<span>{reportStr ? '缺少检验报告' : '检验报告(全)'}<Button icon="list" type="dashed" className={unusualFlag === '1' ? "header-btn isUnusual" : "header-btn"} size="small" onClick={e => handleOtherClick(e) }>必查清单</Button></span>} key="2">

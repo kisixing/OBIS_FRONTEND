@@ -1,6 +1,6 @@
 @colorWhite: #fff;
 @colorGray: #dfe1ee;
-@widthLeft: 300px;
+@widthLeft: 280px;
 @headerHeight: 104px;
 
 .bg-right {
@@ -36,6 +36,9 @@
       background: transparent;
       padding: 0 0.4rem;
     }
+    .ant-collapse-content > .ant-collapse-content-box {
+      padding: 3px 0;
+    }
     .ant-collapse-header .arrow,
     .ant-collapse-content-box {
       font-size: 1rem;
@@ -51,7 +54,12 @@
       border: 1px solid #edeef6;
       padding-left: 34px;
       .arrow {
+        height: 100%;
         font-size: 1rem !important;
+      }
+      .add-btn {
+        border: none;
+        outline: none !important;
       }
       .header-btn {
         position: absolute;
@@ -102,7 +110,7 @@
     li {
       position: relative;
       padding-right: 30px;
-      margin-bottom: 8px;
+      margin-bottom: 3px;
       color: #3b3671;
       .diag-wrapper {
         display: flex;
@@ -217,6 +225,9 @@
     }
   }
   .panel-cq {
+    .ant-collapse-content {
+      margin-left: -13px;
+    }
     .form-row {
       margin: 0;
     }
