@@ -340,22 +340,22 @@ export default class FuZhen extends Component {
         if(item.riMo && item.riMo[0] && item.riMo[1]) {
           hasRiMo = true;
           let firstParam = typeof item.riMo[0] === 'object' ? item.riMo[0].label : item.riMo[0];
-          item.allRiMo = firstParam + ':' + item.riMo[1] + 'U';
+          item.allRiMo = firstParam + '：' + item.riMo[1] + 'U';
         }
         if(item.riNo && item.riNo[0] && item.riNo[1]) {
           hasRiNo = true;
           let firstParam = typeof item.riNo[0] === 'object' ? item.riNo[0].label : item.riNo[0];
-          item.allRiNo = firstParam + ':' + item.riNo[1] + 'U';
+          item.allRiNo = firstParam + '：' + item.riNo[1] + 'U';
         }
         if(item.riEv && item.riEv[0] && item.riEv[1]) {
           hasRiEv = true;
           let firstParam = typeof item.riEv[0] === 'object' ? item.riEv[0].label : item.riEv[0];
-          item.allRiEv = firstParam + ':' + item.riEv[1] + 'U';
+          item.allRiEv = firstParam + '：' + item.riEv[1] + 'U';
         }
         if(item.riSl && item.riSl[0] && item.riSl[1]) {
           hasRiSl = true;
           let firstParam = typeof item.riSl[0] === 'object' ? item.riSl[0].label : item.riSl[0];
-          item.allRiSl = firstParam + ':' + item.riSl[1] + 'U';
+          item.allRiSl = firstParam + '：' + item.riSl[1] + 'U';
         }
 
         // 用药方案数据处理

@@ -569,6 +569,7 @@ export default class App extends Component {
         <div className="patient-Info_title">
           <div>姓名:{userDoc.username}</div>
           <div>年龄:{userDoc.userage}</div>
+          <div>孕周:{userDoc.tuserweek}</div>
           <div>预产期:{userDoc.gesexpectrv === userDoc.gesexpect ? userDoc.gesexpectrv : `${userDoc.gesexpectrv}(超)`}</div>
           <div>就诊卡:{userDoc.usermcno}</div>
           <div>产检编号:{userDoc.chanjno}</div>
