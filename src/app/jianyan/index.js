@@ -51,16 +51,16 @@ export default class Patient extends Component {
       const detail = await service.jianyan.getLisDetail(idArr, bool);
       const detailList = detail.object;
       this.setState({ detailData: detailList });
-
-      await service.jianyan.checkReport("已看", "", "", id, bool);
+      
       const report = await service.jianyan.getLisReport();
       this.setState({ reportList: report.object });
-      
+
       if(bool) {
         this.setState({ repAmy: true, repId: id })
       } else {
         this.setState({ repAmy: false, repId: id })
       }
+      await service.jianyan.checkReport("已看", "", "", id, bool);
     }
 
     return (

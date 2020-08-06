@@ -62,79 +62,6 @@ export default class App extends Component {
       isShowYCRouter: false,
     };
     store.subscribe(this.handleStoreChange);
-
-    // common.setCookie('clinicCode', service.getQueryString('clinicCode'));
-    // common.setCookie('opid', service.getQueryString('opid'));
-    // common.setCookie('regno', service.getQueryString('regno'));
-    // common.setCookie('redirectUrl', service.getQueryString('redirectUrl'));
-    // common.setCookie('deptNo', service.getQueryString('deptNo'));
-    // common.setCookie('deptName', service.getQueryString('deptName'));
-
-    // service.authorize(service.getQueryString('doctorId')).then(res => {
-    //   common.setCookie('docToken', res.object.token);
-    //   common.setCookie('docName', res.object.doctorName);
-    //   service.getuserDoc().then(res => {
-    //     this.setState({ ...res.object, loading: false, highriskEntity: { ...res.object }}, () => { 
-    //       const action = getUserDocAction(res.object);
-    //       store.dispatch(action);
-    //       service.checkHighriskAlert(res.object.userid).then(res => {
-    //         let data = res.object;
-    //         if (data && data.length > 0) {
-    //           data.map(item => (item.visible = true));
-    //         }
-    //         const action = getAlertAction(data);
-    //         store.dispatch(action);
-    //       });
-    //     })
-
-    //     service.shouzhen.getAllForm().then(data => {
-    //       const action = getAllFormDataAction(service.praseJSON(data.object));
-    //       store.dispatch(action);
-    //       this.getPharData(data.object);
-    //       if (data.object.diagnosis.add_FIELD_first_save_ivisit_time && data.object.diagnosis.add_FIELD_first_save_ivisit_time !== util.futureDate(0)) {
-    //         this.setState({ muneIndex: 1 });
-    //         this.onRouterClick(routers[1]);
-    //       }
-    //     })
-    //   });
-
-    //   this.getTrialData();
-
-    //   service.shouzhen.getList(1).then(res => {
-    //     res.object && res.object.map(item => {
-    //       if (item.data.indexOf('糖尿病') !== -1) {
-    //         this.setState({isShowXTRouter: true})
-    //       }
-    //     })
-    //     const action = szListAction(res.object);
-    //     store.dispatch(action);
-    //   })
-
-    //   service.shouzhen.getList(2).then(res => {
-    //     res.object && res.object.map(item => {
-    //       if (item.data.indexOf('糖尿病') !== -1) {
-    //         this.setState({isShowXTRouter: true})
-    //       }
-    //     })
-    //     const action = fzListAction(res.object);
-    //     store.dispatch(action);
-    //   })
-
-    //   service.chanhou.checkPostpartumRvisit().then(res => {
-    //     if (res.object == 1) {
-    //       this.setState({ isShowCHRouter: true })
-    //     }
-    //   })
-
-    //   service.shouzhen.checkRvisitArrear().then(res => {
-    //     if (res.object.flag == '1') {
-    //       notification['info']({
-    //         message: '该孕妇未缴产检费！',
-    //         duration: null
-    //       });
-    //     }
-    //   })
-    // })
   }
 
   handleStoreChange = () => {
@@ -163,6 +90,7 @@ export default class App extends Component {
     common.setCookie('docName', resAuthorize.object.doctorName);
 
     const resDoc = await service.getuserDoc();
+    common.setCookie('pregState', resDoc.object.currstate);
     this.setState({ ...resDoc.object, loading: false, highriskEntity: { ...resDoc.object }}, async () => { 
       const docAction = getUserDocAction(resDoc.object);
       store.dispatch(docAction);

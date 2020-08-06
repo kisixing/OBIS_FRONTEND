@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Qs from 'qs';
-import {Modal} from 'antd';
+import { Modal, message } from 'antd';
 import modal from './modal';
 import * as common from './common';
 
@@ -89,13 +89,25 @@ myAxios.interceptors.request.use(config => {
     config.headers['Cache-Control'] = 'no-store';
     config.url = getUrl(config.url);
     // get 请求加上时间戳，避免ie11缓存数据
+    // 孕册结案状态仅王子莲（002461）、罗艳敏（002119）的医生账号可以编辑 
     if (config.method === 'get') {
         const time = new Date().getTime();
         config.url = `${config.url}&time=${time}`;
+    } else {
+        const CancelToken = axios.CancelToken;
+        const docName = common.getCookie('docName');
+        const pregState = common.getCookie('pregState');
+        if ((docName !== '王子莲' && docName !== '罗艳敏') && pregState > 1) {
+            if (config.url.indexOf('authorizeVO') === -1) {
+                message.warn('该孕册已经结案,此次访问/编辑无效！');
+                config.cancelToken = new CancelToken(function executor(c) {
+                    cancel = c;
+                })
+            }
+        }
     }
     return config;
 }, error => {
-    console.log(error);
     return Promise.reject(error);
 });
 
