@@ -135,13 +135,13 @@ export default class App extends Component {
     const resRvisit = await service.chanhou.checkPostpartumRvisit();
     if (resRvisit.object == 1) this.setState({ isShowCHRouter: true });
 
-    const resArrear = await service.shouzhen.checkRvisitArrear();
-    if (resArrear.object.flag == '1') {
-      notification['info']({
-        message: '该孕妇未缴产检费！',
-        duration: null
-      });
-    }
+    // const resArrear = await service.shouzhen.checkRvisitArrear();
+    // if (resArrear.object.flag == '1') {
+    //   notification['info']({
+    //     message: '该孕妇未缴产检费！',
+    //     duration: null
+    //   });
+    // }
 
     const resPreg = await service.shouzhen.findPregnancyDoc(resForm.object.gravidaInfo.useridno);
     if (resPreg.object.docs.length > 1) this.setState({ isShowYCRouter: true });
