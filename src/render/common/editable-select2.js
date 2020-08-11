@@ -71,6 +71,7 @@ class EditableSelect extends Component {
       <div ref="editWapper" className="editable-wrapper">
         <Input 
           className="editable-input"
+          title={getValue()} 
           value={getValue()} 
           onChange={handleChange}
           onFocus={handleFocus}
