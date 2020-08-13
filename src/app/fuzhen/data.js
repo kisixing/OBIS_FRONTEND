@@ -158,7 +158,6 @@ export const tableKey = () => [
 			{
 				title: '(mmHg)',
 				key: 'ckpressure',
-				type: 'input',
 				width: '5%',
 			},
 		]

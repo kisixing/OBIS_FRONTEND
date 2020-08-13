@@ -286,11 +286,30 @@ export default class FuZhen extends Component {
           item.ckweek += '(修)';
         }
 
+        // 血压数据处理
+        let fitstPressure = "";
+        let secondPressure = "";
+        let thirdPressure = "";
+        if (item.ckshrinkpressure && item.ckdiastolicpressure && item.ckshrinkpressure !== '0' && item.ckdiastolicpressure !== '0') {
+          fitstPressure = `${item.ckshrinkpressure}/${item.ckdiastolicpressure}；`;
+        } 
+        if (item.secondBpSystolic && item.secondBpDiastolic && item.secondBpSystolic !== '0' && item.secondBpDiastolic !== '0') {
+          secondPressure = `二测:${item.secondBpSystolic}/${item.secondBpDiastolic}；`;
+        } 
+        if (item.threeBpSystolic && item.threeBpDiastolic && item.threeBpSystolic !== '0' && item.threeBpDiastolic !== '0') {
+          thirdPressure = `三测:${item.threeBpSystolic}/${item.threeBpDiastolic}；`;
+        } 
+        if (!secondPressure && !thirdPressure) {
+          item.ckpressure = fitstPressure;
+        } else {
+          item.ckpressure = '首测:' + fitstPressure + secondPressure + thirdPressure;
+        }
+        
+
         // 下次复诊数据处理
         let describe1 = '', describe2 = '';
         if(typeof item.ckappointmentArea === 'object') describe1 = item.ckappointmentArea.describe;
         if(typeof item.rvisitOsType === 'object') describe2 = item.rvisitOsType.describe;
-        item.ckpressure = (!item.ckpressure || item.ckpressure === "") ?  item.ckshrinkpressure +'/'+ item.ckdiastolicpressure : item.ckpressure;
         if (item.ckappointment) {
           item.nextRvisitText = item.ckappointment.slice(5) + ' ' + describe1 + ' ' + describe2;
         }

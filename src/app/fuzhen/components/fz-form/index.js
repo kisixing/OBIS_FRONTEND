@@ -795,9 +795,9 @@ export default class FuzhenForm extends Component {
         lisImportKey: []
       });
       if (bool && lisCheckedNodes.length > 0) {
-        let nodeStr = '查';
+        let nodeStr = '';
         lisCheckedNodes.forEach(item => {
-          nodeStr += ' ' + item + '，';
+          nodeStr += item + '，';
         })
         nodeStr = nodeStr.substr(0, nodeStr.length - 1);  
         this.addExamination(e, nodeStr);
