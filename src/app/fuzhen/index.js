@@ -207,9 +207,9 @@ export default class FuZhen extends Component {
 
     const handelTableChange = (type, item, row, key) => {
       //血压
-      let ckpressure = item.ckpressure.split('/');
-      if(ckpressure[0]) item.ckshrinkpressure = ckpressure[0];
-      if(ckpressure[1]) item.ckdiastolicpressure = ckpressure[1];
+      // let ckpressure = item.ckpressure.split('/');
+      // if(ckpressure[0]) item.ckshrinkpressure = ckpressure[0];
+      // if(ckpressure[1]) item.ckdiastolicpressure = ckpressure[1];
       if(!isTwins) {
         item.cktaix = item.allTaix;
         item.ckxianl = item.allXianl;
@@ -287,11 +287,12 @@ export default class FuZhen extends Component {
         }
 
         // 血压数据处理
+        item.ckpressure = "";
         let fitstPressure = "";
         let secondPressure = "";
         let thirdPressure = "";
         if (item.ckshrinkpressure && item.ckdiastolicpressure && item.ckshrinkpressure !== '0' && item.ckdiastolicpressure !== '0') {
-          fitstPressure = `${item.ckshrinkpressure}/${item.ckdiastolicpressure}；`;
+          fitstPressure = `${item.ckshrinkpressure}/${item.ckdiastolicpressure}`;
         } 
         if (item.secondBpSystolic && item.secondBpDiastolic && item.secondBpSystolic !== '0' && item.secondBpDiastolic !== '0') {
           secondPressure = `二测:${item.secondBpSystolic}/${item.secondBpDiastolic}；`;
@@ -302,7 +303,7 @@ export default class FuZhen extends Component {
         if (!secondPressure && !thirdPressure) {
           item.ckpressure = fitstPressure;
         } else {
-          item.ckpressure = '首测:' + fitstPressure + secondPressure + thirdPressure;
+          item.ckpressure = '首测:' + fitstPressure + '；' + secondPressure + thirdPressure;
         }
         
 
