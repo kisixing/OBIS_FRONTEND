@@ -206,10 +206,6 @@ export default class FuZhen extends Component {
     }
 
     const handelTableChange = (type, item, row, key) => {
-      //血压
-      // let ckpressure = item.ckpressure.split('/');
-      // if(ckpressure[0]) item.ckshrinkpressure = ckpressure[0];
-      // if(ckpressure[1]) item.ckdiastolicpressure = ckpressure[1];
       if(!isTwins) {
         item.cktaix = item.allTaix;
         item.ckxianl = item.allXianl;
