@@ -601,7 +601,7 @@ export default class Patient extends Component {
 
     // 更改预产期提示弹窗
     renderWeekModal = () => {
-        const { isShowWeekModal, weekMsg } = this.state;
+        const { isShowWeekModal, weekMsg, step } = this.state;
         const content = () => {
             return (
                 <div>
@@ -612,8 +612,9 @@ export default class Patient extends Component {
         const onCancel = () => {
             this.setState({ isShowWeekModal: false });
         }
-        const onOk = (e) => {
-            service.shouzhen.adjustGWeek(weekMsg);
+        const onOk = async (e) => {
+            await service.shouzhen.adjustGWeek(weekMsg);
+            this.handleSave(step);
             this.setState({ isShowWeekModal: false });
         }
         cModal({
