@@ -63,8 +63,12 @@ export default class FuZhen extends Component {
         let param = {"ckweek": res.object.tuserweek, "checkdate": util.futureDate(0)};
         this.setState({ info: res.object });
         service.fuzhen.getRvisitPhysicalExam().then(res => {
-          param.ckdiastolicpressure = res.object.diastolic ? res.object.diastolic : '';
-          param.ckshrinkpressure = res.object.systolic ? res.object.systolic : '';
+          param.ckshrinkpressure = res.object.firstBpSystolic ? res.object.firstBpSystolic : '';
+          param.ckdiastolicpressure = res.object.firstBpDiastolic ? res.object.firstBpDiastolic : '';
+          param.secondBpSystolic = res.object.secondBpSystolic ? res.object.secondBpSystolic : '';
+          param.secondBpDiastolic = res.object.secondBpDiastolic ? res.object.secondBpDiastolic : '';
+          param.threeBpSystolic = res.object.threeBpSystolic ? res.object.threeBpSystolic : '';
+          param.threeBpDiastolic = res.object.threeBpDiastolic ? res.object.threeBpDiastolic : '';
           param.cktizh = res.object.weight;
           this.setState({ initData: {...initData, ...param}, pureInitDate: {...initData, ...param} }, () => {
             this.getRecentList();

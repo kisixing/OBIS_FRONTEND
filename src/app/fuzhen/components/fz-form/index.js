@@ -661,10 +661,10 @@ export default class FuzhenForm extends Component {
     const { onSave, initData } = this.props;
     const { allFormData, fzList } = this.state;
     let newEntity = initData;
-    let ckpressure = initData.ckpressure.split('/');
+    // let ckpressure = initData.ckpressure.split('/');
     // //血压
-    if(ckpressure[0]) newEntity.ckshrinkpressure = ckpressure[0];
-    if(ckpressure[1]) newEntity.ckdiastolicpressure = ckpressure[1];
+    // if(ckpressure[0]) newEntity.ckshrinkpressure = ckpressure[0];
+    // if(ckpressure[1]) newEntity.ckdiastolicpressure = ckpressure[1];
     // //胰岛素方案
     if(!!newEntity.riMo && newEntity.riMo[0]) newEntity.riMoMedicine = newEntity.riMo[0];
     if(!!newEntity.riMo && newEntity.riMo[1]) newEntity.riMoDosage = newEntity.riMo[1];
