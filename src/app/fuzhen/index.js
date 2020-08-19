@@ -7,6 +7,7 @@ import FuzhenForm from './components/fz-form';
 import FuzhenSidebar from './components/fz-sidebar'
 import Page from '../../render/page';
 import PrintTable from './components/print-table';
+import BloodPressure from './components/BloodPressure';
 import service from '../../service';
 import * as common from '../../utils/common';
 import * as baseData from './data';
@@ -42,6 +43,7 @@ export default class FuZhen extends Component {
       selectRows: null,
       hasPrint: false,
       relatedObj: {},
+      isShowBloodPressure: false,
       ...store.getState(),
     };
     store.subscribe(this.handleStoreChange);
@@ -221,6 +223,12 @@ export default class FuZhen extends Component {
       service.fuzhen.saveRvisitForm(item).then(res => {
         this.getRecentList();
       })
+    }
+
+    const handleItemClick = (name) => {
+      if (name === 'ckpressure') {
+        this.setState({ isShowBloodPressure: true });
+      }
     }
 
     const handlePageChange = (page) => {
@@ -457,7 +465,7 @@ export default class FuZhen extends Component {
       <div className="fuzhen-table">
         {recentRvisit && initTable(recentRvisit, { pagination: false, editable: true, className: "fuzhenTable",
           onEdit: true, hasRecord: hasRecord, isTwins: isTwins, scroll: { y: 300 },
-          iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onRowChange: handleSaveChange
+          iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onRowChange: handleSaveChange, onClick: handleItemClick
         })}
         {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : null}
         <Modal title="产检记录" footer={null} visible={recentRvisitShow} width="100%" maskClosable={true} onCancel={() => this.setState({ recentRvisitShow: false })}>
@@ -592,7 +600,6 @@ export default class FuZhen extends Component {
         })
         service.fuzhen.getRecentRvisit().then(res => {
           let newInitData = service.praseJSON(res.object[res.object.length - 1]);
-          console.log(newInitData, '543')
           this.setState({loading: false, recentRvisit: res.object, initData: newInitData})
         });
         resolve();
@@ -604,8 +611,18 @@ export default class FuZhen extends Component {
     this.setState({ relatedObj: obj });
   }
 
+  closeModal = (str, data) => {
+    const { recentRvisit } = this.state;
+    this.setState({ [str]: false });
+    if (data) {
+      recentRvisit.pop();
+      recentRvisit.push(data);
+      this.setState({ initData: data, recentRvisit });
+    } 
+  }
+
   render() {
-    const { fzList, relatedObj, initData } = this.state;
+    const { fzList, relatedObj, initData, isShowBloodPressure } = this.state;
     return (
       <Page className="fuzhen font-16 ant-col">
         <div className="bg-right"></div>
@@ -629,6 +646,7 @@ export default class FuZhen extends Component {
             &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>
           </p> */}
         </div>
+        <BloodPressure isShowBloodPressure={isShowBloodPressure} initData={initData} closeModal={this.closeModal} />
       </Page>
     );
   }

@@ -68,7 +68,7 @@ class TableItem extends Component {
   }
 
   onItemClick = () => {
-    const { iseditable = ()=> true, type, entity, row, name, value, onEdit, isTwins, isPreghiss } = this.props;
+    const { iseditable = ()=> true, type, entity, row, name, value, onEdit, isTwins, isPreghiss, onClick } = this.props;
     if (isPreghiss && name === "datagridYearMonth" && value === "本孕") {
       return;
     }
@@ -98,6 +98,7 @@ class TableItem extends Component {
       if (isPreghiss && name === "births") {
         message.info('胎数自动生成不可修改，请选择某行点击删除按钮，或添加同年月的记录来增加胎数。', 5);
       }
+      if (onEdit && onClick) return onClick(name);
     }
   }
 
