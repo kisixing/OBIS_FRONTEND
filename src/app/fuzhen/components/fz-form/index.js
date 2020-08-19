@@ -194,8 +194,9 @@ export default class FuzhenForm extends Component {
                   name: 'fetalCondition', span: 24, filter: entity => (check('twins')||check('multiple')) && entity.singleflag !== '1', groups: index => ({
                     rows: [
                       {
-                        label: `胎${index+1}`, columns: [
-                          { name: 'location[位置]', type: 'select', span: 5, showSearch:true, options: baseData.wzOptions },
+                        columns: [
+                          { span: 1, className: 'noContent', name: `[胎${index + 1}]`, type: '**' },
+                          { name: 'location[位置]', type: 'select', span: 4, showSearch:true, options: baseData.wzOptions },
                           { span: 1 },
                           { name: 'taix(bmp)[胎心率]', type: 'input', span: 5 },
                           { span: 1 },
@@ -264,8 +265,9 @@ export default class FuzhenForm extends Component {
           name: 'fetalUltrasound', span: 24, filter: entity => (check('twins')||check('multiple')) && entity.singleflag !== '1', groups: index => ({
             rows: [
               {
-                label: `胎${index+1}超声`, columns: [
-                  { name: 'tetz(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 5 },
+                columns: [
+                  { span: 1, className: 'noContent', name: `[胎${index + 1}超声]`, type: '**' },
+                  { name: 'tetz(g)[胎儿体重]', type: 'input', className: 'childLabel', span: 4 },
                   { span: 1 },
                   { name: 'teafv(MM)[AFV]', type: 'input', className: 'childLabel', span: 5 },
                   { span: 1 },
