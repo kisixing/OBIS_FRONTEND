@@ -528,7 +528,7 @@ export const ydsOptions = toOptions(['诺和平', '诺和锐']);
 /**
  * 胎动好,无腹痛,无阴道流血
  */
-export const ckzijzhzOptions = toOptions(['无不适', '胎动好', '无不适，胎动好']);
+export const ckzijzhzOptions = toOptions(['无不适', '胎动好', '无不适，胎动好', '腹痛，流血']);
 /**
  * 宫高选项
  */

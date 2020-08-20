@@ -43,3 +43,5 @@ export const IS_TWINS = 'is_twins';
 export const SHOW_DIAG_SEARCH = 'show_diag_search';
 export const SET_DIAGNOSIS = 'set_diagnosis';
 export const GET_DIAG_TEMP = 'get_diag_temp';
+
+export const SHOW_PREECLAMPSIA = 'show_preeclampsia';

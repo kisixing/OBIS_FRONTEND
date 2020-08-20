@@ -15,6 +15,7 @@ import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAct
 import RegForm from '../../../components/reg-form';
 import TemplateModal from '../../../components/template-modal';
 import DiabetesAppointment from '../../../components/diabetes-appointment';
+import PreeclampsiaModal from '@/app/components/preeclampsia-modal';
 
 export default class FuzhenForm extends Component {
   constructor(props) {
@@ -859,6 +860,10 @@ export default class FuzhenForm extends Component {
     this.setState({ openMenzhen: false });
   }
 
+  closeModal = (e) => {
+    this.addTreatment(e, '阿司匹林');
+  }
+
   handlePrintBtn = () => {
     const { handlePrint } = this.props;
     handlePrint();
@@ -891,6 +896,7 @@ export default class FuzhenForm extends Component {
         {openTemplate && <TemplateModal openTemplate={openTemplate} closeTemplateModal={this.closeTemplateModal} />}
         {openMenzhen && <DiabetesAppointment openMenzhen={openMenzhen} closeMenzhen={this.closeMenzhen} />}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />} */}
+        <PreeclampsiaModal closeModal={this.closeModal} />
       </div>
     );
   }

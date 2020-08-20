@@ -8,12 +8,13 @@ import * as baseData from '../../../fuzhen/data';
 import * as util from '../../../fuzhen/util';
 import store from '../../../store';
 import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, getDiagnisisAction, getUserDocAction,
-         showSypAction, szListAction, isFormChangeAction, showDiagSearchAction, setDiagAction,
+         showSypAction, szListAction, isFormChangeAction, showDiagSearchAction, setDiagAction, showPreeclampsiaAction
       } from '../../../store/actionCreators.js';
 import RegForm from '../../../components/reg-form';
 import TemplateModal from '../../../components/template-modal';
 import DiagSearch from '../../../components/diagnosis-search';
 import DiabetesAppointment from '../../../components/diabetes-appointment';
+import PreeclampsiaModal from '@/app/components/preeclampsia-modal';
 import cModal from '../../../../render/modal';
 import '../../index.less';
 import service from '../../../../service';
@@ -230,6 +231,15 @@ export default class extends Component{
         }
         const action = getAlertAction(data);
         store.dispatch(action);
+      })
+
+      //子痫前期判断
+      const preeArr = ['多胎', '慢性高血压', '1型糖尿病', '2型糖尿病', 'PGDM', '肾炎', '肾脏', '肾病', '红斑狼疮', '抗磷脂综合征'];
+      preeArr.forEach(item => {
+        if (diagnosis.indexOf(item) !== -1) {
+          const action = showPreeclampsiaAction(true);
+          store.dispatch(action);
+        }
       })
 
       const DiagAction = setDiagAction('');
@@ -681,6 +691,10 @@ export default class extends Component{
     this.setState({ openMenzhen: false });
   }
 
+  closeModal = (e) => {
+    this.addTreatment(e, '阿司匹林');
+  }
+
   render(){
     const { isShowRegForm, openTemplate, isShowDiagSearch, openMenzhen } = this.state;
     const { entity } = this.props;
@@ -705,6 +719,7 @@ export default class extends Component{
         {openMenzhen && <DiabetesAppointment openMenzhen={openMenzhen} closeMenzhen={this.closeMenzhen} />}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>} */}
         { this.renderPlanModal() }
+        <PreeclampsiaModal closeModal={this.closeModal} />
       </div>
     )
   }
