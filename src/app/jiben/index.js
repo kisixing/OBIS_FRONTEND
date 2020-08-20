@@ -70,7 +70,6 @@ export default class Patient extends Component {
     }
 
     handleChange(e, { name, value, target }, entity) {
-        console.log(name, target, value, entity, '11');
         if (!this.isSaving) {
           entity[name] = value;
           this.change = true;

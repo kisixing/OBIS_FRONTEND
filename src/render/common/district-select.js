@@ -6,9 +6,8 @@
 
 import React from 'react';
 import { Cascader } from "antd";
-import styles from './'
-
-import options, { getStreets } from '../../utils/cascader-address-options'
+import options, { getStreets } from '../../utils/cascader-address-options';
+import { street_fixed } from '../../utils/china-division/register';
 
 export function districtSelect({ value = [], onChange, onBlur = () => {}, ...props }) {
   const handleChangePCA = e => {
@@ -28,7 +27,14 @@ export function districtSelect({ value = [], onChange, onBlur = () => {}, ...pro
   }
 
   let streetOption = [];
-  if (value.length >= 3) {
+  if (value[1] === '广州市') {
+    streetOption = street_fixed(value[2]);
+    streetOption.forEach(item => {
+      item.children.forEach(subItem => {
+        delete subItem.children;
+      })
+    })
+  } else if (value.length >= 3) {
     streetOption = getStreets(value[0], value[1], value[2]);
   }
 
