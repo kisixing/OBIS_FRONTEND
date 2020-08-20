@@ -20,8 +20,7 @@ export default class Index extends Component {
   renderModal() {
     const { isShowPreeclampsia } = this.state;
     const { closeModal } = this.props;
-
-    console.log(isShowPreeclampsia, '7898')
+    
     const handleCancel = (e) => {
       const preeAction = showPreeclampsiaAction(false);
       store.dispatch(preeAction);

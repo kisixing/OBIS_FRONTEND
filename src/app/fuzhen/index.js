@@ -37,6 +37,7 @@ export default class FuZhen extends Component {
       initData: { ...baseData.formEntity },
       pureInitDate: null,
       hasRecord: false,
+      recordDoctor: '',
       isChangeYCQ: false,
       printData: null,
       selectRowKeys: null,
@@ -125,7 +126,8 @@ export default class FuZhen extends Component {
           if (!item.fetalCondition) item.fetalCondition = [{}, {}];
           if (!item.fetalUltrasound) item.fetalUltrasound = [{}, {}];
           this.setState({
-            hasRecord: true, 
+            hasRecord: true,
+            recordDoctor: item.sign, 
             initData: service.praseJSON(item)
           })
           if (item.singleflag === '1') {
@@ -184,7 +186,7 @@ export default class FuZhen extends Component {
   }
 
   renderTable() {
-    const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, 
+    const { recentRvisit=[], recentRvisitAll=[], recentRvisitShow, pageCurrent, totalRow, isShowMoreBtn, recordDoctor,
             hasRecord, isTwins, printData, userDoc, hasPrint, loading, initData, pureInitDate, selectRows, selectRowKeys } = this.state;
 
     const handleAddRecord = () => {
@@ -461,6 +463,7 @@ export default class FuZhen extends Component {
     })
     const initTable = (data, props) => tableRender(rvisitKeys, data, { buttons: null, ...props });
     const allInitTable = (data, props) => tableRender(rvisitAllKeys, data, { buttons: null, ...props });
+
     return (
       <div className="fuzhen-table">
         {recentRvisit && initTable(recentRvisit, { pagination: false, editable: true, className: "fuzhenTable",
@@ -487,7 +490,7 @@ export default class FuZhen extends Component {
         <div className="table-btns clearfix">
           <Button type="dashed" icon="record" className="margin-TB-mid pull-right" onClick={this.handleMoreBtn}>更多产检记录</Button>
           {
-            hasRecord 
+            hasRecord && common.getCookie('docName') !== recordDoctor
             ? <Button type="dashed" icon="plus-circle-o" className="margin-TB-mid margin-R-1 pull-right" onClick={handleAddRecord}>新增产检记录</Button>
             : null
           }
