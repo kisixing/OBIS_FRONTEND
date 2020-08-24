@@ -30,7 +30,7 @@ export default class extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      entity: {},
+      // entity: {},
       adviceList: [],
       openAdvice: false,
       openMenzhen: false,
@@ -135,19 +135,17 @@ export default class extends Component{
         },
         {
           columns: [
-            { name: 'xiacsftype[下次复诊]', type:'select', placeholder: '门诊类型', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 8},
-            { name: 'nextRvisitWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 5 },
-            { name: 'xiacsfdate', type:'date', placeholder: '日期', valid: 'required', span: 5 },
+            { name: 'xiacsftype[下次复诊]', type:'select', placeholder: '门诊类型', showSearch:true, options: baseData.rvisitOsTypeOptions, span: 7 },
+            { name: 'nextRvisitWeek', type:'select', placeholder: '选择几周后/几天后', showSearch:true, options: baseData.nextRvisitWeekOptions, span: 3 },
+            { name: 'xiacsfdate', type:'date', placeholder: '日期', valid: 'required', span: 4 },
             { name: 'xiacsfdatearea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
-            { 
-              name: 'addnumIvProfessorOutpatient', type: 'checkinput', span: 3, options: baseData.jhOptions,
-              filter: entity => this.showAdd(entity) 
-            }
+            { name: 'addnumIvProfessorOutpatient', type: 'checkinput', options: baseData.jhOptions, filter: entity => this.showAdd(entity), span: 2 },
+            { name: 'professorAppointmetNum[已加号](个)', type: 'input', disabled: true, className: 'add-num', filter: entity => this.showAdd(entity), span: 4 }
           ]
         },
         {
           columns: [
-            { name: 'add_FIELD_first_save_ivisit_time[初诊日期]', type:'date', span: 9 },
+            { name: 'add_FIELD_first_save_ivisit_time[初诊日期]', type:'date', span: 8 },
             { span: 1 },
             { name: 'add_FIELD_first_clinical_doctor[初诊医生]', type:'input', span: 8 },
           ]
@@ -558,7 +556,7 @@ export default class extends Component{
     })
   }
 
-  checkAddNum(e, select, value) {
+  checkAddNum = async (e, select, value) => {
     const { entity, onChange } = this.props;
     let type = null;
     let date = '';
@@ -626,6 +624,11 @@ export default class extends Component{
             message.error('该日期已设停诊，已延后选择最近日期！', 5);
           }
         })
+
+        if (entity.xiacsftype.label === '教授门诊') {
+          const res = await service.fuzhen.calcProfessorAddNumByParams(date, noon);
+          onChange(e, { name: 'professorAppointmetNum', value: res.object });
+        }
       }
     }
   }
@@ -701,11 +704,11 @@ export default class extends Component{
     return (
       <div className="zhen-duan">
         <Row>
-          <Col span="10" className="zd-wrapper">
+          <Col span="9" className="zd-wrapper">
             {this.renderZD()}
           </Col>
           <Col span="1"></Col>
-          <Col span="13" className="form-wrapper">
+          <Col span="14" className="form-wrapper">
             {formRender(entity, this.config(), this.handleChange.bind(this))}
             <Button className="record-btn" icon="manage" onClick={() => this.setState({ isShowPlanModal: true })}>诊疗计划管理</Button>
             <Button className="record-btn" icon="record" onClick={() => this.openLisi()}>首检信息历史修改记录</Button>

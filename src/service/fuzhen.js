@@ -273,4 +273,11 @@ export default {
     checkImpact: function(date, noon, type){
         return this.userId().then(r => myAxios.get(`/outpatientRestful/checkImpact?userid=${r.object.userid}&date=${date}&noon=${noon}&type=${type}`));
     },
+
+    /**
+     * 查询复诊加号数量
+     */
+    calcProfessorAddNumByParams: function(date, noon){
+        return this.userId().then(r => myAxios.get(`/ivisitAppointment/calcProfessorAddNumByParams?userid=${r.object.userid}&nextVisitDate=${date}&noon=${noon}`));
+    },
 }
