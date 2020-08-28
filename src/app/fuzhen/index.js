@@ -190,7 +190,7 @@ export default class FuZhen extends Component {
             hasRecord, isTwins, printData, userDoc, hasPrint, loading, initData, pureInitDate, selectRows, selectRowKeys } = this.state;
 
     const handleAddRecord = () => {
-      if (recentRvisit.length < 3) {
+      if (recentRvisit.length < 5) {
         recentRvisit.push(pureInitDate);
         this.setState({
           initData: pureInitDate,
