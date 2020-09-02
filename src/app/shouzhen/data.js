@@ -513,6 +513,7 @@ export const pregnanciesColumns = [
 				key: 'deathTime',
 				width: '60',
 				type: 'input',
+				filterDate: true,
 			},
 			{
 				title: '死亡原因',
