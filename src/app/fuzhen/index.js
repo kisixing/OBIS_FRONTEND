@@ -467,7 +467,7 @@ export default class FuZhen extends Component {
     return (
       <div className="fuzhen-table">
         {recentRvisit && initTable(recentRvisit, { pagination: false, editable: true, className: "fuzhenTable",
-          onEdit: true, hasRecord: hasRecord, isTwins: isTwins, scroll: { y: 300 },
+          onEdit: true, hasRecord: hasRecord, isTwins: isTwins,
           iseditable: ({ row }) => hasRecord ? row === recentRvisit.length - 1 : row > recentRvisit.length - 2, onRowChange: handleSaveChange, onClick: handleItemClick
         })}
         {loading ? <div style={{ height: '4em', textAlign: 'center' }}><Spin />&nbsp;...</div> : null}
