@@ -193,6 +193,7 @@ export default class App extends Component {
     });
   }
 
+  /*高危因素用药筛查表 默认勾选的项*/
   setCheckedKeys(params) {
     const { checkedKeys, templateTree1, fzList } = this.state;
     const bmi = params.checkUp.ckbmi;
@@ -287,7 +288,7 @@ export default class App extends Component {
   }
 
   /**
-   * 瘢痕子宫阴道试产表
+   * 瘢痕子宫阴道试产表/高危因素用药筛查表
    */
   handleCardClick = (name) => {
     const { allFormData } = this.state;

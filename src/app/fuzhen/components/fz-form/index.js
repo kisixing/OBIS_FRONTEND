@@ -71,7 +71,7 @@ export default class FuzhenForm extends Component {
       },
       'hypertension': {
         'diagKeyword': ['高血压', '子痫', '肾炎', '肾脏', '肾病', '红斑狼疮'],
-        'digWord': ['红斑狼疮', '风湿性关节炎', '类风湿性关节炎', '硬皮病'],
+        'digWord': ['类风湿性关节炎'],
         'signWord': ['高血压', '肾病', '免疫系统疾病'],
       },
       'coronary': {
@@ -98,9 +98,9 @@ export default class FuzhenForm extends Component {
       diagItem.length > 0 && diagItem.map(item => {
         searchObj['diagKeyword'].map(subItem => {
           if (item.indexOf(subItem) != -1) {
-            if (type === 'coronary' && item.indexOf('胎') === -1) {
+            if ((type === 'coronary' || type === 'hypertension') && item.indexOf('胎') === -1) {
               bool = true;
-            } else if (type !== 'coronary') {
+            } else if (type !== 'coronary' && type !== 'hypertension') {
               bool = true;
             }
           } 
@@ -304,8 +304,9 @@ export default class FuzhenForm extends Component {
           ]
         },
         {
-          filter:()=>check('diabetes'), label:'胰岛素方案', columns:[
-            { name: 'riMo(U)[早]', span: 5, 
+          filter:()=>check('diabetes'), columns:[
+            { name: '[胰岛素]', span: 1, className: 'noContent', type: '**' },
+            { name: 'riMo(U)[早]', span: 4, 
               type: [{type:'editableSelect', showSearch: true, autoInsert: true, options: baseData.ydsOptions, placeholder:'药物名称', span:16}, 
                     {type:'input', placeholder:'剂量', span:8}] 
             },
@@ -331,18 +332,20 @@ export default class FuzhenForm extends Component {
             {
               columns: [
                 {
-                  label: '尿蛋白', span: 12, columns: [
-                    { name: 'upState[定性]', type: 'input', span: 10 },
+                  span: 12, columns: [
+                    { name: '[尿蛋白]', span: 2, className: 'noContent', type: '**' },
+                    { name: 'upState[定性]', type: 'input', span: 8 },
                     { span: 2 },
                     { name: 'upDosage24h[24H定量]', type: 'input', span: 10 },
                   ]
                 },
                 {
-                  label: '用药方案', name: 'medicationPlan', span: 12, groups: index => ({
+                  name: 'medicationPlan', span: 12, groups: index => ({
                     rows: [
                       {
                         columns:[
-                          { name: `name[用药${index + 1}]`, span: 21, type: 'input' },
+                          { name: '[用药方案]', span: 2, className: 'noContent', type: '**' },
+                          { name: `name[用药${index + 1}]`, span: 19, type: 'input' },
                           // { name: `frequency[频率]`, span: 7, type: 'select', showSearch: true, options: baseData.yyfaOptions },
                           // { name: `dosages[剂量]`, span: 7, type: 'input' },
                           { span: 1 },
@@ -382,11 +385,12 @@ export default class FuzhenForm extends Component {
             {
               columns: [
                 {
-                  label: '用药方案', name: 'medicationPlan', span: 12, filter:()=>!check('hypertension'), groups: index => ({
+                  name: 'medicationPlan', span: 12, filter:()=>!check('hypertension'), groups: index => ({
                     rows: [
                       {
                         columns:[
-                          { name: `name[用药${index + 1}]`, span: 21, type: 'input' },
+                          { name: '[用药方案]', span: 2, className: 'noContent', type: '**' },
+                          { name: `name[用药${index + 1}]`, span: 19, type: 'input' },
                           // { name: `frequency[频率]`, span: 6, type: 'select', showSearch: true, options: baseData.yyfaOptions },
                           // { name: `dosages[剂量]`, span: 6, type: 'input' },
                           { span: 1 },
@@ -878,7 +882,7 @@ export default class FuzhenForm extends Component {
     return (
       <div className="fuzhen-form">
         <strong>本次产检记录</strong>
-        <div className="label-4 record-form">
+        <div className="label-3 record-form">
           {formRender(initData, this.formConfig(), this.handleChange.bind(this))}
         </div>
         <div style={{ minHeight: '32px', textAlign: 'center' }}>

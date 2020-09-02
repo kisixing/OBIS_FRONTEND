@@ -39,7 +39,7 @@ export default class extends Component {
             { name: "ckztingj(周)[停经]", type: "input", span: 5 },
             { span: 1 },
             { name: "ckzcrl(mm)[CRL]", type: "input", span: 4 },
-            { name: "ckzbpd(mm)[NT]", className: 'label-right', type: "input", span: 4 },
+            { name: "ckzbpd(mm)[NT]", className: 'label-right', type: "input", span: 4, valid: 'rang(0,2.499)' },
             { name: "ckzweek(周)[如孕]", className: 'label-right', type: "input", span: 4, valid: "symbol(+)" },
           ]
         },
