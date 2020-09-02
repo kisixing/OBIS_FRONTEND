@@ -50,7 +50,7 @@ export default class FuzhenForm extends Component {
       rows: [
         {
           columns: [
-            { name: "groupName[诊疗计划组名字]", className: "long-label", type: "input", span: 14 },
+            { name: "groupName[诊疗计划组名字]", className: "long-group-name", type: "input", span: 14 },
           ]
 				},
 				{

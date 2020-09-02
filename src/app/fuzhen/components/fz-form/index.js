@@ -298,7 +298,7 @@ export default class FuzhenForm extends Component {
           filter:()=>check('diabetes'), columns:[
             { name: 'fpg(mmol/L)[FBG]', type: 'input', span: 5 },
             { span: 1 },
-            { name: 'pbg2h(mmol/L)[P2BG]', type: 'input', className: 'long-label', span: 5 },
+            { name: 'pbg2h(mmol/L)[P2BG]', type: 'input', span: 5 },
             { span: 1 },
             { name: 'hbAlc(%)[HbAlc]', type: 'input', span: 5 }
           ]
@@ -344,7 +344,7 @@ export default class FuzhenForm extends Component {
                     rows: [
                       {
                         columns:[
-                          { name: '[用药方案]', span: 2, className: 'noContent', type: '**' },
+                          { name: index === 0 ? '[用药方案]' : '[]', span: 2, className: 'noContent', type: '**' },
                           { name: `name[用药${index + 1}]`, span: 19, type: 'input' },
                           // { name: `frequency[频率]`, span: 7, type: 'select', showSearch: true, options: baseData.yyfaOptions },
                           // { name: `dosages[剂量]`, span: 7, type: 'input' },
@@ -389,7 +389,7 @@ export default class FuzhenForm extends Component {
                     rows: [
                       {
                         columns:[
-                          { name: '[用药方案]', span: 2, className: 'noContent', type: '**' },
+                          { name: index === 0 ? '[用药方案]' : '[]', span: 2, className: 'noContent', type: '**' },
                           { name: `name[用药${index + 1}]`, span: 19, type: 'input' },
                           // { name: `frequency[频率]`, span: 6, type: 'select', showSearch: true, options: baseData.yyfaOptions },
                           // { name: `dosages[剂量]`, span: 6, type: 'input' },
