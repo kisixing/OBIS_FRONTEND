@@ -1,5 +1,5 @@
-@widthSidebar : 400px;
-@headerHeight : 104px;
+@widthSidebar: 400px;
+@headerHeight: 104px;
 
 .chanhou-fz {
   margin-top: 16px;
@@ -23,6 +23,43 @@
     height: 100%;
     background-color: #fff;
   }
+  .ant-collapse {
+    background: transparent;
+    border-color: transparent;
+    .ant-collapse-item {
+      border-top: none;
+    }
+    .ant-collapse-content {
+      background: transparent;
+      padding: 0 0.4rem;
+    }
+    .ant-collapse-content > .ant-collapse-content-box {
+      padding: 3px 0;
+    }
+    .ant-collapse-header .arrow,
+    .ant-collapse-content-box {
+      font-size: 1rem;
+    }
+    .ant-collapse-header {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      padding-left: 0;
+      font-size: 1rem;
+      background: #fff;
+      color: #3b3671;
+      border: 1px solid #edeef6;
+      padding-left: 34px;
+      .arrow {
+        height: 100%;
+        font-size: 1rem !important;
+      }
+    }
+    .ant-collapse-item {
+      border-width: 2px;
+    }
+  }
+
   .ch-form {
     padding: 26px;
     width: calc(100% - @widthSidebar - 16px);
@@ -38,7 +75,7 @@
         height: 58px;
         font-size: 20px;
         color: #fff;
-        background-color: #007AFF;
+        background-color: #007aff;
       }
     }
   }

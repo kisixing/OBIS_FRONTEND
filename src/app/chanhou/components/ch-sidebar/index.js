@@ -18,14 +18,10 @@ export default class RegForm extends Component {
       <div>
         <Collapse defaultActiveKey={["1", "2", "3"]}>
           <Collapse.Panel header="出院诊断" key="1">
-            111
           </Collapse.Panel>
           <Collapse.Panel header="出院情况及治疗结果" key="2">
-            222
           </Collapse.Panel>
-          
           <Collapse.Panel header="出院医嘱" key="3">
-            333
           </Collapse.Panel>
         </Collapse>
       </div>

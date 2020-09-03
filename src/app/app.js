@@ -133,7 +133,11 @@ export default class App extends Component {
     store.dispatch(fzAction);
 
     const resRvisit = await service.chanhou.checkPostpartumRvisit();
-    if (resRvisit.object == 1) this.setState({ isShowCHRouter: true });
+    if (resRvisit.object == 1) {
+      this.setState({ isShowCHRouter: true });
+      this.setState({ muneIndex: 2 });
+      this.onRouterClick(routers[2]);
+    } 
 
     // const resArrear = await service.shouzhen.checkRvisitArrear();
     // if (resArrear.object.flag == '1') {

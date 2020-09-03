@@ -3,23 +3,25 @@
 @widthLeft: 230px;
 @headerHeight: 104px;
 
-.bg-right {
-  position: fixed;
-  z-index: 0;
-  left: 0;
-  top: @headerHeight;
-  width: @widthLeft;
-  height: 100%;
-  background-color: #fff;
-}
-.bg-left {
-  position: fixed;
-  z-index: 0;
-  right: 0;
-  top: 600px;
-  width: calc(100% - @widthLeft - 16px);
-  height: 100%;
-  background-color: #fff;
+.fuzhen {
+  .bg-right {
+    position: fixed;
+    z-index: 0;
+    left: 0;
+    top: @headerHeight;
+    width: @widthLeft;
+    height: 100%;
+    background-color: #fff;
+  }
+  .bg-left {
+    position: fixed;
+    z-index: 0;
+    right: 0;
+    top: 600px;
+    width: calc(100% - @widthLeft - 16px);
+    height: 100%;
+    background-color: #fff;
+  }
 }
 
 .fuzhen-left {
@@ -327,10 +329,12 @@
   // 设置表头加粗
   .ant-table-tbody > tr:nth-child(-n + 2) > td {
     font-weight: 600;
+    text-align: center !important;
   }
   .ant-table-tbody > tr > td {
     padding: 5px 1px;
     word-break: keep-all;
+    text-align: left;
     span {
       overflow: hidden;
       text-overflow: ellipsis;
