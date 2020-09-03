@@ -453,7 +453,7 @@ export default class FuzhenForm extends Component {
             { name: 'ckappointment', type:'date', placeholder: '日期', valid: 'required', span: 3 },
             { name: 'ckappointmentArea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 2 },
             { name: 'addnumRvProfessorOutpatient', type: 'checkinput', options: baseData.jhOptions, filter: entity => this.showAdd(entity), span: 1 },
-            { name: 'professorAppointmetNum[已加号](个)', type: 'input', disabled: true, className: 'add-num', filter: entity => this.showAdd(entity), span: 3 }
+            { name: 'professorAppointmetNum[（已加号](个）)', type: 'input', disabled: true, className: 'add-num', filter: entity => this.showAdd(entity), span: 3 }
           ]
         }
       ]

@@ -140,7 +140,7 @@ export default class extends Component{
             { name: 'xiacsfdate', type:'date', placeholder: '日期', valid: 'required', span: 4 },
             { name: 'xiacsfdatearea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 3 },
             { name: 'addnumIvProfessorOutpatient', type: 'checkinput', options: baseData.jhOptions, filter: entity => this.showAdd(entity), span: 2 },
-            { name: 'professorAppointmetNum[已加号](个)', type: 'input', disabled: true, className: 'add-num', filter: entity => this.showAdd(entity), span: 4 }
+            { name: 'professorAppointmetNum[（已加号](个）)', type: 'input', disabled: true, className: 'add-num', filter: entity => this.showAdd(entity), span: 5 }
           ]
         },
         {
