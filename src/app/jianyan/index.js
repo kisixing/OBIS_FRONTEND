@@ -129,6 +129,8 @@ export default class Patient extends Component {
             <li className="msg-item">性别: {detailData.sex}</li>
             <li className="msg-item">年龄: {detailData.age}</li>
             <li className="msg-item">标本部位: {detailData.specimen}</li>
+            <li className="msg-item">报告日期: {detailData.reportdate}</li>
+            <li className="msg-item">送检日期: {detailData.senddate}</li>
           </ul>
           <div>
             { !repAmy 
