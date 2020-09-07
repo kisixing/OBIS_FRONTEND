@@ -15,6 +15,7 @@ import TemplateModal from '../../../components/template-modal';
 import DiagSearch from '../../../components/diagnosis-search';
 import DiabetesAppointment from '../../../components/diabetes-appointment';
 import PreeclampsiaModal from '@/app/components/preeclampsia-modal';
+import HighriskSignCheck from '@/app/components/highrisk-sign-check';
 import cModal from '../../../../render/modal';
 import '../../index.less';
 import service from '../../../../service';
@@ -49,6 +50,8 @@ export default class extends Component{
         { 'word': ['乙肝', '乙型肝炎'], 'without': ['大三阳', '小三阳'], 'diag': '乙肝表面抗原携带者' },
       ],
       isShowPlanModal: false,
+      checkHighriskSign: null,
+      isShowSignModal: true,
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -78,6 +81,16 @@ export default class extends Component{
     service.shouzhen.getAdviceTreeList().then(res => {
       res.object.length > 1 && this.setState({adviceList: res.object, openAdvice: true})
     });
+
+    service.fuzhen.checkHighriskMergeAlert('2', '').then(res => {
+      const items = res.object.items || [];
+      if (items.length > 0) {
+        this.setState({
+          checkHighriskSign: items,
+          isShowSignModal: true
+        })
+      }
+    })
 
     window.addEventListener('keyup', e => {
       if (e.keyCode === 13 || e.keyCode === 108) this.onKeyUp();
@@ -230,6 +243,16 @@ export default class extends Component{
         const action = getAlertAction(data);
         store.dispatch(action);
       })
+
+      // service.fuzhen.checkHighriskMergeAlert('1', diagnosis).then(res => {
+      //   const items = res.object.items || [];
+      //   if (items.length > 0) {
+      //     this.setState({
+      //       checkHighriskSign: items,
+      //       isShowSignModal: true
+      //     })
+      //   }
+      // })
 
       //子痫前期判断
       const preeArr = ['多胎', '慢性高血压', '1型糖尿病', '2型糖尿病', 'PGDM', '肾炎', '肾脏', '肾病', '红斑狼疮', '抗磷脂综合征'];
@@ -698,8 +721,12 @@ export default class extends Component{
     this.addTreatment(e, '阿司匹林');
   }
 
+  closeSign = () => {
+    this.setState({ isShowSignModal: false });
+  }
+
   render(){
-    const { isShowRegForm, openTemplate, isShowDiagSearch, openMenzhen } = this.state;
+    const { isShowRegForm, openTemplate, isShowDiagSearch, openMenzhen, checkHighriskSign, isShowSignModal, userDoc } = this.state;
     const { entity } = this.props;
     return (
       <div className="zhen-duan">
@@ -723,6 +750,14 @@ export default class extends Component{
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>} */}
         { this.renderPlanModal() }
         <PreeclampsiaModal closeModal={this.closeModal} />
+        {
+          checkHighriskSign && <HighriskSignCheck 
+            checkHighriskSign={checkHighriskSign} 
+            isShowSignModal={isShowSignModal} 
+            closeModal={this.closeSign} 
+            userDoc={userDoc}
+          />
+        }
       </div>
     )
   }

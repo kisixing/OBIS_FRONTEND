@@ -13,6 +13,7 @@ import { getAlertAction, showTrialAction, showPharAction, checkedKeysAction, isF
          showDiagSearchAction, setDiagAction, showPreeclampsiaAction
       } from '../../../store/actionCreators.js';
 import DiagSearch from '../../../components/diagnosis-search';
+import HighriskSignCheck from '@/app/components/highrisk-sign-check';
 import "../../../index.less";
 import "../../index.less";
 
@@ -44,6 +45,8 @@ export default class Index extends Component {
         { 'word': ['乙肝', '乙型肝炎'], 'without': ['大三阳', '小三阳'], 'diag': '乙肝表面抗原携带者' },
       ],
       unusualFlag: '',
+      checkHighriskSign: null,
+      isShowSignModal: true,
       ...store.getState(),
     };
     store.subscribe(this.handleStoreChange);
@@ -182,6 +185,16 @@ export default class Index extends Component {
         store.dispatch(action);
       })
 
+      // service.fuzhen.checkHighriskMergeAlert('1', diagnosis).then(res => {
+      //   const items = res.object.items || [];
+      //   if (items.length > 0) {
+      //     this.setState({
+      //       checkHighriskSign: items,
+      //       isShowSignModal: true
+      //     })
+      //   }
+      // })
+
       //子痫前期判断
       const preeArr = ['多胎', '慢性高血压', '1型糖尿病', '2型糖尿病', 'PGDM', '肾炎', '肾脏', '肾病', '红斑狼疮', '抗磷脂综合征'];
       preeArr.forEach(item => {
@@ -296,7 +309,6 @@ export default class Index extends Component {
     const action = checkedKeysAction(newCheckedKeys);
     store.dispatch(action);
   }
-
 
   /**
    * 诊断列表
@@ -729,10 +741,24 @@ export default class Index extends Component {
     );
   }
 
+  closeModal = (param) => {
+    this.setState({ [param]: false })
+  }
+
   render() {
+    const { checkHighriskSign, isShowSignModal, userDoc } = this.state;
+
     return (
       <div>
         {this.renderLeft()}
+        {
+          checkHighriskSign && <HighriskSignCheck 
+            checkHighriskSign={checkHighriskSign} 
+            isShowSignModal={isShowSignModal} 
+            closeModal={this.closeModal} 
+            userDoc={userDoc}
+          />
+        }
       </div>
     );
   }

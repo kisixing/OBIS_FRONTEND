@@ -65,6 +65,13 @@ export default {
         let data = {"data": params};
         return this.userId().then(r => myAxios.post('/outpatientWriteRestful/checkHighriskAlert', {userid: r.object.userid, inputType: '1', ...data}));
     },
+    
+    /**
+     * 高危因素标记(checkbox形式)
+     */
+    checkHighriskMergeAlert: function(type, params) {
+        return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/checkHighriskMergeAlert`, { userid: r.object.userid, inputType: type, data: params }));
+    },
 
     /**
      * 诊疗计划（最近两条记录）
