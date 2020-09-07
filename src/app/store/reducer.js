@@ -28,8 +28,8 @@ const defaultState = {
   relatedid: '',
   whichPage: '',
   emptyData: {
-    "tab-0": ['预产期'],
-    "tab-1": ['一般病史'],
+    "tab-0": ['现病史'],
+    "tab-1": ['既往史'],
     "tab-2": ['其他病史'],
     "tab-3": ['孕产史'],
     "tab-4": ['体格检查'],
