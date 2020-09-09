@@ -143,7 +143,7 @@ class FormItem extends Component {
   }
 
   componentDidMount() {
-    const { name } = this.state;
+    const { valid } = this.props;
     this.componentWillUnmount = AddResize(() => this.resize())
     this.refs.formItem.fireReact = (type, ...args) => {
       return new Promise(resolve => {
@@ -160,7 +160,8 @@ class FormItem extends Component {
         }
       });
     }
-    if(name === 'ckpressure' || name === 'add_FIELD_pulse'|| name === 'cksheng' ||  name === 'ckbmi') {
+    /*进入页面校验异常值*/
+    if((typeof valid === 'string' && valid.indexOf('rang') > -1) || typeof valid === 'function') {
       this.onBlur();
     }
   }

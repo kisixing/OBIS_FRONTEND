@@ -47,6 +47,7 @@ export default class Index extends Component {
       unusualFlag: '',
       checkHighriskSign: null,
       isShowSignModal: true,
+      preeArr: ['多胎', '慢性高血压', '1型糖尿病', '2型糖尿病', 'PGDM', '肾炎', '肾脏', '肾病', '红斑狼疮', '抗磷脂综合征'],
       ...store.getState(),
     };
     store.subscribe(this.handleStoreChange);
@@ -58,7 +59,7 @@ export default class Index extends Component {
   };
 
   componentDidMount() {
-    const { userDoc, trialVisible } = this.state;
+    const { userDoc, trialVisible, preeArr } = this.state;
 
     service.shouzhen.getList(2).then(res => {
       res.object && res.object.forEach(item => {
@@ -67,7 +68,6 @@ export default class Index extends Component {
           store.dispatch(action);
         }
         if(item.data.indexOf('双胎') !== -1 || item.data.indexOf('多胎') !== -1) {
-          // this.setState({ isTwins: true })
           const action = isTwinsAction(true);
           store.dispatch(action);
         }
@@ -75,6 +75,12 @@ export default class Index extends Component {
           const action = showSypAction(true);
           store.dispatch(action);
         }
+        preeArr.forEach(preeItem => {
+          if (item.data.indexOf(preeItem) !== -1) {
+            const preeAction = showPreeclampsiaAction(true);
+            store.dispatch(preeAction);
+          }
+        })
       })
       const action = fzListAction(res.object);
       store.dispatch(action);
@@ -104,7 +110,7 @@ export default class Index extends Component {
   }
 
   adddiagnosis() {
-    const { fzList, diagnosis, userDoc, signList } = this.state;
+    const { fzList, diagnosis, userDoc, signList, preeArr } = this.state;
     const { initData } = this.props;
     const specialList = ['妊娠', '早孕', '中孕', '晚孕'];
     if (diagnosis && !fzList.filter(i => i.data === diagnosis).length) {
@@ -196,7 +202,6 @@ export default class Index extends Component {
       // })
 
       //子痫前期判断
-      const preeArr = ['多胎', '慢性高血压', '1型糖尿病', '2型糖尿病', 'PGDM', '肾炎', '肾脏', '肾病', '红斑狼疮', '抗磷脂综合征'];
       preeArr.forEach(item => {
         if (diagnosis.indexOf(item) !== -1) {
           const preeAction = showPreeclampsiaAction(true);
