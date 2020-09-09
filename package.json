@@ -67,6 +67,7 @@
 		"jquery": "^1.12.4",
 		"jquery-ui-dist": "^1.12.1",
 		"json-loader": "^0.5.7",
+		"lodash": "^4.17.20",
 		"media-match": "^2.0.3",
 		"moment": "^2.21.0",
 		"normalize.css": "^8.0.0",
