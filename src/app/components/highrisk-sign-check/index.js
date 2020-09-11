@@ -68,7 +68,7 @@ export default class Index extends Component{
         visible={isShowSignModal}
         onCancel={this.handleCancel}
         footer={this.buttons()}
-        title={<span><Icon type="exclamation-circle" style={{color: "#FB9824"}} /> 请注意！</span>}
+        title={<span><Icon type="exclamation-circle" style={{color: "#FB9824"}} /> 请确定标记高危因素：</span>}
       >
       {
         checkHighriskSign.map((item, index) => (
