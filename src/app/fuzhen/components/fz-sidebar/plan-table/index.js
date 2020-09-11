@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Input, message, Button, Tree, Modal } from "antd";
-
+import { cloneDeep } from 'lodash';
 import tableRender from "../../../../../render/table";
 import formRender, { fireForm } from "../../../../../render/form";
 import * as baseData from "../../../data";
@@ -63,7 +63,7 @@ export default class FuzhenForm extends Component {
             },
             { name: "event[提醒事件]", type: "input", span: 7 },
             { span: 1 },
-            { type: "button", span: 3, text: "添加", color: "#1890ff", size: "small",	onClick: this.writePlanGroup.bind(this) }
+            { type: "button", span: 3, text: "保存/添加", color: "#1890ff", size: "small",	onClick: this.writePlanGroup.bind(this) }
           ]
         }
       ]
@@ -211,7 +211,8 @@ export default class FuzhenForm extends Component {
       }
 
       const addNewPlan = () => {
-        this.setState({ allPlanDataList: initPlanDataList, allPlanEntity: {} }, () => {
+        const cloneData = cloneDeep(initPlanDataList);
+        this.setState({ allPlanDataList: cloneData, allPlanEntity: {} }, () => {
           this.onReturn(3);
         })
       }
@@ -268,12 +269,12 @@ export default class FuzhenForm extends Component {
         </Modal>
       )
     }
+
     const handleCheck = (keys) => {
       this.setState({ checkTreeKeys: keys })
     }
 
     const addPlanGroup = () => {
-      console.log(checkTreeKeys);
       checkTreeKeys.length > 0 && checkTreeKeys.forEach(item => {
         service.fuzhen.selectListByGroupName(item).then(res => {
           const plans = res.object.diagnosisPlans;
