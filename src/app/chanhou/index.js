@@ -5,10 +5,6 @@ import CHSidebar from './components/ch-sidebar';
 import './index.less';
 
 export default class RegForm extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="chanhou-fz label-6">

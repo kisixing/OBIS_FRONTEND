@@ -17,6 +17,13 @@ export default {
   },
 
   /**
+   * 获取出院报告
+   */
+  getDischargeRecord: function(){
+    return this.userId().then(r => myAxios.get(`/outpatientRestful/getDischargeRecord?userid=${r.object.userid}`));
+  },
+
+  /**
    * 更新产后复诊记录
    */
   postPartumRvisit: function(params){

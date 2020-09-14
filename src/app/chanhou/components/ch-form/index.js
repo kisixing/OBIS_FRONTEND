@@ -3,23 +3,15 @@ import { Button, message, Icon } from 'antd';
 import * as baseData from '../../data';
 import * as common from '../../../../utils/common';
 import formRender, {fireForm} from '../../../../render/form';
-import {valid} from '../../../../render/common';
 import service from '../../../../service';
-import store from '../../../store';
 
 export default class RegForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fzFormEntity: {...baseData.fzFormEntity},
-      ...store.getState(),
     }
-    store.subscribe(this.handleStoreChange);
   }
-
-  handleStoreChange = () => {
-    this.setState(store.getState());
-  };
 
   async componentDidMount() {
     const res = await service.chanhou.getPartumRvisit();
