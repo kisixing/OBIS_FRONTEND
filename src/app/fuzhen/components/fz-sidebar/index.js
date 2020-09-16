@@ -488,6 +488,11 @@ export default class Index extends Component {
        
               const resLis = await service.fuzhen.getLackLis();
               this.setState({ reportStr: String(resLis.object) });
+
+              const resAllForm = await service.shouzhen.getAllForm()
+              const allFormAction = getAllFormDataAction(service.praseJSON(resAllForm.object));
+              store.dispatch(allFormAction);
+
               if (!resLis.object || resLis.object.length === 0) this.setState({ collapseActiveKey: ['1', '3', '4'] });
             } else {
               message.error("必填项不能为空！");
