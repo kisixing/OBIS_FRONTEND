@@ -310,18 +310,20 @@ export default class extends Component{
             </Row>
           </Tabs.TabPane>
           <Tabs.TabPane tab={<Button className="list-btn" icon="user">个人模板</Button>} key="2">
-            <Col span={12}>
-              <Tree checkable defaultExpandAll checkedKeys={personalKey1.length === 0 ? [] : personalKey1} onCheck={handlePersonalCheck1} onRightClick={(e) => onRightClick(e, 'personal1')} style={{ maxHeight: '90%' }}>
-                {personalNodes.slice(0, Math.ceil(personalNodes.length/2))}
-              </Tree>
-              {(this.state.nodeTreeItem != null && currentArea === "personal1") ? this.getNodeTreeMenu() : null}
-            </Col>
-            <Col span={12}>
-              <Tree checkable defaultExpandAll checkedKeys={personalKey2.length === 0 ? [] : personalKey2} onCheck={handlePersonalCheck2} onRightClick={(e) => onRightClick(e, 'personal2')} style={{ maxHeight: '90%' }}>
-                {personalNodes.slice(Math.ceil(personalNodes.length/2))}
-              </Tree>
-              {(this.state.nodeTreeItem != null && currentArea === "personal2") ? this.getNodeTreeMenu() : null}
-            </Col>
+            <Row>
+              <Col span={12}>
+                <Tree checkable defaultExpandAll checkedKeys={personalKey1.length === 0 ? [] : personalKey1} onCheck={handlePersonalCheck1} onRightClick={(e) => onRightClick(e, 'personal1')} style={{ maxHeight: '90%' }}>
+                  {personalNodes.slice(0, Math.ceil(personalNodes.length/2))}
+                </Tree>
+                {(this.state.nodeTreeItem != null && currentArea === "personal1") ? this.getNodeTreeMenu() : null}
+              </Col>
+              <Col span={12}>
+                <Tree checkable defaultExpandAll checkedKeys={personalKey2.length === 0 ? [] : personalKey2} onCheck={handlePersonalCheck2} onRightClick={(e) => onRightClick(e, 'personal2')} style={{ maxHeight: '90%' }}>
+                  {personalNodes.slice(Math.ceil(personalNodes.length/2))}
+                </Tree>
+                {(this.state.nodeTreeItem != null && currentArea === "personal2") ? this.getNodeTreeMenu() : null}
+              </Col>
+            </Row>
           </Tabs.TabPane>
         </Tabs>
       </Modal>
