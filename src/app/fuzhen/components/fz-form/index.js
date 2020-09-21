@@ -10,7 +10,8 @@ import service from '../../../../service';
 import cModal from '../../../../render/modal';
 import './index.less';
 import store from '../../../store';
-import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAction, showReminderAction
+import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAction, showReminderAction,
+        showTrialAction, showPharAction
       } from '../../../store/actionCreators.js';
 import RegForm from '../../../components/reg-form';
 import TemplateModal from '../../../components/template-modal';
@@ -453,10 +454,26 @@ export default class FuzhenForm extends Component {
             { name: 'ckappointment', type:'date', placeholder: '日期', valid: 'required', span: 3 },
             { name: 'ckappointmentArea', type:'select', placeholder: '选择上午/下午', showSearch:true, options: baseData.ckappointmentAreaOptions, span: 2 },
             { name: 'addnumRvProfessorOutpatient', type: 'checkinput', options: baseData.jhOptions, filter: entity => this.showAdd(entity), span: 1 },
-            { name: 'professorAppointmetNum[（已加号](个）)', type: 'input', disabled: true, className: 'add-num', filter: entity => this.showAdd(entity), span: 3 }
+            { name: 'professorAppointmetNum[（已加号](个）)', type: 'input', disabled: true, className: 'add-num', filter: entity => this.showAdd(entity), span: 3 },
+            { 
+              name: "[常用表格]", type: "buttons", span: 12, text: "(#4d94ff)[VTE预防用药筛查表],(#4e130)[子痫前期风险评估表]",
+              onClick: this.handleModalBtnClick
+            }
           ]
         }
       ]
+    }
+  }
+
+  handleModalBtnClick = (e, {text, index}) => {
+    if (text === '子痫前期风险评估表') {
+      const action = showTrialAction(true);
+      store.dispatch(action);
+    }
+    
+    if (text === 'VTE预防用药筛查表') {
+      const action = showPharAction(true);
+      store.dispatch(action);
     }
   }
 

@@ -95,7 +95,7 @@ export default class FuZhen extends Component {
     szData.rvisitOsType = allFormData.diagnosis.xiacsftype;
     szData.ckappointment = allFormData.diagnosis.xiacsfdate;
     szData.ckappointmentArea = allFormData.diagnosis.xiacsfdatearea;
-    szData.sign = allFormData.diagnosis.add_FIELD_ivisit_doctor;
+    szData.sign = allFormData.diagnosis.add_FIELD_first_clinical_doctor;
 
     if (!!allFormData.specialityCheckUp.add_FIELD_ckjc && allFormData.specialityCheckUp.add_FIELD_ckjc.length === 1) {
       szData.cktaix = allFormData.specialityCheckUp.add_FIELD_ckjc[0].tx || '';

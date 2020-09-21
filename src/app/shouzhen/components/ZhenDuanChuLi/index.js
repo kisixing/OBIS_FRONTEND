@@ -135,7 +135,7 @@ export default class extends Component{
       rows: [
         {
           columns: [
-            { name: "diagnosisHandle[处理措施]", type: "textarea", span: 24, className: "table-wrapper" },
+            { name: "diagnosisHandle[处理措施]", type: "textarea", span: 24 },
           ]
         },
         {
@@ -162,9 +162,26 @@ export default class extends Component{
             { span: 1 },
             { name: 'add_FIELD_first_clinical_doctor[初诊医生]', type:'input', span: 8 },
           ]
-        }
+        },
+        {
+          columns: [
+            { name: "[常用表格]", type: "buttons", span: 14, text: "(#4d94ff)[VTE预防用药筛查表],(#4e130)[子痫前期风险评估表]", onClick: this.handleModalBtnClick }
+          ]
+        },
       ]
     };
+  }
+
+  handleModalBtnClick = (e, {text, index}) => {
+    if (text === '子痫前期风险评估表') {
+      const action = showTrialAction(true);
+      store.dispatch(action);
+    }
+    
+    if (text === 'VTE预防用药筛查表') {
+      const action = showPharAction(true);
+      store.dispatch(action);
+    }
   }
 
   adddiagnosis() {
