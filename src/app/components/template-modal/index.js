@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Modal, Col, Row, message, Tree, Tabs, Icon, Tooltip, Input, Button } from 'antd';
 import service from '../../../service';
+import * as common from '@/utils/common';
 import './index.less';
 
 export default class extends Component{
@@ -109,6 +110,7 @@ export default class extends Component{
         </div>
       </div>
     );
+    if (activeTabKey === "1" && common.getCookie('docName') !== "詹雁峰") return null;
     return (nodeTreeItem == null) ? '' : menu;
   }
 
@@ -288,11 +290,14 @@ export default class extends Component{
 
     const treeNodes = initTree(0, treatTemp);
     const personalNodes = initTree(0, personalTemp);
-    const operationBtn = <Button size="small" onClick={handleBtnClick}>添加模板</Button>;
+    const operationBtn = () => {
+      if (activeTabKey === "1" && common.getCookie('docName') !== "詹雁峰") return null;
+      return <Button size="small" onClick={handleBtnClick}>添加模板</Button>;
+    } 
 
     return (
       <Modal className="temp-modal" title="处理模板" closable visible={openTemplate} width={1000} onCancel={e => closeDialog(e)} onOk={e => closeDialog(e, true)}>
-        <Tabs defaultActiveKey={activeTabKey} tabBarExtraContent={operationBtn} onChange={handleTabChange}>
+        <Tabs defaultActiveKey={activeTabKey} tabBarExtraContent={operationBtn()} onChange={handleTabChange}>
           <Tabs.TabPane tab={<Button className="list-btn" icon="appstore-o">科室模板</Button>} key="1">
             <Row>
               <Col span={12}>

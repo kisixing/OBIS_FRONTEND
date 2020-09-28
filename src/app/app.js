@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Prompt } from 'react-router-dom';
-import { Row, Col, Input, Button, Select, Modal, Tree, Icon, notification } from "antd";
+import { Row, Col, Input, Button, Select, Modal, Tree, Icon, notification, message } from "antd";
 import router from "../utils/router";
 import bundle from "../utils/bundle";
 import service from '../service';
@@ -103,6 +103,8 @@ export default class App extends Component {
       store.dispatch(alertAction);
     })
 
+    this.getTrialData();
+
     const resForm = await service.shouzhen.getAllForm();
     const formAction = getAllFormDataAction(service.praseJSON(resForm.object));
     store.dispatch(formAction);
@@ -111,8 +113,6 @@ export default class App extends Component {
       this.setState({ muneIndex: 1 });
       this.onRouterClick(routers[1]);
     }
-
-    this.getTrialData();
 
     const resList1 = await service.shouzhen.getList(1);
     resList1.object && resList1.object.map(item => {
@@ -150,6 +150,18 @@ export default class App extends Component {
     const resPreg = await service.shouzhen.findPregnancyDoc(resForm.object.gravidaInfo.useridno);
     if (resPreg.object.docs.length > 1) this.setState({ isShowYCRouter: true });
 
+    window.addEventListener("beforeunload", (e) => {
+      this.chenkChange(e);
+    });
+  }
+
+  /*关闭浏览器时，有未保存时作提示*/
+  chenkChange = (e) => {
+    const { isFormChange } = this.state;
+    if (isFormChange) {
+      e.preventDefault();
+      e.returnValue = "";
+    }
   }
 
   getPharData(data) {
@@ -181,20 +193,19 @@ export default class App extends Component {
     });
   }
 
-  getTrialData() {
-    service.shouzhen.findTemplateTree(2).then(res => {
-      let keys = [];
-      res.object.data.map(item => {
-        item.child.map(subItem => {
-          if (subItem.note == 'true') {
-            keys.push(String(subItem.id))
-          }
-        })
+  getTrialData = async () => {
+    const res = await service.shouzhen.findTemplateTree(2);
+    let keys = [];
+    res.object.data.map(item => {
+      item.child.map(subItem => {
+        if (subItem.note == 'true') {
+          keys.push(String(subItem.id))
+        }
       })
-      this.setState({templateTree: res.object.data, trialKeys: keys})
-      const action = trailVisibleAction(res.object.vislble);
-      store.dispatch(action);
-    });
+    })
+    this.setState({templateTree: res.object.data, trialKeys: keys})
+    const action = trailVisibleAction(res.object.vislble);
+    store.dispatch(action);
   }
 
   /*高危因素用药筛查表 默认勾选的项*/
