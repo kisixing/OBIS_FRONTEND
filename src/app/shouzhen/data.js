@@ -392,6 +392,13 @@ export const pregnanciesColumns = [
 				holdeditor: true
 			},
 			{
+				title: '药物',
+				key: 'yaol',
+				type: 'checkbox',
+				width: '35',
+				holdeditor: true
+			},
+			{
 				title: '清宫',
 				key: 'removalUterus',
 				type: 'checkbox',
