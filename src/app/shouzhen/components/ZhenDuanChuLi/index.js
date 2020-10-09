@@ -165,7 +165,7 @@ export default class extends Component{
         },
         {
           columns: [
-            { name: "[常用表格]", type: "buttons", span: 14, text: "(#4d94ff)[VTE预防用药筛查表],(#4e130)[子痫前期风险评估表]", onClick: this.handleModalBtnClick }
+            { name: "[常用表格]", type: "buttons", span: 14, text: "(#4d94ff)[VTE预防用药筛查表]", onClick: this.handleModalBtnClick }
           ]
         },
       ]

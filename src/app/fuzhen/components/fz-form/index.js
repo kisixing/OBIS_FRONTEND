@@ -456,7 +456,7 @@ export default class FuzhenForm extends Component {
             { name: 'addnumRvProfessorOutpatient', type: 'checkinput', options: baseData.jhOptions, filter: entity => this.showAdd(entity), span: 1 },
             { name: 'professorAppointmetNum[（已加号](个）)', type: 'input', disabled: true, className: 'add-num', filter: entity => this.showAdd(entity), span: 3 },
             { 
-              name: "[常用表格]", type: "buttons", span: 12, text: "(#4d94ff)[VTE预防用药筛查表],(#4e130)[子痫前期风险评估表]",
+              name: "[常用表格]", type: "buttons", span: 12, text: "(#4d94ff)[VTE预防用药筛查表]",
               onClick: this.handleModalBtnClick
             }
           ]
