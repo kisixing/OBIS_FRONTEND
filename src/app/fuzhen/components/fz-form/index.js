@@ -703,8 +703,7 @@ export default class FuzhenForm extends Component {
     if(!!newEntity.riSl && newEntity.riSl[1]) newEntity.riSlDosage = newEntity.riSl[1];
 
     fireForm(form,'valid').then((valid)=>{
-      if(valid){
-        console.log(newEntity, '可以保存')
+      if(valid || act){
         onSave(newEntity).then(() =>{
           this.setState({ error: {} }, () => {
             // getReminder();
@@ -834,7 +833,8 @@ export default class FuzhenForm extends Component {
     const handleCheck = (keys, {checkedNodes}) => {
       let checkItems = [];
       checkedNodes.forEach(node => {
-        if (node.props.children.length === 0) checkItems.push(node.props.title);
+        // if (node.props.children.length === 0) checkItems.push(node.props.title);
+        checkItems.unshift(node.props.title);
       })
       this.setState({
         lisImportKey: keys,
@@ -903,11 +903,14 @@ export default class FuzhenForm extends Component {
           {formRender(initData, this.formConfig(), this.handleChange.bind(this))}
         </div>
         <div style={{ minHeight: '32px', textAlign: 'center' }}>
+          <Button className="fz-save-btn print-btn" icon="save" type="primary" onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form"), "notValid"), 300)}>
+            保存
+          </Button>
           <Button className="fz-save-btn print-btn" icon="print-white" type="primary" onClick={this.handlePrintBtn}>
             打印
           </Button>
           <Button className="fz-save-btn" icon="save" type="primary" onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form")), 300)}>
-            保存
+            提交
           </Button>
           {/* <Button className="blue-btn" type="ghost"
             onClick={() => setTimeout(() => this.handleSave(document.querySelector(".fuzhen-form"), "open"), 100)}>

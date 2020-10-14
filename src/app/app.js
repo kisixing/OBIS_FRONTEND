@@ -176,10 +176,9 @@ export default class App extends Component {
       store.dispatch(action);
       const treeAction = templateTree1Action(res.object.data);
       store.dispatch(treeAction);
-      this.setState({ pharVisible1: res.object.vislble})
-      // if(!res.object.vislble) { 
+      this.setState({ pharVisible1: res.object.vislble}, () => {
         this.setCheckedKeys(data);
-      // }
+      })
     });
 
     service.shouzhen.findTemplateTree(1).then(res => {
@@ -210,7 +209,7 @@ export default class App extends Component {
 
   /*高危因素用药筛查表 默认勾选的项*/
   setCheckedKeys(params) {
-    const { checkedKeys, templateTree1, fzList } = this.state;
+    const { checkedKeys, templateTree1, fzList, pharVisible1 } = this.state;
     const bmi = params.checkUp.ckbmi;
     const age = params.gravidaInfo.userage;
     const chanc = params.diagnosis.chanc;
@@ -231,7 +230,7 @@ export default class App extends Component {
     if(!!ivf && ivf[0] && ivf[0].label === "IVF") checkedKeys.push(getKey("IVF/ART"));
     if(!!xiyan && xiyan[0] && xiyan[0].label === "有") checkedKeys.push(getKey("吸烟"));
 
-    if(checkedKeys.length > 0) {
+    if(checkedKeys.length > 0 && !pharVisible1) {
       const action = isMeetPharAction(true);
       store.dispatch(action);
     }

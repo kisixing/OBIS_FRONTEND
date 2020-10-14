@@ -43,6 +43,7 @@ export const jiuOptions = toOptions('无,白酒,啤酒,红酒,其他');
  * 受孕方式
  */
 export const syfsOptions = toOptions('IVF(input){#ff0000},自然,其他(input){#ff0000}');
+// export const syfsOptions = toOptions([{k:'IVF{#ff0000}(shouzhenyy-移植时间,第,天胚胎)',addspan:2},'自然','其他(input){#ff0000}']);
 
 /**
  * 血型O,A,B,AB
