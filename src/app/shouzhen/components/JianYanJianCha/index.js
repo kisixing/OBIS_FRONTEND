@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { get } from 'lodash';
 import formRender from '../../../../render/form';
 import * as baseData from '../../data';
 
@@ -43,7 +44,7 @@ export default class extends Component{
           columns:[
             {name:'add_FIELD_lis_hb(g/L)[HB]', className: unusualArr.includes(entity.add_FIELD_lis_hb_unusual) ? 'isRed' : '', type:'input', span: 5},
             {span:1},
-            {name:'add_FIELD_lis_mcv(fL)[MCV]',  className: unusualArr.includes(entity.add_FIELD_lis_mcv_unusual) ? 'isRed' : '', type:'input', span: 5},
+            {name:'add_FIELD_lis_mcv(fL)[MCV]', className: unusualArr.includes(entity.add_FIELD_lis_mcv_unusual) ? 'isRed' : '', type:'input', span: 5},
             {span:1},
             {name:'add_FIELD_lis_plt(x10^9/L)[PLT]', className: unusualArr.includes(entity.add_FIELD_lis_plt_unusual) ? 'isRed' : '', type:'input', span: 5},
           ]
@@ -56,16 +57,15 @@ export default class extends Component{
         {
           columns:[
             {name:'hbsAg[乙肝两对半]', className:'add-ipt', type:'checkinput-5',valid: 'required', options: baseData.ygOptions,radio:true,span:12},
-            {name:'add_FIELD_hbsAg_DNA(IU/ml)[HBV DNA]', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
-            {name:'add_FIELD_hbsAg_ALT(U/L)[ALT]', className: 'label-right', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
-            {name:'add_FIELD_hbsAg_AST(U/L)[AST]', className: 'label-right', type:'input', span:4, filter:entity => entity.hbsAg && entity.hbsAg[0] && entity.hbsAg[0].label === '异常'},
+            {name:'add_FIELD_hbsAg_DNA(IU/ml)[HBV DNA]', className: unusualArr.includes(entity.add_FIELD_hbsAg_DNA_unusual) ? 'isRed' : '', type:'input', span:4, filter:entity => get(entity, 'hbsAg.0.label') === '异常'},
+            {name:'add_FIELD_hbsAg_ALT(U/L)[ALT]', className: unusualArr.includes(entity.add_FIELD_hbsAg_ALT_unusual) ? 'isRed label-right' : 'label-right', type:'input', span:4, filter:entity => get(entity, 'hbsAg.0.label') === '异常'},
+            {name:'add_FIELD_hbsAg_AST(U/L)[AST]', className: unusualArr.includes(entity.add_FIELD_hbsAg_AST_unusual) ? 'isRed label-right' : 'label-right', type:'input', span:4, filter:entity => get(entity, 'hbsAg.0.label') === '异常'},
           ]
         },
         {
           columns:[
             {name:'hcvAb[丙肝抗体]', className:'add-ipt', type:'checkinput-5',valid: 'required', options: baseData.yywOptions, radio:true, span:12},
-            {name:'add_FIELD_hcvAb_RNA[丙肝RNA]', type:'checkinput-5', options: baseData.yywOptions, radio:true, span:12, 
-             filter: entity => entity.hcvAb && entity.hcvAb[0] && entity.hcvAb[0].label === '阳性'}
+            {name:'add_FIELD_hcvAb_RNA[丙肝RNA]', type:'checkinput-5', options: baseData.yywOptions, radio:true, span:12, filter: entity => get(entity, 'hcvAb.0.label') === '阳性'}
           ]
         },
         {
