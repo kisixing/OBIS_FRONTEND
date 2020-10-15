@@ -47,7 +47,7 @@ export default class Index extends Component {
       unusualFlag: '',
       checkHighriskSign: null,
       isShowSignModal: true,
-      preeArr: ['多胎', '慢性高血压', '1型糖尿病', '2型糖尿病', 'PGDM', '肾炎', '肾脏', '肾病', '红斑狼疮', '抗磷脂综合征'],
+      preeArr: ['多胎', '慢性高血压', '1型糖尿病', '2型糖尿病', 'PGDM', '肾炎', '肾脏', '肾病', '红斑狼疮', '抗磷脂综合征', 'SLE'],
       ...store.getState(),
     };
     store.subscribe(this.handleStoreChange);

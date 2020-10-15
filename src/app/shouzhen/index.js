@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { get } from 'lodash';
 import { Tabs, Button, Row, Col, message, Icon } from 'antd';
 import Page from '../../render/page';
 import { fireForm } from '../../render/form';
@@ -17,7 +18,7 @@ import ZDCL from './components/ZhenDuanChuLi';
 
 import store from "../store";
 import { getUserDocAction, getAllFormDataAction, isFormChangeAction, allReminderAction, showReminderAction, openMedicalAction,
-         getIdAction, getWhichAction, setEmptyAction, szListAction
+         getIdAction, getWhichAction, setEmptyAction, szListAction, getAlertAction
     } from "../store/actionCreators.js";
 
 import * as baseData from './data';
@@ -273,6 +274,7 @@ export default class Patient extends Component {
                         entity['userjiehn'] = '';
                         entity['userjinqjh'] = [];
                     }
+                    break;
                 default:
                     break;
             }
@@ -287,7 +289,7 @@ export default class Patient extends Component {
     }
 
     handleSave(key, type) {
-        const { tabs, step, allFormData, szList, emptyData, isFormChange } = this.state;
+        const { tabs, step, allFormData, szList, emptyData, isFormChange, userDoc } = this.state;
         const tab = tabs.filter(t => t.key === step).pop() || {};
         const form = document.querySelector('.shouzhen');
         const next = tabs[tabs.indexOf(tab) + 1] || { key: step }
@@ -455,6 +457,17 @@ export default class Patient extends Component {
                             allFormData.biography = tab.entity;
                             const action = getAllFormDataAction(allFormData);
                             store.dispatch(action);
+
+                            if (get(allFormData, 'biography.add_FIELD_jzyichuanbing.0.label') === '有') {
+                                service.checkHighriskAlert(userDoc.userid).then(res => {
+                                    let data = res.object;
+                                    if (data && data.length > 0) {
+                                        data.map(item => (item.visible = true));
+                                    }
+                                    const alertAction = getAlertAction(data);
+                                    store.dispatch(alertAction);
+                                })
+                            }         
                         }
                         if(tab.key === 'tab-4') {
                             allFormData.checkUp = tab.entity;

@@ -47,8 +47,8 @@ export default {
     /**
      * 高危弹出提醒不再提示
      */
-    closeHighriskAlert: function(id, params){
-        return myAxios.post('/outpatientWriteRestful/closeHighriskAlert', {userid: id, mark: params});
+    closeHighriskAlert: function(id, params, type){
+        return myAxios.post('/outpatientWriteRestful/closeHighriskAlert', {userid: id, mark: params, type: type});
     },
     /**
      * 添加高危标记

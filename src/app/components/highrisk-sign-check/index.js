@@ -16,17 +16,17 @@ export default class Index extends Component{
     allItem.forEach(item => { item.check = true });
     this.setState({ checkItems: allItem })
   }
-  
-  // handleCancelEver = () => {
-  //   const { checkItems } = this.state;
-  //   const { closeModal, userDoc } = this.props;
-  //   checkItems.forEach(item => {
-  //     if (item.check) {
-  //       service.closeHighriskAlert(userDoc.userid, item.content);
-  //     } 
-  //   })
-  //   closeModal('isShowSignModal');
-  // }
+    
+  handleCancelEver = () => {
+    const { checkItems } = this.state;
+    const { closeModal, userDoc } = this.props;
+    checkItems.forEach(item => {
+      if (item.check) {
+        service.closeHighriskAlert(userDoc.userid, item.highrisk, 4);
+      } 
+    })
+    closeModal('isShowSignModal');
+  }
 
   handleCancel = () => {
     const { closeModal } = this.props;
@@ -47,7 +47,7 @@ export default class Index extends Component{
   buttons = () => {
     return (
       <div>
-        {/* <Button onClick={this.handleCancelEver}>关闭，不再提示</Button> */}
+        <Button onClick={this.handleCancelEver}>关闭，不再提示</Button>
         <Button onClick={this.handleCancel}>关闭</Button>
         <Button type="primary" onClick={this.handleOk}>确定标记</Button>
       </div>
