@@ -111,7 +111,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'add_FIELD_checkup_other[其他]', type:'input', span: 21},
+            {name:'add_FIELD_checkup_other[其他]', type:'textarea', span: 21},
           ]
         }
       ]

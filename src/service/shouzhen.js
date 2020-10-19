@@ -208,8 +208,8 @@ export default {
         return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/makeOutpatientAppointment`, { userid: r.object.userid, appointmentType: 'diabetes', appointmentDate: time }));
     },
     // 首诊调整预产期-B超
-    calculateGesexpectrv: function(gesexpect, ckztingj, ckzweek) {
-        return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/calculateGesexpectrv`, { userid: r.object.userid, gesexpect, ckztingj, ckzweek }));
+    calculateGesexpectrv: function(gesexpect, ckztingj, ckzweek, transplantTime, days) {
+        return this.userId().then(r => myAxios.post(`/outpatientWriteRestful/calculateGesexpectrv`, { userid: r.object.userid, gesexpect, ckztingj, ckzweek, transplantTime, days }));
     },
     // 不再提示调整预产期-B超
     closeRemindMark: function() {

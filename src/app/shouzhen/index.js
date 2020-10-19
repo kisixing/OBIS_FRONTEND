@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { get } from 'lodash';
+import { get, isString } from 'lodash';
 import { Tabs, Button, Row, Col, message, Icon } from 'antd';
 import Page from '../../render/page';
 import { fireForm } from '../../render/form';
@@ -73,9 +73,16 @@ export default class Patient extends Component {
 
             if (tab.key === 'tab-0') {
                 tab.entity = service.praseJSON(allFormData.pregnantInfo);
+
+                const IVFLabel  = get(tab, 'entity.add_FIELD_shouyun.0.label');
+                const IVFVal  = get(tab, 'entity.add_FIELD_shouyun.0.value');
                 // 解决自然选项去掉空格之后没有勾选对应选项的问题
-                if (tab.entity.add_FIELD_shouyun && tab.entity.add_FIELD_shouyun[0] && tab.entity.add_FIELD_shouyun[0].label === ' 自然') {
+                if (IVFLabel === ' 自然') {
                     tab.entity.add_FIELD_shouyun = [{"label": "自然", "value": ""}];
+                }
+                // IVF备注选项修改
+                if (IVFLabel === 'IVF' && isString(IVFVal) && IVFVal.length > 0) {
+                    tab.entity.add_FIELD_shouyun = [{"label": "IVF", "value": {date0: '', input1: '', input2: IVFVal}}];
                 }
             } else if (tab.key === 'tab-1'){
                 tab.entity = service.praseJSON(allFormData.hisInfo);
@@ -164,7 +171,6 @@ export default class Patient extends Component {
             } else {
                 tab.entity = service.praseJSON(allFormData);
             }
-            // console.log(tab.key, tab.entity);
             this.setState({ step });
         }
     }
@@ -197,6 +203,11 @@ export default class Patient extends Component {
                         entity['ckztingj'] = '';
                     } else {
                         entity['ckztingj'] = util.getWeek(40, util.countWeek(entity['gesexpect'], value));
+                    }
+                    break;
+                case 'add_FIELD_shouyun': 
+                    if (get(value, '0.value.date0') && get(value, '0.value.input1')) {
+                        this.adjustGesexpectrv(entity, true);
                     }
                     break;
                 case 'ckzweek':
@@ -300,7 +311,6 @@ export default class Patient extends Component {
             const stepNum = parseInt(step.slice(-1));
             isJump = keyNum >= stepNum ? false : true;
         }
-        // console.log('handleSave', key, step, tab.entity);
 
         message.destroy();
         const hide = message.loading('正在执行中...', 0);
@@ -638,11 +648,21 @@ export default class Patient extends Component {
         })
     }
 
-    adjustGesexpectrv(pregnantInfo) {
-        const { gesexpect, gesexpectrv, ckztingj, ckzweek } = pregnantInfo;
+    adjustGesexpectrv(pregnantInfo, bool) {
+        const { gesexpect, gesexpectrv, ckztingj, ckzweek, add_FIELD_shouyun } = pregnantInfo;
         if (gesexpect && ckztingj && ckzweek && ckztingj !== ckzweek) {
             const days = util.getDays(util.getWeek(ckztingj, ckzweek));
-            if (days >= 7) {
+            if (bool) {
+                const transplantTime = get(add_FIELD_shouyun, '0.value.date0');
+                const days = get(add_FIELD_shouyun, '0.value.input1');
+                service.shouzhen.calculateGesexpectrv(gesexpect, ckztingj, ckzweek, transplantTime, days).then(res => {
+                    if (gesexpectrv !== res.object.gesexpectrvTransplant) {
+                        this.setState({
+                            adjustInfo: res.object
+                        })
+                    }
+                })
+            } else if (days >= 7) {
                 service.shouzhen.calculateGesexpectrv(gesexpect, ckztingj, ckzweek).then(res => {
                     if (gesexpectrv !== res.object.gesexpectrv) {
                         this.setState({
@@ -659,7 +679,11 @@ export default class Patient extends Component {
         const { adjustInfo, tabs } = this.state;
         const content = () => {
             return (
-                <div>
+                adjustInfo.gesexpectrvTransplant
+                ? <div>
+                    根据胚胎移植时间，是否调整预产期-B超为 {adjustInfo.gesexpectrvTransplant}
+                </div>
+                : <div>
                     根据B超，是否调整预产期-B超为 {adjustInfo.gesexpectrv}
                 </div>
             )
@@ -672,7 +696,11 @@ export default class Patient extends Component {
         const onOk = (e) => {
             const visible = { "remindFlag": false };
             this.setState({ adjustInfo: {...adjustInfo, ...visible} });
-            this.handleChange(e, { name: 'gesexpectrv', value: adjustInfo.gesexpectrv }, tabs[0].entity);
+            if (adjustInfo.gesexpectrvTransplant) {
+                this.handleChange(e, { name: 'gesexpectrv', value: adjustInfo.gesexpectrvTransplant }, tabs[0].entity);
+            } else {
+                this.handleChange(e, { name: 'gesexpectrv', value: adjustInfo.gesexpectrv }, tabs[0].entity);
+            }
         }
         cModal({
             visible: adjustInfo.remindFlag, 

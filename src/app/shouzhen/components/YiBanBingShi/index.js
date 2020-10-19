@@ -152,7 +152,7 @@ export default class extends Component {
         {
           columns: [
             {
-              name: "add_FIELD_symptom[其@他]",
+              name: "add_FIELD_symptom[其他]",
               type: "textarea",
               className: "colorRed",
               // type: "editableSelect",
