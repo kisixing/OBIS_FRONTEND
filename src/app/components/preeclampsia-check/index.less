@@ -1,0 +1,35 @@
+.pree-modal {
+  top: 50px;
+  .modal-title > .ant-tree-switcher.ant-tree-noline_open,
+  .modal-title > .ant-tree-checkbox {
+    display: none;
+  }
+  .modal-title > .ant-tree-node-content-wrapper {
+    width: 100%;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+    background-color: #e6f7ff;
+    border-bottom: 3px solid #6699ff;
+  }
+  .pree-left .ant-tree-child-tree li {
+    white-space: pre-wrap;
+    &:nth-child(6),
+    &:nth-child(12) {
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #6699ff;
+    }
+  }
+  .pree-right .ant-tree-child-tree li {
+    &:first-child {
+      padding: 79px 0;
+      border-bottom: 1px dashed #6699ff;
+    }
+    &:nth-child(2) {
+      padding: 90px 0;
+      margin-bottom: 90px;
+      border-bottom: 1px dashed #6699ff;
+    }
+  }
+}

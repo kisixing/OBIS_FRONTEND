@@ -36,7 +36,7 @@ export default class Index extends Component{
    *预约窗口
    */
   renderMenZhen() {
-    const { openMenzhen, closeMenzhen } = this.props;
+    const { openMenzhen, onClose } = this.props;
     const { menzhenDate, selectList, orderData, hasAppointment } = this.state;
 
     const panelChange = (date, dateString) => {
@@ -52,11 +52,11 @@ export default class Index extends Component{
     }
 
     const onCancel = () => {
-      closeMenzhen();
+      onClose('openMenzhen');
     }
 
     const onOk = () => {
-      closeMenzhen();
+      onClose('openMenzhen');
       service.shouzhen.makeOutpatientAppointment(menzhenDate);
     }
 

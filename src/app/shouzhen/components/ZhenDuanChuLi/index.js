@@ -15,6 +15,7 @@ import TemplateModal from '../../../components/template-modal';
 import DiagSearch from '../../../components/diagnosis-search';
 import DiabetesAppointment from '../../../components/diabetes-appointment';
 import PreeclampsiaModal from '@/app/components/preeclampsia-modal';
+import PreeclampsiaCheck from '@/app/components/preeclampsia-check';
 import HighriskSignCheck from '@/app/components/highrisk-sign-check';
 import cModal from '../../../../render/modal';
 import '../../index.less';
@@ -52,6 +53,7 @@ export default class extends Component{
       isShowPlanModal: false,
       checkHighriskSign: null,
       isShowSignModal: true,
+      isShowPreeclampsiaCheck: false,
     };
     store.subscribe(this.handleStoreChange);
   }
@@ -165,7 +167,7 @@ export default class extends Component{
         },
         {
           columns: [
-            { name: "[常用表格]", type: "buttons", span: 14, text: "(#4d94ff)[VTE预防用药筛查表]", onClick: this.handleModalBtnClick }
+            { name: "[常用表格]", type: "buttons", span: 14, text: "(#4d94ff)[VTE预防用药筛查表],(#4d94ff)[子痫前期风险评估表]", onClick: this.handleModalBtnClick }
           ]
         },
       ]
@@ -174,8 +176,7 @@ export default class extends Component{
 
   handleModalBtnClick = (e, {text, index}) => {
     if (text === '子痫前期风险评估表') {
-      const action = showTrialAction(true);
-      store.dispatch(action);
+      this.setState({ isShowPreeclampsiaCheck: true })
     }
     
     if (text === 'VTE预防用药筛查表') {
@@ -730,20 +731,17 @@ export default class extends Component{
     this.setState({ openTemplate: false });
   }
 
-  closeMenzhen = () => {
-    this.setState({ openMenzhen: false });
+  closeModal = (param) => {
+    this.setState({ [param]: false });
   }
 
-  closeModal = (e) => {
+  addPreeTreatment = (e) => {
     this.addTreatment(e, '阿司匹林');
   }
 
-  closeSign = () => {
-    this.setState({ isShowSignModal: false });
-  }
-
   render(){
-    const { isShowRegForm, openTemplate, isShowDiagSearch, openMenzhen, checkHighriskSign, isShowSignModal, userDoc } = this.state;
+    const { isShowRegForm, openTemplate, isShowDiagSearch, openMenzhen, checkHighriskSign, isShowSignModal, userDoc,
+            isShowPreeclampsiaCheck, allFormData } = this.state;
     const { entity } = this.props;
     return (
       <div className="zhen-duan">
@@ -763,15 +761,16 @@ export default class extends Component{
         {this.renderHighModal()}
         {openTemplate && <TemplateModal openTemplate={openTemplate} closeTemplateModal={this.closeTemplateModal} />}
         {isShowDiagSearch && <DiagSearch addDiag={this.adddiagnosis.bind(this)} />}
-        {openMenzhen && <DiabetesAppointment openMenzhen={openMenzhen} closeMenzhen={this.closeMenzhen} />}
+        {openMenzhen && <DiabetesAppointment openMenzhen={openMenzhen} onClose={this.closeModal} />}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)}/>} */}
         { this.renderPlanModal() }
-        <PreeclampsiaModal closeModal={this.closeModal} />
+        <PreeclampsiaModal closeModal={this.addPreeTreatment} />
+        {isShowPreeclampsiaCheck && <PreeclampsiaCheck onClose={this.closeModal} allFormData={allFormData} />}
         {
           checkHighriskSign && <HighriskSignCheck 
             checkHighriskSign={checkHighriskSign} 
             isShowSignModal={isShowSignModal} 
-            closeModal={this.closeSign} 
+            onClose={this.closeModal} 
             userDoc={userDoc}
           />
         }

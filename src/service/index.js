@@ -98,7 +98,7 @@ export default {
     chanhou: Object.assign(chanhou, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),
 
     /**
-     * 产后所需API
+     * 基本信息所需API
      */
     jiben: Object.assign(jiben, { userId: ()=>userId, fireWatch: (...args)=>watchInfoList.forEach(fn=>fn(...args)) }),
 }

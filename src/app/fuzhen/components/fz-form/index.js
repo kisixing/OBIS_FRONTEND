@@ -11,12 +11,13 @@ import cModal from '../../../../render/modal';
 import './index.less';
 import store from '../../../store';
 import { isFormChangeAction, allReminderAction, getUserDocAction, openMedicalAction, showReminderAction,
-        showTrialAction, showPharAction
+         showPharAction
       } from '../../../store/actionCreators.js';
 import RegForm from '../../../components/reg-form';
 import TemplateModal from '../../../components/template-modal';
 import DiabetesAppointment from '../../../components/diabetes-appointment';
 import PreeclampsiaModal from '@/app/components/preeclampsia-modal';
+import PreeclampsiaCheck from '@/app/components/preeclampsia-check';
 
 export default class FuzhenForm extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ export default class FuzhenForm extends Component {
       lisCheckedNodes: [],
       lisImportTitle: '',
       openMenzhen: false,
+      isShowPreeclampsiaCheck: false,
       ...store.getState(),
     }
     store.subscribe(this.handleStoreChange);
@@ -456,7 +458,7 @@ export default class FuzhenForm extends Component {
             { name: 'addnumRvProfessorOutpatient', type: 'checkinput', options: baseData.jhOptions, filter: entity => this.showAdd(entity), span: 1 },
             { name: 'professorAppointmetNum[（已加号](个）)', type: 'input', disabled: true, className: 'add-num', filter: entity => this.showAdd(entity), span: 3 },
             { 
-              name: "[常用表格]", type: "buttons", span: 12, text: "(#4d94ff)[VTE预防用药筛查表]",
+              name: "[常用表格]", type: "buttons", span: 12, text: "(#4d94ff)[VTE预防用药筛查表],(#4d94ff)[子痫前期风险评估表]",
               onClick: this.handleModalBtnClick
             }
           ]
@@ -467,8 +469,7 @@ export default class FuzhenForm extends Component {
 
   handleModalBtnClick = (e, {text, index}) => {
     if (text === '子痫前期风险评估表') {
-      const action = showTrialAction(true);
-      store.dispatch(action);
+      this.setState({ isShowPreeclampsiaCheck: true })
     }
     
     if (text === 'VTE预防用药筛查表') {
@@ -880,11 +881,11 @@ export default class FuzhenForm extends Component {
     this.setState({ openTemplate: false });
   }
 
-  closeMenzhen = () => {
-    this.setState({ openMenzhen: false });
+  closeModal = (param) => {
+    this.setState({ [param]: false });
   }
 
-  closeModal = (e) => {
+  addPreeTreatment = (e) => {
     this.addTreatment(e, '阿司匹林');
   }
 
@@ -894,7 +895,7 @@ export default class FuzhenForm extends Component {
   }
 
   render() {
-    const { isShowRegForm, openTemplate, openListImport, openMenzhen } = this.state;
+    const { isShowRegForm, openTemplate, openListImport, openMenzhen, isShowPreeclampsiaCheck, allFormData } = this.state;
     const { initData } = this.props;
     return (
       <div className="fuzhen-form">
@@ -921,9 +922,10 @@ export default class FuzhenForm extends Component {
         {/* {this.renderAdviceModal()} */}
         {this.renderHighModal()}
         {openTemplate && <TemplateModal openTemplate={openTemplate} closeTemplateModal={this.closeTemplateModal} />}
-        {openMenzhen && <DiabetesAppointment openMenzhen={openMenzhen} closeMenzhen={this.closeMenzhen} />}
+        {openMenzhen && <DiabetesAppointment openMenzhen={openMenzhen} onClose={this.closeModal} />}
         {/* {isShowRegForm && <RegForm isShowRegForm={isShowRegForm} closeRegForm={this.closeRegForm} getDateHos={this.handleChange.bind(this)} />} */}
-        <PreeclampsiaModal closeModal={this.closeModal} />
+        <PreeclampsiaModal closeModal={this.addPreeTreatment} />
+        {isShowPreeclampsiaCheck && <PreeclampsiaCheck onClose={this.closeModal} allFormData={allFormData} />}
       </div>
     );
   }

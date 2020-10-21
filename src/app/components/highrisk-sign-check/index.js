@@ -19,29 +19,29 @@ export default class Index extends Component{
     
   handleCancelEver = () => {
     const { checkItems } = this.state;
-    const { closeModal, userDoc } = this.props;
+    const { onClose, userDoc } = this.props;
     checkItems.forEach(item => {
       if (item.check) {
         service.closeHighriskAlert(userDoc.userid, item.highrisk, 4);
       } 
     })
-    closeModal('isShowSignModal');
+    onClose('isShowSignModal');
   }
 
   handleCancel = () => {
-    const { closeModal } = this.props;
-    closeModal('isShowSignModal');
+    const { onClose } = this.props;
+    onClose('isShowSignModal');
   }
 
   handleOk = () => {
     const { checkItems } = this.state;
-    const { closeModal, userDoc } = this.props;
+    const { onClose, userDoc } = this.props;
     checkItems.forEach(async (item) => {
       if (item.check) {
         await service.addHighrisk(userDoc.userid, `\n${item.highrisk}`, item.level);
       } 
     })
-    closeModal('isShowSignModal');
+    onClose('isShowSignModal');
   }
 
   buttons = () => {
