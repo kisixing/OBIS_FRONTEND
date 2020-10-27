@@ -649,7 +649,7 @@ export default class FuZhen extends Component {
             &nbsp;<span className="hide">ie8下拉框只能向下，这里是占位</span>
           </p> */}
         </div>
-        <BloodPressure isShowBloodPressure={isShowBloodPressure} initData={initData} closeModal={this.closeModal} />
+        { isShowBloodPressure && <BloodPressure isShowBloodPressure={isShowBloodPressure} initData={initData} closeModal={this.closeModal} />}
       </Page>
     );
   }
