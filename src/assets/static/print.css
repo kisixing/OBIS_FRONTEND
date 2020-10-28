@@ -1,6 +1,7 @@
 @import './antd/antd-1.x.min.css';
 @page {
-  margin-right: 3cm;
+  /* 打印页面右边距 */
+  margin-right: 2cm;
 }
 @media print {
   /* 复诊记录打印 */
