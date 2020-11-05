@@ -19,7 +19,7 @@ export default class extends Component{
               name: 'ckpressure(mmHg)[血压]', className: 'short-ckpressure', type: ['input(/)','input'], span: 5, valid: (value)=>{
               let message = '';
               if(value){
-                message = [0,1].map(i=>valid(`pureNumber|required|rang(${[90,60][i]},${[140,90][i]})`,value[i])).filter(i=>i).join();
+                message = [0,1].map(i=>valid(`pureNumber|required|rang(${[90,60][i]},${[130,90][i]})`,value[i])).filter(i=>i).join();
               }else{
                 message = valid('required',value)
               }
@@ -48,7 +48,7 @@ export default class extends Component{
               name: 'secondCkpressure(mmHg)[血压二测]', className: 'short-ckpressure', type: ['input(/)','input'], span: 5, valid: (value)=>{
                 let message = '';
                 if(value){
-                  message = [0,1].map(i=>valid(`pureNumber|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
+                  message = [0,1].map(i=>valid(`pureNumber|rang(${[90,60][i]},${[130,90][i]})`,value[i])).filter(i=>i).join();
                 }
                 return message;
               }, 
@@ -58,7 +58,7 @@ export default class extends Component{
               name: 'threeCkpressure(mmHg)[血压三测]', className: 'short-ckpressure', type: ['input(/)','input'], span: 5, valid: (value)=>{
                 let message = '';
                 if(value){
-                  message = [0,1].map(i=>valid(`pureNumber|rang(0,${[139,109][i]})`,value[i])).filter(i=>i).join();
+                  message = [0,1].map(i=>valid(`pureNumber|rang(${[90,60][i]},${[130,90][i]})`,value[i])).filter(i=>i).join();
                 }
                 return message;
               }, 

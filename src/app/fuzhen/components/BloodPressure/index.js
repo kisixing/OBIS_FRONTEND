@@ -38,20 +38,20 @@ export default class Index extends Component {
         rows: [
           {
             columns: [
-              { name: "ckshrinkpressure(/)[首测]", type: "input", span: 9 },
-              { name: "ckdiastolicpressure(mmHg)", type: "input", span: 7 },
+              { name: "ckshrinkpressure(/)[首测]", type: "input", valid: 'rang(90,130)', span: 9 },
+              { name: "ckdiastolicpressure(mmHg)", type: "input", valid: 'rang(60,90)', span: 7 },
             ]
           },
           {
             columns: [
-              { name: "secondBpSystolic(/)[二测]", type: "input", span: 9 },
-              { name: "secondBpDiastolic(mmHg)", type: "input", span: 7 },
+              { name: "secondBpSystolic(/)[二测]", type: "input", valid: 'rang(90,130)', span: 9 },
+              { name: "secondBpDiastolic(mmHg)", type: "input", valid: 'rang(60,90)', span: 7 },
             ]
           },
           {
             columns: [
-              { name: "threeBpSystolic(/)[三测]", type: "input", span: 9 },
-              { name: "threeBpDiastolic(mmHg)", type: "input", span: 7 },
+              { name: "threeBpSystolic(/)[三测]", type: "input", valid: 'rang(90,130)', span: 9 },
+              { name: "threeBpDiastolic(mmHg)", type: "input", valid: 'rang(60,90)', span: 7 },
             ]
           },
         ]
