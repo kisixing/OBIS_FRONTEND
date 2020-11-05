@@ -31,7 +31,7 @@ export default class RegForm extends Component {
       rows: [
         {
           columns: [
-            { name: 'systolicPressure(/)[血压]', type: 'input', span: 4, valid: 'pureNumber|rang(90,140)' },
+            { name: 'systolicPressure(/)[血压]', type: 'input', span: 4, valid: 'pureNumber|rang(90,130)' },
             { name: 'diastolicPressure(mmHg)[]', type: 'input', span: 2, valid: 'pureNumber|rang(60,90)' },
             // { 
             //   name: 'bp(mmHg)[血压]', type: ['input(/)','input'], span: 5, valid: (value)=>{
@@ -161,8 +161,8 @@ export default class RegForm extends Component {
         {formRender(fzFormEntity, this.fzFormConfig(), this.handleFZChange.bind(this))}
         <div className="btn-wrapper">
           <Button className="chanhou-btn" onClick={() => setTimeout(() => { this.handleFZSave(document.querySelector(".chanhou-form"))}, 100) }>
-            保存
             <Icon type="save" />
+            保存
           </Button>
         </div>
       </div>

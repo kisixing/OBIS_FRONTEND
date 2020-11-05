@@ -9,7 +9,6 @@ import Zfxx from './components/ZhangFuXinXi';
 import store from "../store";
 import { getAllFormDataAction, getUserDocAction, isFormChangeAction } from "../store/actionCreators.js";
 import editors from './editors';
-import "./index.less";
 
 const tabConetnts = [Yfxx, Zfxx];
 export default class Patient extends Component {
@@ -163,9 +162,6 @@ export default class Patient extends Component {
 
         return (
           <Page className="shouzhen">
-            <Button icon="save" className="top-save-btn" size="small" onClick={() => this.handleSave(step, 'save')}>保存</Button>
-            <Button icon="print-blue" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
-
             <div className="bgWhite" style={{ position: "fixed", top: "148px", left: "0", right: "0", bottom: "0"}}></div>
             <Tabs type="card" activeKey={step} onChange={key => setTimeout(() => { this.handleSave(key) }, 100)}>
               {tabs.map(({ key, title, entity, error, Content }) => (
@@ -182,15 +178,14 @@ export default class Patient extends Component {
                 </Tabs.TabPane>
               ))}
             </Tabs>
-            <Row>
-              <Col span={21} />
-              <Col>
-                { step !== tabs[tabs.length - 1].key
-                    ? <Button className="shouzhen-bbtn" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}>下一页<Icon type="arrow-right" /></Button>
-                    : <Button className="shouzhen-bbtn" type="primary" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>保存<Icon type="save" /></Button>
-                }
-              </Col>
-            </Row>
+            <div className="btn-wrapper">
+              <Button icon="save" className="shouzhen-btn" size="small" onClick={() => this.handleSave(step, 'save')}>保存</Button>
+              <Button icon="print-white" className="shouzhen-btn" size="small" onClick={() => printIvisit()}>打印</Button>
+              { step !== tabs[tabs.length - 1].key
+                  ? <Button className="shouzhen-btn" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 100)}><Icon type="arrow-right" />下一页</Button>
+                  : <Button icon="save" className="shouzhen-btn" type="primary" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>提交</Button>
+              }
+             </div>
           </Page>
         );
     }

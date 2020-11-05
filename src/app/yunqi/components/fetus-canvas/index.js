@@ -201,7 +201,7 @@ export default class Index extends Component {
     const context = canvas.getContext("2d");
     canvas.width = 800;
     canvas.height = 800;
-    context.fillStyle = "#F4FDEA";
+    context.fillStyle = "#fff";
     context.fillRect(0, 0, 800, 800)
 
     const baseLeft = 170;

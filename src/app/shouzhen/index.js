@@ -728,9 +728,6 @@ export default class Patient extends Component {
         
         return (
           <Page className="shouzhen">
-            <Button icon="save" className="top-save-btn" size="small" onClick={() => this.handleSave(step, 'save')}>保存</Button>
-            <Button icon="print-blue" className="top-savePDF-btn" size="small" onClick={() => printIvisit()}>打印</Button>
-
             <div className="bgWhite" style={{ position: "fixed", top: "148px", left: "0", right: "0", bottom: "0"}}></div>
             <Tabs type="card" activeKey={step} onChange={key => setTimeout(() => { this.handleSave(key) }, 300)}> 
               {tabs.map(({ key, title, entity, error, Content }) => (
@@ -748,18 +745,14 @@ export default class Patient extends Component {
                 </Tabs.TabPane>
               ))}
             </Tabs>
-            <Row>
-              <Col span={21} />
-              <Col>
+            <div className="btn-wrapper">
+                <Button icon="save" className="shouzhen-btn" size="small" onClick={() => this.handleSave(step, 'save')}>保存</Button>
+                <Button icon="print-white" className="shouzhen-btn" size="small" onClick={() => printIvisit()}>打印</Button>
                 { step !== tabs[tabs.length - 1].key
-                    ? <Button className="shouzhen-bbtn" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 300)}>下一页<Icon type="arrow-right" /></Button>
-                    : <div>
-                        {/* <Button className="shouzhen-bbtn" icon="save" type="primary" onClick={() => setTimeout(() => { this.handleSave(step, 'open') }, 100)}>保存并开医嘱</Button> */}
-                        <Button className="shouzhen-bbtn" type="primary" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>保存<Icon type="save" /></Button>
-                      </div>
+                    ? <Button className="shouzhen-btn" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 300)}><Icon type="arrow-right" />下一页</Button>
+                    : <Button icon="save" className="shouzhen-btn" type="primary" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>提交</Button>
                 }
-              </Col>
-            </Row>
+            </div>
             { isShowWeekModal && this.renderWeekModal() }
             { adjustInfo && adjustInfo.remindFlag && this.renderAdjustModal() }
           </Page>

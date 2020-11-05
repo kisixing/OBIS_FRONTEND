@@ -37,10 +37,11 @@ export default class extends Component{
       if (item.title === '定性') item.title = '尿蛋白定性';
       if (item.title === '定量') item.title = '尿蛋白定量';
     })
-    printKeys.splice(printKeys.length - 5, 4);
+    printKeys.splice(printKeys.length - 5, 3);
     printKeys.forEach(item => {
       !item.className ? keysArr.push(item.key) : null;
     })
+    console.log(printKeys, printData,keysArr, '321')
 
     return (
       <div key={printData}>
@@ -72,7 +73,12 @@ export default class extends Component{
               <div>
                 <tr style={(hasPrint && !selectRowKeys.includes(index+2)) ? {visibility: "hidden"} : null}>
                   {keysArr.map(subItem => (
-                    <td>{!!item[subItem] && subItem === "checkdate" ? item[subItem].substring(5) : item[subItem]}</td>
+                    <td>
+                      {
+                        (!!item[subItem] && subItem === "checkdate") ? item[subItem].substring(5) 
+                        : subItem === "nextRvisitText" ? item["ckappointment"].substring(5) : item[subItem]
+                      }
+                    </td>
                   ))}
                 </tr>
                 {

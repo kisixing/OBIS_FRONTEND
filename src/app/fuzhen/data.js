@@ -351,7 +351,6 @@ export const tableKey = () => [
 	{
 		title: '下次复诊',
 		key: 'nextRvisitText',
-		className: 'nextRvisitText',
 		width: '4%',
 	},
 	{
