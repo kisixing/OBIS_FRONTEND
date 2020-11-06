@@ -76,7 +76,7 @@ export default class extends Component{
                     <td>
                       {
                         (!!item[subItem] && subItem === "checkdate") ? item[subItem].substring(5) 
-                        : subItem === "nextRvisitText" ? item["ckappointment"].substring(5) : item[subItem]
+                        : (!!item["ckappointment"] && subItem === "nextRvisitText") ? item["ckappointment"].substring(5) : item[subItem]
                       }
                     </td>
                   ))}
