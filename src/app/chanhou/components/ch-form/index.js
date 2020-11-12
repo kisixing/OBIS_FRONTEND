@@ -90,11 +90,11 @@ export default class RegForm extends Component {
         },
         {
           columns:[
-            { name: 'pelvicMuscleSec2nd[盆地Ⅱ肌]', type: 'editableSelect', span: 5, showSearch: true, options: baseData.pdjOptions },
+            { name: 'pelvicMuscleSec2nd[盆底Ⅱ肌]', type: 'editableSelect', span: 5, showSearch: true, options: baseData.pdjOptions },
             { span: 1 },
-            { name: 'pelvicMuscleSec1st[盆地Ⅰ肌]', type: 'editableSelect', span: 5, showSearch: true, options: baseData.pdjOptions },
+            { name: 'pelvicMuscleSec1st[盆底Ⅰ肌]', type: 'editableSelect', span: 5, showSearch: true, options: baseData.pdjOptions },
             { span: 1 },
-            { name: 'pelvicPressure[盆地压力]', type: 'input', span: 5 },
+            { name: 'pelvicPressure[盆底压力]', type: 'input', span: 5 },
           ]
         },
         {

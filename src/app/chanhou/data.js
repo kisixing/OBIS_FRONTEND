@@ -90,4 +90,4 @@ export const gwzwOptions = toOptions('痊愈,好转，定期复查,转专科治�
 /**
  * 诊断
  */
-export const zdOptions = toOptions('常规产后随诊,子宫复旧不良,伤口愈合不良,盆地功能障碍');
+export const zdOptions = toOptions('常规产后随诊,子宫复旧不良,伤口愈合不良,盆底功能障碍');
