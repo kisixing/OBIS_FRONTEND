@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { get, isString } from 'lodash';
-import { Tabs, Button, Row, Col, message, Icon } from 'antd';
+import { get, set, isString, isEmpty, cloneDeep } from 'lodash';
+import { Tabs, Button, message, Icon } from 'antd';
 import Page from '../../render/page';
 import { fireForm } from '../../render/form';
 import service from '../../service';
@@ -15,12 +15,10 @@ import JYJC from './components/JianYanJianCha';
 import TGJC from './components/TiGeJianCha';
 import ZKJC from './components/ZhuanKeJianCha';
 import ZDCL from './components/ZhenDuanChuLi';
-
 import store from "../store";
 import { getUserDocAction, getAllFormDataAction, isFormChangeAction, allReminderAction, showReminderAction, openMedicalAction,
          getIdAction, getWhichAction, setEmptyAction, szListAction, getAlertAction
     } from "../store/actionCreators.js";
-
 import * as baseData from './data';
 import editors from './editors';
 import "./index.less";
@@ -59,7 +57,7 @@ export default class Patient extends Component {
     componentDidMount() {
         const { allFormData } = this.state;
         if (allFormData) {
-            this.adjustGesexpectrv(allFormData.pregnantInfo);
+            this.adjustGesexpectrv(allFormData.pregnantInfo, false, 0);
         }
     }
 
@@ -83,6 +81,16 @@ export default class Patient extends Component {
                 // IVF备注选项修改
                 if (IVFLabel === 'IVF' && isString(IVFVal) && IVFVal.length > 0) {
                     tab.entity.add_FIELD_shouyun = [{"label": "IVF", "value": {date0: '', input1: '', input2: IVFVal}}];
+                }
+                // 同步早孕-B超数值
+                if (isEmpty(get(tab, 'entity.ultrasounds'))) {
+                    const ultrasounds = [{}];
+                    set(ultrasounds, '0.checkdate', tab.entity.ckzdate);
+                    set(ultrasounds, '0.menopause', tab.entity.ckztingj);
+                    set(ultrasounds, '0.crl', tab.entity.ckzcrl);
+                    set(ultrasounds, '0.bpd', tab.entity.ckzbpd);
+                    set(ultrasounds, '0.gestationalWeek', tab.entity.ckzweek);
+                    tab.entity.ultrasounds = ultrasounds;
                 }
             } else if (tab.key === 'tab-1'){
                 tab.entity = service.praseJSON(allFormData.hisInfo);
@@ -167,7 +175,8 @@ export default class Patient extends Component {
                 }
             } else if (tab.key === 'tab-7') {
                 tab.entity = service.praseJSON(allFormData.diagnosis); 
-                tab.entity.add_FIELD_first_clinical_doctor = (!tab.entity.xiacsfdate && !tab.entity.add_FIELD_first_clinical_doctor) ? common.getCookie('docName') : tab.entity.add_FIELD_first_clinical_doctor;
+                tab.entity.add_FIELD_first_clinical_doctor = (!tab.entity.xiacsfdate && !tab.entity.add_FIELD_first_clinical_doctor) 
+                                                            ? common.getCookie('docName') : tab.entity.add_FIELD_first_clinical_doctor;
             } else {
                 tab.entity = service.praseJSON(allFormData);
             }
@@ -178,7 +187,7 @@ export default class Patient extends Component {
     // 如果想把handleChange的逻辑移动到对应的tab页里面去，请参考tab-0：yunfuxinxi.js这个文件的handleChange
     async handleChange(e, { name, value, target }, entity) {
         const { step } = this.state;
-        console.log(name, value, entity, 'change');
+        console.log(name, value, target, entity, 'change');
         if (!this.isSaving) {
             entity[name] = value;
             switch (name) {
@@ -192,26 +201,55 @@ export default class Patient extends Component {
                     }
                     break;
                 case 'gesexpect':
-                    if (!value || !entity['ckzdate']) {
-                        entity['ckztingj'] = '';
-                    } else {
-                        entity['ckztingj'] = util.getWeek(40, util.countWeek(value, entity['ckzdate']));
+                    // if (!value || !entity['ckzdate']) {
+                    //     entity['ckztingj'] = '';
+                    // } else {
+                    //     entity['ckztingj'] = util.getWeek(40, util.countWeek(value, entity['ckzdate']));
+                    // }
+                    if (value) {
+                        const cloneData = cloneDeep(entity['ultrasounds']);
+                        cloneData.forEach(item => {
+                            if (item.checkdate) {
+                                item.menopause = util.getWeek(40, util.countWeek(value, item.checkdate));
+                            } else {
+                                item.menopause = '';
+                            }
+                        })
+                        entity['ultrasounds'] = cloneData;
                     }
                     break;
-                case 'ckzdate':
-                    if (!value) {
-                        entity['ckztingj'] = '';
-                    } else {
-                        entity['ckztingj'] = util.getWeek(40, util.countWeek(entity['gesexpect'], value));
+                case 'ultrasounds':
+                    let paramArr = [];
+                    if (target) paramArr = target.split('-');
+                    if (paramArr[2] === 'checkdate') {
+                        const cloneData = cloneDeep(value);
+                        cloneData.forEach(item => {
+                            if (item.checkdate) {
+                                item.menopause = util.getWeek(40, util.countWeek(entity['gesexpect'], item.checkdate));
+                            } else {
+                                item.menopause = '';
+                            }
+                        })
+                        entity['ultrasounds'] = cloneData;
+                    }
+                    if (paramArr[2] === 'gestationalWeek') {
+                        this.adjustGesexpectrv(entity, false, paramArr[1]);
                     }
                     break;
+                // case 'ckzdate':
+                //     if (!value) {
+                //         entity['ckztingj'] = '';
+                //     } else {
+                //         entity['ckztingj'] = util.getWeek(40, util.countWeek(entity['gesexpect'], value));
+                //     }
+                //     break;
+                // case 'ckzweek':
+                //     this.adjustGesexpectrv(entity);
+                //     break;
                 case 'add_FIELD_shouyun': 
                     if (get(value, '0.value.date0') && get(value, '0.value.input1')) {
-                        this.adjustGesexpectrv(entity, true);
+                        this.adjustGesexpectrv(entity, true, 0);
                     }
-                    break;
-                case 'ckzweek':
-                    this.adjustGesexpectrv(entity);
                     break;
                 case 'gesmoc':
                     if (!!value) {
@@ -219,23 +257,23 @@ export default class Patient extends Component {
                             this.handleChange(e, { name: 'gesexpect', value: res.object, target }, entity);
                             this.handleChange(e, { name: 'gesexpectrv', value: res.object, target }, entity);
                         })
-                        service.shouzhen.findCkzdataByUserid(value).then(res => {
-                            if (!!res.object.ckzdate) {
-                                this.handleChange(e, { name: 'ckzdate', value: res.object.ckzdate, target }, entity);
-                            } 
-                            if (!!res.object.ckzcrl) {
-                                this.handleChange(e, { name: 'ckzcrl', value: res.object.ckzcrl, target }, entity);
-                            } 
-                            if (!!res.object.ckzbpd) {
-                                this.handleChange(e, { name: 'ckzbpd', value: res.object.ckzbpd, target }, entity);
-                            };
-                            if (!!res.object.ckzweek) {
-                                this.handleChange(e, { name: 'ckzweek', value: res.object.ckzweek, target }, entity);
-                            }
-                            if (!!res.object.ckztingj) {
-                                this.handleChange(e, { name: 'ckztingj', value: res.object.ckztingj, target }, entity);
-                            }
-                        })
+                        // service.shouzhen.findCkzdataByUserid(value).then(res => {
+                        //     if (!!res.object.ckzdate) {
+                        //         this.handleChange(e, { name: 'ckzdate', value: res.object.ckzdate, target }, entity);
+                        //     } 
+                        //     if (!!res.object.ckzcrl) {
+                        //         this.handleChange(e, { name: 'ckzcrl', value: res.object.ckzcrl, target }, entity);
+                        //     } 
+                        //     if (!!res.object.ckzbpd) {
+                        //         this.handleChange(e, { name: 'ckzbpd', value: res.object.ckzbpd, target }, entity);
+                        //     };
+                        //     if (!!res.object.ckzweek) {
+                        //         this.handleChange(e, { name: 'ckzweek', value: res.object.ckzweek, target }, entity);
+                        //     }
+                        //     if (!!res.object.ckztingj) {
+                        //         this.handleChange(e, { name: 'ckztingj', value: res.object.ckztingj, target }, entity);
+                        //     }
+                        // })
                     }
                     break;
                 case 'add_FIELD_gesmoc_unknown':
@@ -255,24 +293,24 @@ export default class Patient extends Component {
                 case 'cksheng':
                     entity['ckbmi'] = common.getBMI(entity['cktizh'],entity['cksheng']);
                     break;
-                case 'noneChecked1':
-                    entity = common.ResetData(entity, 'noneChecked1');
-                    break;
-                case 'add_FIELD_gaoxueya': case 'add_FIELD_tangniaobing': case 'add_FIELD_xinzangbing': case 'add_FIELD_qitabingshi':
-                    target==="有-checkbox" ? entity['noneChecked1'] = [{"label": "", "value": ""}] : null;
-                    break;
-                case 'noneChecked2':
-                    entity = common.ResetData(entity, 'noneChecked2');
-                    break;
-                case 'add_FIELD_grxiyan': case 'add_FIELD_gryinjiu': case 'add_FIELD_gryouhai': case 'add_FIELD_grfangshe': case 'add_FIELD_grqita':
-                    target==="有-checkbox" ? entity['noneChecked2'] = [{"label": "", "value": ""}] : null;
-                    break;
-                case 'noneChecked3':
-                    entity = common.ResetData(entity, 'noneChecked3');
-                    break;
-                case 'add_FIELD_jzgaoxueya': case 'add_FIELD_jztangniaobing': case 'add_FIELD_jzjixing': case 'add_FIELD_jzyichuanbing': case 'add_FIELD_jzqita':
-                    target==="有-checkbox" ? entity['noneChecked3'] = [{"label": "", "value": ""}] : null;
-                    break;
+                // case 'noneChecked1':
+                //     entity = common.ResetData(entity, 'noneChecked1');
+                //     break;
+                // case 'add_FIELD_gaoxueya': case 'add_FIELD_tangniaobing': case 'add_FIELD_xinzangbing': case 'add_FIELD_qitabingshi':
+                //     target==="有-checkbox" ? entity['noneChecked1'] = [{"label": "", "value": ""}] : null;
+                //     break;
+                // case 'noneChecked2':
+                //     entity = common.ResetData(entity, 'noneChecked2');
+                //     break;
+                // case 'add_FIELD_grxiyan': case 'add_FIELD_gryinjiu': case 'add_FIELD_gryouhai': case 'add_FIELD_grfangshe': case 'add_FIELD_grqita':
+                //     target==="有-checkbox" ? entity['noneChecked2'] = [{"label": "", "value": ""}] : null;
+                //     break;
+                // case 'noneChecked3':
+                //     entity = common.ResetData(entity, 'noneChecked3');
+                //     break;
+                // case 'add_FIELD_jzgaoxueya': case 'add_FIELD_jztangniaobing': case 'add_FIELD_jzjixing': case 'add_FIELD_jzyichuanbing': case 'add_FIELD_jzqita':
+                //     target==="有-checkbox" ? entity['noneChecked3'] = [{"label": "", "value": ""}] : null;
+                //     break;
                 case 'preghiss':
                     var data = value.slice(-1);
                     if(data[0]['$type'] === 'CREATE') {
@@ -325,19 +363,19 @@ export default class Patient extends Component {
                 if (tab.key === 'tab-2') {
                     // 方便移动端作的数据处理
                     let arr = [];
-                    if (tab.entity.add_FIELD_jzgaoxueya && tab.entity.add_FIELD_jzgaoxueya[0] && tab.entity.add_FIELD_jzgaoxueya[0].label === '有') {
+                    if (get(tab, 'entity.add_FIELD_jzgaoxueya.0.label' === '有')) {
                         arr.push('高血压');
                     }
-                    if (tab.entity.add_FIELD_jztangniaobing && tab.entity.add_FIELD_jztangniaobing[0] && tab.entity.add_FIELD_jztangniaobing[0].label === '有') {
+                    if (get(tab, 'entity.add_FIELD_jztangniaobing.0.label' === '有')) {
                         arr.push('糖尿病');
                     }
-                    if (tab.entity.add_FIELD_jzjixing && tab.entity.add_FIELD_jzjixing[0] && tab.entity.add_FIELD_jzjixing[0].label === '有') {
+                    if (get(tab, 'entity.add_FIELD_jzjixing.0.label' === '有')) {
                         arr.push('先天畸形');
                     }
-                    if (tab.entity.add_FIELD_jzyichuanbing && tab.entity.add_FIELD_jzyichuanbing[0] && tab.entity.add_FIELD_jzyichuanbing[0].label === '有') {
+                    if (get(tab, 'entity.add_FIELD_jzyichuanbing.0.label' === '有')) {
                         arr.push('遗传病');
                     }
-                    if (tab.entity.add_FIELD_jzqita && tab.entity.add_FIELD_jzqita[0] && tab.entity.add_FIELD_jzqita[0].label === '有') {
+                    if (get(tab, 'entity.add_FIELD_jzqita.0.label' === '有')) {
                         arr.push(tab.entity.add_FIELD_jzqita[0].value);
                     }
                     tab.entity.mzxuan = arr.join(',');
@@ -648,8 +686,10 @@ export default class Patient extends Component {
         })
     }
 
-    adjustGesexpectrv(pregnantInfo, bool) {
-        const { gesexpect, gesexpectrv, ckztingj, ckzweek, add_FIELD_shouyun } = pregnantInfo;
+    adjustGesexpectrv(pregnantInfo, bool, index) {
+        const { gesexpect, gesexpectrv, add_FIELD_shouyun } = pregnantInfo;
+        const ckztingj = get(pregnantInfo, `ultrasounds.${index}.menopause`);
+        const ckzweek = get(pregnantInfo, `ultrasounds.${index}.gestationalWeek`);
         if (gesexpect && ckztingj && ckzweek && ckztingj !== ckzweek) {
             const days = util.getDays(util.getWeek(ckztingj, ckzweek));
             if (bool) {
@@ -723,7 +763,7 @@ export default class Patient extends Component {
         if (!!allFormData && JSON.stringify(tabs[0].entity) === "{}") {
             tabs[0].entity = allFormData.pregnantInfo;
             this.getEmptyData(allFormData);
-            this.adjustGesexpectrv(allFormData.pregnantInfo);
+            this.adjustGesexpectrv(allFormData.pregnantInfo, false, 0);
         }
         
         return (
