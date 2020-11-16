@@ -45,7 +45,7 @@ export default class extends Component{
 
     return (
       <div key={printData}>
-        <div style={hasPrint ? {visibility: "hidden"} : null}>
+        <div style={hasPrint ? {visibility: "hidden"} : {visibility: "visible"}}>
           <p className="print-info">
             <span className="info-item">姓名：{userDoc.username}</span>
             <span className="info-item">年龄：{userDoc.userage}</span>

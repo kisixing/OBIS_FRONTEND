@@ -5842,7 +5842,7 @@ prompts@^0.1.9:
     kleur "^2.0.1"
     sisteransi "^0.1.1"
 
-prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.1:
+prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.1, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.npm.taobao.org/prop-types/download/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha1-UsQedbjIfnK52TYOAga5ncv/psU=
@@ -6422,6 +6422,13 @@ react-slick@~0.13.3:
     object-assign "^4.1.0"
     react-responsive-mixin "^0.4.0"
     slick-carousel "^1.6.0"
+
+react-to-print@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.npm.taobao.org/react-to-print/download/react-to-print-2.11.0.tgz#2f21af1b79673c387272428413ee253d8411835a"
+  integrity sha1-LyGvG3lnPDhyckKEE+4lPYQRg1o=
+  dependencies:
+    prop-types "^15.7.2"
 
 react@^0.14.9:
   version "0.14.9"

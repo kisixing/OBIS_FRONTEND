@@ -17,7 +17,6 @@ import store from '../store';
 import { isFormChangeAction, openYCQAction, getUserDocAction, fzListAction, getIdAction, getWhichAction,
          getYCQAction, isTwinsAction, getAllFormDataAction
       } from '../store/actionCreators.js';
-
 import "../index.less";
 import "./index.less";
 
