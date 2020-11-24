@@ -88,7 +88,7 @@ export default class Patient extends Component {
                     set(ultrasounds, '0.checkdate', tab.entity.ckzdate);
                     set(ultrasounds, '0.menopause', tab.entity.ckztingj);
                     set(ultrasounds, '0.crl', tab.entity.ckzcrl);
-                    set(ultrasounds, '0.bpd', tab.entity.ckzbpd);
+                    set(ultrasounds, '0.nt', tab.entity.ckzbpd);
                     set(ultrasounds, '0.gestationalWeek', tab.entity.ckzweek);
                     tab.entity.ultrasounds = ultrasounds;
                 }

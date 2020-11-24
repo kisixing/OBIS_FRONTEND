@@ -55,7 +55,7 @@ export default class extends Component {
                   { name: "menopause(周)[停经]", type: "input", span: 5, filter: () => index === 0 },
                   { span: 1 },
                   { name: "crl(mm)[CRL]", className: 'crl-item', type: "input", span: 3 },
-                  { name: "bpd(mm)[NT]", className: 'label-right', type: "input", span: 3, valid: 'rang(0,2.499)' },
+                  { name: "nt(mm)[NT]", className: 'label-right', type: "input", span: 3, valid: 'rang(0,2.499)' },
                   { name: "gestationalWeek(周)[如孕]", className: 'label-right', type: "input", span: 3, valid: "symbol(+)" },
                   { span: 1 },
                   {
