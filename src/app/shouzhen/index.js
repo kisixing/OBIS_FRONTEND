@@ -762,6 +762,10 @@ export default class Patient extends Component {
         // 首个tab页作下特别处理
         if (!!allFormData && JSON.stringify(tabs[0].entity) === "{}") {
             tabs[0].entity = allFormData.pregnantInfo;
+            // 早孕-B超初始化
+            if (isEmpty(get(tabs, '0.entity.ultrasounds'))) {
+                tabs[0].entity.ultrasounds = [{}];
+            }
             this.getEmptyData(allFormData);
             this.adjustGesexpectrv(allFormData.pregnantInfo, false, 0);
         }
