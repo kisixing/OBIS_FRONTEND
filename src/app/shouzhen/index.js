@@ -83,7 +83,7 @@ export default class Patient extends Component {
                     tab.entity.add_FIELD_shouyun = [{"label": "IVF", "value": {date0: '', input1: '', input2: IVFVal}}];
                 }
                 // 同步早孕-B超数值
-                if (isEmpty(get(tab, 'entity.ultrasounds'))) {
+                if (isEmpty(get(tab, 'entity.ultrasounds.0'))) {
                     const ultrasounds = [{}];
                     set(ultrasounds, '0.checkdate', tab.entity.ckzdate);
                     set(ultrasounds, '0.menopause', tab.entity.ckztingj);
