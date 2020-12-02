@@ -220,18 +220,22 @@ export default class Patient extends Component {
                     break;
                 case 'ultrasounds':
                     let paramArr = [];
+                    const cloneData = cloneDeep(value);
                     if (target) paramArr = target.split('-');
                     if (paramArr[2] === 'checkdate') {
-                        const cloneData = cloneDeep(value);
-                        cloneData.forEach(item => {
-                            if (item.checkdate) {
-                                item.menopause = util.getWeek(40, util.countWeek(entity['gesexpect'], item.checkdate));
-                            } else {
-                                item.menopause = '';
-                            }
-                        })
-                        entity['ultrasounds'] = cloneData;
+                        if (cloneData[0].checkdate) {
+                            cloneData[0].menopause = util.getWeek(40, util.countWeek(entity['gesexpect'], cloneData[0].checkdate));
+                        } else {
+                            cloneData[0].menopause = '';
+                        }
                     }
+                    cloneData.forEach((item, index) => {
+                        if (index > 0) {
+                            item.checkdate = cloneData[0].checkdate
+                            item.menopause = cloneData[0].menopause
+                        }
+                    })
+                    entity['ultrasounds'] = cloneData;
                     if (paramArr[2] === 'gestationalWeek') {
                         this.adjustGesexpectrv(entity, false, paramArr[1]);
                     }
