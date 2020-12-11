@@ -200,7 +200,7 @@ export const sktOptions = toOptions('无,有（左）{#ff0000},有（右）{#ff0
 /**
  *下肢浮肿
 */
-export const xzfOptions = toOptions('-,+,+-,++,+++');
+export const xzfOptions = toOptions('-,+{#ff0000},++{#ff0000},+++{#ff0000},++++{#ff0000}');
 
 /**
  *双膝反射
@@ -210,38 +210,38 @@ export const sxfOptions = toOptions('存在,亢起{#ff0000},消失{#ff0000},引�
 /**
  *乙肝两对半
 */
-// export const ygOptions = toOptions('正常,阳性{#ff0000}(input),小三阳{#ff0000},大三阳{#ff0000},慢活肝{#ff0000},未查{#ff0000}');
-export const ygOptions = toOptions('正常,异常{#ff0000}(input),未查{#ff0000}');
+// export const ygOptions = toOptions('正常,阳性{#ff0000}(input),小三阳{#ff0000},大三阳{#ff0000},慢活肝{#ff0000},未查');
+export const ygOptions = toOptions('正常,异常{#ff0000}(input),未查');
 /**
  *阴阳未查
 */
-export const yywOptions = toOptions('阴性,阳性{#ff0000}(input),未查{#ff0000}');
+export const yywOptions = toOptions('阴性,阳性{#ff0000}(input),未查');
 
 /**
  *阴阳未查、其他
 */
-export const yyw2Options = toOptions('阴性,阳性{#ff0000},未查{#ff0000},其他{#ff0000}(input)');
+export const yyw2Options = toOptions('阴性,阳性{#ff0000},未查,其他{#ff0000}(input)');
 
 /**
  *梅毒
 */
-export const mdOptions = toOptions(['阴性',{k:'阳性{#ff0000}(shouzhenyy-TPPA滴度,TRUST滴度)',addspan:4},'未查{#ff0000}','其他{#ff0000}(input)']);
+export const mdOptions = toOptions(['阴性',{k:'阳性{#ff0000}(shouzhenyy-TPPA滴度,TRUST滴度)',addspan:4},'未查','其他{#ff0000}(input)']);
 
 /**
  *OGTT
 */
-export const ogttOptions = toOptions(['正常',{k:'GDM{#ff0000}(shouzhenyy-空腹血糖（mmol/L）,餐后1H血糖,餐后2H血糖)',addspan:4},'未查{#ff0000}']);
+export const ogttOptions = toOptions(['正常',{k:'GDM{#ff0000}(shouzhenyy-空腹血糖（mmol/L）,餐后1H血糖,餐后2H血糖)',addspan:4},'未查']);
 
 /**
  *地贫
 */
-// export const dpOptions = toOptions('正常,甲型{#ff0000}(input),乙型{#ff0000}(input),未查{#ff0000},其他{#ff0000}(input)');
-export const dpOptions = toOptions('α型{#ff0000}(input),β型{#ff0000}(input),未查{#ff0000},其他{#ff0000}(input)');
+// export const dpOptions = toOptions('正常,甲型{#ff0000}(input),乙型{#ff0000}(input),未查,其他{#ff0000}(input)');
+export const dpOptions = toOptions('α型{#ff0000}(input),β型{#ff0000}(input),未查,其他{#ff0000}(input)');
 
 /**
  *尿蛋白
 */
-export const dbnOptions = toOptions('阴性,弱阳性{#ff0000},阳性{#ff0000}(input),未查{#ff0000},其他{#ff0000}(input)');
+export const dbnOptions = toOptions('阴性,弱阳性{#ff0000},阳性{#ff0000}(input),未查,其他{#ff0000}(input)');
 
 /**
  *药物或食物过敏史
@@ -270,7 +270,7 @@ export const ychOptions = toOptions('先天畸形{#ff0000},先天性聋哑{#ff00
 /**
  *尿蛋白
 */
-export const xOptions = toOptions('阴性,弱阳性{#ff0000},阳性{#ff0000},未查{#ff0000},其他{#ff0000}(input)');
+export const xOptions = toOptions('阴性,弱阳性{#ff0000},阳性{#ff0000},未查,其他{#ff0000}(input)');
 
 /**
  * 未做检查,拒绝检查
@@ -295,12 +295,12 @@ export const fxOptions = toOptions('低风险,高风险{#ff0000}');
 /**
  * 产前诊断
  */
-export const cqzdOptions = toOptions('正常,异常{#ff0000},拒绝产前诊断和知情同意书');
+export const cqzdOptions = toOptions('正常,异常(input){#ff0000},拒绝产前诊断和知情同意书{#ff0000}');
 
 /**
  * 末次月经不详
  */
-export const bxOptions = toOptions('不详');
+export const bxOptions = toOptions('不详{#ff0000}');
 
 /**
  * 手术医院

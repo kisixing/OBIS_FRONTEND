@@ -86,7 +86,7 @@ export const pdhfOptions = toOptions('未见异常,压力性尿失禁,其它类�
 /**
  * 高危转危
  */
-export const gwzwOptions = toOptions('痊愈,好转，定期复查,转专科治疗');
+export const gwzwOptions = toOptions('痊愈,好转，定期复查,转专科治疗{#ff0000}');
 /**
  * 诊断
  */

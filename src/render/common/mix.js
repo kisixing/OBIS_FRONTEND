@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Checkbox, Input, Table, Select, DatePicker } from 'antd';
+import './mix.less';
 
 const getrealy = str => str.replace(/\((.*)\)/,'').replace(/\[.*\]/,'').replace(/\<(.*)\>/,'').replace(/\{(.*)\}/,'');
 
@@ -85,7 +86,9 @@ class MMix extends Component{
 
     return (
       <Col {...rest} span={span * (1 + (showEditor?(/^\d+$/.test(option.addspan) ? option.addspan : 1):0))}>
-        <Checkbox style={{color: fontColor}} value={field} checked={data.hasOwnProperty(field)} onChange={e=>this.handleCheck(e)}>{label}</Checkbox>
+        <Checkbox className={color === '#ff0000' && data.hasOwnProperty(field) ? 'isIssue' : ''} value={field} checked={data.hasOwnProperty(field)} onChange={e=>this.handleCheck(e)}>
+          {label}
+        </Checkbox>
         <div ref="checkboxInput" style={{ display: showEditor ? 'inline-block' : 'none', marginLeft: '-12px' }}>
           {showEditor ? this.renderEditor(args) : null}
         </div>
