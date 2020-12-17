@@ -9,6 +9,7 @@ export const getUrl = function (url){
         return 'http://127.0.0.1:8899/Obcloud' + url;
         // return 'http://168.168.250.31:8899/rapi' + url;
         // return 'http://120.77.46.176:8899/rapi' + url;
+        // return `${location.origin}/rapi` + url;
     }else{
         return 'assets/mock/' + url.split('?').map((v,i)=>v+(!i?'.json':'')).join('?');
     }

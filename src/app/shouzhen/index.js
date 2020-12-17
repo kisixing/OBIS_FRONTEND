@@ -56,7 +56,10 @@ export default class Patient extends Component {
 
     componentDidMount() {
         const { allFormData } = this.state;
-        if (allFormData) {
+        const shouyun = get(allFormData, 'pregnantInfo.add_FIELD_shouyun.0');
+        if (get(shouyun, 'value.date0') && get(shouyun, 'value.input1')) {
+            this.adjustGesexpectrv(allFormData.pregnantInfo, true, 0);
+        } else if (allFormData) {
             this.adjustGesexpectrv(allFormData.pregnantInfo, false, 0);
         }
     }
@@ -771,7 +774,13 @@ export default class Patient extends Component {
                 tabs[0].entity.ultrasounds = [{}];
             }
             this.getEmptyData(allFormData);
-            this.adjustGesexpectrv(allFormData.pregnantInfo, false, 0);
+
+            const shouyun = get(allFormData, 'pregnantInfo.add_FIELD_shouyun.0');
+            if (get(shouyun, 'value.date0') && get(shouyun, 'value.input1')) {
+                this.adjustGesexpectrv(allFormData.pregnantInfo, true, 0);
+            } else if (allFormData) {
+                this.adjustGesexpectrv(allFormData.pregnantInfo, false, 0);
+            }
         }
         
         return (
