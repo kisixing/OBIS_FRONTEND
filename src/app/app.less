@@ -8,8 +8,6 @@
   top: 0;
   z-index: 999;
   height: 88px;
-  background: #fff;
-  padding: 8px 16px;
   overflow: hidden;
 }
 .main-body .main-content {
@@ -18,6 +16,12 @@
   // background-image: url("../assets/static-img/borderBG.png");
   background-repeat: repeat-x;
   background-size: 100% 10px;
+}
+.patient-Info_title {
+  height: 48px;
+  line-height: 48px;
+  padding-left: 12px;
+  background-color: #f0f7fd;
 }
 .patient-Info_title div {
   display: table-cell;
@@ -33,7 +37,11 @@
   padding-right: 12px;
 }
 .patient-Info_tab {
-  margin-top: 25px;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 24px;
+  border: 1px solid #81c5e9;
+  background: linear-gradient(#d9e9f7, #b3d6f2);
   span {
     display: inline-block;
     line-height: 22px;
@@ -46,7 +54,7 @@
     color: #150f55;
     font-size: 16px;
     font-weight: 600;
-    padding-bottom: 4px;
+    padding-bottom: 6px;
     border-bottom: 2px solid #3d8bf7;
   }
 }
@@ -123,11 +131,7 @@
   }
   .has-infectin {
     color: #ffffff;
-    background: linear-gradient(
-      275deg,
-      rgba(155, 102, 255, 1) 0%,
-      rgba(98, 54, 255, 1) 100%
-    );
+    background: linear-gradient(275deg, rgba(155, 102, 255, 1) 0%, rgba(98, 54, 255, 1) 100%);
     &:hover {
       background-color: #c205e7;
     }
@@ -226,12 +230,12 @@
   width: 640px;
   background: #fff;
   z-index: 1000;
-  border: 1px solid #d7dce7;
+  border: 1px solid #f5f6fa;
   box-shadow: 0px 2px 45px -8px #ccc;
   border-radius: 5px;
   .highrisk-header {
     padding: 10px;
-    border-bottom: 1px solid #d7dce7;
+    border-bottom: 1px solid #f5f6fa;
     .close-icon {
       cursor: pointer;
     }
@@ -257,7 +261,7 @@
       .nerver-btn {
         font-size: 20px;
         color: #fff;
-        background-color: #007aff;
+        background-color: #3d8bf7;
       }
     }
   }

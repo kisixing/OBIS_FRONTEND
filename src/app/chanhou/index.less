@@ -26,6 +26,8 @@
   .ant-collapse {
     background: transparent;
     border-color: transparent;
+    border: 1px solid #81c5e9;
+    border-bottom: 0 none;
     .ant-collapse-item {
       border-top: none;
     }
@@ -34,7 +36,7 @@
       padding: 0 0.4rem;
     }
     .ant-collapse-content > .ant-collapse-content-box {
-      padding: 3px 0;
+      padding: 0;
     }
     .ant-collapse-header .arrow,
     .ant-collapse-content-box {
@@ -46,20 +48,19 @@
       font-weight: bold;
       padding-left: 0;
       font-size: 1rem;
-      background: #fff;
+      background: #c5dff4;
       color: #3b3671;
-      border: 1px solid #edeef6;
+      border-bottom: 1px solid #81c5e9;
       padding-left: 34px;
       .arrow {
         height: 100%;
         font-size: 1rem !important;
       }
     }
-    .ant-collapse-item {
-      border-width: 2px;
+    .ant-collapse-content {
+      border-bottom: 1px solid #81c5e9;
     }
   }
-
   .ch-form {
     padding: 26px;
     width: calc(100% - @widthSidebar - 16px);
@@ -75,7 +76,7 @@
         height: 44px;
         font-size: 20px;
         color: #fff;
-        background-color: #007aff;
+        background-color: #3d8bf7;
       }
     }
   }

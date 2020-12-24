@@ -14,6 +14,11 @@ export default class extends Component {
       rows: [
         {
           columns: [
+            { name: '[月经史和婚姻史]', className: 'section-title', type: '**', span: 21 },
+          ]
+        },
+        {
+          columns: [
             { name: 'yjcuch(岁)[初潮]', type: 'select', span: 4, showSearch: true, options: baseData.ccOptions, valid: 'required'},
             { span: 1 },
             { name: 'yjzhouq(天)[周期]', type: 'input', span: 4, valid: 'pureNumber|required' },
@@ -101,7 +106,7 @@ export default class extends Component {
   render() {
     const { entity, onChange } = this.props;
     return (
-      <div className="label-6 yue-jing-shi">
+      <div className="yue-jing-shi">
         {formRender(entity, this.config(), onChange)}
       </div>
     )

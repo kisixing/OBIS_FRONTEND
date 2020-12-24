@@ -806,8 +806,8 @@ export default class Patient extends Component {
                 <Button icon="save" className="shouzhen-btn" size="small" onClick={() => this.handleSave(step, 'save')}>保存</Button>
                 <Button icon="print-white" className="shouzhen-btn" size="small" onClick={() => printIvisit()}>打印</Button>
                 { step !== tabs[tabs.length - 1].key
-                    ? <Button className="shouzhen-btn" type="primary" onClick={() => setTimeout(() => { this.handleSave() }, 300)}><Icon type="arrow-right" />下一页</Button>
-                    : <Button icon="save" className="shouzhen-btn" type="primary" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>提交</Button>
+                    ? <Button className="shouzhen-btn" onClick={() => setTimeout(() => { this.handleSave() }, 300)}><Icon type="arrow-right" />下一页</Button>
+                    : <Button icon="save" className="shouzhen-btn" onClick={() => setTimeout(() => { this.handleSave(step) }, 100)}>提交</Button>
                 }
             </div>
             { isShowWeekModal && this.renderWeekModal() }

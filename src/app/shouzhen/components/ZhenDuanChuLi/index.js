@@ -481,7 +481,7 @@ export default class extends Component{
         <div className="shouzhen-left-top">
           {szList && szList.map((item, i) => (
             <Row className="diag-row" key={`diagnos-${item.data}-${i}`} title={title(item)}>
-              <Col span={16} className={item.highriskmark==1 ? 'highriskmark single-diag' : 'single-diag'}>
+              <Col span={15} className={item.highriskmark==1 ? 'highriskmark single-diag' : 'single-diag'}>
                 <Popover placement="bottomLeft" trigger="click" content={content(item, i)} visible={item.visible} onVisibleChange={(visible) => handleVisibleChange(visible, i)}>
                   <div className="diag-words" >
                     <span className="zd-num">{i + 2}、</span>
@@ -492,7 +492,7 @@ export default class extends Component{
               </Col>
               <Col className="diag-date" span={4}>{item.createdate}</Col>
               <Col className="diag-doc" span={3}>{item.doctor||info.doctor}</Col>
-              <Col span={1} style={{display: 'flex'}}>
+              <Col span={2} style={{display: 'flex'}}>
                 <Icon className="delBTN" type="cancel" onClick={() => this.deldiagnosis(item.id, item.data)}></Icon>
               </Col>
             </Row>

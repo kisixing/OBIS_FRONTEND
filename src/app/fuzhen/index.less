@@ -17,7 +17,7 @@
     position: fixed;
     z-index: 0;
     right: 0;
-    top: 600px;
+    top: 500px;
     width: calc(100% - @widthLeft - 16px);
     height: 100%;
     background-color: #fff;
@@ -31,6 +31,8 @@
   .ant-collapse {
     background: transparent;
     border-color: transparent;
+    border: 1px solid #81c5e9;
+    border-bottom: 0 none;
     .ant-collapse-item {
       border-top: none;
     }
@@ -51,31 +53,31 @@
       font-weight: bold;
       padding-left: 0;
       font-size: 1rem;
-      background: #fff;
+      background: #c5dff4;
       color: #3b3671;
-      border: 1px solid #edeef6;
+      border-bottom: 1px solid #81c5e9;
       padding-left: 34px;
       .arrow {
         height: 100%;
         font-size: 1rem !important;
       }
-      .add-btn {
+      .ant-btn {
+        background: #c5dff4;
         border: none;
         outline: none !important;
       }
       .header-btn {
         position: absolute;
         right: 4px;
-        top: 6px;
+        top: 8px;
       }
       .isUnusual {
         color: #fff;
         background-color: red !important;
       }
     }
-
-    .ant-collapse-item {
-      border-width: 2px;
+    .ant-collapse-content {
+      border-bottom: 1px solid #81c5e9;
     }
   }
 
