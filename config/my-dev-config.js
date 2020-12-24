@@ -3,13 +3,13 @@ module.exports = {
     devPort:8899,//开发环境服务器端口
     //反向代理配置
     proxyConfig: {
-        "/api/*": {
-            target: "http://120.77.46.176:8080/Obcloud/",
-            secure: false,
-            changeOrigin: true,
-        },
-        "/Obcloud/*": {
-            target: "http://120.77.46.176:8080/",
+        // "/api/*": {
+        //     target: "http://120.77.46.176:8080/Obcloud/",
+        //     secure: false,
+        //     changeOrigin: true,
+        // },
+        "/rapi/*": {
+            target: "http://120.77.46.176:8899/",
             secure: false,
             changeOrigin: false,
         },
