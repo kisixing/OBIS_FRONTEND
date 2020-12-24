@@ -130,6 +130,8 @@ export function checkinput$x(
     count ? 24 / count : Math.max(6, 24 / (optionList.length || 1))
   );
 
+  if (JSON.stringify(data1) === "[{}]") data1 = [];
+  
   const data = data1
     ? typeof data1.$data === "object"
       ? data1.$data
@@ -202,7 +204,6 @@ export function checkinput$x(
   };
 
   const handleCheck = (e, { name, checked, option }) => {
-    // console.log("8888888", name, checked, option);
     if (checked) {
       data[name] = data[`$${name}`] || "";
       findWC(option, n => delete data[n]);
