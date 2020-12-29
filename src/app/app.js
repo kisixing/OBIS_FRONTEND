@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Prompt } from 'react-router-dom';
+import { uniq } from 'lodash';
 import { Row, Col, Input, Button, Select, Modal, Tree, Icon, notification, message } from "antd";
 import router from "../utils/router";
 import bundle from "../utils/bundle";
@@ -224,7 +225,7 @@ export default class App extends Component {
       return ID.toString();
     }
 
-    if(bmi > 30) checkedKeys.push(getKey("肥胖（BMI>30kg/m)"));
+    if(bmi > 30) checkedKeys.push(getKey("肥胖（BMI>30kg/㎡)"));
     if(age > 35) checkedKeys.push(getKey("年龄>35岁"));
     if(chanc >= 3) checkedKeys.push(getKey("产次≥3"));
     if(!!ivf && ivf[0] && ivf[0].label === "IVF") checkedKeys.push(getKey("IVF/ART"));
@@ -241,7 +242,7 @@ export default class App extends Component {
       if(item.data === "多胎妊娠") checkedKeys.push(getKey("多胎妊娠"));
     })
 
-    const action = checkedKeysAction(checkedKeys);
+    const action = checkedKeysAction(uniq(checkedKeys));
     store.dispatch(action);
   }
 
