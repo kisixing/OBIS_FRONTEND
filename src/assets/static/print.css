@@ -1,10 +1,13 @@
 @import './antd/antd-1.x.min.css';
 @page {
-  /* 打印页面右边距 */
-  margin-right: 2cm;
+  /* 打印页面边距 */
+  margin: 0;
 }
 @media print {
   /* 复诊记录打印 */
+  .print-table-wrapper {
+    padding: 12px 18px 0;
+  }
   .print-highrisk {
     font-size: 14px;
     text-align: right;
@@ -18,7 +21,7 @@
     margin-right: 21px;
   }
   .print-table {
-    table-layout: fixed;
+    /* table-layout: fixed; */
     text-align: center;
     border: 1px solid #ccc;
     border-collapse: collapse;

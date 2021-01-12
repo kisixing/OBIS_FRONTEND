@@ -333,7 +333,6 @@ export const tableKey = () => [
 	{
 		title: '检验检查',
 		key: 'examination',
-		className: "examination",
 		type: 'textarea',
 		width: '30%',
 	},
@@ -344,7 +343,6 @@ export const tableKey = () => [
 	{
 		title: '处理措施',
 		key: 'treatment',
-		className: 'treatment',
 		type: 'textarea',
 		width: '30%',
 	},

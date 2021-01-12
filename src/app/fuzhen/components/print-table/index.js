@@ -37,14 +37,13 @@ export default class extends Component{
       if (item.title === '定性') item.title = '尿蛋白定性';
       if (item.title === '定量') item.title = '尿蛋白定量';
     })
-    printKeys.splice(printKeys.length - 5, 3);
     printKeys.forEach(item => {
       !item.className ? keysArr.push(item.key) : null;
     })
-    console.log(printKeys, printData,keysArr, '321')
+    // console.log(printKeys, printData, keysArr, selectRowKeys, '321')
 
     return (
-      <div key={printData}>
+      <div key={printData} className="print-table-wrapper">
         <div style={hasPrint ? {visibility: "hidden"} : {visibility: "visible"}}>
           <p className="print-info">
             <span className="info-item">姓名：{userDoc.username}</span>
@@ -70,10 +69,11 @@ export default class extends Component{
             ))}
 
             {printData.map((item, index) => (
+              // hasPrint && !selectRowKeys.includes(index+2)  续打时打印对应的勾选行
               <div>
                 <tr style={(hasPrint && !selectRowKeys.includes(index+2)) ? {visibility: "hidden"} : null}>
                   {keysArr.map(subItem => (
-                    <td>
+                    <td style={{width: 'auto'}}>
                       {
                         (!!item[subItem] && subItem === "checkdate") ? item[subItem].substring(5) 
                         : (!!item["ckappointment"] && subItem === "nextRvisitText") ? item["ckappointment"].substring(5) : item[subItem]
@@ -81,7 +81,7 @@ export default class extends Component{
                     </td>
                   ))}
                 </tr>
-                {
+                {/* {
                   !!item.allMedicationPlan ?
                   <tr style={(hasPrint && !selectRowKeys.includes(index+2)) ? {visibility: "hidden"} : null}>
                     <td>用药方案</td>
@@ -104,7 +104,7 @@ export default class extends Component{
                     <td colSpan={keysArr.length-1} style={{textAlign: "left"}}>{item.treatment}</td>
                   </tr>
                   : null
-                }
+                } */}
               </div>
             ))}
           </tbody>
