@@ -97,7 +97,7 @@ export default class extends Component{
         },
         {
           columns:[
-            {name:'add_FIELD_outpatient[产前诊断]', type:'checkinput-5', radio:true, options: baseData.cqzdOptions, span: 12},
+            {name:'add_FIELD_outpatient[产前诊断]', className:'add-ipt', type:'checkinput-5', radio:true, options: baseData.cqzdOptions, span: 12},
           ]
         },
         {

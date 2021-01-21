@@ -99,6 +99,16 @@ export default class Index extends Component {
       this.setState({ unusualFlag: res.object.unusualFlag })
     })
 
+    service.fuzhen.checkHighriskMergeAlert('2', '').then(res => {
+      const items = res.object.items || [];
+      if (items.length > 0) {
+        this.setState({
+          checkHighriskSign: items,
+          isShowSignModal: true
+        })
+      }
+    })
+
     window.addEventListener('keyup', e => {
       if (e.keyCode === 13 || e.keyCode === 108) this.onKeyUp();
     })
@@ -191,15 +201,15 @@ export default class Index extends Component {
         store.dispatch(action);
       })
 
-      // service.fuzhen.checkHighriskMergeAlert('1', diagnosis).then(res => {
-      //   const items = res.object.items || [];
-      //   if (items.length > 0) {
-      //     this.setState({
-      //       checkHighriskSign: items,
-      //       isShowSignModal: true
-      //     })
-      //   }
-      // })
+      service.fuzhen.checkHighriskMergeAlert('1', diagnosis).then(res => {
+        const items = res.object.items || [];
+        if (items.length > 0) {
+          this.setState({
+            checkHighriskSign: items,
+            isShowSignModal: true
+          })
+        }
+      })
 
       //子痫前期判断
       preeArr.forEach(item => {
@@ -765,7 +775,7 @@ export default class Index extends Component {
           checkHighriskSign && <HighriskSignCheck 
             checkHighriskSign={checkHighriskSign} 
             isShowSignModal={isShowSignModal} 
-            closeModal={this.closeModal} 
+            onClose={this.closeModal} 
             userDoc={userDoc}
           />
         }

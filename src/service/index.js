@@ -57,6 +57,12 @@ export default {
         return myAxios.post('/outpatientWriteRestful/addHighrisk', {userid, highrisk, level});
     },
     /**
+     * 批量添加高危标记
+     */
+    batchAddAllHighrisk: function(data){
+        return myAxios.post('/outpatientWriteRestful/batchAddAllHighrisk', data);
+    },
+    /**
      * 获取token
      */
     authorize: function(doctorId){

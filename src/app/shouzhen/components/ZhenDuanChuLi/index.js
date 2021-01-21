@@ -62,7 +62,7 @@ export default class extends Component{
     this.setState(store.getState());
   };
 
-  componentDidMount(){
+  async componentDidMount() {
     const { isMeetPhar, userDoc, trialVisible } = this.state;
     if(isMeetPhar) {
       const action = showPharAction(true);
@@ -93,6 +93,14 @@ export default class extends Component{
         })
       }
     })
+
+    const resAlert = await service.checkHighriskAlert(userDoc.userid);
+    let data = resAlert.object;
+    if (data && data.length > 0) {
+      data.map(item => (item.visible = true));
+    }
+    const alertAction = getAlertAction(data);
+    store.dispatch(alertAction);
 
     window.addEventListener('keyup', e => {
       if (e.keyCode === 13 || e.keyCode === 108) this.onKeyUp();
@@ -262,15 +270,15 @@ export default class extends Component{
         store.dispatch(action);
       })
 
-      // service.fuzhen.checkHighriskMergeAlert('1', diagnosis).then(res => {
-      //   const items = res.object.items || [];
-      //   if (items.length > 0) {
-      //     this.setState({
-      //       checkHighriskSign: items,
-      //       isShowSignModal: true
-      //     })
-      //   }
-      // })
+      service.fuzhen.checkHighriskMergeAlert('1', diagnosis).then(res => {
+        const items = res.object.items || [];
+        if (items.length > 0) {
+          this.setState({
+            checkHighriskSign: items,
+            isShowSignModal: true
+          })
+        }
+      })
 
       //子痫前期判断
       const preeArr = ['多胎', '慢性高血压', '1型糖尿病', '2型糖尿病', 'PGDM', '肾炎', '肾脏', '肾病', '红斑狼疮', '抗磷脂综合征'];

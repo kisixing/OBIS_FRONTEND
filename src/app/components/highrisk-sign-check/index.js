@@ -33,14 +33,18 @@ export default class Index extends Component{
     onClose('isShowSignModal');
   }
 
-  handleOk = () => {
+  handleOk = async () => {
     const { checkItems } = this.state;
     const { onClose, userDoc } = this.props;
+    const arr = [];
     checkItems.forEach(async (item) => {
       if (item.check) {
-        await service.addHighrisk(userDoc.userid, `\n${item.highrisk}`, item.level);
+        item.highrisk = `\n${item.highrisk}`;
+        item.userid = userDoc.userid;
+        arr.push(item);
       } 
     })
+    await service.batchAddAllHighrisk(arr);
     onClose('isShowSignModal');
   }
 
